@@ -230,7 +230,12 @@ private fun SafeCard(d: HomeData, vm: HomeViewModel) {
 private fun SwipeRow(row: TxRowUi, onOpen: () -> Unit, onDelete: () -> Unit) {
     val state = rememberSwipeToDismissBoxState()
     LaunchedEffect(state.currentValue) {
-        if (state.currentValue == SwipeToDismissBoxValue.EndToStart) onDelete()
+        if (state.currentValue == SwipeToDismissBoxValue.EndToStart) {
+            // Delete first (snapTo changes this effect's key and would cancel it), then reset: swipe state is saved
+            // per row key, and a row brought back by undo must not come back dismissed.
+            onDelete()
+            state.snapTo(SwipeToDismissBoxValue.Settled)
+        }
     }
     SwipeToDismissBox(
         state = state,

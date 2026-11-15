@@ -70,7 +70,22 @@ class HistoryViewModel @Inject constructor(
         .map { load() }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
 
+    /** Lookups so history shows names and formatted amounts, not ids and minor units. */
+    private var accountNames: Map<String, String> = emptyMap()
+    private var categoryNames: Map<String, String> = emptyMap()
+    private var fmt: app.penny.ui.common.MoneyFmt? = null
+    private var currency: String = ""
+
     private suspend fun load(): List<VersionUi> {
+        val pid = repo.currentProfileId.value.orEmpty()
+        repo.profiles.get(pid)?.let { fmt = app.penny.ui.common.MoneyFmt.of(it.value, repo.packs.get(it.value.regionPack)) }
+        accountNames = repo.accounts.list(pid, includeDeleted = true).associate { it.state.id to it.value.name }
+        val cats = repo.categories.list(pid, includeDeleted = true).associateBy { it.state.id }
+        categoryNames = cats.mapValues { (_, c) ->
+            val parent = c.value.parentId?.let(cats::get)?.value?.name
+            if (parent != null) "$parent › ${c.value.name}" else c.value.name
+        }
+        currency = repo.transactions.get(id)?.value?.currency.orEmpty()
         val h = repo.transactions.history(id)
         val dataVersions = h.filter { it.op == Op.CREATE || it.op == Op.UPDATE }.map { it.version }.toSet()
         val latestData = dataVersions.maxOrNull()
@@ -96,19 +111,34 @@ class HistoryViewModel @Inject constructor(
         val who = if (actor == repo.localAccountId) context.getString(R.string.history_you) else actor.take(8)
         val whenText = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT)
             .format(Instant.ofEpochMilli(ts).atZone(ZoneId.systemDefault()))
-        val lines = changes.map { c ->
+        val lines = changes.filter { it.field != "tz" }.map { c ->
             val name = fieldLabel(c.field)
-            if (c.before == null) context.getString(R.string.history_set, name, show(c.after))
-            else context.getString(R.string.history_change, name, show(c.before), show(c.after))
+            if (c.before == null) context.getString(R.string.history_set, name, show(c.field, c.after))
+            else context.getString(R.string.history_change, name, show(c.field, c.before), show(c.field, c.after))
         }
         return VersionUi(version, "${context.getString(R.string.history_version, version)} · $title",
             context.getString(R.string.history_by, who, whenText), lines, canRevert)
     }
 
-    private fun show(e: JsonElement?): String = when {
-        e == null || e.toString() == "null" -> "—"
-        e is JsonPrimitive -> e.content
-        else -> e.toString()
+    private fun show(field: String, e: JsonElement?): String {
+        if (e == null || e.toString() == "null") return "—"
+        val raw = (e as? JsonPrimitive)?.content ?: return e.toString()
+        return when (field) {
+            "amountMinor", "toAmountMinor" -> raw.toLongOrNull()?.let { m -> fmt?.format(m, currency) } ?: raw
+            "accountId", "toAccountId" -> accountNames[raw] ?: raw
+            "categoryId" -> categoryNames[raw] ?: raw
+            "type" -> runCatching { context.getString(app.penny.ui.common.typeLabel(app.penny.core.model.TxType.valueOf(raw))) }.getOrDefault(raw)
+            "status" -> when (raw) {
+                "PENDING" -> context.getString(R.string.status_pending)
+                "CLEARED" -> context.getString(R.string.status_cleared)
+                "RECONCILED" -> context.getString(R.string.status_reconciled)
+                else -> raw
+            }
+            "direction" -> context.getString(if (raw == "IN") R.string.direction_in else R.string.direction_out)
+            "date" -> runCatching { app.penny.ui.common.shortDate(java.time.LocalDate.parse(raw)) }.getOrDefault(raw)
+            "isPrivate", "excludeFromBudget", "excludeFromReports" -> if (raw == "true") "✓" else "—"
+            else -> raw
+        }
     }
 
     private fun fieldLabel(field: String): String = context.getString(

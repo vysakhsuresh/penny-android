@@ -43,4 +43,4 @@ data class Money(val minor: Long, val currency: String) : Comparable<Money> {
 
 /** Largest amount accepted: 15 significant digits in minor units (TX-08). */
 const val MAX_MINOR_DIGITS = 15
-val MAX_MINOR: Long = 999_999_999_999_999L
+const val MAX_MINOR: Long = 999_999_999_999_999L

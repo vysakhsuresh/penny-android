@@ -18,12 +18,18 @@ import java.util.Locale
 /** Money display for one profile: locale separators, pack grouping (or the user's override). */
 class MoneyFmt(val spec: NumberFormatSpec) {
     /** Wrapped in a first-strong isolate so amounts with RTL symbols never break surrounding LTR text, and vice versa (LO-07). */
-    fun format(minor: Long, currency: String, signed: Boolean = false): String =
-        "⁨" + MoneyFormatter.format(minor, currency, spec, symbol = CurrencySymbols.symbol(currency, spec.localeTag), signForPositive = signed) + "⁩"
+    fun format(minor: Long, currency: String, signed: Boolean = false): String {
+        val text = MoneyFormatter.format(minor, currency, spec, symbol = CurrencySymbols.symbol(currency, spec.localeTag), signForPositive = signed)
+        return FSI + text + PDI
+    }
 
     fun editable(minor: Long, currency: String) = MoneyFormatter.toEditable(minor, currency, spec)
 
     companion object {
+        /** First-strong isolate and pop directional isolate (Unicode bidi), built from code points. */
+        private val FSI = Char(0x2068).toString()
+        private val PDI = Char(0x2069).toString()
+
         fun of(profile: Profile, pack: RegionalPack) =
             MoneyFmt(NumberFormatSpec.forLocale(profile.localeTag, profile.groupingOverride ?: pack.grouping))
 

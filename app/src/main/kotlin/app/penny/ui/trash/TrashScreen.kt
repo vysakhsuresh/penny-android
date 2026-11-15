@@ -65,7 +65,11 @@ class TrashViewModel @Inject constructor(
         val fmt = MoneyFmt.of(p.value, repo.packs.get(p.value.regionPack))
         combine(repo.observeTrash(p.state.id), pendingPurge) { items, pending ->
             items.filter { it.id !in pending }.map { i ->
-                TrashRow(i.id, i.tx.payee ?: i.tx.note.ifBlank { shortDate(i.tx.date) }, "${shortDate(i.tx.date)} · ${fmt.format(i.tx.amountMinor, i.tx.currency)}")
+                TrashRow(
+                    id = i.id,
+                    title = i.tx.payee ?: i.tx.note.ifBlank { shortDate(i.tx.date) },
+                    detail = "${shortDate(i.tx.date)} · ${fmt.format(i.tx.amountMinor, i.tx.currency)}",
+                )
             }
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)

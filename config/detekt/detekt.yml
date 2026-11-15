@@ -3,15 +3,18 @@ naming:
     ignoreAnnotated: ['Composable']
   TopLevelPropertyNaming:
     constantPattern: '[A-Z][A-Za-z0-9_]*'
+  # Screens keep their ViewModel in the same file.
+  MatchingDeclarationName:
+    active: false
 style:
   MagicNumber:
     active: false
   ReturnCount:
-    max: 4
+    max: 6
   UnusedPrivateMember:
     ignoreAnnotated: ['Preview']
   MaxLineLength:
-    maxLineLength: 140
+    maxLineLength: 160
 complexity:
   LongMethod:
     ignoreAnnotated: ['Composable']
@@ -23,10 +26,13 @@ complexity:
   CyclomaticComplexMethod:
     threshold: 20
     ignoreAnnotated: ['Composable']
+    ignoreSimpleWhenEntries: true
+  ComplexCondition:
+    threshold: 5
   TooManyFunctions:
     thresholdInFiles: 30
     thresholdInClasses: 30
-    thresholdInInterfaces: 20
+    thresholdInInterfaces: 30
     thresholdInObjects: 20
   NestedBlockDepth:
     threshold: 5

@@ -206,7 +206,8 @@ class TransactionFormViewModel @Inject constructor(
         } else {
             null
         }
-        val base = original ?: Transaction(type = f.type, amountMinor = 0, currency = f.currency, accountId = "", date = LocalDate.now(), tz = c.profile.timezone)
+        val base = original
+            ?: Transaction(type = f.type, amountMinor = 0, currency = f.currency, accountId = "", date = LocalDate.now(), tz = c.profile.timezone)
         val tx = base.copy(
             type = f.type,
             amountMinor = amount,

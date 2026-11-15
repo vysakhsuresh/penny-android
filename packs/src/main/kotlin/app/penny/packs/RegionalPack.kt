@@ -39,7 +39,12 @@ data class RegionalPack(
 
 @Serializable data class Holiday(val name: String, val date: String)
 @Serializable data class FestivalWindow(val name: String, val month: Int)
-@Serializable data class PaymentApp(val name: String, @SerialName("package") val packageName: String? = null, @SerialName("parser_id") val parserId: String? = null)
+@Serializable
+data class PaymentApp(
+    val name: String,
+    @SerialName("package") val packageName: String? = null,
+    @SerialName("parser_id") val parserId: String? = null,
+)
 @Serializable
 data class PricePoints(
     @SerialName("plus_monthly") val monthly: Long,

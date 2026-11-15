@@ -43,6 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
@@ -116,7 +117,7 @@ private fun HomeContent(ctx: Ctx, vm: BookViewModel, nav: HomeNav, padding: Padd
     LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding() + 96.dp)) {
         item {
             Row(Modifier.fillMaxWidth().padding(start = 16.dp, end = 8.dp, top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = nav.profiles) { Avatar(b.profile.name, b.profileId, size = 36.dp) }
+                IconButton(onClick = nav.profiles) { Avatar(b.profile.name, b.profileId, size = 36.dp, modifier = Modifier.semantics { contentDescription = context.getString(R.string.settings) }) }
                 Column(Modifier.weight(1f).padding(start = 4.dp)) {
                     Text(b.profile.name, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     Text(stringResource(R.string.period_range, shortDate(period.start), shortDate(period.endInclusive)), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -265,7 +266,9 @@ private fun SafeHero(ctx: Ctx, safe: app.penny.core.budget.SafeToSpend, offset: 
     val ahead = safe.aheadOfPace
     val elapsedBp = if (safe.period.days == 0) 0 else safe.daysElapsed * 10_000 / safe.period.days
     val budget = safe.incomeMinor + safe.expectedIncomeMinor - safe.committedMinor - safe.savingsMinor
-    val usedBp = if (budget <= 0) (if (safe.spentMinor > 0) 10_000 else 0) else (safe.spentMinor * 10_000 / budget).toInt()
+    val usedBp = if (budget <= 0) (if (safe.spentMinor > 0) 10_001 else 0) else (safe.spentMinor * 10_000 / budget).toInt()
+    val noIncome = safe.incomeMinor + safe.expectedIncomeMinor == 0L
+    val over = safe.safeMinor < 0
     Card(
         Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
@@ -284,14 +287,14 @@ private fun SafeHero(ctx: Ctx, safe: app.penny.core.budget.SafeToSpend, offset: 
             Spacer(Modifier.height(2.dp))
             if (offset == 0) {
                 Text(
-                    stringResource(R.string.per_day, ctx.money(safe.perDayMinor)) + " · " + pluralStringResource(R.plurals.days_left, safe.daysLeft, safe.daysLeft),
+                    stringResource(R.string.per_day, ctx.money(safe.perDayMinor)) + " · " + pluralStringResource(R.plurals.days_left, safe.daysLeft + 1, safe.daysLeft + 1),
                     style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
             } else {
                 TextButton(onClick = { onShift(0) }) { Text(stringResource(R.string.this_period)) }
             }
             Spacer(Modifier.height(14.dp))
-            Meter(usedBp, if (ahead) EnvelopeState.NEAR else EnvelopeState.OK, height = 10.dp, paceBp = if (offset == 0) elapsedBp else null)
+            Meter(usedBp, when { over -> EnvelopeState.OVER; ahead -> EnvelopeState.NEAR; else -> EnvelopeState.OK }, height = 10.dp, paceBp = if (offset == 0) elapsedBp else null)
             Spacer(Modifier.height(12.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 HeroStat(stringResource(R.string.income), ctx.money(safe.incomeMinor + safe.expectedIncomeMinor), Modifier.weight(1f))
@@ -304,8 +307,13 @@ private fun SafeHero(ctx: Ctx, safe: app.penny.core.budget.SafeToSpend, offset: 
             }
             if (offset == 0) {
                 Spacer(Modifier.height(10.dp))
-                if (ahead) Pill(stringResource(R.string.ahead_of_pace), container = st.nearContainer, content = MaterialTheme.colorScheme.onSurface)
-                else Pill(stringResource(R.string.on_pace), container = MaterialTheme.colorScheme.surfaceContainerLowest, content = MaterialTheme.colorScheme.onSurface)
+                // Honest states: no income yet, spent more than came in, ahead of pace, or on pace. Never red (AL-08).
+                when {
+                    noIncome -> Pill(stringResource(R.string.no_income_yet), container = MaterialTheme.colorScheme.surfaceContainerLowest, content = MaterialTheme.colorScheme.onSurface)
+                    over -> Pill(stringResource(R.string.spent_more_than_income), container = st.overContainer, content = MaterialTheme.colorScheme.onSurface)
+                    ahead -> Pill(stringResource(R.string.ahead_of_pace), container = st.nearContainer, content = MaterialTheme.colorScheme.onSurface)
+                    else -> Pill(stringResource(R.string.on_pace), container = MaterialTheme.colorScheme.surfaceContainerLowest, content = MaterialTheme.colorScheme.onSurface)
+                }
             }
         }
     }

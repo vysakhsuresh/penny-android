@@ -74,6 +74,18 @@ func run() error {
 		log.Warn("EMAIL_PEPPER not set; using a random pepper, accounts will not survive a restart")
 	}
 
+	merchantSalt := []byte(os.Getenv("MERCHANT_SALT"))
+	if len(merchantSalt) == 0 {
+		if *storeKind == "postgres" && !*dev {
+			return errors.New("MERCHANT_SALT is required with the postgres store (it keys merchant-vote hashes; keep it stable)")
+		}
+		log.Warn("MERCHANT_SALT not set; using a random salt, merchant votes will not deduplicate across restarts")
+	}
+	mailSecret := os.Getenv("MAIL_WEBHOOK_SECRET")
+	if mailSecret == "" && !*dev {
+		log.Warn("MAIL_WEBHOOK_SECRET not set: the inbound mail webhook is disabled")
+	}
+
 	var sealer *Sealer
 	if v := os.Getenv("CONNECTOR_KEY"); v != "" {
 		key, err := ParseConnectorKey(v)
@@ -134,7 +146,8 @@ func run() error {
 	}
 
 	api := NewServer(Options{Store: store, Mailer: mailer, Log: log, Region: *region, Pepper: pepper, TrustProxy: *trustProxy,
-		Dev: *dev, Connectors: registry, Sealer: sealer})
+		Dev: *dev, Connectors: registry, Sealer: sealer, MailDomain: env("MAIL_DOMAIN", defaultMailDomain),
+		MailWebhookSecret: mailSecret, MerchantSalt: merchantSalt})
 	srv := &http.Server{
 		Addr:              *addr,
 		Handler:           api.Handler(),
@@ -145,7 +158,7 @@ func run() error {
 		MaxHeaderBytes:    16 << 10,
 	}
 
-	go func() { // janitor: drop expired codes, advisor links, connect states and dead invites
+	go func() { // janitor: drop expired codes, advisor links, connect states, dead invites and old mail
 		t := time.NewTicker(10 * time.Minute)
 		defer t.Stop()
 		for {

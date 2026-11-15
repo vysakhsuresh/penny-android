@@ -82,7 +82,7 @@ class PhoneWearService : WearableListenerService() {
             // Every exchange refreshes the watch summary.
             val s = b.safeToSpend(b.period())
             val summary = WearSummary(
-                ready.fmt.format(s.safeMinor, b.profile.baseCurrency), ready.fmt.format(s.perDayMinor, b.profile.baseCurrency), s.daysLeft,
+                ready.fmt.format(s.safeMinor, b.profile.baseCurrency), ready.fmt.format(s.perDayMinor, b.profile.baseCurrency), s.daysLeft + 1,
                 b.templates.filter { it.value.favourite }.take(8).map { WearTemplate(it.state.id, it.value.name, it.value.amountMinor?.let { a -> ready.fmt.format(a, it.value.currency) }) },
                 hidden = prefs.appearance.value.hideAmounts,
             )

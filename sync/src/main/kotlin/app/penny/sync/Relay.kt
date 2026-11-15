@@ -44,6 +44,14 @@ import java.util.concurrent.TimeUnit
 @Serializable data class SyncBody(val accounts: List<String>? = null, val since: Long? = null, val full: Boolean = false)
 @Serializable data class SyncOut(val transactions: List<RemoteTx> = emptyList(), val accounts: List<RemoteAccount> = emptyList(), val status: String = "active", val message: String? = null)
 @Serializable data class EntitlementBody(val store: String, val purchaseToken: String, val productId: String)
+@Serializable data class MailAddress(val address: String, val keyAlg: String = "")
+@Serializable data class MailKey(val p256: String)
+@Serializable data class RotateBody(val rotate: Boolean)
+@Serializable data class PendingMail(val id: String, val alg: String, val blob: String, val receivedAt: Long, val expiresAt: Long = 0)
+@Serializable data class MerchantSuggestBody(val region: String, val descriptors: List<String>)
+@Serializable data class MerchantSuggestion(val descriptor: String, val name: String, val categoryKey: String, val confidence: Double)
+@Serializable data class MerchantItem(val descriptor: String, val name: String, val categoryKey: String)
+@Serializable data class MerchantContribute(val region: String, val items: List<MerchantItem>)
 @Serializable data class Entitlement(val plus: Boolean = false, val plusUntil: Long? = null, val productId: String? = null, val store: String? = null)
 
 class RelayException(val code: Int, message: String) : IOException(message)
@@ -110,5 +118,19 @@ class RelayClient(
     suspend fun reconsent(id: String, b: ConnectBody): Connection = call("POST", "/v1/connections/$id/reconsent", enc(ConnectBody.serializer(), b), Connection.serializer())!!
     suspend fun disconnect(id: String) { call<Unit>("DELETE", "/v1/connections/$id", null, null) }
     suspend fun putEntitlement(b: EntitlementBody): Entitlement = call("PUT", "/v1/entitlements/plus", enc(EntitlementBody.serializer(), b), Entitlement.serializer())!!
+    // CP-06 email forwarding: the relay encrypts each forwarded mail to our P-256 key before storing it.
+    suspend fun mailAddress(rotate: Boolean = false): MailAddress = call("POST", "/v1/mail/address", enc(RotateBody.serializer(), RotateBody(rotate)), MailAddress.serializer())!!
+    suspend fun deleteMailAddress() { call<Unit>("DELETE", "/v1/mail/address", null, null) }
+    suspend fun putMailKey(p256: String) { call<Unit>("PUT", "/v1/mail/key", enc(MailKey.serializer(), MailKey(p256)), null) }
+    suspend fun pendingMail(): List<PendingMail> = call("GET", "/v1/mail/pending", null, ListSerializer(PendingMail.serializer())).orEmpty()
+    suspend fun deleteMail(id: String) { call<Unit>("DELETE", "/v1/mail/$id", null, null) }
+
+    // PY-03 community merchant map (opt-in; descriptors, names and category keys only, never amounts).
+    suspend fun suggestMerchants(region: String, descriptors: List<String>): List<MerchantSuggestion> =
+        call("POST", "/v1/merchants/suggest", enc(MerchantSuggestBody.serializer(), MerchantSuggestBody(region, descriptors)), ListSerializer(MerchantSuggestion.serializer())).orEmpty()
+    suspend fun contributeMerchants(region: String, items: List<MerchantItem>) {
+        call<Unit>("POST", "/v1/merchants/contribute", enc(MerchantContribute.serializer(), MerchantContribute(region, items)), null)
+    }
+
     suspend fun entitlement(): Entitlement = call("GET", "/v1/entitlements/plus", null, Entitlement.serializer()) ?: Entitlement()
 }

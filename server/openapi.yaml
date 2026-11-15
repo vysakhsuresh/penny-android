@@ -23,6 +23,17 @@ tags:
       transactions pass through in the sync response and are not stored. Money is signed integer
       minor units (negative = money out).
   - name: entitlements
+  - name: mail
+    description: |
+      Email forwarding (CP-06). Inbound mail is sealed to the account's mail public key during
+      the webhook request with scheme penny-mail-v1 (ECIES: ephemeral ECDH on P-256 or X25519,
+      HKDF-SHA256 with salt = ephPub || recipientPub and info "penny-mail-v1", AES-256-GCM with a
+      12-byte nonce and AAD "penny-mail-v1"; blob = ephPub || nonce || ciphertext+tag). Only the
+      ciphertext is stored, for at most 14 days. See README for byte layouts.
+  - name: merchants
+    description: |
+      Community merchant map (PY-03). Anonymous, k-anonymous (>= 3 agreeing contributors and
+      >= 60% of votes) descriptor -> name/category suggestions per region. Never receives amounts.
 
 paths:
   /healthz:
@@ -446,9 +457,131 @@ paths:
           content: { application/json: { schema: { $ref: "#/components/schemas/Entitlement" } } }
         "400": { $ref: "#/components/responses/Error" }
 
+  /v1/mail/address:
+    get:
+      tags: [mail]
+      summary: The caller's forwarding address
+      responses:
+        "200":
+          description: Address
+          content: { application/json: { schema: { $ref: "#/components/schemas/MailAddress" } } }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { description: No address issued, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
+    post:
+      tags: [mail]
+      summary: Get or create the forwarding address; rotate to replace it
+      description: Idempotent without rotate. With rotate=true a new address is issued and the old one stops working immediately; pending mail is kept.
+      requestBody:
+        content: { application/json: { schema: { $ref: "#/components/schemas/MailAddressRequest" } } }
+      responses:
+        "200":
+          description: Address
+          content: { application/json: { schema: { $ref: "#/components/schemas/MailAddress" } } }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    delete:
+      tags: [mail]
+      summary: Turn forwarding off (deletes the address, the key and pending mail)
+      responses:
+        "204": { description: Deleted }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/mail/key:
+    put:
+      tags: [mail]
+      summary: Set the public key forwarded mail is sealed to (exactly one of p256 or x25519)
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/MailKey" } } }
+      responses:
+        "204": { description: Stored }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/mail/pending:
+    get:
+      tags: [mail]
+      summary: Sealed mail waiting for the device, oldest first (max 50)
+      responses:
+        "200":
+          description: Pending mail
+          content: { application/json: { schema: { type: array, items: { $ref: "#/components/schemas/PendingMail" } } } }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/mail/{id}:
+    parameters: [ { name: id, in: path, required: true, schema: { type: string, pattern: "^[A-Za-z0-9._:-]{1,128}$" } } ]
+    delete:
+      tags: [mail]
+      summary: Delete a pending mail after parsing it
+      responses:
+        "204": { description: Deleted }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/mail/inbound:
+    post:
+      tags: [mail]
+      security: [ { webhook: [] } ]
+      summary: Inbound mail webhook for the email provider
+      description: |
+        Requires X-Penny-Webhook (MAIL_WEBHOOK_SECRET; not needed in -dev when unset). The first
+        recipient on MAIL_DOMAIN with a well-formed local part is used (case-insensitive, +tag
+        ignored). If text is blank, html is stripped to text. The plaintext is sealed before
+        storage; mail for an account without a key is discarded. Max 2 MB body.
+      requestBody:
+        required: true
+        content:
+          application/json: { schema: { $ref: "#/components/schemas/InboundMail" } }
+          multipart/form-data: { schema: { $ref: "#/components/schemas/InboundMail" } }
+          application/x-www-form-urlencoded: { schema: { $ref: "#/components/schemas/InboundMail" } }
+      responses:
+        "204": { description: Sealed and stored, or discarded because the account has no key }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { description: Missing webhook secret, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
+        "403": { description: Wrong webhook secret, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
+        "404": { description: 'Unknown address; body is always {"error":"not found"}', content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
+        "413": { $ref: "#/components/responses/Error" }
+        "503": { description: Webhook secret not configured, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
+
+  /v1/merchants/suggest:
+    post:
+      tags: [merchants]
+      summary: Clean names and categories for descriptors the community agrees on
+      description: Returns only descriptors whose leading mapping has >= 3 distinct contributors and >= 60% of votes. Rate-limited to 60 requests/minute/account.
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/MerchantSuggestRequest" } } }
+      responses:
+        "200":
+          description: Known descriptors (possibly empty)
+          content: { application/json: { schema: { type: array, items: { $ref: "#/components/schemas/MerchantSuggestion" } } } }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "429": { $ref: "#/components/responses/RateLimited" }
+
+  /v1/merchants/contribute:
+    post:
+      tags: [merchants]
+      summary: Vote for descriptor mappings (opt-in; 100 items/day/account)
+      description: |
+        One vote per (region, normalised descriptor, contributor); a later vote replaces the earlier
+        one. The whole request is rejected (400, naming the item) if any item fails validation,
+        including email-, IBAN- or long-number-like content.
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/MerchantContributeRequest" } } }
+      responses:
+        "200":
+          description: Recorded
+          content: { application/json: { schema: { type: object, required: [accepted], properties: { accepted: { type: integer } } } } }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "429": { $ref: "#/components/responses/RateLimited" }
+
 components:
   securitySchemes:
     bearer: { type: http, scheme: bearer }
+    webhook: { type: apiKey, in: header, name: X-Penny-Webhook }
   parameters:
     stream: { name: stream, in: path, required: true, schema: { type: string, pattern: "^[A-Za-z0-9._:-]{1,128}$" } }
     space: { name: space, in: path, required: true, schema: { type: string, pattern: "^[A-Za-z0-9._:-]{1,128}$" } }
@@ -641,3 +774,60 @@ components:
         plusUntil: { type: [integer, "null"], format: int64 }
         productId: { type: string }
         store: { type: string }
+    MailAddressRequest: { type: object, properties: { rotate: { type: boolean, default: false } } }
+    MailAddress:
+      type: object
+      required: [address, keyAlg]
+      properties:
+        address: { type: string, examples: [k3m9q2xwpa@in.penny.example], description: "10 chars of a-z2-7 @ MAIL_DOMAIN" }
+        keyAlg: { type: string, enum: ["", p256, x25519], description: '"" until a key is set' }
+    MailKey:
+      type: object
+      properties:
+        p256: { type: string, description: "base64url of the 65-byte uncompressed P-256 point (0x04 || X || Y). Preferred." }
+        x25519: { type: string, description: "base64url of the raw 32-byte X25519 public key" }
+    PendingMail:
+      type: object
+      required: [id, alg, blob, receivedAt, expiresAt]
+      properties:
+        id: { type: string }
+        alg: { type: string, enum: [p256, x25519] }
+        blob: { type: string, description: "base64url(ephPub (65 for p256, 32 for x25519) || nonce(12) || AES-256-GCM ciphertext+tag(16)); plaintext is JSON {from, subject, text, receivedAt}" }
+        receivedAt: { type: integer, format: int64 }
+        expiresAt: { type: integer, format: int64, description: "receivedAt + 14 days" }
+    InboundMail:
+      type: object
+      required: [to]
+      properties:
+        to: { type: string, description: "Recipient header value; may hold several addresses" }
+        from: { type: string }
+        subject: { type: string }
+        text: { type: string }
+        html: { type: string, description: "Used (stripped to text) only when text is blank" }
+    MerchantSuggestRequest:
+      type: object
+      required: [region, descriptors]
+      properties:
+        region: { type: string, pattern: "^[A-Za-z]{2}$" }
+        descriptors: { type: array, maxItems: 200, items: { type: string } }
+    MerchantSuggestion:
+      type: object
+      required: [descriptor, name, categoryKey, confidence]
+      properties:
+        descriptor: { type: string, description: "Echo of the descriptor as sent" }
+        name: { type: string }
+        categoryKey: { type: string }
+        confidence: { type: number, minimum: 0.6, maximum: 1, description: "Vote share of this mapping, two decimals" }
+    MerchantItem:
+      type: object
+      required: [descriptor, name, categoryKey]
+      properties:
+        descriptor: { type: string, maxLength: 64 }
+        name: { type: string, maxLength: 48 }
+        categoryKey: { type: string, pattern: "^[a-z]+(\\.[a-z]+)?$" }
+    MerchantContributeRequest:
+      type: object
+      required: [region, items]
+      properties:
+        region: { type: string, pattern: "^[A-Za-z]{2}$" }
+        items: { type: array, minItems: 1, maxItems: 100, items: { $ref: "#/components/schemas/MerchantItem" } }

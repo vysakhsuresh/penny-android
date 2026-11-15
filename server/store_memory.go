@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"sort"
+	"strings"
 	"sync"
 	"time"
 )
@@ -22,8 +23,11 @@ type MemoryStore struct {
 	invites  map[string]Invite       // by token hash
 	advisor  map[string]AdvisorLink
 	conns    map[string]BankConnection
-	states   map[string]ConnectState // by state hash
-	ents     map[string]Entitlement  // by account id
+	states   map[string]ConnectState    // by state hash
+	ents     map[string]Entitlement     // by account id
+	boxes    map[string]MailBox         // by account id
+	mail     map[string]PendingMail     // by id
+	votes    map[[3]string]MerchantVote // (region, descriptor, contributor)
 }
 
 func NewMemoryStore() *MemoryStore {
@@ -32,7 +36,8 @@ func NewMemoryStore() *MemoryStore {
 		tokens: map[string]string{}, streams: map[string]Stream{}, events: map[string][]Event{},
 		keys: map[[2]string]StreamKey{}, members: map[string][]Member{}, invites: map[string]Invite{},
 		advisor: map[string]AdvisorLink{}, conns: map[string]BankConnection{}, states: map[string]ConnectState{},
-		ents: map[string]Entitlement{},
+		ents: map[string]Entitlement{}, boxes: map[string]MailBox{}, mail: map[string]PendingMail{},
+		votes: map[[3]string]MerchantVote{},
 	}
 }
 
@@ -198,6 +203,7 @@ func (m *MemoryStore) DeleteAccount(_ context.Context, accountID string) error {
 		}
 	}
 	delete(m.ents, accountID)
+	m.deleteMailBoxLocked(accountID)
 	return nil
 }
 
@@ -503,6 +509,11 @@ func (m *MemoryStore) PurgeExpired(_ context.Context, now time.Time) error {
 			delete(m.states, h)
 		}
 	}
+	for id, ml := range m.mail {
+		if !now.Before(ml.ReceivedAt.Add(mailRetention)) {
+			delete(m.mail, id)
+		}
+	}
 	return nil
 }
 
@@ -627,4 +638,199 @@ func (m *MemoryStore) PutEntitlement(_ context.Context, e Entitlement) error {
 	}
 	m.ents[e.AccountID] = e
 	return nil
+}
+
+func cloneBox(b MailBox) MailBox {
+	b.PublicKey = bytes.Clone(b.PublicKey)
+	return b
+}
+
+func (m *MemoryStore) GetMailBox(_ context.Context, accountID string) (MailBox, error) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	b, ok := m.boxes[accountID]
+	if !ok {
+		return MailBox{}, ErrNotFound
+	}
+	return cloneBox(b), nil
+}
+
+func (m *MemoryStore) MailBoxByLocal(_ context.Context, local string) (MailBox, error) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	for _, b := range m.boxes {
+		if b.Local != "" && b.Local == local {
+			return cloneBox(b), nil
+		}
+	}
+	return MailBox{}, ErrNotFound
+}
+
+// boxLocked returns the account's box, or a new one; ErrNotFound if the account is gone.
+func (m *MemoryStore) boxLocked(accountID string) (MailBox, error) {
+	if b, ok := m.boxes[accountID]; ok {
+		return b, nil
+	}
+	if _, ok := m.accounts[accountID]; !ok {
+		return MailBox{}, ErrNotFound
+	}
+	return MailBox{AccountID: accountID}, nil
+}
+
+func (m *MemoryStore) SetMailAddress(_ context.Context, accountID, local string, now time.Time) error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	for _, x := range m.boxes {
+		if x.Local == local && x.AccountID != accountID {
+			return ErrConflict
+		}
+	}
+	b, err := m.boxLocked(accountID)
+	if err != nil {
+		return err
+	}
+	b.Local, b.UpdatedAt = local, now
+	m.boxes[accountID] = b
+	return nil
+}
+
+func (m *MemoryStore) SetMailKey(_ context.Context, accountID, alg string, key []byte, deviceID string, now time.Time) error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	b, err := m.boxLocked(accountID)
+	if err != nil {
+		return err
+	}
+	b.KeyAlg, b.PublicKey, b.KeyDevice, b.UpdatedAt = alg, bytes.Clone(key), deviceID, now
+	m.boxes[accountID] = b
+	return nil
+}
+
+func (m *MemoryStore) DeleteMailBox(_ context.Context, accountID string) error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	m.deleteMailBoxLocked(accountID)
+	return nil
+}
+
+func (m *MemoryStore) deleteMailBoxLocked(accountID string) {
+	delete(m.boxes, accountID)
+	for id, ml := range m.mail {
+		if ml.AccountID == accountID {
+			delete(m.mail, id)
+		}
+	}
+}
+
+func (m *MemoryStore) AddMail(_ context.Context, ml PendingMail, keep int) (int, error) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	if _, ok := m.accounts[ml.AccountID]; !ok {
+		return 0, ErrNotFound
+	}
+	if _, ok := m.mail[ml.ID]; ok {
+		return 0, ErrConflict
+	}
+	ml.Blob = bytes.Clone(ml.Blob)
+	m.mail[ml.ID] = ml
+	all := m.listMailLocked(ml.AccountID)
+	dropped := 0
+	for len(all)-dropped > keep {
+		delete(m.mail, all[dropped].ID)
+		dropped++
+	}
+	return dropped, nil
+}
+
+// listMailLocked returns an account's mail oldest first.
+func (m *MemoryStore) listMailLocked(accountID string) []PendingMail {
+	var out []PendingMail
+	for _, ml := range m.mail {
+		if ml.AccountID == accountID {
+			out = append(out, ml)
+		}
+	}
+	sort.Slice(out, func(i, j int) bool {
+		if !out[i].ReceivedAt.Equal(out[j].ReceivedAt) {
+			return out[i].ReceivedAt.Before(out[j].ReceivedAt)
+		}
+		return out[i].ID < out[j].ID
+	})
+	return out
+}
+
+func (m *MemoryStore) ListMail(_ context.Context, accountID string) ([]PendingMail, error) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	out := m.listMailLocked(accountID)
+	for i := range out {
+		out[i].Blob = bytes.Clone(out[i].Blob)
+	}
+	return out, nil
+}
+
+func (m *MemoryStore) DeleteMail(_ context.Context, accountID, id string) error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	if ml, ok := m.mail[id]; !ok || ml.AccountID != accountID {
+		return ErrNotFound
+	}
+	delete(m.mail, id)
+	return nil
+}
+
+func (m *MemoryStore) AddMerchantVotes(_ context.Context, votes []MerchantVote) error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	for _, v := range votes {
+		m.votes[[3]string{v.Region, v.Descriptor, v.Contributor}] = v
+	}
+	return nil
+}
+
+func (m *MemoryStore) MerchantCandidates(_ context.Context, region string, descriptors []string) (map[string][]MerchantCandidate, error) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	want := map[string]bool{}
+	for _, d := range descriptors {
+		want[d] = true
+	}
+	type key struct{ desc, name, cat string }
+	agg := map[key]*MerchantCandidate{}
+	for k, v := range m.votes {
+		if k[0] != region || !want[k[1]] {
+			continue
+		}
+		ck := key{k[1], strings.ToLower(v.Name), v.CategoryKey}
+		c, ok := agg[ck]
+		if !ok {
+			c = &MerchantCandidate{Name: v.Name, CategoryKey: v.CategoryKey}
+			agg[ck] = c
+		}
+		c.Votes++
+		if v.Name < c.Name { // same display name as the Postgres store's min(name)
+			c.Name = v.Name
+		}
+	}
+	out := map[string][]MerchantCandidate{}
+	for k, c := range agg {
+		out[k.desc] = append(out[k.desc], *c)
+	}
+	for _, cs := range out {
+		sortCandidates(cs)
+	}
+	return out, nil
+}
+
+// sortCandidates orders by votes descending, then name and category for determinism.
+func sortCandidates(cs []MerchantCandidate) {
+	sort.Slice(cs, func(i, j int) bool {
+		if cs[i].Votes != cs[j].Votes {
+			return cs[i].Votes > cs[j].Votes
+		}
+		if cs[i].Name != cs[j].Name {
+			return cs[i].Name < cs[j].Name
+		}
+		return cs[i].CategoryKey < cs[j].CategoryKey
+	})
 }

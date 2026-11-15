@@ -52,4 +52,18 @@
     <string name="copy">Copy</string>
     <string name="send_now">Send now</string>
     <plurals name="webhook_sent"><item quantity="one">%d transaction sent</item><item quantity="other">%d transactions sent</item></plurals>
+    <string name="ob_get_started">Get started</string>
+    <string name="ob_sample">Explore with sample data</string>
+    <string name="ob_point_safe">One calm number: what is safe to spend until payday</string>
+    <string name="ob_point_world">Any currency, any pay cycle, the way you really handle money</string>
+    <string name="ob_point_private">Private by design: on your phone, encrypted end to end</string>
+    <string name="ob_point_free">Every feature free. No ads, no loans, no data sale</string>
+    <string name="no_income_yet">No income recorded this period yet</string>
+    <string name="spent_more_than_income">Spending is above this period’s income</string>
+    <string name="get_address">Get my forwarding address</string>
+    <string name="new_address">New address</string>
+    <string name="turn_off">Turn off</string>
+    <string name="email_forwarding_privacy">Forward order, ride and food receipts to this address. The server encrypts each email to this phone straight away and deletes it once Penny has read it here.</string>
+    <string name="community_merchants">Community merchant names</string>
+    <string name="community_merchants_hint">Share payee names and categories, never amounts, anonymously with people in your region, and get clean names back. Off by default.</string>
 </resources>

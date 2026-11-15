@@ -159,7 +159,7 @@ fun InsightsScreen(padding: PaddingValues, go: (String) -> Unit) {
                 item {
                     val trend = ins.trend(b.period(0, p.start), b.profile.cycle, 6, b.periodContext)
                     PennyCard {
-                        Bars(trend.map { (per, spent, _) -> Datum(per.start.toString(), shortDate(per.start).take(6), spent, ctx.money(spent)) }, secondary = trend.map { it.third }, onSelect = { i -> drill(TxFilter(from = trend[i].first.start, to = trend[i].first.endInclusive)) })
+                        Bars(trend.map { (per, spent, _) -> Datum(per.start.toString(), app.penny.ui.common.monthDay(per.start), spent, ctx.money(spent)) }, secondary = trend.map { it.third }, onSelect = { i -> drill(TxFilter(from = trend[i].first.start, to = trend[i].first.endInclusive)) })
                         Row(Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                             app.penny.ui.kit.Pill(stringResource(R.string.spent), container = MaterialTheme.colorScheme.primary, content = MaterialTheme.colorScheme.onPrimary)
                             app.penny.ui.kit.Pill(stringResource(R.string.income), container = MaterialTheme.colorScheme.tertiary, content = MaterialTheme.colorScheme.onTertiary)
@@ -203,7 +203,7 @@ fun InsightsScreen(padding: PaddingValues, go: (String) -> Unit) {
             item { SectionHeader(stringResource(R.string.net_worth)) }
             item {
                 val hist = NetWorth.history(b.accounts.map { it.state.id to it.value }, b.txList, today, 12, ctx.base, b.fx, b.valuations.map { it.value })
-                PennyCard { Spacer(Modifier.height(12.dp)); LineChart(hist.map { shortDate(it.first).take(6) to it.second }, { ctx.money(it) }); Spacer(Modifier.height(12.dp)) }
+                PennyCard { Spacer(Modifier.height(12.dp)); LineChart(hist.map { app.penny.ui.common.monthDay(it.first) to it.second }, { ctx.money(it) }); Spacer(Modifier.height(12.dp)) }
             }
             item { SectionHeader(stringResource(R.string.forecast)) }
             item { ForecastCard(ctx) }
@@ -237,7 +237,7 @@ private fun ForecastCard(ctx: Ctx) {
     val safe = b.safeToSpend(b.period())
     PennyCard {
         Column(Modifier.padding(vertical = 12.dp)) {
-            LineChart(listOf(shortDate(today) to start) + pts.filterIndexed { i, _ -> i % 7 == 6 }.map { shortDate(it.date).take(6) to it.balanceMinor }, { ctx.money(it) })
+            LineChart(listOf(shortDate(today) to start) + pts.filterIndexed { i, _ -> i % 7 == 6 }.map { app.penny.ui.common.monthDay(it.date) to it.balanceMinor }, { ctx.money(it) })
             Text(stringResource(R.string.forecast_end, ctx.money(pts.last().balanceMinor)), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
             Text(stringResource(R.string.forecast_period_end, ctx.money(safe.safeMinor)), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 16.dp))
             if (top.isNotEmpty()) {

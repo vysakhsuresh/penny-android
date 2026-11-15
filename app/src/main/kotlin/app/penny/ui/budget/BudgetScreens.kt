@@ -157,11 +157,11 @@ fun BudgetsScreen(padding: PaddingValues, go: (String) -> Unit) {
             } else {
                 // BU-05: zero-based users see "available to assign" on top; others can hide it via profile settings.
                 item {
-                    PennyCard(color = if (ata < 0) Penny.status.overContainer else MaterialTheme.colorScheme.primaryContainer) {
+                    PennyCard(color = if (ata < 0) MaterialTheme.colorScheme.surfaceContainerLowest else MaterialTheme.colorScheme.primaryContainer) {
                         Row(Modifier.padding(20.dp), verticalAlignment = Alignment.CenterVertically) {
                             Column(Modifier.weight(1f)) {
                                 Text(stringResource(R.string.available_to_assign), style = MaterialTheme.typography.titleSmall)
-                                MoneyLabel(ctx.money(ata), style = MaterialTheme.typography.headlineMedium)
+                                MoneyLabel(ctx.money(ata), style = MaterialTheme.typography.headlineMedium, color = if (ata < 0) Penny.status.over else androidx.compose.ui.graphics.Color.Unspecified)
                                 Text(stringResource(if (ata < 0) R.string.over_assigned_hint else R.string.ata_hint), style = MaterialTheme.typography.bodySmall)
                             }
                             if (!readOnly && ata > 0 && statuses.any { it.neededMinor > 0 }) FilledTonalButton(onClick = { vm.act(R.string.assigned) { autoAssign(it, period) } }) { Text(stringResource(R.string.auto_assign)) }
@@ -212,22 +212,18 @@ private fun EnvelopeCard(ctx: Ctx, s: EnvelopeStatus, readOnly: Boolean, onOpen:
                         style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
-                Column(horizontalAlignment = Alignment.End) {
-                    MoneyLabel(
-                        ctx.money(kotlin.math.abs(s.availableMinor), s.envelope.currency), style = MaterialTheme.typography.titleMedium,
-                        color = when (s.state) { EnvelopeState.OVER -> st.over; EnvelopeState.NEAR, EnvelopeState.AT -> st.near; else -> MaterialTheme.colorScheme.onSurface },
-                    )
-                    Text(stringResource(if (s.availableMinor < 0) R.string.over else R.string.left), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
+                MoneyLabel(
+                    if (s.availableMinor >= 0) stringResource(R.string.x_left, ctx.money(s.availableMinor, s.envelope.currency))
+                    else stringResource(R.string.x_over, ctx.money(-s.availableMinor, s.envelope.currency)),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = when (s.state) { EnvelopeState.OVER -> st.over; EnvelopeState.NEAR, EnvelopeState.AT -> st.near; else -> MaterialTheme.colorScheme.onSurface },
+                )
+                if (!readOnly) IconButton(onClick = onAssign) { Icon(Icons.Outlined.Edit, stringResource(R.string.assign_to, s.envelope.name), tint = MaterialTheme.colorScheme.primary) }
             }
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(8.dp))
             Meter(s.usedBp, s.state)
-            if (s.neededMinor > 0 || !readOnly) {
-                Row(Modifier.padding(top = 6.dp), verticalAlignment = Alignment.CenterVertically) {
-                    if (s.neededMinor > 0) Text(stringResource(R.string.needs_x, ctx.money(s.neededMinor, s.envelope.currency)), style = MaterialTheme.typography.labelMedium, color = st.near, modifier = Modifier.weight(1f))
-                    else Spacer(Modifier.weight(1f))
-                    if (!readOnly) TextButton(onClick = onAssign) { Text(stringResource(R.string.assign)) }
-                }
+            if (s.neededMinor > 0) {
+                Text(stringResource(R.string.needs_x, ctx.money(s.neededMinor, s.envelope.currency)), style = MaterialTheme.typography.labelMedium, color = st.near, modifier = Modifier.padding(top = 6.dp))
             }
         }
     }
@@ -248,7 +244,7 @@ private fun YearView(ctx: Ctx, current: Period) {
             }
             periods.forEach { p ->
                 Column(Modifier.width(96.dp), horizontalAlignment = Alignment.End) {
-                    Text(shortDate(p.start).take(6), style = MaterialTheme.typography.labelSmall, modifier = Modifier.height(24.dp), color = if (p.start == current.start) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(app.penny.ui.common.monthDay(p.start), style = MaterialTheme.typography.labelSmall, modifier = Modifier.height(24.dp), color = if (p.start == current.start) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
                     b.envelopes.filter { !it.value.archived }.forEach { e ->
                         val s = BudgetEngine.status(e.state.id, p.start, input, b.today())
                         Column(Modifier.height(40.dp), horizontalAlignment = Alignment.End) {

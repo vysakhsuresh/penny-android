@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/fs"
 	"sort"
+	"strings"
 	"time"
 
 	"github.com/jackc/pgx/v5"
@@ -174,7 +175,8 @@ func (p *PostgresStore) RevokeDevice(ctx context.Context, accountID, deviceID st
 func (p *PostgresStore) DeleteAccount(ctx context.Context, accountID string) error {
 	// Foreign keys cascade to devices, tokens, personal streams (and their events and keys),
 	// stream keys, memberships, invites created by the account, advisor links, bank connections
-	// (sealed credentials and cursors), connect states and the entitlement.
+	// (sealed credentials and cursors), connect states, the entitlement, the mail box and pending
+	// mail. Merchant votes have no account reference and stay.
 	return p.tx(ctx, func(tx pgx.Tx) error {
 		if _, err := tx.Exec(ctx, `DELETE FROM auth_codes WHERE email_hash IN (SELECT email_hash FROM accounts WHERE id=$1)`, accountID); err != nil {
 			return err
@@ -486,6 +488,9 @@ func (p *PostgresStore) PurgeExpired(ctx context.Context, now time.Time) error {
 		if _, err := tx.Exec(ctx, `DELETE FROM connect_states WHERE expires_at <= $1`, now); err != nil {
 			return err
 		}
+		if _, err := tx.Exec(ctx, `DELETE FROM pending_mail WHERE received_at <= $1`, now.Add(-mailRetention)); err != nil {
+			return err
+		}
 		_, err := tx.Exec(ctx, `DELETE FROM invites WHERE expires_at < $1`, now.Add(-inviteRetention))
 		return err
 	})
@@ -596,4 +601,141 @@ func (p *PostgresStore) PutEntitlement(ctx context.Context, e Entitlement) error
 		return ErrNotFound
 	}
 	return err
+}
+
+func isFKViolation(err error) bool {
+	var pe *pgconn.PgError
+	return errors.As(err, &pe) && pe.Code == "23503"
+}
+
+const boxCols = `account_id, coalesce(local_part, ''), key_alg, public_key, key_device, updated_at`
+
+func scanBox(row pgx.Row) (MailBox, error) {
+	var b MailBox
+	err := row.Scan(&b.AccountID, &b.Local, &b.KeyAlg, &b.PublicKey, &b.KeyDevice, &b.UpdatedAt)
+	return b, pgErr(err)
+}
+
+func (p *PostgresStore) GetMailBox(ctx context.Context, accountID string) (MailBox, error) {
+	return scanBox(p.pool.QueryRow(ctx, `SELECT `+boxCols+` FROM mail_boxes WHERE account_id=$1`, accountID))
+}
+
+func (p *PostgresStore) MailBoxByLocal(ctx context.Context, local string) (MailBox, error) {
+	return scanBox(p.pool.QueryRow(ctx, `SELECT `+boxCols+` FROM mail_boxes WHERE local_part=$1`, local))
+}
+
+func (p *PostgresStore) SetMailAddress(ctx context.Context, accountID, local string, now time.Time) error {
+	_, err := p.pool.Exec(ctx, `INSERT INTO mail_boxes(account_id, local_part, updated_at) VALUES($1,$2,$3)
+		ON CONFLICT (account_id) DO UPDATE SET local_part=EXCLUDED.local_part, updated_at=EXCLUDED.updated_at`,
+		accountID, local, now)
+	if isFKViolation(err) {
+		return ErrNotFound
+	}
+	return pgErr(err)
+}
+
+func (p *PostgresStore) SetMailKey(ctx context.Context, accountID, alg string, key []byte, deviceID string, now time.Time) error {
+	_, err := p.pool.Exec(ctx, `INSERT INTO mail_boxes(account_id, key_alg, public_key, key_device, updated_at) VALUES($1,$2,$3,$4,$5)
+		ON CONFLICT (account_id) DO UPDATE SET key_alg=EXCLUDED.key_alg, public_key=EXCLUDED.public_key,
+		key_device=EXCLUDED.key_device, updated_at=EXCLUDED.updated_at`, accountID, alg, key, deviceID, now)
+	if isFKViolation(err) {
+		return ErrNotFound
+	}
+	return pgErr(err)
+}
+
+func (p *PostgresStore) DeleteMailBox(ctx context.Context, accountID string) error {
+	return p.tx(ctx, func(tx pgx.Tx) error {
+		if _, err := tx.Exec(ctx, `DELETE FROM pending_mail WHERE account_id=$1`, accountID); err != nil {
+			return err
+		}
+		_, err := tx.Exec(ctx, `DELETE FROM mail_boxes WHERE account_id=$1`, accountID)
+		return err
+	})
+}
+
+func (p *PostgresStore) AddMail(ctx context.Context, m PendingMail, keep int) (int, error) {
+	var dropped int
+	err := p.tx(ctx, func(tx pgx.Tx) error {
+		// Serialise inserts per account so the cap holds under concurrent deliveries.
+		if _, err := tx.Exec(ctx, `SELECT pg_advisory_xact_lock(hashtext('pending_mail:' || $1))`, m.AccountID); err != nil {
+			return err
+		}
+		if _, err := tx.Exec(ctx, `INSERT INTO pending_mail(id, account_id, alg, blob, received_at) VALUES($1,$2,$3,$4,$5)`,
+			m.ID, m.AccountID, m.Alg, m.Blob, m.ReceivedAt); err != nil {
+			if isFKViolation(err) {
+				return ErrNotFound
+			}
+			return pgErr(err)
+		}
+		tag, err := tx.Exec(ctx, `DELETE FROM pending_mail WHERE account_id=$1 AND id NOT IN (
+			SELECT id FROM pending_mail WHERE account_id=$1 ORDER BY received_at DESC, id DESC LIMIT $2)`, m.AccountID, keep)
+		dropped = int(tag.RowsAffected())
+		return err
+	})
+	return dropped, err
+}
+
+func (p *PostgresStore) ListMail(ctx context.Context, accountID string) ([]PendingMail, error) {
+	rows, err := p.pool.Query(ctx, `SELECT id, account_id, alg, blob, received_at FROM pending_mail WHERE account_id=$1
+		ORDER BY received_at, id`, accountID)
+	if err != nil {
+		return nil, err
+	}
+	return pgx.CollectRows(rows, func(r pgx.CollectableRow) (PendingMail, error) {
+		var m PendingMail
+		err := r.Scan(&m.ID, &m.AccountID, &m.Alg, &m.Blob, &m.ReceivedAt)
+		return m, err
+	})
+}
+
+func (p *PostgresStore) DeleteMail(ctx context.Context, accountID, id string) error {
+	tag, err := p.pool.Exec(ctx, `DELETE FROM pending_mail WHERE id=$1 AND account_id=$2`, id, accountID)
+	if err != nil {
+		return err
+	}
+	if tag.RowsAffected() == 0 {
+		return ErrNotFound
+	}
+	return nil
+}
+
+func (p *PostgresStore) AddMerchantVotes(ctx context.Context, votes []MerchantVote) error {
+	return p.tx(ctx, func(tx pgx.Tx) error {
+		for _, v := range votes {
+			if _, err := tx.Exec(ctx, `INSERT INTO merchant_votes(region, descriptor, contributor, name, name_key, category_key, updated_at)
+				VALUES($1,$2,$3,$4,$5,$6,$7)
+				ON CONFLICT (region, descriptor, contributor) DO UPDATE SET name=EXCLUDED.name, name_key=EXCLUDED.name_key,
+				category_key=EXCLUDED.category_key, updated_at=EXCLUDED.updated_at`,
+				v.Region, v.Descriptor, v.Contributor, v.Name, strings.ToLower(v.Name), v.CategoryKey, v.UpdatedAt); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+}
+
+func (p *PostgresStore) MerchantCandidates(ctx context.Context, region string, descriptors []string) (map[string][]MerchantCandidate, error) {
+	rows, err := p.pool.Query(ctx, `SELECT descriptor, min(name), category_key, count(*) FROM merchant_votes
+		WHERE region=$1 AND descriptor = ANY($2) GROUP BY descriptor, name_key, category_key`, region, descriptors)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	out := map[string][]MerchantCandidate{}
+	for rows.Next() {
+		var d string
+		var c MerchantCandidate
+		if err := rows.Scan(&d, &c.Name, &c.CategoryKey, &c.Votes); err != nil {
+			return nil, err
+		}
+		out[d] = append(out[d], c)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	for _, cs := range out {
+		sortCandidates(cs)
+	}
+	return out, nil
 }

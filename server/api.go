@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/rand"
 	"encoding/json"
 	"errors"
 	"io"
@@ -8,6 +9,7 @@ import (
 	"net/http"
 	"regexp"
 	"strconv"
+	"strings"
 	"time"
 
 	"penny/server/connectors"
@@ -39,9 +41,16 @@ type Server struct {
 	connectors *connectors.Registry
 	sealer     *Sealer
 
-	startByEmail *rateLimiter
-	startByIP    *rateLimiter
-	verifyByIP   *rateLimiter
+	mailDomain   string
+	mailSecret   string
+	merchantSalt []byte
+	mailStats    mailStats
+
+	startByEmail     *rateLimiter
+	startByIP        *rateLimiter
+	verifyByIP       *rateLimiter
+	contributeByAcct *rateLimiter
+	suggestByAcct    *rateLimiter
 }
 
 type Options struct {
@@ -58,6 +67,13 @@ type Options struct {
 	Connectors *connectors.Registry
 	// Sealer encrypts connector credentials at rest; nil means a random per-process key.
 	Sealer *Sealer
+	// MailDomain is the domain of forwarding addresses; empty means defaultMailDomain.
+	MailDomain string
+	// MailWebhookSecret authenticates the inbound mail webhook. Empty disables the webhook
+	// unless Dev is set, in which case it is open.
+	MailWebhookSecret string
+	// MerchantSalt keys contributor hashes in the merchant map; nil means a random per-process key.
+	MerchantSalt []byte
 }
 
 func NewServer(o Options) *Server {
@@ -70,12 +86,22 @@ func NewServer(o Options) *Server {
 	if o.Sealer == nil {
 		o.Sealer = RandomSealer()
 	}
+	if o.MailDomain == "" {
+		o.MailDomain = defaultMailDomain
+	}
+	if len(o.MerchantSalt) == 0 {
+		o.MerchantSalt = make([]byte, 32)
+		_, _ = rand.Read(o.MerchantSalt)
+	}
 	return &Server{
 		store: o.Store, mailer: o.Mailer, log: o.Log, region: o.Region, pepper: o.Pepper, trustProxy: o.TrustProxy, now: o.Now,
 		dev: o.Dev, connectors: o.Connectors, sealer: o.Sealer,
-		startByEmail: newRateLimiter(2*time.Minute, 3, o.Now), // 3 codes, then one per 2 minutes
-		startByIP:    newRateLimiter(10*time.Second, 20, o.Now),
-		verifyByIP:   newRateLimiter(2*time.Second, 30, o.Now),
+		mailDomain: strings.ToLower(o.MailDomain), mailSecret: o.MailWebhookSecret, merchantSalt: o.MerchantSalt,
+		startByEmail:     newRateLimiter(2*time.Minute, 3, o.Now), // 3 codes, then one per 2 minutes
+		startByIP:        newRateLimiter(10*time.Second, 20, o.Now),
+		verifyByIP:       newRateLimiter(2*time.Second, 30, o.Now),
+		contributeByAcct: newRateLimiter(24*time.Hour/maxContributePerDay, maxContributePerDay, o.Now),
+		suggestByAcct:    newRateLimiter(time.Second, 60, o.Now),
 	}
 }
 
@@ -123,6 +149,17 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("DELETE /v1/connections/{id}", s.authed(s.deleteConnection))
 	mux.HandleFunc("PUT /v1/entitlements/plus", s.authed(s.putPlus))
 	mux.HandleFunc("GET /v1/entitlements/plus", s.authed(s.getPlus))
+
+	mux.HandleFunc("GET /v1/mail/address", s.authed(s.getMailAddress))
+	mux.HandleFunc("POST /v1/mail/address", s.authed(s.postMailAddress))
+	mux.HandleFunc("DELETE /v1/mail/address", s.authed(s.deleteMailAddress))
+	mux.HandleFunc("PUT /v1/mail/key", s.authed(s.putMailKey))
+	mux.HandleFunc("GET /v1/mail/pending", s.authed(s.listPendingMail))
+	mux.HandleFunc("DELETE /v1/mail/{id}", s.authed(s.deletePendingMail))
+	mux.HandleFunc("POST /v1/mail/inbound", s.inboundMail) // webhook: X-Penny-Webhook secret
+
+	mux.HandleFunc("POST /v1/merchants/suggest", s.authed(s.suggestMerchants))
+	mux.HandleFunc("POST /v1/merchants/contribute", s.authed(s.contributeMerchants))
 
 	return s.middleware(mux)
 }
@@ -861,6 +898,8 @@ func (s *Server) deleteAccount(w http.ResponseWriter, r *http.Request, c caller)
 			return
 		}
 	}
+	// The mail box, its key and pending mail go with the account (DeleteAccount); anonymous
+	// merchant votes are not linked to it and stay.
 	// Revoke bank access at each provider; the sealed credentials and cursors go with the account.
 	if err := s.disconnectAll(ctx, c.AccountID); err != nil {
 		s.fail(w, r, err)

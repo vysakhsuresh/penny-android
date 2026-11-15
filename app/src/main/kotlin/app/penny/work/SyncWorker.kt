@@ -26,6 +26,7 @@ class SyncWorker @AssistedInject constructor(
     private val sync: SyncManager,
     private val bank: app.penny.domain.BankSync,
     private val store: app.penny.domain.BookStore,
+    private val mail: app.penny.domain.MailService,
 ) : CoroutineWorker(context, params) {
     override suspend fun doWork(): Result {
         if (!sync.signedIn) return Result.success()
@@ -33,6 +34,8 @@ class SyncWorker @AssistedInject constructor(
         sync.syncNow()
         // Bank connections fetch new transactions on the same schedule (CP-10).
         store.ready()?.book?.let { b -> if (b.syncLinks.isNotEmpty()) runCatching { bank.syncAll(b) } }
+        runCatching { mail.fetch() }
+        runCatching { mail.suggestPayees() }
         Widgets.refresh(applicationContext)
         return if (sync.state.value.error != null && sync.state.value.error != before) Result.retry() else Result.success()
     }

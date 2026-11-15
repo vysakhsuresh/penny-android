@@ -222,7 +222,7 @@ fun PayeeDetailScreen(id: String, onBack: () -> Unit, onOpenTx: (String) -> Unit
                 item {
                     val today = b.today()
                     val months = (5 downTo 0).map { m -> today.minusMonths(m.toLong()).withDayOfMonth(1) }
-                    val pts = months.map { start -> app.penny.ui.common.shortDate(start).take(6) to spend.filter { !it.value.date.isBefore(start) && it.value.date.isBefore(start.plusMonths(1)) }.sumOf { it.value.amountMinor } }
+                    val pts = months.map { start -> app.penny.ui.common.monthDay(start) to spend.filter { !it.value.date.isBefore(start) && it.value.date.isBefore(start.plusMonths(1)) }.sumOf { it.value.amountMinor } }
                     if (spend.isNotEmpty()) { SectionHeader(stringResource(R.string.trend)); LineChart(pts, { ctx.money(it) }) }
                 }
                 item {

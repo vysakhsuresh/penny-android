@@ -137,6 +137,11 @@ func newRateLimiter(every time.Duration, burst int, now func() time.Time) *rateL
 
 // allow takes a token for key, or reports how long until one is available.
 func (l *rateLimiter) allow(key string) (bool, time.Duration) {
+	return l.allowN(key, 1)
+}
+
+// allowN takes n tokens for key at once, or none and reports how long until n are available.
+func (l *rateLimiter) allowN(key string, n int) (bool, time.Duration) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
 	now := l.now()
@@ -150,11 +155,12 @@ func (l *rateLimiter) allow(key string) (bool, time.Duration) {
 	}
 	b.tokens = math.Min(l.burst, b.tokens+now.Sub(b.last).Seconds()*l.perSec)
 	b.last = now
-	if b.tokens >= 1 {
-		b.tokens--
+	need := float64(n)
+	if b.tokens >= need {
+		b.tokens -= need
 		return true, 0
 	}
-	return false, time.Duration((1 - b.tokens) / l.perSec * float64(time.Second))
+	return false, time.Duration((need - b.tokens) / l.perSec * float64(time.Second))
 }
 
 func (l *rateLimiter) pruneLocked(now time.Time) {

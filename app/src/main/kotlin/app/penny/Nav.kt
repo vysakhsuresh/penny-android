@@ -342,7 +342,7 @@ private fun MainTabs(nav: NavHostController, initial: String) {
                     openTx = { nav.navigate(Routes.tx(it)) }, add = { quickAdd = true }, activity = { nav.navigate(Routes.activity()) },
                     search = { nav.navigate(Routes.activity(search = true)) }, accounts = { nav.navigate(Routes.ACCOUNTS) },
                     account = { nav.navigate("account/$it") }, envelope = { nav.navigate("envelope/$it") }, bills = { nav.navigate(Routes.BILLS) },
-                    alerts = { nav.navigate(Routes.ALERTS) }, review = { nav.navigate(Routes.REVIEW) }, profiles = { nav.navigate(Routes.PROFILES) },
+                    alerts = { nav.navigate(Routes.ALERTS) }, review = { nav.navigate(Routes.REVIEW) }, profiles = { nav.navigate(Routes.SETTINGS) },
                     categorySheet = { categorySheetFor = it },
                 ),
                 pad,

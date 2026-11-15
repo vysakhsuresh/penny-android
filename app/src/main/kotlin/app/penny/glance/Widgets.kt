@@ -78,7 +78,7 @@ private suspend fun load(context: Context): WidgetData? {
     return WidgetData(
         safe = fmt.format(s.safeMinor, b.profile.baseCurrency),
         perDay = fmt.format(s.perDayMinor, b.profile.baseCurrency),
-        daysLeft = s.daysLeft,
+        daysLeft = s.daysLeft + 1, // includes today, matching the per-day amount
         ahead = s.aheadOfPace,
         envelopes = b.envelopeStatuses(today).sortedByDescending { it.usedBp }.take(4).map { Triple(it.envelope.name, it.usedBp, it.state == EnvelopeState.OVER || it.state == EnvelopeState.NEAR) },
         bills = b.upcoming(today, today.plusDays(14)).filter { it.open }.take(4).map { it.recurring.name to fmt.format(it.amountMinor, it.recurring.currency) },

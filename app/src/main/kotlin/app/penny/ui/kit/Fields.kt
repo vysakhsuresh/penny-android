@@ -290,7 +290,9 @@ fun <T> Segmented(options: List<Choice<T>>, selected: T, onSelect: (T) -> Unit, 
             SegmentedButton(
                 selected = o.value == selected, onClick = { onSelect(o.value) },
                 shape = SegmentedButtonDefaults.itemShape(i, options.size),
-            ) { Text(o.label, maxLines = 1) }
+                // No check icon: it squeezes labels on small screens and at large text; the fill shows the choice.
+                icon = {},
+            ) { Text(o.label, maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis) }
         }
     }
 }

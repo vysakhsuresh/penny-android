@@ -291,7 +291,8 @@ fun CaptureSettingsScreen(onBack: () -> Unit, go: (String) -> Unit) {
                 ListRow(stringResource(R.string.share_sheet), subtitle = stringResource(R.string.share_sheet_sub), divider = true)
                 ListRow(stringResource(R.string.scan_receipt), subtitle = stringResource(R.string.scan_receipt_sub), onClick = { go(Routes.SCAN) }, divider = true)
                 ListRow(stringResource(R.string.voice_add), subtitle = stringResource(R.string.voice_sub), onClick = { go(Routes.VOICE) }, divider = true)
-                ListRow(stringResource(R.string.email_forwarding), subtitle = stringResource(R.string.email_forwarding_sub), onClick = { go(Routes.SYNC) }, divider = true)
+                EmailForwarding()
+                CommunityMerchants()
                 ListRow(stringResource(R.string.review_queue), onClick = { go(Routes.REVIEW) })
                 Text(stringResource(R.string.never_sms), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(20.dp))
             }
@@ -303,4 +304,41 @@ fun CaptureSettingsScreen(onBack: () -> Unit, go: (String) -> Unit) {
             dismissButton = { TextButton(onClick = { explain = false }) { Text(stringResource(R.string.not_now)) } },
         )
     }
+}
+
+@dagger.hilt.android.lifecycle.HiltViewModel
+class MailViewModel @javax.inject.Inject constructor(val mail: app.penny.domain.MailService, val sync: app.penny.domain.SyncManager) : androidx.lifecycle.ViewModel()
+
+/** CP-06: per-account forwarding address; mail is encrypted to this phone by the relay and parsed here. */
+@Composable
+private fun EmailForwarding(mvm: MailViewModel = androidx.hilt.navigation.compose.hiltViewModel()) {
+    val scope = rememberCoroutineScope()
+    val clip = androidx.compose.ui.platform.LocalClipboardManager.current
+    var address by rememberSaveable { mutableStateOf(mvm.mail.address) }
+    var error by rememberSaveable { mutableStateOf<String?>(null) }
+    ListRow(stringResource(R.string.email_forwarding), subtitle = address ?: stringResource(R.string.email_forwarding_sub), divider = address == null)
+    if (!mvm.sync.signedIn) { Text(stringResource(R.string.bank_needs_sync), style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 20.dp)); return }
+    error?.let { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 20.dp)) }
+    Row(Modifier.padding(horizontal = 8.dp)) {
+        if (address == null) TextButton(onClick = { scope.launch { runCatching { mvm.mail.enable() }.onSuccess { address = it }.onFailure { error = it.message } } }) { Text(stringResource(R.string.get_address)) }
+        else {
+            TextButton(onClick = { clip.setText(androidx.compose.ui.text.AnnotatedString(address!!)) }) { Text(stringResource(R.string.copy)) }
+            TextButton(onClick = { scope.launch { runCatching { mvm.mail.enable(rotate = true) }.onSuccess { address = it }.onFailure { error = it.message } } }) { Text(stringResource(R.string.new_address)) }
+            TextButton(onClick = { scope.launch { mvm.mail.disable(); address = null } }) { Text(stringResource(R.string.turn_off)) }
+        }
+    }
+    if (address != null) Text(stringResource(R.string.email_forwarding_privacy), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))
+}
+
+/** PY-03: opt-in, anonymous merchant names and categories shared between users of the same region. */
+@Composable
+private fun CommunityMerchants(mvm: MailViewModel = androidx.hilt.navigation.compose.hiltViewModel()) {
+    val ctx = LocalContext.current
+    val prefs = remember { app.penny.domain.AppPrefs(ctx.applicationContext) }
+    val scope = rememberCoroutineScope()
+    var on by rememberSaveable { mutableStateOf(prefs.flag("merchants.community")) }
+    SwitchRow(stringResource(R.string.community_merchants), on, { v ->
+        on = v; prefs.setFlag("merchants.community", v)
+        if (v) scope.launch { mvm.mail.contribute(); mvm.mail.suggestPayees() }
+    }, subtitle = stringResource(R.string.community_merchants_hint))
 }

@@ -41,6 +41,10 @@ class MoneyFmt(val spec: NumberFormatSpec) {
 fun shortDate(date: LocalDate, locale: Locale = Locale.getDefault()): String =
     DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale).format(date)
 
+/** Short localised month and day ("Nov 6", "6 nov.", "11月6日") for chart labels. */
+fun monthDay(date: LocalDate, locale: Locale = Locale.getDefault()): String =
+    DateTimeFormatter.ofPattern(android.text.format.DateFormat.getBestDateTimePattern(locale, "MMMd"), locale).format(date)
+
 fun relativeDate(context: Context, date: LocalDate, today: LocalDate): String = when (date) {
     today -> context.getString(R.string.today)
     today.minusDays(1) -> context.getString(R.string.yesterday)

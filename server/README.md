@@ -4,7 +4,9 @@ A small Go service that stores and forwards end-to-end encrypted event blobs bet
 person's devices and the members of a shared space. It is a dumb relay: it never receives
 keys or plaintext, and it cannot read anyone's money data. The one exception is the optional
 bank-connector service (Plus), which fetches from a bank-data provider on the person's behalf
-and passes the result straight through without storing it (see Privacy below).
+and passes the result straight through without storing it (see Privacy below). Forwarded
+receipt emails are sealed to the person's device key the moment they arrive, so the stored
+copy is ciphertext too.
 
 Standard library HTTP (Go 1.22+ routing), `log/slog`, Postgres via `pgx/v5`, and an
 in-memory store for tests and local development. The API is described in
@@ -44,10 +46,13 @@ Docker: `docker build -t penny-relay . && docker run -p 8080:8080 -e DEV=true pe
 | – | `SMTP_HOST`, `SMTP_PORT` (587), `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` | – | Send codes by SMTP |
 | `-connectors` | `CONNECTORS` | `sandbox,simplefin` | Enabled bank connectors (comma list). Stubs listed here stay disabled with a warning |
 | – | `CONNECTOR_KEY` | random (`-dev` only) | 32 bytes, base64. AES-256-GCM key for bank credentials at rest; **required outside `-dev`**, keep stable (`openssl rand -base64 32`) |
+| – | `MAIL_DOMAIN` | `in.penny.example` | Domain of forwarding addresses (point its MX at your inbound-mail provider) |
+| – | `MAIL_WEBHOOK_SECRET` | – | Shared secret the mail provider sends in `X-Penny-Webhook`. Unset: the inbound webhook answers 503 (open without a secret only in `-dev`) |
+| – | `MERCHANT_SALT` | random (memory/dev only) | HMAC key for merchant-vote contributor hashes; required with Postgres outside dev, keep stable |
 
 Data residency is by deployment: run one instance (and one database) per region.
-The server shuts down gracefully on SIGINT/SIGTERM and purges expired codes, advisor links and
-old invites every 10 minutes.
+The server shuts down gracefully on SIGINT/SIGTERM and purges expired codes, advisor links,
+old invites and pending mail older than 14 days every 10 minutes.
 
 ## API
 
@@ -87,6 +92,15 @@ All bodies are JSON with camelCase fields. Binary values are base64url without p
 | DELETE | `/v1/connections/{id}` | Bearer | Revoke at the provider (best-effort), delete credentials and cursor → 204 |
 | PUT | `/v1/entitlements/plus` | Bearer | `{store:"play", purchaseToken, productId}` → `{plus, plusUntil, productId, store}` |
 | GET | `/v1/entitlements/plus` | Bearer | `{plus, plusUntil, productId?, store?}` (`plusUntil` null when none) |
+| GET | `/v1/mail/address` | Bearer | `{address, keyAlg}`; 404 if none issued |
+| POST | `/v1/mail/address` | Bearer | `{rotate?}` (body optional) → `{address, keyAlg}`; creates on first call, same address after; `rotate:true` issues a new one (old stops at once) |
+| DELETE | `/v1/mail/address` | Bearer | Turn forwarding off: delete address, key and pending mail → 204 |
+| PUT | `/v1/mail/key` | Bearer | `{p256}` or `{x25519}` (exactly one) → 204 |
+| GET | `/v1/mail/pending` | Bearer | `[{id, alg, blob, receivedAt, expiresAt}]`, oldest first, max 50 |
+| DELETE | `/v1/mail/{id}` | Bearer | Delete after parsing → 204 (404 unknown) |
+| POST | `/v1/mail/inbound` | `X-Penny-Webhook` | Provider webhook (JSON, multipart or urlencoded `{to, from, subject, text, html}`, ≤2 MB) → 204; 404 unknown address |
+| POST | `/v1/merchants/suggest` | Bearer | `{region, descriptors:[≤200]}` → `[{descriptor, name, categoryKey, confidence}]` (known ones only) |
+| POST | `/v1/merchants/contribute` | Bearer | `{region, items:[{descriptor, name, categoryKey}] (1–100)}` → `{accepted}`; 100 items/day/account |
 
 ¹ `402 {"error":"plus_required"}` without an active entitlement, except in `-dev` mode and for
 the `sandbox` provider. Listing and deleting connections never need Plus, so a lapsed
@@ -161,6 +175,76 @@ Flows for the client:
 > pending/refunded purchases, acknowledge the purchase, bind a token to one account, and handle
 > Real-time Developer Notifications for renewals and revocations.
 
+### Email forwarding (CP-06)
+
+1. The app calls `POST /v1/mail/address` → `{address:"k3m9q2xwpa@in.penny.example", keyAlg:""}`.
+   The local part is 10 characters from `a–z2–7` (50 random bits). Matching is
+   case-insensitive and ignores a `+tag`.
+2. The app uploads a mail public key with `PUT /v1/mail/key`. Use **`p256`** (works on every
+   Android version via `KeyAgreement("ECDH")`); `x25519` is accepted for clients on API 31+.
+   - `p256`: base64url (no padding) of the 65-byte uncompressed point `0x04 || X(32) || Y(32)`.
+   - `x25519`: base64url of the raw 32-byte public key (RFC 7748 u-coordinate, little-endian).
+   The key is per account (last upload wins; the uploading device id is recorded). Keep the
+   private key in the Android Keystore or wrapped by it, and share it with the person's other
+   devices through the encrypted sync stream if they should read mail too.
+3. The mail provider posts each message to `POST /v1/mail/inbound` with header
+   `X-Penny-Webhook: <MAIL_WEBHOOK_SECRET>` (missing → 401, wrong → 403). Fields `to`, `from`,
+   `subject`, `text`, `html` as JSON (case-insensitive keys), `multipart/form-data` or
+   `application/x-www-form-urlencoded`. If `text` is blank the server strips `html` to text
+   (drops comments/`script`/`style`/`head`, block tags become line breaks, entities decoded,
+   whitespace collapsed). Attachments are ignored.
+4. The server builds `{"from":…, "subject":…, "text":…, "receivedAt":<epoch ms>}` (UTF-8 JSON;
+   `text` ≤ 64 KiB, `subject` ≤ 1 KiB, `from` ≤ 512 bytes, cut on character boundaries), seals it
+   (below) and stores only the blob. No key yet → the mail is discarded (204, counted). Unknown
+   address → 404 `{"error":"not found"}`. At most 50 pending per account; the oldest are dropped.
+5. The app polls `GET /v1/mail/pending`, decrypts, parses, then `DELETE /v1/mail/{id}`.
+   Unfetched mail expires 14 days after `receivedAt`.
+
+**Sealing scheme `penny-mail-v1`** (ECIES; `alg` on each pending item says which curve):
+
+| Step | P-256 (`alg:"p256"`) | X25519 (`alg:"x25519"`) |
+|---|---|---|
+| Ephemeral key | fresh P-256 key pair; `ephPub` = 65-byte uncompressed `0x04‖X‖Y` | fresh X25519 key pair; `ephPub` = 32 bytes |
+| Shared secret `Z` | ECDH = 32-byte big-endian X coordinate (what `KeyAgreement("ECDH").generateSecret()` returns) | X25519, 32 bytes |
+| `salt` | `ephPub(65) ‖ recipientPub(65)` = 130 bytes | `ephPub(32) ‖ recipientPub(32)` = 64 bytes |
+| Key | `HKDF-SHA256(IKM=Z, salt, info="penny-mail-v1" (ASCII, 13 bytes), L=32)` (RFC 5869 extract+expand) | same |
+| Cipher | AES-256-GCM, 12-byte random nonce, 128-bit tag, AAD = `"penny-mail-v1"` (ASCII) | same |
+| `blob` (base64url, no padding) | `ephPub(65) ‖ nonce(12) ‖ ciphertext ‖ tag(16)` | `ephPub(32) ‖ nonce(12) ‖ ciphertext ‖ tag(16)` |
+
+`recipientPub` is exactly the bytes uploaded with `PUT /v1/mail/key`. Android decrypt (P-256):
+decode the blob; build the ephemeral `ECPublicKey` from bytes 1–32 (X) and 33–64 (Y) with
+`ECPublicKeySpec(ECPoint(BigInteger(1,x), BigInteger(1,y)), ownKey.params)`;
+`KeyAgreement.getInstance("ECDH")` with the private key → `Z`; HKDF-SHA256 with `Mac("HmacSHA256")`
+(PRK = HMAC(key=salt, Z); OKM = HMAC(key=PRK, info ‖ 0x01), 32 bytes); then
+`Cipher("AES/GCM/NoPadding")` with `GCMParameterSpec(128, nonce)`, `updateAAD("penny-mail-v1")`,
+`doFinal(ciphertext ‖ tag)`. The reference implementation is `sealMail`/`openMail` in `mail.go`;
+`TestInboundSealsToP256` decrypts by following this table step by step.
+
+### Community merchant map (PY-03)
+
+Opt-in clients send corrections (`descriptor` → clean `name` and `categoryKey`) per region and
+ask for suggestions. Nothing is seeded.
+
+- **Normalisation** (server side, applied to both endpoints; clients should apply it before
+  contributing): lowercase; delete `'` and `’`; every character that is not a letter, digit,
+  combining mark or `&` becomes a space; delete runs of 4+ digits; split on whitespace; drop the
+  tokens `pos upi ref txn trx ach imps neft rtgs vpa ecom pymt`; join with single spaces.
+  `"UPI/SWIGGY/123456789/ref"` → `"swiggy"`, `"7-ELEVEN 12345"` → `"7 eleven"`.
+- **Contribute validation** (whole request 400 naming the item index): `region` is two letters
+  (pack region, case-insensitive); 1–100 items; raw `descriptor` ≤ 64 characters and non-empty
+  after normalisation; `name` 1–48 characters after collapsing whitespace; `categoryKey` matches
+  `^[a-z]+(\.[a-z]+)?$`; neither descriptor nor name may contain something email-like, an
+  IBAN-like token, or 8+ digits in a run that may be separated by spaces, `-`, `.`, `(`, `)` or
+  `+` (phone, card and account numbers). 100 items per account per day (token bucket, in memory;
+  429 with `Retry-After`).
+- **Votes**: one per (region, normalised descriptor, contributor); a later contribution replaces
+  the earlier one (corrections). Candidates are grouped by case-folded name and category.
+- **Visibility (k-anonymity)**: a descriptor is suggested only when its leading candidate has
+  ≥ 3 distinct contributors **and** ≥ 60% of the descriptor's votes. `confidence` is that vote
+  share rounded to two decimals (0.6–1.0). `descriptor` in the answer echoes the string sent.
+  Suggest accepts ≤ 200 descriptors (longer than 64 characters are skipped) and is limited to
+  60 requests/minute/account.
+
 ## Privacy: what the server can and cannot see
 
 **Cannot see:** transaction amounts, payees, notes, categories, budgets, account names,
@@ -200,6 +284,33 @@ produced on the device.
   the provider supports it, then deletes the credentials, cursor and pending states. A provider
   revocation detected during sync deletes the credentials and cursor at once.
 
+**Email forwarding:**
+- The forwarding address's local part, the account it routes to, and the mail public key (and
+  which device uploaded it).
+- A forwarded email exists in plaintext **only in server memory during the inbound webhook
+  request**: it is sealed to the account's public key before anything is stored, and the
+  marshalled plaintext buffer is zeroed after sealing (Go strings from the request cannot be
+  wiped; they become garbage when the request ends). Only the ciphertext blob, its id, the
+  algorithm and the receive time are stored, until the device deletes it or 14 days pass. The
+  server cannot decrypt stored mail. Mail for an account without a key is discarded unstored.
+- Logs never carry senders, subjects, bodies or addresses; inbound logs show only blob size and
+  how many old messages were dropped. Outcome counters (stored, discarded without key, unknown
+  address, dropped over cap) are kept in memory (`mailStats`); there is no metrics endpoint yet.
+- The mail provider in front of the webhook sees mail in transit; pick one with a no-retention
+  setting.
+
+**Community merchant map:**
+- Receives descriptors, names and categories only — never amounts, dates, accounts or notes.
+  Stores the normalised descriptor (long digit runs removed), the name, the category, the
+  region and a contributor hash: HMAC-SHA256 under `MERCHANT_SALT` of account id, region and
+  descriptor. The hash dedupes one account's vote per descriptor but differs per descriptor, so
+  stored votes cannot be grouped into one person's shopping list, and the table has no link to
+  accounts.
+- Mappings are revealed only with ≥ 3 agreeing contributors. Suggest requests are not stored.
+- Votes are anonymous aggregates and **stay after account deletion**: they cannot be found by
+  account without the deleted account id and the salt, and removing them would require keeping
+  exactly the link the design avoids.
+
 **Stores only hashes of secrets:** sign-in codes, bearer tokens and invite tokens are stored
 as SHA-256; raw values are shown once.
 
@@ -210,20 +321,25 @@ testing only.
 
 **Deletion:** `DELETE /v1/account` removes the account, devices, tokens, personal streams and
 their events, keys, memberships, invites it created, advisor links, bank connections (after
-revoking each at its provider, best-effort), connect states and the Plus entitlement in the same
-request. Expired codes, advisor links and connect states are purged every 10 minutes.
+revoking each at its provider, best-effort), connect states, the Plus entitlement, the mail
+forwarding address and key, and pending mail in the same request. Anonymous merchant votes
+stay (see above). Expired codes, advisor links, connect states and pending mail older than 14
+days are purged every 10 minutes.
 
 ## Storage notes
 
 - Event blobs are stored in Postgres as `bytea`. An S3-compatible blob store (for large
   attachments such as receipt images) is not needed yet and is not implemented.
-- Schema: [`migrations/001_init.sql`](migrations/001_init.sql) and
-  [`migrations/002_connectors.sql`](migrations/002_connectors.sql). Foreign keys cascade, so
+- Schema: [`migrations/001_init.sql`](migrations/001_init.sql),
+  [`migrations/002_connectors.sql`](migrations/002_connectors.sql) and
+  [`migrations/003_mail_merchants.sql`](migrations/003_mail_merchants.sql). Foreign keys cascade, so
   deleting an account row removes everything it owns.
 - `CONNECTOR_KEY` rotation is not implemented: with a new key, existing connections report
   `needs_consent` on their next sync and recover through re-consent.
 - Two concurrent syncs of one connection can both deliver the same new transactions (last
   cursor write wins); clients upsert by id, so this only costs bandwidth.
+- Rate limits (merchant contributions included) are per process and reset on restart; behind
+  several replicas each replica has its own budget.
 - The Postgres store compiles and is written against the schema, but the test suite runs on
   the in-memory store; run it against a real database before production.
 
@@ -240,6 +356,9 @@ request. Expired codes, advisor links and connect states are purged every 10 min
 | `store_postgres.go` | Postgres store and migration runner |
 | `connections.go` | Bank connector and Plus entitlement endpoints, sync cursor |
 | `sealer.go` | AES-256-GCM sealing of connector credentials |
+| `mail.go` | Email forwarding: addresses, mail key, inbound webhook, `penny-mail-v1` sealing, HTML stripping |
+| `merchants.go` | Community merchant map: normalisation, validation, votes, k-anonymous suggestions |
 | `connectors/` | `Connector` interface, registry, exact decimal parsing, SimpleFIN, sandbox, provider stubs |
 | `api_test.go` | httptest suite |
 | `connections_test.go` | Connector suite with the sandbox and a fake SimpleFIN bridge |
+| `mail_test.go`, `merchants_test.go` | Mail forwarding (decrypting per the documented layout) and merchant map suites |

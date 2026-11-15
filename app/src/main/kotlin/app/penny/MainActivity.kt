@@ -30,6 +30,14 @@ class MainActivity : AppCompatActivity() {
     @Inject lateinit var prefs: AppPrefs
 
     private var locked by mutableStateOf(false)
+    /** Deep links that arrive while the app is open (widgets, tile, shortcuts, notifications). */
+    private var pendingIntent by mutableStateOf<android.content.Intent?>(null)
+
+    override fun onNewIntent(intent: android.content.Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        pendingIntent = intent
+    }
     private var backgroundAt = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +56,10 @@ class MainActivity : AppCompatActivity() {
                     } else {
                         val nav = rememberNavController()
                         UndoHost(undo) { PennyNavHost(nav, start, appearance.reduceMotion) }
+                        androidx.compose.runtime.LaunchedEffect(pendingIntent) {
+                            pendingIntent?.let { if (it.data != null) nav.handleDeepLink(it) }
+                            pendingIntent = null
+                        }
                     }
                 }
             }

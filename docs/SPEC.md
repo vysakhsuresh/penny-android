@@ -1,7 +1,7 @@
-# Pouch — Product and Engineering Specification
+# Penny — Product and Engineering Specification
 
 Version 1.0 · 15 November 2026 · Status: ready for implementation
-Working name: **Pouch** (see §12; rename is a one-line change in `core/brand.kt`). Do not use "Ledger": it collides with Ledger SAS (hardware wallets) in trademark classes 9 and 36.
+Working name: **Penny** (see §12; rename is a one-line change in `core/src/main/kotlin/app/penny/core/Brand.kt`). Do not use "Ledger": it collides with Ledger SAS (hardware wallets) in trademark classes 9 and 36.
 
 ---
 
@@ -19,14 +19,14 @@ Working name: **Pouch** (see §12; rename is a one-line change in `core/brand.kt
 
 ## 1. Product summary
 
-Pouch is a personal and household money tracker for the whole world. It captures every transaction with the least effort available on the user's platform and region, budgets on the user's real pay cycle, models households, friends, lenders and informal savings groups as first-class objects, and shows one number on open: what is safe to spend.
+Penny is a personal and household money tracker for the whole world. It captures every transaction with the least effort available on the user's platform and region, budgets on the user's real pay cycle, models households, friends, lenders and informal savings groups as first-class objects, and shows one number on open: what is safe to spend.
 
 **Positioning:** the benchmark app of the category. Every feature any major tracker offers is present (see the Feature benchmark tab of the master plan), free, and improved. Trust is the brand: no ads, no lending or financial-product cross-sell, no data brokerage, end-to-end encrypted sync, full export at any time.
 
 **Platforms:** Android and iOS (phones and tablets), web app, watch tiles. Desktop via web. Offline-first everywhere.
 
 **Non-negotiables**
-- NN-1 Every feature is free. The only paid tier (Pouch Plus) is cost pass-through: bank auto-sync fees, storage beyond 1 GB, priority support.
+- NN-1 Every feature is free. The only paid tier (Penny Plus) is cost pass-through: bank auto-sync fees, storage beyond 1 GB, priority support.
 - NN-2 Everything works offline; sync is additive.
 - NN-3 Every write is undoable for at least 5 seconds and recoverable from history for 30 days.
 - NN-4 No ads, no loans, no credit scores, no savings accounts, no cashback, no data sale. Stated in-app and in store listings.
@@ -101,9 +101,9 @@ Rule going forward: before any screen is called done, walk §10.2 for each objec
 - Splitwise: groups of friends, simplified debts, non-users via email.
 - Firefly III (open source): multi-user via separate logins; Actual Budget: multiple budget files per server.
 
-Nobody combines all four layers (login, books, shared spaces, friend groups) with per-object permissions. Pouch does.
+Nobody combines all four layers (login, books, shared spaces, friend groups) with per-object permissions. Penny does.
 
-### 3.2 Pouch model
+### 3.2 Penny model
 
 ```
 Account (login)
@@ -236,7 +236,7 @@ Each module lists requirements and acceptance criteria. "Object" rows in §10.2 
 - PE-04 Settling a lending or group balance posts matching transactions in the user's own ledger (category "Loan given/returned" excluded from spend).
 - PE-05 Counterparties link to contacts (permission-gated) or are free text; non-users invited by link.
 - PE-06 Person page: all shared history across lending and groups.
-- PE-07 Dispute flag on a group expense notifies the creator; no money moves inside Pouch.
+- PE-07 Dispute flag on a group expense notifies the creator; no money moves inside Penny.
 
 ### 4.10 Remittances and circles (RM, CI)
 - RM-01 Remittance object: sender, receiver (member or external), sent amount and currency, fee, FX rate, received amount and currency, provider, purpose, date, status (sent, received, confirmed). Both sides see one record in a Space.
@@ -316,7 +316,7 @@ Each module lists requirements and acceptance criteria. "Object" rows in §10.2 
 - ST-08 Security: app lock (biometric/PIN), auto-lock timer, duress PIN (opens decoy book), screenshot blocking toggle, sessions and devices with remote sign-out, recovery kit.
 - ST-09 Data: export (CSV per table, JSON full, encrypted archive), import, backup to user's cloud folder, restore, trash, delete profile, delete account.
 - ST-10 Language: app language independent of region; RTL mirrors layout.
-- ST-11 Pouch Plus: status, manage, restore purchase, invoices.
+- ST-11 Penny Plus: status, manage, restore purchase, invoices.
 - ST-12 About: trust page (what we never do), privacy policy, open-source licences, changelog, feedback with optional diagnostics.
 
 ### 4.18 Security and privacy (SE)
@@ -347,11 +347,11 @@ Each module lists requirements and acceptance criteria. "Object" rows in §10.2 
 - NT-01 OS notification permission requested only when the user enables an alert; explain before the system prompt; never nag.
 - WG-01 Widgets: safe-to-spend, quick-add chips, envelope progress, upcoming bills, group balances; sizes small/medium/large; lock-screen widgets; live activities for a trip group.
 - WG-02 Watch (Wear OS, watchOS): quick add with templates and voice; safe-to-spend complication.
-- WG-03 Shortcuts, Tasker, Android Quick Settings tile; deep links `pouch://add?amount=…&category=…`.
+- WG-03 Shortcuts, Tasker, Android Quick Settings tile; deep links `penny://add?amount=…&category=…`.
 - WG-04 Keyboard shortcuts on web; command palette.
 
 ### 4.21 Monetization (MO)
-- MO-01 Pouch Plus: bank auto-sync, storage beyond 1 GB, priority support, early access, supporter badge; one Plus covers a Space (up to 10 members).
+- MO-01 Penny Plus: bank auto-sync, storage beyond 1 GB, priority support, early access, supporter badge; one Plus covers a Space (up to 10 members).
 - MO-02 Regional price points stored as data; monthly, yearly (~40% off), lifetime in launch and festival windows; store billing (Play, App Store) and web billing (Stripe/Paddle) with cross-platform entitlement.
 - MO-03 Restore purchases; family sharing where the store supports it; grace periods; downgrade keeps all data and features except sync (accounts turn manual, nothing deleted).
 - MO-04 Plus sheet shows what it funds in plain words; no countdown timers, no dark patterns, cancel in two taps.
@@ -415,6 +415,8 @@ Invariants (enforced in the domain layer and tested):
 ---
 
 ## 7. Architecture and stack
+
+Note for `penny-android`: this repository builds the Android app natively in Kotlin and Jetpack Compose (see `CLAUDE.md` and `docs/KICKOFF.md`); the Flutter line below describes the later cross-platform plan and is superseded here.
 
 - Mobile: Flutter (Dart) single codebase for Android, iOS, web; platform channels for notification listener (Android), Shortcuts/share extensions (iOS), widgets (Jetpack Glance, WidgetKit), watch apps (native thin clients).
 - State: a domain layer (pure Dart) with use-cases; UI never touches SQL. Riverpod or Bloc for state; freezed models.
@@ -531,13 +533,14 @@ Android 9–16 on 4 GB and 8 GB devices (one budget, one mid, one flagship), tab
 
 ## 12. Name and brand
 
-Recommendation: **Pouch** (replaced Saldo on 15 Nov 2026: Saldo reads as foreign in India and East Asia; Pouch is a plain English word understood in every launch market).
-- A pouch is where people keep money in every culture; one syllable, five letters, spelled as said, no translation needed. Word-of-mouth test: "Download Pouch" is unambiguous in English, Hinglish, Taglish and Spanglish.
-- Low collision in finance app stores at the time of writing; verify trademark classes 9, 36, 42 before launch.
-- Brand line: "Pouch. Know what is safe to spend."
+Decision: **Penny** (15 Nov 2026). Chosen for word-of-mouth: a coin word every English speaker in India, the Philippines, Africa and the West already knows; two syllables; spelled as said.
+- Word-of-mouth test: "Download Penny" is unambiguous in English, Hinglish, Taglish and Spanglish. Logo and store listing must be distinctive because the word itself is common.
+- The mark is crowded (a German retailer, past budgeting apps); verify trademark classes 9, 36 and 42 in US, EU, UK, IN, PH, BR, AU and JP before launch and prepare a fallback.
+- Brand line: "Penny. Know what is safe to spend."
+- Repository: github.com/vysakhsuresh/penny-android.
 
 Alternatives, in order:
-1. **Penny** — universally understood coin word, friendly, two syllables; crowded mark, needs a distinctive logo and a qualifier for stores.
+1. **Pouch** — where money is kept; low collision; rejected as less memorable in word of mouth.
 2. **Abacus** — the counting tool every Indian, Filipino and Western schoolchild knows; descriptive; medium trademark risk from B2B expense tools.
 3. **Tab** — "keep tabs on", "pick up the tab"; very short; generic and hard to search for.
 4. **Kitty** — the shared pot; warm; crowded in app stores. Rejected: Saldo (not understood in India and East Asia), Tally (blocked by Tally Solutions), Ledger (blocked by Ledger SAS), Jar (Indian gold-savings app), Mint (Intuit mark).

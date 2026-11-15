@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="faq_q">
+        <item>Adakah Penny benar-benar percuma?</item>
+        <item>Adakah Penny membaca SMS saya?</item>
+        <item>Di mana data saya disimpan?</item>
+        <item>Apakah maksud “selamat dibelanjakan”?</item>
+        <item>Bagaimana saya menukar kitaran gaji?</item>
+        <item>Saya terpadam sesuatu. Bolehkah saya mendapatkannya semula?</item>
+        <item>Bagaimana saya menambah wang yang saya pinjamkan kepada kawan?</item>
+        <item>Bolehkah saya berkongsi bajet dengan pasangan saya?</item>
+        <item>Bagaimana saya berpindah daripada aplikasi kewangan lain?</item>
+        <item>Kenapa transaksi daripada aplikasi pembayaran saya tidak muncul?</item>
+        <item>Bagaimana saya menggunakan Penny pada telefon baharu?</item>
+        <item>Bolehkah saya menggunakan lebih daripada satu mata wang?</item>
+        <item>Bagaimana saya mengunci aplikasi?</item>
+        <item>Bagaimana saya memadam semua data saya?</item>
+    </string-array>
+    <string-array name="faq_a">
+        <item>Ya. Setiap ciri adalah percuma. Penny Plus yang pilihan hanya menampung kos yang meningkat bagi setiap pengguna, seperti yuran sambungan bank dan storan tambahan. Tiada iklan dan kami tidak pernah menjual data.</item>
+        <item>Tidak. Penny tidak pernah meminta kebenaran SMS. Ia boleh membaca pemberitahuan daripada aplikasi pembayaran dan bank yang anda benarkan, pada telefon anda sahaja, dan anda boleh mematikannya bila-bila masa.</item>
+        <item>Pada telefon anda, disulitkan. Jika anda menghidupkan penyegerakan, data disulitkan pada telefon anda sebelum ia keluar, jadi pelayan menyimpan data yang tidak dapat dibacanya.</item>
+        <item>Ia ialah wang yang boleh anda belanjakan dari sekarang hingga tempoh gaji seterusnya tanpa terlepas bil atau matlamat simpanan: pendapatan, tolak bil yang belum dibayar, tolak apa yang anda ketepikan, tolak apa yang sudah anda belanjakan.</item>
+        <item>Buka Tetapan, Profil, Kitaran gaji. Pilih bulanan dari mana-mana hari, dua kali sebulan, mingguan, setiap dua minggu, setiap empat minggu, atau “apabila wang masuk”. Sejarah disusun semula dan tiada apa yang hilang.</item>
+        <item>Ya. Sejurus selepas memadam, ketik Buat asal. Kemudian, buka Tetapan, Sampah: item yang dipadam kekal di sana selama 30 hari. Setiap perubahan juga ada dalam Sejarah, di mana anda boleh kembali ke versi terdahulu.</item>
+        <item>Buka tab Orang dan ketik Rekod pinjaman. Pilih orang, jumlah dan sama ada anda memberi atau menerimanya. Penny menyimpan baki berjalan dan boleh mendraf peringatan mesra untuk anda hantar.</item>
+        <item>Ya. Hidupkan penyegerakan, kemudian buka Tetapan, Ruang kongsi, dan cipta ruang. Jemput pasangan anda dengan pautan. Setiap seorang mempunyai log masuk dan peranan sendiri, dan anda boleh merahsiakan perbelanjaan peribadi.</item>
+        <item>Eksport CSV daripada aplikasi lama atau bank anda, kemudian buka Tetapan, Data dan sandaran, Import. Penny mengenali fail daripada banyak aplikasi dan menunjukkan pratonton dengan pendua sebelum menambah apa-apa.</item>
+        <item>Semak Tetapan, Tangkap: “Baca pemberitahuan pembayaran” mesti hidup, dan Penny mesti dibenarkan akses pemberitahuan dalam tetapan telefon anda. Hanya aplikasi yang disenaraikan untuk wilayah anda, serta yang anda tambah, akan dibaca.</item>
+        <item>Hidupkan penyegerakan pada telefon lama anda dan tulis frasa pemulihan. Pada telefon baharu, log masuk dengan e-mel yang sama dan taip frasa itu. Atau pulihkan fail sandaran daripada folder anda.</item>
+        <item>Ya. Setiap akaun mempunyai mata wangnya sendiri. Jumlah keseluruhan menggunakan mata wang utama anda dengan kadar pertukaran pada tarikh transaksi, dan apa-apa tanpa kadar akan ditunjukkan, tidak sekali-kali diteka.</item>
+        <item>Buka Tetapan, Keselamatan, Kunci aplikasi. Tetapkan PIN dan benarkan cap jari atau wajah anda. Anda juga boleh menyekat tangkapan skrin dan memilih berapa cepat aplikasi dikunci semula.</item>
+        <item>Buka Tetapan, Data dan sandaran, Padam semua pada telefon ini. Jika penyegerakan hidup, padam juga akaun penyegerakan anda dalam Penyegerakan dan bank. Eksport dahulu jika anda mungkin memerlukan apa-apa.</item>
+    </string-array>
+
+    <string-array name="guide_start">
+        <item>Pilih wilayah anda. Ia menetapkan mata wang, gaya nombor dan kitaran gaji biasa anda. Anda boleh menukar semuanya kemudian.</item>
+        <item>Beritahu Penny bila wang masuk. Bajet anda mengikut kitaran gaji sebenar anda, bukan bulan kalendar.</item>
+        <item>Masukkan wang tunai yang anda ada sekarang. Tambah bank, dompet dan kad kemudian daripada Akaun.</item>
+        <item>Ketik butang tambah untuk menambah perbelanjaan: taip jumlah, pilih kategori, simpan. Ia mengambil masa kira-kira tiga saat.</item>
+        <item>Utama menunjukkan satu angka: berapa yang selamat dibelanjakan sehingga hari gaji seterusnya.</item>
+    </string-array>
+    <string-array name="guide_safe">
+        <item>Selamat dibelanjakan bermula dengan pendapatan tempoh ini, termasuk gaji yang anda jangka tetapi belum terima.</item>
+        <item>Ia menolak bil yang belum dibayar dalam tempoh ini dan apa yang anda ketepikan untuk matlamat.</item>
+        <item>Kemudian ia menolak apa yang sudah anda belanjakan. Pindahan antara akaun anda sendiri tidak pernah dikira.</item>
+        <item>“Sehari” membahagikan baki dengan hari yang tinggal dalam tempoh itu.</item>
+        <item>Jika perbelanjaan mendahului kalendar, Utama menunjukkan nota ambar yang tenang. Penny tidak pernah menggunakan warna merah untuk wang anda.</item>
+    </string-array>
+    <string-array name="guide_budget">
+        <item>Sampul ialah jumlah untuk satu bahagian kehidupan, seperti makanan atau pengangkutan, bagi setiap tempoh.</item>
+        <item>Buka Bajet dan ketik Guna templat, atau tambah sampul satu demi satu.</item>
+        <item>Pilih apa yang berlaku kepada baki: mula semula, bawa ke hadapan, atau bawa ke hadapan sehingga had tertentu.</item>
+        <item>Jika sampul terlebih, ketik Tampung daripada untuk memindahkan wang daripada sampul yang masih ada baki. Ia direkodkan dan boleh dibuat asal.</item>
+        <item>Mahu setiap unit ada tugas? Hidupkan bajet berasaskan sifar dalam tetapan Profil.</item>
+    </string-array>
+    <string-array name="guide_cycle">
+        <item>Ramai orang dibayar gaji bulanan, tetapi bukan pada 1 hari bulan; ada yang dibayar setiap dua minggu, dua kali sebulan, atau apabila sesuatu kerja dibayar.</item>
+        <item>Buka Tetapan, Profil, Kitaran gaji, dan pilih yang sepadan dengan gaji anda.</item>
+        <item>“Apabila wang masuk” memulakan tempoh baharu setiap kali pendapatan melebihi suatu paras masuk, sesuai untuk kerja gig dan wang yang dihantar oleh keluarga dari luar negara.</item>
+        <item>Menukar kitaran akan menyusun semula sejarah dan boleh dibuat asal.</item>
+    </string-array>
+    <string-array name="guide_capture">
+        <item>Hidupkan pemberitahuan pembayaran dalam Tetapan, Tangkap. Penny hanya membaca aplikasi pembayaran dan bank, pada telefon anda.</item>
+        <item>Kongsi mesej, resit atau penyata daripada mana-mana aplikasi ke Penny.</item>
+        <item>Imbas resit dengan kamera; Penny membacanya pada telefon.</item>
+        <item>Sebut transaksi dengan suara, contohnya “250 untuk barang dapur semalam”.</item>
+        <item>Item yang ditangkap menunggu dalam Semak. Selepas sepuluh berturut-turut daripada satu aplikasi tanpa perubahan, Penny menawarkan untuk menambahnya secara automatik.</item>
+    </string-array>
+    <string-array name="guide_people">
+        <item>Rekod wang yang anda pinjamkan atau pinjam dalam tab Orang. Penny menggunakan perkataan neutral: akan diterima dan akan diberi.</item>
+        <item>Bayaran balik separa tidak mengapa; tambah catatan bagi setiap satu.</item>
+        <item>Kumpulan membahagikan kos bersama sama rata, mengikut jumlah tepat, peratusan, bahagian atau item demi item.</item>
+        <item>Permudahkan hutang mencari bayaran paling sedikit untuk menyelesaikan semua orang.</item>
+        <item>Ruang kongsi membolehkan isi rumah membuat bajet bersama, masing-masing dengan log masuk dan peranan sendiri.</item>
+    </string-array>
+    <string-array name="guide_bills">
+        <item>Tambah setiap bil sekali, dengan kekerapan ia berulang. Penny merancang untuknya dalam selamat dibelanjakan.</item>
+        <item>Apabila bil dibayar, tandakannya sudah dibayar; transaksi dicipta untuk anda. Atau biarkan Penny menambahnya secara automatik.</item>
+        <item>Langkau atau ubah satu kejadian tanpa menyentuh yang lain, atau ubah “ini dan yang akan datang”.</item>
+        <item>Langganan menunjukkan kos tahunan dan bila harga naik, berserta draf mesej pembatalan.</item>
+        <item>Ansuran menunjukkan jadual penuh dan berapa banyak faedah yang dapat dijimatkan dengan bayaran awal.</item>
+    </string-array>
+    <string-array name="guide_goals">
+        <item>Matlamat mempunyai sasaran dan, jika anda mahu, tarikh. Penny menunjukkan berapa yang perlu diketepikan setiap tempoh.</item>
+        <item>Tambah wang apabila anda menyimpan; keluarkan wang apabila anda memerlukannya.</item>
+        <item>Tetapkan jumlah automatik setiap tempoh supaya ia dikira dalam selamat dibelanjakan.</item>
+        <item>Dana kecemasan mencadangkan sasaran berdasarkan perbelanjaan penting anda yang sebenar.</item>
+    </string-array>
+    <string-array name="guide_import">
+        <item>Eksport CSV daripada bank atau aplikasi lama anda.</item>
+        <item>Buka Tetapan, Data dan sandaran, Import daripada fail.</item>
+        <item>Penny mengenali banyak aplikasi secara automatik; untuk fail bank, semak lajurnya.</item>
+        <item>Semak pratonton. Kemungkinan pendua dilangkau kecuali anda memilih sebaliknya.</item>
+        <item>Ketik Import. Anda boleh membuat asal keseluruhan import dengan satu ketikan.</item>
+    </string-array>
+    <string-array name="guide_undo">
+        <item>Setiap perubahan dalam Penny boleh dibuat asal selama beberapa saat dengan butang Buat asal.</item>
+        <item>Item yang dipadam menunggu dalam Sampah selama 30 hari.</item>
+        <item>Setiap transaksi, akaun dan sampul mempunyai Sejarah bagi setiap perubahan, siapa yang membuatnya dan bila.</item>
+        <item>Ketik “Kembali ke versi ini” untuk berpatah balik. Tindakan itu sendiri juga boleh dibuat asal.</item>
+    </string-array>
+    <string-array name="guide_privacy">
+        <item>Data anda tinggal pada telefon anda, dalam pangkalan data yang disulitkan.</item>
+        <item>Penyegerakan menyulitkan data pada telefon anda sebelum dihantar; pelayan tidak dapat membaca data kewangan anda.</item>
+        <item>Penny tidak menunjukkan iklan, tidak menawarkan pinjaman dan tidak menjual data.</item>
+        <item>Kiraan tanpa nama yang pilihan membantu menambah baik aplikasi dan tidak pernah merangkumi jumlah, penerima bayaran atau nota.</item>
+    </string-array>
+    <string-array name="guide_sync">
+        <item>Hidupkan penyegerakan dalam Tetapan, Penyegerakan dan bank, dengan e-mel anda.</item>
+        <item>Tulis frasa pemulihan 24 perkataan. Ia membuka data anda pada telefon baharu dan memulihkan sandaran yang disulitkan.</item>
+        <item>Pada telefon baharu, log masuk dengan e-mel yang sama dan taip frasa itu.</item>
+        <item>Pilih folder sandaran dalam Data dan sandaran untuk sandaran automatik yang disulitkan di bawah kawalan anda.</item>
+    </string-array>
+
+    <string-array name="about_story">
+        <item>Penny bermula dengan satu soalan mudah: berapa banyak yang boleh saya belanjakan hari ini tanpa risau tentang minggu depan?</item>
+        <item>Kebanyakan aplikasi kewangan menjawab dengan carta masa lalu atau tawaran pinjaman. Kami mahukan satu angka yang tenang, berdasarkan kitaran gaji sebenar anda, bil sebenar anda dan orang dalam hidup anda.</item>
+        <item>Penny dibina untuk seluruh dunia: apa-apa mata wang, apa-apa kitaran gaji, cara orang sebenarnya mengurus wang, daripada kutu hinggalah menghantar wang pulang.</item>
+        <item>Setiap ciri adalah percuma. Kami tidak mendapat wang daripada iklan, pinjaman atau data anda, dan tidak akan berbuat begitu. Jika Penny membantu anda, tip atau ulasan yang baik membantu ia terus berjalan.</item>
+    </string-array>
+    <string-array name="trust_never">
+        <item>Kami tidak pernah menunjukkan iklan.</item>
+        <item>Kami tidak pernah menawarkan pinjaman, kad kredit atau produk kewangan lain.</item>
+        <item>Kami tidak pernah menjual atau berkongsi data anda.</item>
+        <item>Kami tidak pernah membaca SMS anda.</item>
+        <item>Kami tidak pernah melihat data kewangan anda semasa anda menyegerak: ia disulitkan pada telefon anda.</item>
+        <item>Kami tidak pernah mengunci ciri di sebalik bayaran. Plus hanya menampung kos sebenar bagi setiap pengguna.</item>
+        <item>Kami tidak pernah menggunakan warna merah untuk memalukan perbelanjaan anda.</item>
+    </string-array>
+    <string-array name="changelog">
+        <item>v1.0.0</item>
+        <item>Bajet dengan sampul pada apa-apa kitaran gaji, bawa ke hadapan, sasaran dan paparan tahunan.</item>
+        <item>Matlamat, bil, langganan, ansuran dan perancang pelunasan hutang.</item>
+        <item>Pinjaman, pembahagian kumpulan, wang dihantar pulang dan kutu.</item>
+        <item>Tangkapan daripada pemberitahuan pembayaran, perkongsian, resit dan suara, dengan senarai semakan dan peraturan yang belajar.</item>
+        <item>Wawasan dengan carta, ramalan, nilai bersih dan jurulatih pada peranti.</item>
+        <item>Penyegerakan disulitkan hujung ke hujung, ruang kongsi, sandaran disulitkan, kunci aplikasi.</item>
+        <item>v0.1.0</item>
+        <item>Versi pertama: selamat dibelanjakan, transaksi dengan buat asal dan sejarah.</item>
+    </string-array>
+    <string-array name="licences">
+        <item>Plus Jakarta Sans — SIL Open Font License 1.1, The Plus Jakarta Sans Project Authors.</item>
+        <item>AndroidX dan Jetpack Compose — Apache License 2.0, The Android Open Source Project.</item>
+        <item>Kotlin dan pustaka kotlinx — Apache License 2.0, JetBrains.</item>
+        <item>Dagger dan Hilt — Apache License 2.0, Google.</item>
+        <item>Room — Apache License 2.0, Google.</item>
+        <item>SQLCipher for Android — lesen gaya BSD, Zetetic LLC.</item>
+        <item>Tink — Apache License 2.0, Google.</item>
+        <item>OkHttp — Apache License 2.0, Square.</item>
+        <item>ML Kit Text Recognition — ML Kit Terms of Service, Google.</item>
+        <item>Ikon Material — Apache License 2.0, Google.</item>
+    </string-array>
+</resources>

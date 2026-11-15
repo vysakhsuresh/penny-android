@@ -94,13 +94,16 @@ class NaturalQueryParser(
         fun amount(s: String?): Long? = s?.replace(",", "")?.toBigDecimalOrNull()?.multiply(java.math.BigDecimal(mult()))?.toLong()
         while (i < tokens.size) {
             val w = tokens[i]
-            val n = tokens.getOrNull(i + 1)
+            // "more than 200" / "less than 50": skip the "than" and read the number after it.
+            val than = tokens.getOrNull(i + 1) == "than"
+            val n = tokens.getOrNull(if (than) i + 2 else i + 1)
+            val used = if (than) 3 else 2
             when {
-                (w == "over" || w == "above" || w == "more" || w == ">") && amount(n?.removePrefix("than")) != null -> {
-                    f = f.copy(minMinor = amount(n)); understood += "$w $n"; i += 2; continue
+                (w == "over" || w == "above" || w == "more" || w == ">") && amount(n) != null -> {
+                    f = f.copy(minMinor = amount(n)); understood += "$w $n"; i += used; continue
                 }
                 (w == "under" || w == "below" || w == "less" || w == "<") && amount(n) != null -> {
-                    f = f.copy(maxMinor = amount(n)); understood += "$w $n"; i += 2; continue
+                    f = f.copy(maxMinor = amount(n)); understood += "$w $n"; i += used; continue
                 }
                 w == "today" -> { f = f.copy(from = today, to = today); understood += w }
                 w == "yesterday" -> { val d = today.minusDays(1); f = f.copy(from = d, to = d); understood += w }

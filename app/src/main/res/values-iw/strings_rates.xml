@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exchange_rates">שערי חליפין</string>
+    <string name="rates_body">Penny ממיר לפי השער בתאריך של כל תנועה. שערי ייחוס מורדים ב־Wi-Fi ונשמרים בטלפון; השערים שהוזנו ידנית תמיד קודמים.</string>
+    <string name="rates_updated">שערי ייחוס עד %1$s</string>
+    <string name="rates_never">עדיין לא הורדו שערי ייחוס</string>
+    <string name="rates_refreshed">השערים עודכנו</string>
+    <string name="rates_offline">לא ניתן להגיע למקור השערים. כדאי לנסות שוב ב־Wi-Fi.</string>
+    <string name="refresh_now">רענון עכשיו</string>
+    <string name="add_manual_rate">הוספת שער משלי</string>
+    <string name="your_currencies">המטבעות שלך היום</string>
+    <string name="no_rate">אין שער</string>
+    <string name="manual_rates">השערים שלך</string>
+    <string name="no_manual_rates">עדיין אין. אפשר להוסיף שער אם הבנק או הצ׳יינג׳ נתנו שער אחר.</string>
+    <string name="rate_in_x">ערך של יחידה אחת ב־%1$s</string>
+    <string name="record_value">תיעוד ערך</string>
+    <string name="record_value_body">כמה זה שווה היום? היסטוריית הערכים מזינה את השווי הנקי.</string>
+    <string name="value_recorded">הערך תועד</string>
+    <string name="valuations">הערכות שווי</string>
+    <string name="share_group_link">שיתוף תצוגה למי שאין לו את האפליקציה</string>
+    <string name="group_link_text">יתרות עבור ״%1$s״ (לקריאה בלבד, בתוקף ל־30 יום): %2$s</string>
+    <string name="usage_counts">שיתוף ספירות שימוש אנונימיות</string>
+    <string name="usage_counts_hint">רק באיזו תדירות משתמשים בתכונות, אף פעם לא סכומים, מוטבים, הערות או כל דבר שהוקלד. כבוי כברירת מחדל.</string>
+    <string name="usage_counts_none">עדיין לא נספר כלום.</string>
+    <string name="consent_until">הסכמה עד %1$s</string>
+    <string name="reconsent">חידוש ההסכמה</string>
+    <string name="disconnect">ניתוק</string>
+    <string name="disconnected">החיבור נותק. הקישור לבנק וההרשאה השמורה שלו נמחקו; החשבונות ידניים עכשיו.</string>
+    <string name="bank_needs_sync">כדי לחבר בנק יש להפעיל סנכרון למעלה.</string>
+    <string name="connect_with_token">חיבור עם אסימון הגדרה</string>
+    <string name="connect_in_browser">חיבור בדף המאובטח של הספק</string>
+    <string name="simplefin_help">יוצרים אסימון הגדרה בחשבון SimpleFIN Bridge ומדביקים אותו כאן. השרת של Penny מחליף אותו בהרשאת גישה; האסימון אף פעם לא נשמר בטלפון הזה.</string>
+    <string name="setup_token">אסימון הגדרה</string>
+    <string name="connect">חיבור</string>
+    <string name="bank_connected">הבנק חובר. התנועות יגיעו בסנכרון הבא.</string>
+    <string name="bank_cancelled">החיבור בוטל. שום דבר לא קושר.</string>
+    <plurals name="bank_synced"><item quantity="one">%d תנועה נוספה או עודכנה</item><item quantity="two">%d תנועות נוספו או עודכנו</item><item quantity="many">%d תנועות נוספו או עודכנו</item><item quantity="other">%d תנועות נוספו או עודכנו</item></plurals>
+    <string name="automation">אוטומציה</string>
+    <string name="automation_sub">Tasker, קיצורי דרך ו־webhooks</string>
+    <string name="automation_body">חיבור Penny לאפליקציות אוטומציה ולשירותים משלך. הכול נשאר בטלפון הזה, אלא אם מוגדרת כתובת webhook.</string>
+    <string name="automation_apps">אפליקציות אוטומציה</string>
+    <string name="allow_automation_apps">לאפשר לאפליקציות אוטומציה להוסיף תנועות</string>
+    <string name="allow_automation_hint">Tasker, Automate ואפליקציות דומות יכולות להוסיף תנועות באמצעות intent. הן אף פעם לא יכולות לקרוא את הנתונים שלך.</string>
+    <string name="deep_link_example">או לפתוח את penny://add?amount=1250&amp;category=Groceries מכל אפליקציה או קיצור דרך (הסכום ביחידות משנה).</string>
+    <string name="webhooks">Webhooks</string>
+    <string name="webhooks_body">שליחת כל תנועה חדשה לשרת משלך כ־JSON חתום. יש להשתמש רק בכתובת שבשליטתך.</string>
+    <string name="webhook_url">כתובת webhook (https)</string>
+    <string name="https_only">מותרות רק כתובות https</string>
+    <string name="signing_secret">סוד חתימה (לאימות הכותרת X-Penny-Signature):</string>
+    <string name="create_secret">יצירת סוד</string>
+    <string name="new_secret">סוד חדש</string>
+    <string name="copy">העתקה</string>
+    <string name="send_now">שליחה עכשיו</string>
+    <plurals name="webhook_sent"><item quantity="one">%d תנועה נשלחה</item><item quantity="two">%d תנועות נשלחו</item><item quantity="many">%d תנועות נשלחו</item><item quantity="other">%d תנועות נשלחו</item></plurals>
+    <string name="ob_get_started">מתחילים</string>
+    <string name="ob_sample">היכרות עם נתוני דוגמה</string>
+    <string name="ob_point_safe">מספר אחד ורגוע: כמה פנוי להוצאה עד יום התשלום</string>
+    <string name="ob_point_world">כל מטבע, כל מחזור הכנסה, בדרך שבה באמת מתנהלים עם כסף</string>
+    <string name="ob_point_private">פרטי מהיסוד: בטלפון שלך, מוצפן מקצה לקצה</string>
+    <string name="ob_point_free">כל התכונות בחינם. בלי פרסומות, בלי הלוואות, בלי מכירת נתונים</string>
+    <string name="no_income_yet">עדיין לא תועדה הכנסה בתקופה הזו</string>
+    <string name="spent_more_than_income">ההוצאות גבוהות מההכנסות של התקופה</string>
+    <string name="get_address">קבלת כתובת להעברה</string>
+    <string name="new_address">כתובת חדשה</string>
+    <string name="turn_off">כיבוי</string>
+    <string name="email_forwarding_privacy">אפשר להעביר לכתובת הזו קבלות על הזמנות, נסיעות ואוכל. השרת מצפין כל אימייל לטלפון הזה מיד ומוחק אותו ברגע ש־Penny קרא אותו כאן.</string>
+    <string name="community_merchants">שמות בתי עסק מהקהילה</string>
+    <string name="community_merchants_hint">שיתוף אנונימי של שמות מוטבים וקטגוריות, אף פעם לא סכומים, עם אנשים באזור שלך, וקבלת שמות נקיים בחזרה. כבוי כברירת מחדל.</string>
+</resources>

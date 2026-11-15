@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">Harcanabilir tutara tek bakışta göz at</string>
+    <string name="widget_quick_desc">Tek dokunuşla işlem ekle veya şablon kullan</string>
+    <string name="widget_envelopes_desc">Zarflar ve yaklaşan faturalar</string>
+    <string name="widget_safe_label">Harcanabilir</string>
+    <string name="widget_quick_label">Hızlı ekle</string>
+    <string name="widget_envelopes_label">Bütçeler</string>
+    <string name="shortcut_add">Ekle</string>
+    <string name="tile_label">Penny’ye ekle</string>
+</resources>

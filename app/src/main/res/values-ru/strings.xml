@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand name comes from Brand.kt as @string/brand_name (generated). -->
+    <string name="tagline">Знайте, сколько можно потратить.</string>
+
+    <!-- Common -->
+    <string name="save">Сохранить</string>
+    <string name="cancel">Отмена</string>
+    <string name="delete">Удалить</string>
+    <string name="undo">Отменить</string>
+    <string name="restore">Восстановить</string>
+    <string name="retry">Повторить</string>
+    <string name="back">Назад</string>
+    <string name="next">Далее</string>
+    <string name="skip">Пропустить</string>
+    <string name="done">Готово</string>
+    <string name="none">Нет</string>
+    <string name="loading">Загрузка</string>
+    <string name="error_generic">Не удалось прочитать ваши данные. Ничего не потеряно.</string>
+
+    <!-- Onboarding (OB-01) -->
+    <string name="ob_step">Шаг %1$d из %2$d</string>
+    <string name="ob_region_title">Где вы живёте?</string>
+    <string name="ob_region_body">От этого зависят валюта, формат чисел и обычный цикл выплат. Всё это можно изменить позже.</string>
+    <string name="ob_cycle_title">Когда приходят деньги?</string>
+    <string name="ob_cycle_body">Бюджет следует вашему реальному циклу выплат.</string>
+    <string name="ob_account_title">Сколько у вас сейчас наличных?</string>
+    <string name="ob_account_body">Начнём с одного счёта наличных. Банки и карты можно добавить позже.</string>
+    <string name="ob_cash_name">Наличные</string>
+    <string name="ob_finish">Начать работу с %1$s</string>
+
+    <!-- Cycles -->
+    <string name="cycle_monthly">Ежемесячно, с %1$d-го числа</string>
+    <string name="cycle_monthly_last">Ежемесячно, с последнего дня</string>
+    <string name="cycle_semimonthly">Дважды в месяц: %1$d-го числа и в последний день</string>
+    <string name="cycle_weekly">Еженедельно</string>
+    <string name="cycle_biweekly">Раз в две недели</string>
+    <string name="cycle_fourweekly">Раз в четыре недели</string>
+    <string name="cycle_quarterly">Ежеквартально</string>
+    <string name="cycle_yearly">Ежегодно</string>
+    <string name="cycle_onincome">При поступлении денег</string>
+    <string name="cycle_default_suffix">%1$s (обычно здесь)</string>
+    <string name="cycle_start_day">День начала месяца</string>
+
+    <!-- Home -->
+    <string name="safe_to_spend">Можно потратить</string>
+    <string name="per_day">%1$s в день</string>
+    <string name="on_pace">В рамках плана</string>
+    <string name="ahead_of_pace">Расходы опережают календарь</string>
+    <string name="period_range">%1$s – %2$s</string>
+    <string name="prev_period">Предыдущий период</string>
+    <string name="next_period">Следующий период</string>
+    <string name="this_period">К текущему периоду</string>
+    <string name="income_spent">Доход %1$s · Потрачено %2$s</string>
+    <string name="accounts">Счета</string>
+    <string name="transactions">Операции</string>
+    <string name="empty_period_title">В этом периоде пока ничего нет</string>
+    <string name="empty_period_body">Нажмите «Добавить», чтобы записать первую операцию.</string>
+    <string name="add_transaction">Добавить операцию</string>
+    <string name="trash">Корзина</string>
+    <string name="settings">Настройки</string>
+    <string name="today">Сегодня</string>
+    <string name="yesterday">Вчера</string>
+    <string name="deleted_tx">Операция удалена</string>
+    <string name="saved_tx">Операция сохранена</string>
+    <string name="uncategorised">Без категории</string>
+    <string name="transfer_to">На %1$s</string>
+    <string name="swipe_delete_hint">Проведите влево, чтобы удалить</string>
+
+    <!-- Transaction form (TX-02) -->
+    <string name="new_transaction">Новая операция</string>
+    <string name="edit_transaction">Изменить операцию</string>
+    <string name="type_expense">Расход</string>
+    <string name="type_income">Доход</string>
+    <string name="type_transfer">Перевод</string>
+    <string name="type_refund">Возврат</string>
+    <string name="type_adjustment">Корректировка</string>
+    <string name="type_opening">Начальный остаток</string>
+    <string name="field_type">Тип</string>
+    <string name="field_amount">Сумма</string>
+    <string name="field_amount_hint">Используйте + − × ÷ для расчёта</string>
+    <string name="amount_result">= %1$s</string>
+    <string name="amount_rounded">= %1$s (округлено)</string>
+    <string name="field_currency">Валюта</string>
+    <string name="field_account">Счёт</string>
+    <string name="field_to_account">На счёт</string>
+    <string name="field_to_amount">Полученная сумма</string>
+    <string name="field_category">Категория</string>
+    <string name="field_payee">Получатель</string>
+    <string name="field_date">Дата</string>
+    <string name="field_time">Время</string>
+    <string name="field_no_time">Без времени</string>
+    <string name="field_note">Заметка</string>
+    <string name="field_tags">Метки</string>
+    <string name="field_tags_hint">Разделяйте запятыми</string>
+    <string name="field_status">Статус</string>
+    <string name="status_pending">В обработке</string>
+    <string name="status_cleared">Проведена</string>
+    <string name="status_reconciled">Сверена</string>
+    <string name="field_direction">Направление</string>
+    <string name="direction_in">Увеличивает остаток</string>
+    <string name="direction_out">Уменьшает остаток</string>
+    <string name="field_private">Личное</string>
+    <string name="field_private_body">Скрывать получателя, заметку и вложения от других участников общих пространств</string>
+    <string name="field_exclude_budget">Не учитывать в бюджете</string>
+    <string name="field_exclude_reports">Не учитывать в отчётах</string>
+    <string name="field_splits">Разделение</string>
+    <string name="field_attachments">Вложения</string>
+    <string name="future_scheduled">Дата в будущем: операция будет считаться запланированной.</string>
+    <string name="history">История</string>
+    <string name="pick_date">Выберите дату</string>
+    <string name="pick_time">Выберите время</string>
+    <string name="clear_time">Сбросить время</string>
+
+    <!-- Validation (TX-08) -->
+    <string name="err_amount_empty">Введите сумму</string>
+    <string name="err_amount_invalid">Это недопустимая сумма</string>
+    <string name="err_amount_positive">Сумма должна быть больше нуля. Доход это или расход, задаёт тип.</string>
+    <string name="err_amount_decimals_none">У %1$s нет дробной части</string>
+    <string name="err_amount_decimals">Для %1$s допускается знаков после запятой: %2$d</string>
+    <string name="err_amount_large">Слишком большая сумма</string>
+    <string name="err_divide_zero">Делить на ноль нельзя</string>
+    <string name="err_account_required">Выберите счёт</string>
+    <string name="err_transfer_target">Выберите счёт, на который поступят деньги</string>
+    <string name="err_transfer_same">Выберите другой счёт для перевода</string>
+    <string name="err_transfer_to_amount">Введите сумму, полученную в другой валюте</string>
+    <string name="err_direction">Укажите, увеличивает это остаток или уменьшает</string>
+    <string name="err_splits">Сумма частей должна совпадать с общей суммой</string>
+    <string name="tx_not_found">Этой операции больше нет.</string>
+
+    <!-- History (TX-05) -->
+    <string name="history_title">История</string>
+    <string name="history_created">Создано</string>
+    <string name="history_edited">Изменено</string>
+    <string name="history_deleted">Удалено</string>
+    <string name="history_restored">Восстановлено</string>
+    <string name="history_undo">Отменено</string>
+    <string name="history_reverted">Возвращено к версии %1$d</string>
+    <string name="history_version">Версия %1$d</string>
+    <string name="history_by">%1$s · %2$s</string>
+    <string name="history_you">Вы</string>
+    <string name="history_revert">Вернуть эту версию</string>
+    <string name="history_change">%1$s: %2$s → %3$s</string>
+    <string name="history_set">%1$s: %2$s</string>
+    <string name="history_empty">Изменений пока нет.</string>
+    <string name="reverted">Возвращено</string>
+
+    <!-- Trash (TX-03, HS-02) -->
+    <string name="trash_title">Корзина</string>
+    <string name="trash_body">Удалённые операции хранятся здесь 30 дней.</string>
+    <string name="trash_empty">Корзина пуста</string>
+    <string name="delete_forever">Удалить навсегда</string>
+    <string name="restored">Восстановлено</string>
+    <string name="deleted_forever">Удалено навсегда</string>
+
+    <!-- Settings -->
+    <string name="settings_region">Регион</string>
+    <string name="settings_region_body">Валюта, формат чисел и цикл выплат зависят от региона. Существующие операции сохраняют свою валюту.</string>
+    <string name="settings_sample">Пример: %1$s</string>
+    <string name="region_changed">Регион изменён: %1$s</string>
+    <string name="settings_cycle">Цикл выплат</string>
+    <string name="settings_about">%1$s бесплатен. Без рекламы, кредитов и продажи данных.</string>
+
+    <plurals name="days_left">
+        <item quantity="one">Остался %d день</item>
+        <item quantity="few">Осталось %d дня</item>
+        <item quantity="many">Осталось %d дней</item>
+        <item quantity="other">Осталось %d дня</item>
+    </plurals>
+    <plurals name="unconverted">
+        <item quantity="one">%d операция в другой валюте пока не учтена</item>
+        <item quantity="few">%d операции в других валютах пока не учтены</item>
+        <item quantity="many">%d операций в других валютах пока не учтены</item>
+        <item quantity="other">%d операции в других валютах пока не учтены</item>
+    </plurals>
+    <plurals name="trash_count">
+        <item quantity="one">%d элемент</item>
+        <item quantity="few">%d элемента</item>
+        <item quantity="many">%d элементов</item>
+        <item quantity="other">%d элемента</item>
+    </plurals>
+</resources>

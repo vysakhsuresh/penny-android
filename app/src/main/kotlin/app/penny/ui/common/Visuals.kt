@@ -1,5 +1,8 @@
 package app.penny.ui.common
 
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -171,7 +174,16 @@ fun SwipeableTx(key: String, onDelete: () -> Unit, onCategory: (() -> Unit)?, co
             else -> Unit
         }
     }
+    // Swipes have TalkBack equivalents: "Delete" and "Category" appear in the actions menu (accessibility, NN-9).
+    val deleteLabel = stringResource(R.string.delete)
+    val categoryLabel = stringResource(R.string.field_category)
     SwipeToDismissBox(
+        modifier = Modifier.semantics {
+            customActions = listOfNotNull(
+                CustomAccessibilityAction(deleteLabel) { onDelete(); true },
+                onCategory?.let { c -> CustomAccessibilityAction(categoryLabel) { c(); true } },
+            )
+        },
         state = state,
         enableDismissFromStartToEnd = onCategory != null,
         backgroundContent = {
@@ -184,7 +196,6 @@ fun SwipeableTx(key: String, onDelete: () -> Unit, onCategory: (() -> Unit)?, co
             }
         },
     ) { Box(Modifier.background(MaterialTheme.colorScheme.surfaceContainerLowest)) { content() } }
-    @Suppress("UNUSED_EXPRESSION") key
 }
 
 @Composable

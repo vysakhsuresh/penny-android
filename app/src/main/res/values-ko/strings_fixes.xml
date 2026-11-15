@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_failed">저장되지 않았어요. 바뀐 것은 없으니 다시 시도하세요.</string>
+    <string name="no_app_for_action">이 휴대폰에는 이것을 열 수 있는 앱이 없어요.</string>
+    <string name="import_read_failed">파일을 읽지 못했어요. 은행 내보내기 파일(CSV, OFX, QIF, CAMT, MT940)인지 확인하세요.</string>
+    <string name="template_default_name">템플릿</string>
+    <string name="item_default_name">항목</string>
+</resources>

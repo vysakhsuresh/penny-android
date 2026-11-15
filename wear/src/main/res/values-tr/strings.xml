@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Penny</string>
+    <string name="safe_to_spend">Harcanabilir</string>
+    <string name="per_day_left">Günde %1$s · %2$d gün kaldı</string>
+    <string name="say_it">Harcamayı söyle</string>
+    <string name="added">Telefonuna eklendi</string>
+    <string name="not_understood">Tutar anlaşılamadı</string>
+    <string name="no_phone">Telefon bağlı değil. Bilinen son tutar gösteriliyor.</string>
+</resources>

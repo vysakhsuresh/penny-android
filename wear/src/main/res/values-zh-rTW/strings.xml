@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Penny</string>
+    <string name="safe_to_spend">可安心花用</string>
+    <string name="per_day_left">每天 %1$s · 剩下 %2$d 天</string>
+    <string name="say_it">說出一筆支出</string>
+    <string name="added">已在手機上新增</string>
+    <string name="not_understood">沒有聽清楚金額</string>
+    <string name="no_phone">未連線到手機。顯示上次已知的數字。</string>
+</resources>

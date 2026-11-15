@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">쓸 수 있는 돈을 한눈에</string>
+    <string name="widget_quick_desc">거래 추가나 템플릿 실행을 한 번에</string>
+    <string name="widget_envelopes_desc">봉투와 다가오는 청구서</string>
+    <string name="widget_safe_label">쓸 수 있는 돈</string>
+    <string name="widget_quick_label">빠른 추가</string>
+    <string name="widget_envelopes_label">예산</string>
+    <string name="shortcut_add">추가</string>
+    <string name="tile_label">Penny에 추가</string>
+</resources>

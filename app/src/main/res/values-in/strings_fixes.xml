@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_failed">Gagal menyimpan. Tidak ada yang berubah, coba lagi.</string>
+    <string name="no_app_for_action">Tidak ada aplikasi di ponsel ini yang bisa membukanya.</string>
+    <string name="import_read_failed">File itu tidak bisa dibaca. Pastikan itu ekspor bank (CSV, OFX, QIF, CAMT, atau MT940).</string>
+    <string name="template_default_name">Template</string>
+    <string name="item_default_name">Item</string>
+</resources>

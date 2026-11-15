@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tagline">جانیں کہ کتنا خرچ کے لیے محفوظ ہے۔</string>
+
+    <!-- Common -->
+    <string name="save">محفوظ کریں</string>
+    <string name="cancel">منسوخ کریں</string>
+    <string name="delete">حذف کریں</string>
+    <string name="undo">کالعدم کریں</string>
+    <string name="restore">بحال کریں</string>
+    <string name="retry">دوبارہ کوشش کریں</string>
+    <string name="back">واپس</string>
+    <string name="next">اگلا</string>
+    <string name="skip">چھوڑیں</string>
+    <string name="done">ہو گیا</string>
+    <string name="none">کوئی نہیں</string>
+    <string name="loading">لوڈ ہو رہا ہے</string>
+    <string name="error_generic">آپ کا ڈیٹا پڑھتے ہوئے کچھ غلط ہو گیا۔ کچھ بھی ضائع نہیں ہوا۔</string>
+
+    <!-- Onboarding (OB-01) -->
+    <string name="ob_step">مرحلہ %1$d از %2$d</string>
+    <string name="ob_region_title">آپ کہاں رہتے ہیں؟</string>
+    <string name="ob_region_body">اس سے آپ کی کرنسی، نمبر فارمیٹ اور معمول کا تنخواہ سائیکل طے ہوتا ہے۔ آپ یہ سب بعد میں بدل سکتے ہیں۔</string>
+    <string name="ob_cycle_title">پیسے کب آتے ہیں؟</string>
+    <string name="ob_cycle_body">آپ کا بجٹ آپ کے اصل تنخواہ سائیکل کے مطابق چلتا ہے۔</string>
+    <string name="ob_account_title">ابھی آپ کے پاس کتنی نقدی ہے؟</string>
+    <string name="ob_account_body">ہم ایک نقد اکاؤنٹ سے شروع کرتے ہیں۔ بینک اور کارڈ بعد میں شامل کریں۔</string>
+    <string name="ob_cash_name">نقد</string>
+    <string name="ob_finish">%1$s استعمال کرنا شروع کریں</string>
+
+    <!-- Cycles -->
+    <string name="cycle_monthly">ماہانہ، %1$d تاریخ سے</string>
+    <string name="cycle_monthly_last">ماہانہ، آخری دن سے</string>
+    <string name="cycle_semimonthly">مہینے میں دو بار، %1$d تاریخ اور آخری دن</string>
+    <string name="cycle_weekly">ہفتہ وار</string>
+    <string name="cycle_biweekly">ہر دو ہفتے</string>
+    <string name="cycle_fourweekly">ہر چار ہفتے</string>
+    <string name="cycle_quarterly">سہ ماہی</string>
+    <string name="cycle_yearly">سالانہ</string>
+    <string name="cycle_onincome">جب پیسے آئیں</string>
+    <string name="cycle_default_suffix">%1$s (یہاں معمول)</string>
+    <string name="cycle_start_day">مہینے کا آغاز کا دن</string>
+
+    <!-- Home -->
+    <string name="safe_to_spend">خرچ کے لیے محفوظ</string>
+    <string name="per_day">%1$s روزانہ</string>
+    <string name="on_pace">رفتار ٹھیک ہے</string>
+    <string name="ahead_of_pace">خرچ کیلنڈر سے آگے چل رہا ہے</string>
+    <string name="period_range">%1$s – %2$s</string>
+    <string name="prev_period">پچھلی مدت</string>
+    <string name="next_period">اگلی مدت</string>
+    <string name="this_period">اس مدت پر واپس جائیں</string>
+    <string name="income_spent">آمدنی %1$s · خرچ %2$s</string>
+    <string name="accounts">اکاؤنٹس</string>
+    <string name="transactions">لین دین</string>
+    <string name="empty_period_title">اس مدت میں ابھی کچھ نہیں</string>
+    <string name="empty_period_body">اپنا پہلا لین دین درج کرنے کے لیے شامل کریں پر ٹیپ کریں۔</string>
+    <string name="add_transaction">لین دین شامل کریں</string>
+    <string name="trash">ردی کی ٹوکری</string>
+    <string name="settings">ترتیبات</string>
+    <string name="today">آج</string>
+    <string name="yesterday">کل</string>
+    <string name="deleted_tx">لین دین حذف ہو گیا</string>
+    <string name="saved_tx">لین دین محفوظ ہو گیا</string>
+    <string name="uncategorised">بغیر زمرہ</string>
+    <string name="transfer_to">%1$s کو</string>
+    <string name="swipe_delete_hint">حذف کرنے کے لیے بائیں سوائپ کریں</string>
+
+    <!-- Transaction form (TX-02) -->
+    <string name="new_transaction">نیا لین دین</string>
+    <string name="edit_transaction">لین دین میں ترمیم کریں</string>
+    <string name="type_expense">خرچ</string>
+    <string name="type_income">آمدنی</string>
+    <string name="type_transfer">منتقلی</string>
+    <string name="type_refund">رقم کی واپسی</string>
+    <string name="type_adjustment">ایڈجسٹمنٹ</string>
+    <string name="type_opening">ابتدائی بیلنس</string>
+    <string name="field_type">قسم</string>
+    <string name="field_amount">رقم</string>
+    <string name="field_amount_hint">حساب کے لیے + − × ÷ استعمال کریں</string>
+    <string name="amount_result">= %1$s</string>
+    <string name="amount_rounded">= %1$s (پورا کیا گیا)</string>
+    <string name="field_currency">کرنسی</string>
+    <string name="field_account">اکاؤنٹ</string>
+    <string name="field_to_account">کس اکاؤنٹ میں</string>
+    <string name="field_to_amount">موصول رقم</string>
+    <string name="field_category">زمرہ</string>
+    <string name="field_payee">وصول کنندہ</string>
+    <string name="field_date">تاریخ</string>
+    <string name="field_time">وقت</string>
+    <string name="field_no_time">کوئی وقت نہیں</string>
+    <string name="field_note">نوٹ</string>
+    <string name="field_tags">ٹیگز</string>
+    <string name="field_tags_hint">کوما سے الگ کریں</string>
+    <string name="field_status">حیثیت</string>
+    <string name="status_pending">زیر التوا</string>
+    <string name="status_cleared">کلیئر</string>
+    <string name="status_reconciled">مطابقت شدہ</string>
+    <string name="field_direction">سمت</string>
+    <string name="direction_in">بیلنس میں جمع ہوتا ہے</string>
+    <string name="direction_out">بیلنس سے کم ہوتا ہے</string>
+    <string name="field_private">نجی</string>
+    <string name="field_private_body">مشترکہ اسپیسز میں دوسروں سے وصول کنندہ، نوٹ اور منسلکات چھپائیں</string>
+    <string name="field_exclude_budget">بجٹ میں شامل نہ کریں</string>
+    <string name="field_exclude_reports">رپورٹس میں شامل نہ کریں</string>
+    <string name="field_splits">تقسیم</string>
+    <string name="field_attachments">منسلکات</string>
+    <string name="future_scheduled">آئندہ تاریخ: یہ شیڈول شدہ شمار ہوگا۔</string>
+    <string name="history">تاریخچہ</string>
+    <string name="pick_date">تاریخ منتخب کریں</string>
+    <string name="pick_time">وقت منتخب کریں</string>
+    <string name="clear_time">وقت صاف کریں</string>
+
+    <!-- Validation (TX-08) -->
+    <string name="err_amount_empty">رقم درج کریں</string>
+    <string name="err_amount_invalid">یہ درست رقم نہیں ہے</string>
+    <string name="err_amount_positive">رقم صفر سے زیادہ ہونی چاہیے۔ قسم سے طے ہوتا ہے کہ یہ آمدنی ہے یا خرچ۔</string>
+    <string name="err_amount_decimals_none">%1$s میں اعشاریہ نہیں ہوتا</string>
+    <string name="err_amount_decimals">%1$s میں %2$d اعشاری مقامات کی اجازت ہے</string>
+    <string name="err_amount_large">یہ رقم بہت زیادہ ہے</string>
+    <string name="err_divide_zero">صفر سے تقسیم نہیں ہو سکتا</string>
+    <string name="err_account_required">اکاؤنٹ منتخب کریں</string>
+    <string name="err_transfer_target">وہ اکاؤنٹ منتخب کریں جس میں پیسے جائیں گے</string>
+    <string name="err_transfer_same">منتقلی کے لیے کوئی دوسرا اکاؤنٹ منتخب کریں</string>
+    <string name="err_transfer_to_amount">دوسری کرنسی میں موصول رقم درج کریں</string>
+    <string name="err_direction">منتخب کریں کہ یہ جمع کرتا ہے یا کم کرتا ہے</string>
+    <string name="err_splits">تقسیم کا مجموعہ کل رقم کے برابر ہونا چاہیے</string>
+    <string name="tx_not_found">یہ لین دین اب موجود نہیں ہے۔</string>
+
+    <!-- History (TX-05) -->
+    <string name="history_title">تاریخچہ</string>
+    <string name="history_created">بنایا گیا</string>
+    <string name="history_edited">ترمیم کی گئی</string>
+    <string name="history_deleted">حذف کیا گیا</string>
+    <string name="history_restored">بحال کیا گیا</string>
+    <string name="history_undo">کالعدم کیا گیا</string>
+    <string name="history_reverted">ورژن %1$d پر واپس کیا گیا</string>
+    <string name="history_version">ورژن %1$d</string>
+    <string name="history_by">%1$s · %2$s</string>
+    <string name="history_you">آپ</string>
+    <string name="history_revert">اس ورژن پر واپس جائیں</string>
+    <string name="history_change">%1$s: %2$s ← %3$s</string>
+    <string name="history_set">%1$s: %2$s</string>
+    <string name="history_empty">ابھی تک کوئی تبدیلی درج نہیں ہوئی۔</string>
+    <string name="reverted">واپس کر دیا گیا</string>
+
+    <!-- Trash (TX-03, HS-02) -->
+    <string name="trash_title">ردی کی ٹوکری</string>
+    <string name="trash_body">حذف شدہ لین دین یہاں 30 دن تک رہتے ہیں۔</string>
+    <string name="trash_empty">ردی کی ٹوکری خالی ہے</string>
+    <string name="delete_forever">ہمیشہ کے لیے حذف کریں</string>
+    <string name="restored">بحال ہو گیا</string>
+    <string name="deleted_forever">ہمیشہ کے لیے حذف ہو گیا</string>
+
+    <!-- Settings -->
+    <string name="settings_region">علاقہ</string>
+    <string name="settings_region_body">کرنسی، نمبر فارمیٹ اور تنخواہ سائیکل علاقے کے مطابق ہوتے ہیں۔ موجودہ لین دین اپنی کرنسی برقرار رکھتے ہیں۔</string>
+    <string name="settings_sample">مثال: %1$s</string>
+    <string name="region_changed">علاقہ بدل کر %1$s ہو گیا</string>
+    <string name="settings_cycle">تنخواہ سائیکل</string>
+    <string name="settings_about">%1$s مفت ہے۔ نہ اشتہارات، نہ قرض، نہ ڈیٹا کی فروخت۔</string>
+
+    <plurals name="days_left">
+        <item quantity="one">%d دن باقی</item>
+        <item quantity="other">%d دن باقی</item>
+    </plurals>
+    <plurals name="unconverted">
+        <item quantity="one">دوسری کرنسی میں %d لین دین ابھی شمار نہیں ہوا</item>
+        <item quantity="other">دوسری کرنسیوں میں %d لین دین ابھی شمار نہیں ہوئے</item>
+    </plurals>
+    <plurals name="trash_count">
+        <item quantity="one">%d آئٹم</item>
+        <item quantity="other">%d آئٹمز</item>
+    </plurals>
+</resources>

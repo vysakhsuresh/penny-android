@@ -73,10 +73,16 @@ object Bills {
     }
 
     /** Sums for safe-to-spend (BU-07): open bills and expected income from today to period end. */
-    fun committedAndExpected(up: List<Upcoming>, period: Period, today: LocalDate): Pair<Long, Long> {
+    fun committedAndExpected(
+        up: List<Upcoming>, period: Period, today: LocalDate,
+        base: String? = null, fx: app.penny.core.budget.FxConverter = app.penny.core.budget.FxConverter.SameCurrencyOnly,
+    ): Pair<Long, Long> {
         val open = up.filter { it.open && it.date in period && !it.date.isBefore(today) }
-        val committed = open.filter { it.recurring.type == TxType.EXPENSE || it.recurring.kind == RecurringKind.SAVINGS }.sumOf { it.amountMinor }
-        val expected = open.filter { it.recurring.type == TxType.INCOME }.sumOf { it.amountMinor }
+        // In the book's currency: a $10 subscription in an INR book is converted, never read as 10 rupees.
+        // Without a rate it is left out here (the bill still shows in Bills with its own currency).
+        fun amt(u: Upcoming): Long = if (base == null) u.amountMinor else fx.convert(u.amountMinor, u.recurring.currency, base, u.date) ?: 0
+        val committed = open.filter { it.recurring.type == TxType.EXPENSE || it.recurring.kind == RecurringKind.SAVINGS }.sumOf(::amt)
+        val expected = open.filter { it.recurring.type == TxType.INCOME }.sumOf(::amt)
         return committed to expected
     }
 
@@ -88,7 +94,9 @@ object Bills {
     }
 
     /** RC-04: yearly cost of a subscription. */
-    fun yearlyCost(r: Recurring): Long = (r.amountMinor * Recurrence.perYear(r.schedule)).toLong()
+    fun yearlyCost(r: Recurring): Long = java.math.BigDecimal(r.amountMinor)
+        .multiply(java.math.BigDecimal(Recurrence.perYear(r.schedule)))
+        .setScale(0, java.math.RoundingMode.HALF_EVEN).toLong()
 
     data class Detected(val payee: String, val amountMinor: Long, val currency: String, val accountId: String, val categoryId: String?, val schedule: Recurrence, val count: Int)
 

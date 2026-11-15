@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exchange_rates">Wechselkurse</string>
+    <string name="rates_body">Penny rechnet mit dem Kurs vom Datum jeder Buchung um. Referenzkurse werden im WLAN geladen und auf dem Handy gespeichert; deine eigenen Kurse haben immer Vorrang.</string>
+    <string name="rates_updated">Referenzkurse bis %1$s</string>
+    <string name="rates_never">Noch keine Referenzkurse geladen</string>
+    <string name="rates_refreshed">Kurse aktualisiert</string>
+    <string name="rates_offline">Kursquelle nicht erreichbar. Versuch es im WLAN noch einmal.</string>
+    <string name="refresh_now">Jetzt aktualisieren</string>
+    <string name="add_manual_rate">Eigenen Kurs hinzufügen</string>
+    <string name="your_currencies">Deine Währungen heute</string>
+    <string name="no_rate">Kein Kurs</string>
+    <string name="manual_rates">Deine Kurse</string>
+    <string name="no_manual_rates">Noch keine. Füge einen hinzu, wenn deine Bank oder Wechselstube einen anderen Kurs berechnet hat.</string>
+    <string name="rate_in_x">Wert einer Einheit in %1$s</string>
+    <string name="record_value">Wert erfassen</string>
+    <string name="record_value_body">Was ist das heute wert? Der Verlauf der Werte fließt ins Nettovermögen ein.</string>
+    <string name="value_recorded">Wert erfasst</string>
+    <string name="valuations">Bewertungen</string>
+    <string name="share_group_link">Ansicht für Personen ohne App teilen</string>
+    <string name="group_link_text">Salden für „%1$s“ (nur lesen, läuft in 30 Tagen ab): %2$s</string>
+    <string name="usage_counts">Anonyme Nutzungszahlen teilen</string>
+    <string name="usage_counts_hint">Nur wie oft Funktionen genutzt werden, nie Beträge, Empfänger, Notizen oder etwas, das du eingegeben hast. Standardmäßig aus.</string>
+    <string name="usage_counts_none">Noch nichts gezählt.</string>
+    <string name="consent_until">Einwilligung bis %1$s</string>
+    <string name="reconsent">Einwilligung erneuern</string>
+    <string name="disconnect">Trennen</string>
+    <string name="disconnected">Getrennt. Die Bankverbindung und ihr gespeicherter Zugang wurden gelöscht; die Konten sind jetzt manuell.</string>
+    <string name="bank_needs_sync">Schalte oben die Synchronisierung ein, um eine Bank zu verbinden.</string>
+    <string name="connect_with_token">Mit Setup-Token verbinden</string>
+    <string name="connect_in_browser">Auf der sicheren Seite des Anbieters verbinden</string>
+    <string name="simplefin_help">Erstelle in deinem SimpleFIN-Bridge-Konto ein Setup-Token und füge es hier ein. Pennys Server tauscht es gegen einen Zugang; das Token wird nie auf diesem Handy gespeichert.</string>
+    <string name="setup_token">Setup-Token</string>
+    <string name="connect">Verbinden</string>
+    <string name="bank_connected">Bank verbunden. Buchungen kommen mit der nächsten Synchronisierung.</string>
+    <string name="bank_cancelled">Verbindung abgebrochen. Nichts wurde verknüpft.</string>
+    <plurals name="bank_synced"><item quantity="one">%d Buchung hinzugefügt oder aktualisiert</item><item quantity="other">%d Buchungen hinzugefügt oder aktualisiert</item></plurals>
+    <string name="automation">Automatisierung</string>
+    <string name="automation_sub">Tasker, Shortcuts und Webhooks</string>
+    <string name="automation_body">Verbinde Penny mit Automatisierungs-Apps und deinen eigenen Diensten. Alles bleibt auf diesem Handy, außer du legst eine Webhook-Adresse fest.</string>
+    <string name="automation_apps">Automatisierungs-Apps</string>
+    <string name="allow_automation_apps">Automatisierungs-Apps dürfen Buchungen hinzufügen</string>
+    <string name="allow_automation_hint">Tasker, Automate und ähnliche Apps können per Intent Buchungen hinzufügen. Deine Daten lesen können sie nie.</string>
+    <string name="deep_link_example">Oder öffne penny://add?amount=1250&amp;category=Groceries aus einer beliebigen App oder Verknüpfung (Betrag in kleinster Einheit).</string>
+    <string name="webhooks">Webhooks</string>
+    <string name="webhooks_body">Sende jede neue Buchung als signiertes JSON an deinen eigenen Server. Nutze nur eine Adresse, die du kontrollierst.</string>
+    <string name="webhook_url">Webhook-Adresse (https)</string>
+    <string name="https_only">Nur https-Adressen sind erlaubt</string>
+    <string name="signing_secret">Signaturschlüssel (prüfe den X-Penny-Signature-Header):</string>
+    <string name="create_secret">Schlüssel erstellen</string>
+    <string name="new_secret">Neuer Schlüssel</string>
+    <string name="copy">Kopieren</string>
+    <string name="send_now">Jetzt senden</string>
+    <plurals name="webhook_sent"><item quantity="one">%d Buchung gesendet</item><item quantity="other">%d Buchungen gesendet</item></plurals>
+    <string name="ob_get_started">Los geht’s</string>
+    <string name="ob_sample">Mit Beispieldaten erkunden</string>
+    <string name="ob_point_safe">Eine ruhige Zahl: was bis zum Zahltag frei verfügbar ist</string>
+    <string name="ob_point_world">Jede Währung, jeder Zahlungsrhythmus, so wie du wirklich mit Geld umgehst</string>
+    <string name="ob_point_private">Privat von Grund auf: auf deinem Handy, Ende-zu-Ende-verschlüsselt</string>
+    <string name="ob_point_free">Alle Funktionen kostenlos. Keine Werbung, keine Kredite, kein Datenverkauf</string>
+    <string name="no_income_yet">In diesem Zeitraum noch keine Einnahmen erfasst</string>
+    <string name="spent_more_than_income">Die Ausgaben liegen über den Einnahmen dieses Zeitraums</string>
+    <string name="get_address">Weiterleitungsadresse erhalten</string>
+    <string name="new_address">Neue Adresse</string>
+    <string name="turn_off">Ausschalten</string>
+    <string name="email_forwarding_privacy">Leite Belege für Bestellungen, Fahrten und Essen an diese Adresse weiter. Der Server verschlüsselt jede E-Mail sofort für dieses Handy und löscht sie, sobald Penny sie hier gelesen hat.</string>
+    <string name="community_merchants">Händlernamen aus der Community</string>
+    <string name="community_merchants_hint">Teile Empfängernamen und Kategorien, nie Beträge, anonym mit Menschen in deiner Region und erhalte saubere Namen zurück. Standardmäßig aus.</string>
+</resources>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="faq_q">
+        <item>Penny có thật sự miễn phí không?</item>
+        <item>Penny có đọc SMS của tôi không?</item>
+        <item>Dữ liệu của tôi được lưu ở đâu?</item>
+        <item>“Có thể chi” nghĩa là gì?</item>
+        <item>Làm sao để đổi chu kỳ lương?</item>
+        <item>Tôi lỡ xóa nhầm. Có lấy lại được không?</item>
+        <item>Làm sao để ghi khoản tiền tôi cho bạn bè mượn?</item>
+        <item>Tôi có thể dùng chung ngân sách với người thương không?</item>
+        <item>Làm sao để chuyển từ một ứng dụng quản lý tiền khác?</item>
+        <item>Vì sao giao dịch từ ứng dụng thanh toán của tôi không hiện ra?</item>
+        <item>Làm sao để dùng Penny trên điện thoại mới?</item>
+        <item>Tôi có thể dùng nhiều loại tiền tệ không?</item>
+        <item>Làm sao để khóa ứng dụng?</item>
+        <item>Làm sao để xóa toàn bộ dữ liệu của tôi?</item>
+    </string-array>
+    <string-array name="faq_a">
+        <item>Có. Mọi tính năng đều miễn phí. Penny Plus là tùy chọn, chỉ trang trải những chi phí tăng theo từng người dùng, như phí kết nối ngân hàng và dung lượng lưu trữ thêm. Không có quảng cáo và chúng tôi không bao giờ bán dữ liệu.</item>
+        <item>Không. Penny không bao giờ xin quyền đọc SMS. Penny có thể đọc thông báo từ các ứng dụng thanh toán và ngân hàng mà bạn cho phép, chỉ trên điện thoại của bạn, và bạn có thể tắt bất cứ lúc nào.</item>
+        <item>Trên điện thoại của bạn, đã được mã hóa. Nếu bạn bật đồng bộ, dữ liệu được mã hóa trên điện thoại trước khi gửi đi, nên máy chủ chỉ lưu dữ liệu mà nó không đọc được.</item>
+        <item>Đó là số tiền bạn có thể chi từ bây giờ đến kỳ lương tới mà không lỡ hóa đơn hay mục tiêu tiết kiệm: thu nhập, trừ hóa đơn còn phải trả, trừ khoản bạn để dành, trừ khoản bạn đã chi.</item>
+        <item>Mở Cài đặt, Hồ sơ, Chu kỳ lương. Chọn hằng tháng từ bất kỳ ngày nào, hai lần mỗi tháng, hằng tuần, hai tuần một lần, bốn tuần một lần, hoặc “khi tiền về”. Lịch sử được nhóm lại và không mất gì.</item>
+        <item>Có. Ngay sau khi xóa, chạm Hoàn tác. Sau đó, mở Cài đặt, Thùng rác: mục đã xóa được giữ ở đó 30 ngày. Mọi thay đổi cũng có trong Lịch sử, nơi bạn có thể quay lại phiên bản trước.</item>
+        <item>Mở thẻ Mọi người và chạm Ghi khoản cho mượn. Chọn người, số tiền và bạn đã đưa hay đã nhận. Penny giữ số dư liên tục và có thể soạn sẵn một lời nhắc nhẹ nhàng để bạn gửi.</item>
+        <item>Có. Bật đồng bộ, rồi mở Cài đặt, Không gian chung, và tạo một không gian. Mời người thương bằng một đường liên kết. Mỗi người có đăng nhập và vai trò riêng, và bạn có thể giữ riêng tư các khoản chi cá nhân.</item>
+        <item>Xuất tệp CSV từ ứng dụng cũ hoặc ngân hàng, rồi mở Cài đặt, Dữ liệu và sao lưu, Nhập. Penny nhận ra tệp từ nhiều ứng dụng và hiện bản xem trước kèm các mục trùng lặp trước khi thêm.</item>
+        <item>Kiểm tra Cài đặt, Ghi nhận: “Đọc thông báo thanh toán” phải được bật, và Penny phải được cấp quyền truy cập thông báo trong cài đặt điện thoại. Chỉ các ứng dụng có trong danh sách cho khu vực của bạn, cùng những ứng dụng bạn thêm, mới được đọc.</item>
+        <item>Bật đồng bộ trên điện thoại cũ và ghi lại cụm từ khôi phục. Trên điện thoại mới, đăng nhập bằng cùng email và nhập cụm từ đó. Hoặc khôi phục một tệp sao lưu từ thư mục của bạn.</item>
+        <item>Có. Mỗi tài khoản có loại tiền riêng. Tổng số dùng loại tiền chính của bạn theo tỷ giá vào ngày giao dịch, và mục nào chưa có tỷ giá sẽ được ghi rõ, không bao giờ đoán.</item>
+        <item>Mở Cài đặt, Bảo mật, Khóa ứng dụng. Đặt mã PIN và cho phép dùng vân tay hoặc khuôn mặt. Bạn cũng có thể chặn chụp màn hình và chọn sau bao lâu ứng dụng khóa lại.</item>
+        <item>Mở Cài đặt, Dữ liệu và sao lưu, Xóa mọi thứ trên điện thoại này. Nếu đang bật đồng bộ, hãy xóa cả tài khoản đồng bộ trong Đồng bộ và ngân hàng. Hãy xuất dữ liệu trước nếu bạn có thể cần đến.</item>
+    </string-array>
+
+    <string-array name="guide_start">
+        <item>Chọn khu vực của bạn. Khu vực quyết định loại tiền, cách viết số và chu kỳ lương thường gặp. Bạn có thể đổi tất cả sau.</item>
+        <item>Cho Penny biết khi nào tiền về. Ngân sách của bạn theo chu kỳ lương thật, không theo tháng dương lịch.</item>
+        <item>Nhập số tiền mặt bạn đang có. Thêm ngân hàng, ví và thẻ sau trong Tài khoản.</item>
+        <item>Chạm nút dấu cộng để thêm một khoản chi: nhập số tiền, chọn danh mục, lưu. Chỉ mất khoảng ba giây.</item>
+        <item>Trang chủ hiện một con số: số tiền có thể chi đến ngày lương tới.</item>
+    </string-array>
+    <string-array name="guide_safe">
+        <item>Có thể chi bắt đầu từ thu nhập của kỳ này, kể cả khoản lương bạn đang chờ nhưng chưa nhận.</item>
+        <item>Sau đó trừ các hóa đơn còn phải trả trong kỳ và khoản bạn để dành cho mục tiêu.</item>
+        <item>Rồi trừ khoản bạn đã chi. Chuyển tiền giữa các tài khoản của chính bạn không bao giờ được tính.</item>
+        <item>“Mỗi ngày” chia số còn lại cho số ngày còn lại trong kỳ.</item>
+        <item>Nếu chi tiêu đi nhanh hơn lịch, Trang chủ hiện một ghi chú màu hổ phách nhẹ nhàng. Penny không bao giờ dùng màu đỏ cho tiền của bạn.</item>
+    </string-array>
+    <string-array name="guide_budget">
+        <item>Một phong bì là số tiền dành cho một phần cuộc sống, như ăn uống hay đi lại, trong mỗi kỳ.</item>
+        <item>Mở Ngân sách và chạm Dùng mẫu, hoặc thêm từng phong bì một.</item>
+        <item>Chọn cách xử lý tiền còn dư: bắt đầu lại, chuyển sang kỳ sau, hoặc chuyển sang tối đa đến một mức.</item>
+        <item>Nếu một phong bì bị vượt, chạm Bù từ để chuyển tiền từ phong bì còn dư. Việc này được ghi lại và có thể hoàn tác.</item>
+        <item>Muốn mỗi đồng đều có việc riêng? Bật ngân sách từ số không trong Cài đặt hồ sơ.</item>
+    </string-array>
+    <string-array name="guide_cycle">
+        <item>Nhiều người nhận lương hằng tháng nhưng không phải ngày 1; người khác nhận hai tuần một lần, hai lần mỗi tháng, hoặc khi một công việc trả tiền.</item>
+        <item>Mở Cài đặt, Hồ sơ, Chu kỳ lương, và chọn chu kỳ khớp với lương của bạn.</item>
+        <item>“Khi tiền về” bắt đầu kỳ mới mỗi khi có khoản thu nhập trên một ngưỡng, phù hợp với việc làm tự do và tiền gia đình gửi từ nước ngoài.</item>
+        <item>Đổi chu kỳ sẽ nhóm lại lịch sử và có thể hoàn tác.</item>
+    </string-array>
+    <string-array name="guide_capture">
+        <item>Bật thông báo thanh toán trong Cài đặt, Ghi nhận. Penny chỉ đọc ứng dụng thanh toán và ngân hàng, trên điện thoại của bạn.</item>
+        <item>Chia sẻ tin nhắn, hóa đơn hoặc sao kê từ bất kỳ ứng dụng nào sang Penny.</item>
+        <item>Quét hóa đơn bằng máy ảnh; Penny đọc nó ngay trên điện thoại.</item>
+        <item>Nói một giao dịch bằng giọng nói, như “250 tiền đi chợ hôm qua”.</item>
+        <item>Mục ghi nhận được chờ trong Xem lại. Sau mười mục liên tiếp từ một ứng dụng mà không cần sửa, Penny đề nghị tự động thêm chúng.</item>
+    </string-array>
+    <string-array name="guide_people">
+        <item>Ghi khoản tiền bạn cho mượn hoặc đi mượn trong thẻ Mọi người. Penny dùng từ ngữ trung lập: sẽ nhận và sẽ đưa.</item>
+        <item>Trả lại từng phần cũng được; thêm một mục cho mỗi lần.</item>
+        <item>Nhóm chia chi phí chung đều nhau, theo số tiền cụ thể, phần trăm, số phần hoặc theo từng món.</item>
+        <item>Đơn giản hóa nợ tìm ra số lần trả ít nhất để mọi người xong xuôi.</item>
+        <item>Không gian chung giúp cả nhà cùng lập ngân sách, mỗi người có đăng nhập và vai trò riêng.</item>
+    </string-array>
+    <string-array name="guide_bills">
+        <item>Thêm mỗi hóa đơn một lần, kèm tần suất lặp lại. Penny tính trước nó trong số tiền có thể chi.</item>
+        <item>Khi đã trả hóa đơn, đánh dấu đã trả; giao dịch được tạo sẵn cho bạn. Hoặc để Penny tự động thêm.</item>
+        <item>Bỏ qua hoặc đổi một lần mà không ảnh hưởng các lần khác, hoặc đổi “lần này và các lần sau”.</item>
+        <item>Gói đăng ký hiện chi phí cả năm và thời điểm tăng giá, kèm một tin nhắn hủy soạn sẵn.</item>
+        <item>Khoản trả góp hiện toàn bộ lịch trả và số tiền lãi tiết kiệm được nếu trả trước.</item>
+    </string-array>
+    <string-array name="guide_goals">
+        <item>Một mục tiêu có số tiền cần đạt và, nếu muốn, một ngày hạn. Penny cho biết cần để dành bao nhiêu mỗi kỳ.</item>
+        <item>Thêm tiền khi bạn tiết kiệm; rút tiền ra khi bạn cần.</item>
+        <item>Đặt một khoản tự động mỗi kỳ để nó được tính vào số tiền có thể chi.</item>
+        <item>Quỹ khẩn cấp gợi ý mức cần đạt dựa trên chi tiêu thiết yếu thực tế của bạn.</item>
+    </string-array>
+    <string-array name="guide_import">
+        <item>Xuất tệp CSV từ ngân hàng hoặc ứng dụng trước đây.</item>
+        <item>Mở Cài đặt, Dữ liệu và sao lưu, Nhập từ tệp.</item>
+        <item>Penny tự nhận ra nhiều ứng dụng; với tệp ngân hàng, hãy kiểm tra các cột.</item>
+        <item>Xem lại bản xem trước. Mục có thể trùng lặp sẽ được bỏ qua trừ khi bạn chọn khác.</item>
+        <item>Chạm Nhập. Bạn có thể hoàn tác cả lần nhập chỉ với một chạm.</item>
+    </string-array>
+    <string-array name="guide_undo">
+        <item>Mọi thay đổi trong Penny đều có thể hoàn tác trong vài giây bằng nút Hoàn tác.</item>
+        <item>Mục đã xóa chờ trong Thùng rác 30 ngày.</item>
+        <item>Mỗi giao dịch, tài khoản và phong bì có Lịch sử ghi lại mọi thay đổi, ai thực hiện và khi nào.</item>
+        <item>Chạm “Quay lại phiên bản này” để trở về. Bản thân việc quay lại cũng có thể hoàn tác.</item>
+    </string-array>
+    <string-array name="guide_privacy">
+        <item>Dữ liệu của bạn nằm trên điện thoại, trong một cơ sở dữ liệu được mã hóa.</item>
+        <item>Đồng bộ mã hóa trên điện thoại trước khi gửi; máy chủ không đọc được dữ liệu tiền bạc của bạn.</item>
+        <item>Penny không hiện quảng cáo, không cho vay và không bán dữ liệu.</item>
+        <item>Số liệu đếm ẩn danh là tùy chọn, giúp cải thiện ứng dụng và không bao giờ chứa số tiền, người nhận hay ghi chú.</item>
+    </string-array>
+    <string-array name="guide_sync">
+        <item>Bật đồng bộ trong Cài đặt, Đồng bộ và ngân hàng, bằng email của bạn.</item>
+        <item>Ghi lại cụm từ khôi phục 24 từ. Cụm từ này mở dữ liệu của bạn trên điện thoại mới và khôi phục bản sao lưu đã mã hóa.</item>
+        <item>Trên điện thoại mới, đăng nhập bằng cùng email và nhập cụm từ đó.</item>
+        <item>Chọn thư mục sao lưu trong Dữ liệu và sao lưu để có bản sao lưu tự động, đã mã hóa, do bạn kiểm soát.</item>
+    </string-array>
+
+    <string-array name="about_story">
+        <item>Penny bắt đầu từ một câu hỏi đơn giản: hôm nay tôi có thể chi bao nhiêu mà không phải lo cho tuần sau?</item>
+        <item>Phần lớn ứng dụng quản lý tiền trả lời bằng biểu đồ quá khứ hoặc lời mời vay. Chúng tôi muốn một con số nhẹ nhàng, dựa trên chu kỳ lương thật, hóa đơn thật và những người trong cuộc sống của bạn.</item>
+        <item>Penny được làm cho cả thế giới: mọi loại tiền, mọi chu kỳ lương, đúng cách mọi người thật sự quản lý tiền, từ chơi hụi đến gửi tiền về nhà.</item>
+        <item>Mọi tính năng đều miễn phí. Chúng tôi không kiếm tiền từ quảng cáo, cho vay hay dữ liệu của bạn, và sẽ không bao giờ. Nếu Penny giúp ích cho bạn, một chút tiền boa hoặc một đánh giá tử tế sẽ giúp Penny tiếp tục.</item>
+    </string-array>
+    <string-array name="trust_never">
+        <item>Chúng tôi không bao giờ hiện quảng cáo.</item>
+        <item>Chúng tôi không bao giờ mời vay, mời mở thẻ tín dụng hay các sản phẩm tài chính khác.</item>
+        <item>Chúng tôi không bao giờ bán hay chia sẻ dữ liệu của bạn.</item>
+        <item>Chúng tôi không bao giờ đọc SMS của bạn.</item>
+        <item>Chúng tôi không bao giờ thấy dữ liệu tiền bạc của bạn khi đồng bộ: dữ liệu được mã hóa trên điện thoại của bạn.</item>
+        <item>Chúng tôi không bao giờ khóa tính năng sau tường phí. Plus chỉ trang trải chi phí thật trên mỗi người dùng.</item>
+        <item>Chúng tôi không bao giờ dùng màu đỏ để làm bạn thấy xấu hổ về chi tiêu.</item>
+    </string-array>
+    <string-array name="changelog">
+        <item>v1.0.0</item>
+        <item>Ngân sách theo phong bì trên mọi chu kỳ lương, chuyển dư, mức mục tiêu và chế độ xem cả năm.</item>
+        <item>Mục tiêu, hóa đơn, gói đăng ký, trả góp và công cụ lập kế hoạch trả nợ.</item>
+        <item>Cho mượn, chia tiền nhóm, gửi tiền về nhà và hụi.</item>
+        <item>Ghi nhận từ thông báo thanh toán, chia sẻ, hóa đơn và giọng nói, với danh sách xem lại và quy tắc biết học hỏi.</item>
+        <item>Phân tích với biểu đồ, dự báo, giá trị tài sản ròng và trợ lý chạy trên thiết bị.</item>
+        <item>Đồng bộ mã hóa đầu cuối, không gian chung, sao lưu mã hóa, khóa ứng dụng.</item>
+        <item>v0.1.0</item>
+        <item>Phiên bản đầu tiên: số tiền có thể chi, giao dịch có hoàn tác và lịch sử.</item>
+    </string-array>
+    <string-array name="licences">
+        <item>Plus Jakarta Sans — SIL Open Font License 1.1, The Plus Jakarta Sans Project Authors.</item>
+        <item>AndroidX và Jetpack Compose — Apache License 2.0, The Android Open Source Project.</item>
+        <item>Kotlin và các thư viện kotlinx — Apache License 2.0, JetBrains.</item>
+        <item>Dagger và Hilt — Apache License 2.0, Google.</item>
+        <item>Room — Apache License 2.0, Google.</item>
+        <item>SQLCipher for Android — giấy phép kiểu BSD, Zetetic LLC.</item>
+        <item>Tink — Apache License 2.0, Google.</item>
+        <item>OkHttp — Apache License 2.0, Square.</item>
+        <item>ML Kit Text Recognition — ML Kit Terms of Service, Google.</item>
+        <item>Material icons — Apache License 2.0, Google.</item>
+    </string-array>
+</resources>

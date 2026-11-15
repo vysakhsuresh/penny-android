@@ -19,9 +19,12 @@ import androidx.compose.ui.unit.dp
 import app.penny.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
+import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -30,17 +33,34 @@ data class UndoMessage(
     val text: String,
     val undo: (suspend () -> Unit)?,
     val onExpire: (suspend () -> Unit)? = null,
-)
+) {
+    /** 0 pending, 1 undone, 2 expired. Exactly one of undo / expire ever runs. */
+    internal val outcome = AtomicInteger(0)
+}
 
 /**
  * UX-02 / TX-03: destructive actions run immediately and offer a 5-second undo instead of a confirmation dialog.
- * App-scoped so the snackbar survives navigating back from the screen that triggered it.
+ *
+ * App-scoped so the snackbar survives navigating back from the screen that triggered it. Messages are buffered (none are
+ * dropped while no screen is collecting, e.g. while locked), and the expiry timer runs here, not in the UI, so a delayed
+ * purge still happens if the activity is rotated or backgrounded during the window.
  */
 @Singleton
 class UndoController @Inject constructor() {
-    internal val messages = MutableSharedFlow<UndoMessage>(extraBufferCapacity = 8)
+    internal val messages = Channel<UndoMessage>(capacity = 16, onBufferOverflow = kotlinx.coroutines.channels.BufferOverflow.DROP_OLDEST)
     internal val scope = CoroutineScope(SupervisorJob())
-    fun offer(message: UndoMessage) { messages.tryEmit(message) }
+
+    fun offer(message: UndoMessage) {
+        messages.trySend(message)
+        if (message.onExpire != null) scope.launch {
+            delay(UNDO_WINDOW_MS + 300)
+            if (message.outcome.compareAndSet(0, 2)) runCatching { message.onExpire.invoke() }
+        }
+    }
+
+    internal fun performUndo(message: UndoMessage) {
+        if (message.outcome.compareAndSet(0, 1)) scope.launch { runCatching { message.undo?.invoke() } }
+    }
 
     companion object { const val UNDO_WINDOW_MS = 5_000L }
 }
@@ -50,14 +70,13 @@ fun UndoHost(controller: UndoController, content: @Composable () -> Unit) {
     val host = remember { SnackbarHostState() }
     val undoLabel = stringResource(R.string.undo)
     LaunchedEffect(controller) {
-        controller.messages.collect { m ->
+        controller.messages.receiveAsFlow().collect { m ->
+            if (m.outcome.get() != 0) return@collect // already expired while nobody was showing it
             val result = withTimeoutOrNull(UndoController.UNDO_WINDOW_MS) {
                 host.showSnackbar(m.text, actionLabel = if (m.undo != null) undoLabel else null, duration = SnackbarDuration.Indefinite)
             }
             if (result == null) host.currentSnackbarData?.dismiss()
-            controller.scope.launch {
-                if (result == SnackbarResult.ActionPerformed) m.undo?.invoke() else m.onExpire?.invoke()
-            }
+            if (result == SnackbarResult.ActionPerformed) controller.performUndo(m)
         }
     }
     Box(Modifier.fillMaxSize()) {

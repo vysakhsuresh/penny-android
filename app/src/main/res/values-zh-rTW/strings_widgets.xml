@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">一眼看出可安心花用的金額</string>
+    <string name="widget_quick_desc">一鍵新增交易或使用範本</string>
+    <string name="widget_envelopes_desc">信封與即將到期的帳單</string>
+    <string name="widget_safe_label">可安心花用</string>
+    <string name="widget_quick_label">快速新增</string>
+    <string name="widget_envelopes_label">預算</string>
+    <string name="shortcut_add">新增</string>
+    <string name="tile_label">新增到 Penny</string>
+</resources>

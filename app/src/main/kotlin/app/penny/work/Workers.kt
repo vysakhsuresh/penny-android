@@ -43,11 +43,15 @@ class DailyWorker @AssistedInject constructor(
     private val prefs: AppPrefs,
 ) : CoroutineWorker(context, params) {
     override suspend fun doWork(): Result {
-        val pid = prefs.currentProfileId.value ?: return Result.success()
-        val book = repo.observeBook(pid).firstOrNull() ?: return Result.success()
-        runCatching { repo.runScheduled(book) }
-        runCatching { repo.observeBook(pid).first()?.let { alerts.run(it) } }
-        runCatching { purgeTrash(repo, pid) }
+        // Every profile on the phone, not only the open one: bills and goals in other books must still post.
+        val pids = runCatching { repo.observeProfiles().first().map { it.state.id } }.getOrDefault(emptyList())
+            .ifEmpty { listOfNotNull(prefs.currentProfileId.value) }
+        for (pid in pids) {
+            val book = runCatching { repo.observeBook(pid).firstOrNull() }.getOrNull() ?: continue
+            runCatching { repo.runScheduled(book) }
+            runCatching { repo.observeBook(pid).first()?.let { alerts.run(it) } }
+            runCatching { purgeTrash(repo, pid) }
+        }
         if (prefs.string("backup.folder") != null) runCatching { BackupWorker.backup(applicationContext, repo, prefs) }
         return Result.success()
     }

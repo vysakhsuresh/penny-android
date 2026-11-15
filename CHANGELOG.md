@@ -15,6 +15,20 @@
 - Widgets, Quick Settings tile, shortcuts, Wear OS app with tile and complication, automation intents and webhooks.
 - Help, guides, buy me a coffee, about and trust pages; 30 languages (machine drafts).
 
+### Fixed in the system sweep
+- App lock keeps your place (forms, back stack, camera results); a killed app always starts locked; PIN back-off survives restarts.
+- Deep links, widgets, the tile and shortcuts work while the app is already open; widget taps always open Penny.
+- Double-tapping Save or Back no longer saves twice or leaves a blank screen; failed saves say so.
+- "Delete forever" in Trash completes even if you rotate or leave the screen.
+- Scheduled bills and goal contributions never post twice or come back after you delete them; all profiles are covered.
+- Two genuine same-amount payments are no longer merged as duplicates.
+- Safe to spend counts split lines and converts foreign-currency bills and goals.
+- Sync no longer skips batches it cannot read; restored data syncs.
+- Deleting a remittance, loan entry, group expense or circle payment removes its transaction too.
+- Quiet-hour alerts are delivered when quiet hours end.
+- Crashes fixed when no app can open a payment link, the camera or notification settings, and on unreadable import files.
+- Amounts shrink to fit instead of being cut off at large text sizes; swipe actions are available to TalkBack.
+
 ## 0.1.0-m0
 - Foundations: pure-Kotlin core (money, periods, event log), SQLCipher-encrypted Room store, 14 regional packs.
 - Onboarding, Home with safe to spend, transactions with undo, trash and history, region switch, `penny://add`.

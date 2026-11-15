@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">ایک نظر میں خرچ کے لیے محفوظ رقم</string>
+    <string name="widget_quick_desc">ایک ٹیپ میں لین دین شامل کریں یا ٹیمپلیٹ چلائیں</string>
+    <string name="widget_envelopes_desc">لفافے اور آنے والے بل</string>
+    <string name="widget_safe_label">خرچ کے لیے محفوظ</string>
+    <string name="widget_quick_label">فوری اندراج</string>
+    <string name="widget_envelopes_label">بجٹ</string>
+    <string name="shortcut_add">شامل کریں</string>
+    <string name="tile_label">Penny میں شامل کریں</string>
+</resources>

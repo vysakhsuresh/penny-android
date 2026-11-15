@@ -1,5 +1,6 @@
 package app.penny.domain.ops
 
+import kotlinx.coroutines.sync.withLock
 import app.penny.core.budget.BudgetEngine
 import app.penny.core.budget.BudgetInput
 import app.penny.core.budget.EnvelopeStatus
@@ -58,10 +59,11 @@ fun Book.upcoming(from: LocalDate, to: LocalDate): List<Upcoming> {
 /** BU-07 with scheduled bills, expected income and goal auto-contributions for the period. */
 fun Book.safeToSpend(p: Period): SafeToSpend {
     val today = today()
-    val (committed, expected) = Bills.committedAndExpected(upcoming(p.start, p.endInclusive), p, today)
+    val (committed, expected) = Bills.committedAndExpected(upcoming(p.start, p.endInclusive), p, today, profile.baseCurrency, fx)
     val savings = goals.filter { it.value.status == GoalStatus.ACTIVE && it.value.autoMinor != null }.sumOf { g ->
         val contributed = goalEntries.filter { e -> e.value.goalId == g.state.id && e.value.date in p && e.value.amountMinor > 0 }.sumOf { it.value.amountMinor }
-        maxOf(0, (g.value.autoMinor ?: 0) - contributed)
+        val left = maxOf(0, (g.value.autoMinor ?: 0) - contributed)
+        fx.convert(left, g.value.currency, profile.baseCurrency, p.start) ?: 0
     }
     return SafeToSpendCalculator.compute(txList, p, today, profile.baseCurrency, excludedCategoryIds, fx, expected, committed, savings)
 }
@@ -83,7 +85,9 @@ suspend fun PennyRepository.moveMoney(book: Book, from: String?, to: String?, pe
 suspend fun PennyRepository.autoAssign(book: Book, period: Period): String {
     val g = allocations.newGroup()
     val input = book.budgetInput()
-    val statuses = book.envelopeStatuses(period.start)
+    // Only envelopes on the book's own period and currency share the pool; others are funded on their own schedule.
+    val shared = book.envelopes.filter { it.value.periodOverride == null && it.value.currency == book.profile.baseCurrency }.map { it.state.id }.toSet()
+    val statuses = book.envelopeStatuses(period.start).filter { it.id in shared }
     val plan = BudgetEngine.autoAssign(statuses, BudgetEngine.availableToAssign(period, input))
     plan.forEach { (id, add) ->
         val s = statuses.first { it.id == id }
@@ -221,24 +225,37 @@ suspend fun PennyRepository.saveRecurring(book: Book, id: String?, r: Recurring)
     return g
 }
 
+/** One scheduled run at a time across the process (Home and the daily worker can both start one). */
+private val scheduleLock = kotlinx.coroutines.sync.Mutex()
+
 /**
  * Runs on app open and from the daily worker: auto-posts due occurrences (RC-01 auto-post) and goal auto-contributions
- * at period start (GO-01). Idempotent: occurrence ids are deterministic, and goal entries carry a period note key.
+ * at period start (GO-01).
+ *
+ * Idempotent and safe to repeat: serialised by a lock, ids are deterministic, and existence is checked against the
+ * event store including deleted rows, so something the user deleted or reopened is never posted again.
  */
-suspend fun PennyRepository.runScheduled(book: Book): Int {
+suspend fun PennyRepository.runScheduled(book: Book): Int = scheduleLock.withLock {
     val today = book.today()
     var n = 0
     book.upcoming(today.minusDays(60), today).filter { it.open && it.recurring.autoPost && !it.date.isAfter(today) }.forEach { u ->
-        payOccurrence(book, u, date = u.date); n++
+        if (occurrences.get(u.key) != null) return@forEach // paid, skipped or reopened before: the user decides now
+        val txId = "${u.key}#tx"
+        if (transactions.get(txId) != null) return@forEach
+        val g = transactions.newGroup()
+        transactions.create(txId, book.profileId, Bills.toTransaction(u.copy(date = u.date), book.profile.timezone, u.recurringId), g)
+        occurrences.upsert(u.key, book.profileId, Occurrence(u.recurringId, u.due, OccurrenceStatus.PAID, txId, u.amountMinor), g)
+        n++
     }
     val p = book.period()
     book.goals.filter { it.value.status == GoalStatus.ACTIVE && (it.value.autoMinor ?: 0) > 0 }.forEach { g ->
         val key = "auto:${p.start}"
-        if (book.goalEntries.none { it.value.goalId == g.state.id && it.value.note == key }) {
-            goalEntries.create(newId(), book.profileId, GoalEntry(g.state.id, g.value.autoMinor!!, p.start, key)); n++
+        val entryId = "auto:${g.state.id}:${p.start}"
+        if (goalEntries.get(entryId) == null && book.goalEntries.none { it.value.goalId == g.state.id && it.value.note == key }) {
+            goalEntries.create(entryId, book.profileId, GoalEntry(g.state.id, g.value.autoMinor!!, p.start, key)); n++
         }
     }
-    return n
+    n
 }
 
 /** Average daily spend over the last [days] days in base currency (AL-04 safe-to-spend low). */

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_failed">保存できませんでした。何も変更されていません。もう一度お試しください。</string>
+    <string name="no_app_for_action">この端末には、これを開けるアプリがありません。</string>
+    <string name="import_read_failed">ファイルを読み込めませんでした。銀行のエクスポートファイル（CSV、OFX、QIF、CAMT、MT940）か確認してください。</string>
+    <string name="template_default_name">テンプレート</string>
+    <string name="item_default_name">項目</string>
+</resources>

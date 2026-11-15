@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Penny</string>
+    <string name="safe_to_spend">Vrij te besteden</string>
+    <string name="per_day_left">%1$s per dag · nog %2$d dagen</string>
+    <string name="say_it">Zeg een uitgave</string>
+    <string name="added">Toegevoegd op je telefoon</string>
+    <string name="not_understood">Geen bedrag verstaan</string>
+    <string name="no_phone">Telefoon niet verbonden. Het laatst bekende bedrag wordt getoond.</string>
+</resources>

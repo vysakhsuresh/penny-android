@@ -55,7 +55,9 @@ class PennyNotificationListener : NotificationListenerService() {
         if (text.isBlank()) return
         val parsed = NotificationParser.parse(title, text, sbn.packageName, cfg.templates, cfg.currency) ?: return
         // A stable key so the same notification re-posted (updates, group summaries) dedupes (CP-11).
-        val key = "notif:${sbn.packageName}:${sbn.postTime / 60_000}:${parsed.amountMinor}"
+        // `when` is the notification's own timestamp and stays the same when the app updates or re-posts it; postTime does not.
+        val stamp = sbn.notification.`when`.takeIf { it > 0 } ?: sbn.postTime
+        val key = "notif:${sbn.packageName}:${stamp / 60_000}:${parsed.amountMinor}"
         scope.launch { sink.captured("notification", sbn.packageName, "$title\n$text", parsed, key) }
     }
 

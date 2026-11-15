@@ -1,5 +1,6 @@
 package app.penny.ui.settings
 
+import app.penny.ui.common.safeStart
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -161,22 +162,22 @@ fun ImportScreen(onBack: () -> Unit) {
         val context = LocalContext.current
         val scope = rememberCoroutineScope()
         var text by remember { mutableStateOf<String?>(null) }
-        var fileName by rememberSaveable { mutableStateOf("") }
+        // File body, mapping and preview live together; keeping only the name across rotation showed a file with no preview.
+        var fileName by remember { mutableStateOf("") }
         var mapping by remember { mutableStateOf<CsvMapping?>(null) }
-        var preset by rememberSaveable { mutableStateOf<String?>(null) }
+        var preset by remember { mutableStateOf<String?>(null) }
         var account by rememberSaveable { mutableStateOf(b.profile.defaultAccountId ?: b.activeAccounts.firstOrNull()?.state?.id) }
         var skipDupes by rememberSaveable { mutableStateOf(true) }
         var result by remember { mutableStateOf<ImportResult?>(null) }
-        val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
-            uri ?: return@rememberLauncherForActivityResult
+        // Reads a file (picked here, or shared to Penny from another app) and builds the preview.
+        fun load(read: suspend () -> Pair<String, String>) {
             scope.launch {
-                val (name, body) = withContext(Dispatchers.IO) {
-                    val n = context.contentResolver.query(uri, arrayOf(android.provider.OpenableColumns.DISPLAY_NAME), null, null, null)?.use { c -> if (c.moveToFirst()) c.getString(0) else null } ?: "file"
-                    n to (context.contentResolver.openInputStream(uri)?.use { s -> readText(s.readBytes()) } ?: "")
-                }
-                fileName = name; text = body
+              runCatching {
+                val (name, body) = withContext(Dispatchers.IO) { read() }
                 val low = name.lowercase()
-                result = when {
+                var newPreset: String? = null
+                var newMapping: CsvMapping? = null
+                val parsed = withContext(Dispatchers.Default) { when {
                     low.endsWith(".ofx") || low.endsWith(".qfx") || body.contains("<OFX>") -> Importers.ofx(body, ctx.base)
                     low.endsWith(".qif") || body.startsWith("!Type") -> Importers.qif(body, ctx.base)
                     body.contains("camt.053") || body.contains("<BkToCstmrStmt>") -> Importers.camt053(body)
@@ -185,12 +186,30 @@ fun ImportScreen(onBack: () -> Unit) {
                         val rows = Csv.parse(body)
                         val header = rows.firstOrNull().orEmpty()
                         val det = Importers.detectPreset(header)
-                        preset = det?.first?.app
-                        mapping = det?.second ?: Importers.guessMapping(header, rows.getOrNull(1).orEmpty())
-                        Importers.csv(body, mapping!!, ctx.base)
+                        newPreset = det?.first?.app
+                        val m = det?.second ?: Importers.guessMapping(header, rows.getOrNull(1).orEmpty())
+                        newMapping = m
+                        Importers.csv(body, m, ctx.base)
                     }
-                }
+                } }
+                fileName = name; text = body; preset = newPreset; mapping = newMapping; result = parsed
+              }.onFailure { e ->
+                  android.util.Log.w("Penny", "import read failed", e)
+                  vm.toast(context.getString(R.string.import_read_failed))
+              }
             }
+        }
+        val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
+            uri ?: return@rememberLauncherForActivityResult
+            load {
+                val n = context.contentResolver.query(uri, arrayOf(android.provider.OpenableColumns.DISPLAY_NAME), null, null, null)?.use { c -> if (c.moveToFirst()) c.getString(0) else null } ?: "file"
+                n to (context.contentResolver.openInputStream(uri)?.use { s -> readText(s.readBytes()) } ?: "")
+            }
+        }
+        // A bank file shared to Penny (ShareActivity) waits in the cache; open it once, then remove it.
+        androidx.compose.runtime.LaunchedEffect(Unit) {
+            val pending = app.penny.SharedImport.take(context) ?: return@LaunchedEffect
+            load { pending }
         }
         val plan: ImportPlan? = result?.let { r -> account?.let { b.planImport(r.rows, it) } }
         PennyScreen(stringResource(R.string.import_file), onBack) { pad ->
@@ -205,7 +224,7 @@ fun ImportScreen(onBack: () -> Unit) {
                         val header = Csv.parse(text.orEmpty()).firstOrNull().orEmpty()
                         val cols = header.mapIndexed { i, h -> Choice(i, h.ifBlank { "#${i + 1}" }) }
                         SectionHeader(stringResource(R.string.column_mapper))
-                        fun remap(n: CsvMapping) { mapping = n; result = Importers.csv(text.orEmpty(), n, ctx.base) }
+                        fun remap(n: CsvMapping) { mapping = n; runCatching { Importers.csv(text.orEmpty(), n, ctx.base) }.onSuccess { result = it } }
                         SelectField(stringResource(R.string.field_date), m.dateCol, cols, { it?.let { c -> remap(m.copy(dateCol = c)) } })
                         SelectField(stringResource(R.string.field_amount), m.amountCol, cols, { remap(m.copy(amountCol = it)) }, allowNone = true, noneLabel = stringResource(R.string.debit_credit_columns))
                         if (m.amountCol == null) {
@@ -300,7 +319,7 @@ fun CaptureSettingsScreen(onBack: () -> Unit, go: (String) -> Unit) {
         if (explain) AlertDialog(
             onDismissRequest = { explain = false }, title = { Text(stringResource(R.string.read_payment_notifications)) },
             text = { Text(stringResource(R.string.listener_explain)) },
-            confirmButton = { TextButton(onClick = { explain = false; context.startActivity(PennyNotificationListener.settingsIntent()) }) { Text(stringResource(R.string.open_settings)) } },
+            confirmButton = { TextButton(onClick = { explain = false; context.safeStart(PennyNotificationListener.settingsIntent()) }) { Text(stringResource(R.string.open_settings)) } },
             dismissButton = { TextButton(onClick = { explain = false }) { Text(stringResource(R.string.not_now)) } },
         )
     }

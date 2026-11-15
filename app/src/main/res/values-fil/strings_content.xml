@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="faq_q">
+        <item>Libre ba talaga ang Penny?</item>
+        <item>Binabasa ba ng Penny ang SMS ko?</item>
+        <item>Saan naka-store ang data ko?</item>
+        <item>Ano ang ibig sabihin ng “ligtas gastusin”?</item>
+        <item>Paano ko papalitan ang pay cycle ko?</item>
+        <item>Nabura ko ang isang bagay nang hindi sinasadya. Maibabalik ko pa ba?</item>
+        <item>Paano ko ilalagay ang perang ipinahiram ko sa kaibigan?</item>
+        <item>Puwede ko bang ibahagi ang budget sa partner ko?</item>
+        <item>Paano lumipat mula sa ibang money app?</item>
+        <item>Bakit hindi lumalabas ang mga transaksyon mula sa payment app ko?</item>
+        <item>Paano gamitin ang Penny sa bagong phone?</item>
+        <item>Puwede ba akong gumamit ng higit sa isang currency?</item>
+        <item>Paano i-lock ang app?</item>
+        <item>Paano burahin ang lahat ng data ko?</item>
+    </string-array>
+    <string-array name="faq_a">
+        <item>Oo. Libre ang bawat feature. Ang opsyonal na Penny Plus ay pambayad lang sa mga gastos na lumalaki bawat user, gaya ng bayad sa bank connection at dagdag na storage. Walang ads at hindi kami kailanman nagbebenta ng data.</item>
+        <item>Hindi. Hindi kailanman humihingi ng SMS permission ang Penny. Puwede nitong basahin ang mga notification mula sa payment at bank app na pinapayagan mo, sa phone mo lang, at puwede mo itong i-off anumang oras.</item>
+        <item>Sa phone mo, naka-encrypt. Kapag in-on mo ang sync, naka-encrypt ito sa phone mo bago umalis, kaya ang server ay nag-iimbak ng data na hindi nito mababasa.</item>
+        <item>Ito ang perang puwede mong gastusin mula ngayon hanggang sa susunod na pay period nang hindi nalalampasan ang mga bayarin o savings goal mo: kita, bawas ang mga bayaring dapat pang bayaran, bawas ang itinabi mo, bawas ang nagastos mo na.</item>
+        <item>Buksan ang Settings, Profile, Pay cycle. Pumili ng buwanan mula sa anumang araw, dalawang beses sa isang buwan, lingguhan, tuwing dalawang linggo, tuwing apat na linggo, o “kapag pumasok ang pera”. Muling ipapangkat ang history at walang mawawala.</item>
+        <item>Oo. Pagkabura, i-tap agad ang I-undo. Mamaya, buksan ang Settings, Basurahan: nandoon ang mga nabura nang 30 araw. Nasa History rin ang bawat pagbabago, kung saan puwede kang bumalik sa naunang bersyon.</item>
+        <item>Buksan ang tab na Mga tao at i-tap ang Itala ang pautang. Piliin ang tao, ang halaga, at kung nagbigay ka o tumanggap. Itinatala ng Penny ang tumatakbong balanse at puwedeng gumawa ng magalang na paalala na ipapadala mo.</item>
+        <item>Oo. I-on ang sync, buksan ang Settings, Shared spaces, at gumawa ng space. Imbitahin ang partner mo gamit ang link. Bawat isa ay may sariling login at role, at puwede mong panatilihing pribado ang personal mong gastos.</item>
+        <item>Mag-export ng CSV mula sa lumang app o bangko mo, tapos buksan ang Settings, Data at backup, Import. Nakikilala ng Penny ang mga file mula sa maraming app at nagpapakita ng preview kasama ang mga duplicate bago may idagdag.</item>
+        <item>Tingnan ang Settings, Capture: dapat naka-on ang “Basahin ang mga payment notification”, at dapat may notification access ang Penny sa settings ng phone mo. Ang mga app lang na nakalista para sa rehiyon mo, at mga idinagdag mo, ang binabasa.</item>
+        <item>I-on ang sync sa lumang phone at isulat ang recovery phrase. Sa bagong phone, mag-sign in gamit ang parehong email at i-type ang phrase. O i-restore ang backup file mula sa folder mo.</item>
+        <item>Oo. May sariling currency ang bawat account. Ginagamit ng mga total ang pangunahing currency mo at ang exchange rate sa petsa ng transaksyon, at ang anumang walang rate ay ipinapakita, hindi hinuhulaan.</item>
+        <item>Buksan ang Settings, Seguridad, App lock. Mag-set ng PIN at payagan ang fingerprint o mukha mo. Puwede mo ring i-block ang screenshot at piliin kung gaano kabilis muling magla-lock ang app.</item>
+        <item>Buksan ang Settings, Data at backup, Burahin ang lahat sa phone na ito. Kung naka-on ang sync, burahin din ang sync account mo sa Sync at mga bangko. Mag-export muna kung baka kailanganin mo pa ang anuman.</item>
+    </string-array>
+
+    <string-array name="guide_start">
+        <item>Piliin ang rehiyon mo. Dito nakabatay ang currency, istilo ng numero at karaniwang pay cycle mo. Mababago mo ang lahat ng ito mamaya.</item>
+        <item>Sabihin sa Penny kung kailan pumapasok ang pera. Sinusundan ng budget mo ang totoong pay cycle mo, hindi ang buwan sa kalendaryo.</item>
+        <item>Ilagay ang cash na hawak mo ngayon. Magdagdag ng bangko, wallet at card mamaya sa Mga account.</item>
+        <item>I-tap ang plus button para magdagdag ng gastos: i-type ang halaga, pumili ng kategorya, i-save. Mga tatlong segundo lang.</item>
+        <item>Isang numero ang ipinapakita ng Home: ang ligtas gastusin hanggang sa susunod na sahod.</item>
+    </string-array>
+    <string-array name="guide_safe">
+        <item>Nagsisimula ang ligtas gastusin sa kita ng period na ito, kasama ang sahod na inaasahan mo pero hindi mo pa natatanggap.</item>
+        <item>Ibinabawas nito ang mga bayaring dapat pang bayaran ngayong period at ang itinabi mo para sa mga goal.</item>
+        <item>Tapos ibinabawas ang nagastos mo na. Hindi kailanman binibilang ang paglipat ng pera sa pagitan ng sarili mong mga account.</item>
+        <item>Hinahati ng “Bawat araw” ang natitira sa bilang ng araw na natitira sa period.</item>
+        <item>Kapag mas mabilis ang gastos kaysa sa kalendaryo, may mahinahong amber na paalala sa Home. Hindi kailanman gumagamit ang Penny ng pula para sa pera mo.</item>
+    </string-array>
+    <string-array name="guide_budget">
+        <item>Ang envelope ay halaga para sa isang bahagi ng buhay, gaya ng pagkain o pamasahe, sa bawat period.</item>
+        <item>Buksan ang Mga budget at i-tap ang Gumamit ng template, o magdagdag ng envelope isa-isa.</item>
+        <item>Piliin ang mangyayari sa sobra: magsimula ulit, ilipat sa susunod, o ilipat hanggang sa isang limit.</item>
+        <item>Kapag lumampas ang isang envelope, i-tap ang Kunin mula sa para maglipat ng pera mula sa envelope na may natitira pa. Naitatala ito at puwedeng i-undo.</item>
+        <item>Gusto mo bang may trabaho ang bawat halaga ng pera? I-on ang zero-based budgeting sa Profile settings.</item>
+    </string-array>
+    <string-array name="guide_cycle">
+        <item>Maraming tao ang buwanan ang sahod pero hindi tuwing ika-1; ang iba ay tuwing dalawang linggo, dalawang beses sa isang buwan, o kapag nagbayad ang isang trabaho.</item>
+        <item>Buksan ang Settings, Profile, Pay cycle, at piliin ang tugma sa sahod mo.</item>
+        <item>Ang “Kapag pumasok ang pera” ay nagsisimula ng bagong period tuwing may pumasok na kita na lampas sa isang halaga, na bagay sa gig work at sa perang padala ng pamilya mula abroad.</item>
+        <item>Ang pagpapalit ng cycle ay muling nagpapangkat ng history at puwedeng i-undo.</item>
+    </string-array>
+    <string-array name="guide_capture">
+        <item>I-on ang payment notifications sa Settings, Capture. Payment at bank app lang ang binabasa ng Penny, sa phone mo.</item>
+        <item>Mag-share ng mensahe, resibo o statement mula sa anumang app papunta sa Penny.</item>
+        <item>I-scan ang resibo gamit ang camera; binabasa ito ng Penny sa phone.</item>
+        <item>Sabihin ang transaksyon gamit ang boses, gaya ng “250 sa grocery kahapon”.</item>
+        <item>Naghihintay sa Review ang mga nakuhang item. Pagkatapos ng sampung sunod-sunod mula sa isang app na walang binago, mag-aalok ang Penny na idagdag ang mga ito nang awtomatiko.</item>
+    </string-array>
+    <string-array name="guide_people">
+        <item>Itala ang perang ipinapahiram o hinihiram mo sa tab na Mga tao. Neutral na salita ang gamit ng Penny: matatanggap at ibibigay.</item>
+        <item>Ayos lang ang paunti-unting bayad; magdagdag ng entry para sa bawat isa.</item>
+        <item>Hinahati ng mga grupo ang pinagsasaluhang gastos nang pantay, ayon sa eksaktong halaga, porsyento, bahagi o bawat item.</item>
+        <item>Hinahanap ng Pasimplehin ang mga utang ang pinakakaunting bayad para magkaayos ang lahat.</item>
+        <item>Sa shared spaces, sabay na nagba-budget ang isang sambahayan, bawat isa may sariling login at role.</item>
+    </string-array>
+    <string-array name="guide_bills">
+        <item>Idagdag ang bawat bayarin nang isang beses, kasama kung gaano kadalas ito umuulit. Isinasama ito ng Penny sa ligtas gastusin.</item>
+        <item>Kapag nabayaran na ang bill, markahan itong bayad na; gagawin ang transaksyon para sa iyo. O hayaan ang Penny na idagdag ito nang awtomatiko.</item>
+        <item>Laktawan o baguhin ang isang beses lang nang hindi ginagalaw ang iba, o baguhin ang “ito at ang mga susunod”.</item>
+        <item>Ipinapakita ng mga subscription ang taunang gastos at kung kailan tumaas ang presyo, kasama ang handang mensahe para magkansela.</item>
+        <item>Ipinapakita ng mga EMI ang buong iskedyul at kung magkano ang matitipid na interes kapag nagbayad nang maaga.</item>
+    </string-array>
+    <string-array name="guide_goals">
+        <item>May target ang isang goal at, kung gusto mo, petsa. Ipinapakita ng Penny kung magkano ang itatabi bawat period.</item>
+        <item>Magdagdag ng pera kapag nag-ipon ka; maglabas kapag kailangan mo.</item>
+        <item>Mag-set ng awtomatikong halaga bawat period para mabilang ito sa ligtas gastusin.</item>
+        <item>Nagmumungkahi ang emergency fund ng target batay sa totoong mahahalagang gastos mo.</item>
+    </string-array>
+    <string-array name="guide_import">
+        <item>Mag-export ng CSV mula sa bangko o dati mong app.</item>
+        <item>Buksan ang Settings, Data at backup, Mag-import mula sa file.</item>
+        <item>Awtomatikong nakikilala ng Penny ang maraming app; para sa mga file ng bangko, tingnan ang mga column.</item>
+        <item>Suriin ang preview. Nilalaktawan ang mga posibleng duplicate maliban kung sabihin mong hindi.</item>
+        <item>I-tap ang Import. Maa-undo mo ang buong import sa isang tap.</item>
+    </string-array>
+    <string-array name="guide_undo">
+        <item>Puwedeng i-undo ang bawat pagbabago sa Penny nang ilang segundo gamit ang button na I-undo.</item>
+        <item>Naghihintay sa Basurahan ang mga nabura nang 30 araw.</item>
+        <item>May History ang bawat transaksyon, account at envelope ng bawat pagbabago, kung sino ang gumawa at kailan.</item>
+        <item>I-tap ang “Ibalik sa bersyong ito” para bumalik. Puwede ring i-undo ang pagbabalik.</item>
+    </string-array>
+    <string-array name="guide_privacy">
+        <item>Nasa phone mo ang data mo, sa isang naka-encrypt na database.</item>
+        <item>Ine-encrypt ng sync sa phone mo bago ipadala; hindi mababasa ng server ang data ng pera mo.</item>
+        <item>Walang ads ang Penny, hindi nag-aalok ng pautang at hindi nagbebenta ng data.</item>
+        <item>Ang opsyonal na anonymous na bilang ay tumutulong pagandahin ang app at hindi kailanman may kasamang halaga, binayaran o tala.</item>
+    </string-array>
+    <string-array name="guide_sync">
+        <item>I-on ang sync sa Settings, Sync at mga bangko, gamit ang email mo.</item>
+        <item>Isulat ang 24-salitang recovery phrase. Ito ang nagbubukas ng data mo sa bagong phone at nagre-restore ng naka-encrypt na backup.</item>
+        <item>Sa bagong phone, mag-sign in gamit ang parehong email at i-type ang phrase.</item>
+        <item>Pumili ng backup folder sa Data at backup para sa awtomatikong naka-encrypt na backup na hawak mo.</item>
+    </string-array>
+
+    <string-array name="about_story">
+        <item>Nagsimula ang Penny sa isang simpleng tanong: magkano ang puwede kong gastusin ngayon nang hindi nag-aalala sa susunod na linggo?</item>
+        <item>Karamihan ng money app ay sumasagot ng mga chart ng nakaraan o alok na pautang. Gusto namin ng isang mahinahong numero, batay sa totoong pay cycle mo, totoong bayarin mo at sa mga tao sa buhay mo.</item>
+        <item>Ginawa ang Penny para sa buong mundo: anumang currency, anumang pay cycle, sa paraan ng totoong paghawak ng tao sa pera, mula paluwagan hanggang sa pagpapadala ng pera pauwi.</item>
+        <item>Libre ang bawat feature. Hindi kami kumikita sa ads, pautang o data mo, at hindi kailanman. Kung nakakatulong sa iyo ang Penny, ang tip o magandang review ang nagpapatuloy dito.</item>
+    </string-array>
+    <string-array name="trust_never">
+        <item>Hindi kami kailanman nagpapakita ng ads.</item>
+        <item>Hindi kami kailanman nag-aalok ng pautang, credit card o ibang produktong pinansyal.</item>
+        <item>Hindi kami kailanman nagbebenta o nagbabahagi ng data mo.</item>
+        <item>Hindi namin kailanman binabasa ang SMS mo.</item>
+        <item>Hindi namin kailanman nakikita ang data ng pera mo kapag nagsi-sync ka: naka-encrypt ito sa phone mo.</item>
+        <item>Hindi namin kailanman inilalagay ang isang feature sa likod ng paywall. Totoong gastos lang bawat user ang sinasagot ng Plus.</item>
+        <item>Hindi kami kailanman gumagamit ng pula para ipahiya ang paggastos mo.</item>
+    </string-array>
+    <string-array name="changelog">
+        <item>v1.0.0</item>
+        <item>Mga budget na may envelope sa anumang pay cycle, rollover, target at view ng buong taon.</item>
+        <item>Mga goal, bayarin, subscription, EMI at planner sa pagbabayad ng utang.</item>
+        <item>Pautang, hatian sa grupo, perang padala pauwi at paluwagan.</item>
+        <item>Capture mula sa payment notification, sharing, resibo at boses, may review queue at mga rule na natututo.</item>
+        <item>Insights na may chart, forecast, net worth at coach na nasa device.</item>
+        <item>End-to-end encrypted na sync, shared spaces, naka-encrypt na backup, app lock.</item>
+        <item>v0.1.0</item>
+        <item>Unang bersyon: ligtas gastusin, mga transaksyon na may undo at history.</item>
+    </string-array>
+    <string-array name="licences">
+        <item>Plus Jakarta Sans — SIL Open Font License 1.1, The Plus Jakarta Sans Project Authors.</item>
+        <item>AndroidX at Jetpack Compose — Apache License 2.0, The Android Open Source Project.</item>
+        <item>Kotlin at mga kotlinx library — Apache License 2.0, JetBrains.</item>
+        <item>Dagger at Hilt — Apache License 2.0, Google.</item>
+        <item>Room — Apache License 2.0, Google.</item>
+        <item>SQLCipher for Android — BSD-style na lisensya, Zetetic LLC.</item>
+        <item>Tink — Apache License 2.0, Google.</item>
+        <item>OkHttp — Apache License 2.0, Square.</item>
+        <item>ML Kit Text Recognition — ML Kit Terms of Service, Google.</item>
+        <item>Material icons — Apache License 2.0, Google.</item>
+    </string-array>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">Luwas gastohon, makita dayon</string>
+    <string name="widget_quick_desc">Pagdugang og transaksyon o gamita ang template sa usa ka tap</string>
+    <string name="widget_envelopes_desc">Mga envelope ug umaabot nga bayronon</string>
+    <string name="widget_safe_label">Luwas gastohon</string>
+    <string name="widget_quick_label">Dali nga dugang</string>
+    <string name="widget_envelopes_label">Mga budget</string>
+    <string name="shortcut_add">Dugang</string>
+    <string name="tile_label">Idugang sa Penny</string>
+</resources>

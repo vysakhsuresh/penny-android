@@ -87,7 +87,11 @@ private suspend fun load(context: Context): WidgetData? {
     )
 }
 
-private fun open(uri: String) = actionStartActivity(Intent(Intent.ACTION_VIEW, Uri.parse(uri)).setPackage(null))
+/** Explicit intent to our own activity: an implicit penny:// link could be caught by another app (or a chooser). */
+@androidx.compose.runtime.Composable
+private fun open(uri: String) = actionStartActivity(
+    Intent(Intent.ACTION_VIEW, Uri.parse(uri), androidx.glance.LocalContext.current, app.penny.MainActivity::class.java),
+)
 
 /** WG-01 safe-to-spend widget (small/medium): the one number, per day, days left; tap opens Home. */
 class SafeWidget : GlanceAppWidget() {

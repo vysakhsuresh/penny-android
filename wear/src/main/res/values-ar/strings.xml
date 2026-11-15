@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Penny</string>
+    <string name="safe_to_spend">المتاح للإنفاق</string>
+    <string name="per_day_left">%1$s يوميًا · %2$d يوم متبقٍّ</string>
+    <string name="say_it">انطق إنفاقًا</string>
+    <string name="added">أُضيف على هاتفك</string>
+    <string name="not_understood">لم يُلتقط أي مبلغ</string>
+    <string name="no_phone">الهاتف غير متصل. يُعرض آخر رقم معروف.</string>
+</resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exchange_rates">Kurs</string>
+    <string name="rates_body">Penny mengonversi dengan kurs pada tanggal setiap transaksi. Kurs acuan diunduh lewat Wi-Fi dan disimpan di ponsel; kurs milikmu sendiri selalu diutamakan.</string>
+    <string name="rates_updated">Kurs acuan hingga %1$s</string>
+    <string name="rates_never">Belum ada kurs acuan yang diunduh</string>
+    <string name="rates_refreshed">Kurs diperbarui</string>
+    <string name="rates_offline">Tidak bisa menjangkau sumber kurs. Coba lagi lewat Wi-Fi.</string>
+    <string name="refresh_now">Perbarui sekarang</string>
+    <string name="add_manual_rate">Tambah kurs sendiri</string>
+    <string name="your_currencies">Mata uangmu hari ini</string>
+    <string name="no_rate">Tidak ada kurs</string>
+    <string name="manual_rates">Kurs milikmu</string>
+    <string name="no_manual_rates">Belum ada. Tambahkan jika bank atau tempat penukaran memberimu kurs yang berbeda.</string>
+    <string name="rate_in_x">Nilai satu unit dalam %1$s</string>
+    <string name="record_value">Catat nilai</string>
+    <string name="record_value_body">Berapa nilainya hari ini? Riwayat nilai dipakai untuk kekayaan bersih.</string>
+    <string name="value_recorded">Nilai dicatat</string>
+    <string name="valuations">Penilaian</string>
+    <string name="share_group_link">Bagikan tampilan untuk orang tanpa aplikasi</string>
+    <string name="group_link_text">Saldo untuk “%1$s” (hanya baca, berlaku 30 hari): %2$s</string>
+    <string name="usage_counts">Bagikan hitungan penggunaan anonim</string>
+    <string name="usage_counts_hint">Hanya seberapa sering fitur dipakai, tidak pernah jumlah, penerima, catatan, atau apa pun yang kamu ketik. Nonaktif secara default.</string>
+    <string name="usage_counts_none">Belum ada yang dihitung.</string>
+    <string name="consent_until">izin berlaku hingga %1$s</string>
+    <string name="reconsent">Perpanjang izin</string>
+    <string name="disconnect">Putuskan</string>
+    <string name="disconnected">Terputus. Tautan bank dan akses yang tersimpan sudah dihapus; akun-akun ini sekarang manual.</string>
+    <string name="bank_needs_sync">Aktifkan sinkronisasi di atas untuk menghubungkan bank.</string>
+    <string name="connect_with_token">Hubungkan dengan token penyiapan</string>
+    <string name="connect_in_browser">Hubungkan di halaman aman penyedia</string>
+    <string name="simplefin_help">Buat token penyiapan di akun SimpleFIN Bridge milikmu lalu tempel di sini. Server Penny menukarnya dengan akses; token tidak pernah disimpan di ponsel ini.</string>
+    <string name="setup_token">Token penyiapan</string>
+    <string name="connect">Hubungkan</string>
+    <string name="bank_connected">Bank terhubung. Transaksi masuk pada sinkronisasi berikutnya.</string>
+    <string name="bank_cancelled">Koneksi dibatalkan. Tidak ada yang ditautkan.</string>
+    <plurals name="bank_synced"><item quantity="other">%d transaksi ditambahkan atau diperbarui</item></plurals>
+    <string name="automation">Otomatisasi</string>
+    <string name="automation_sub">Tasker, pintasan, dan webhook</string>
+    <string name="automation_body">Hubungkan Penny ke aplikasi otomatisasi dan layananmu sendiri. Semuanya tetap di ponsel ini kecuali kamu mengatur alamat webhook.</string>
+    <string name="automation_apps">Aplikasi otomatisasi</string>
+    <string name="allow_automation_apps">Izinkan aplikasi otomatisasi menambah transaksi</string>
+    <string name="allow_automation_hint">Tasker, Automate, dan aplikasi serupa bisa menambah transaksi lewat intent. Aplikasi itu tidak pernah bisa membaca datamu.</string>
+    <string name="deep_link_example">Atau buka penny://add?amount=1250&amp;category=Groceries dari aplikasi atau pintasan apa pun (jumlah dalam satuan terkecil).</string>
+    <string name="webhooks">Webhook</string>
+    <string name="webhooks_body">Kirim setiap transaksi baru ke servermu sendiri sebagai JSON bertanda tangan. Pakai hanya alamat yang kamu kendalikan.</string>
+    <string name="webhook_url">Alamat webhook (https)</string>
+    <string name="https_only">Hanya alamat https yang diizinkan</string>
+    <string name="signing_secret">Kunci rahasia tanda tangan (verifikasi header X-Penny-Signature):</string>
+    <string name="create_secret">Buat kunci rahasia</string>
+    <string name="new_secret">Kunci rahasia baru</string>
+    <string name="copy">Salin</string>
+    <string name="send_now">Kirim sekarang</string>
+    <plurals name="webhook_sent"><item quantity="other">%d transaksi terkirim</item></plurals>
+    <string name="ob_get_started">Mulai</string>
+    <string name="ob_sample">Jelajahi dengan data contoh</string>
+    <string name="ob_point_safe">Satu angka yang menenangkan: berapa yang aman dibelanjakan sampai gajian</string>
+    <string name="ob_point_world">Mata uang apa pun, siklus gaji apa pun, sesuai caramu mengelola uang</string>
+    <string name="ob_point_private">Privat sejak awal: di ponselmu, terenkripsi end-to-end</string>
+    <string name="ob_point_free">Semua fitur gratis. Tanpa iklan, tanpa pinjaman, tanpa jual data</string>
+    <string name="no_income_yet">Belum ada pemasukan tercatat di periode ini</string>
+    <string name="spent_more_than_income">Pengeluaran melebihi pemasukan periode ini</string>
+    <string name="get_address">Dapatkan alamat penerusanku</string>
+    <string name="new_address">Alamat baru</string>
+    <string name="turn_off">Nonaktifkan</string>
+    <string name="email_forwarding_privacy">Teruskan struk pesanan, ojek online, dan makanan ke alamat ini. Server langsung mengenkripsi setiap email untuk ponsel ini dan menghapusnya setelah Penny membacanya di sini.</string>
+    <string name="community_merchants">Nama merchant dari komunitas</string>
+    <string name="community_merchants_hint">Bagikan nama penerima dan kategori, tidak pernah jumlah, secara anonim dengan orang di wilayahmu, dan dapatkan nama yang rapi. Nonaktif secara default.</string>
+</resources>

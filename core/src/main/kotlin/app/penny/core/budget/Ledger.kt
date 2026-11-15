@@ -80,9 +80,14 @@ object SafeToSpendCalculator {
                 TxType.REFUND -> -1
                 else -> return@forEach
             }
-            if (sign != 0 && t.categoryId != null && t.categoryId in excludedCategoryIds) return@forEach
-            val base = fx.convert(t.amountMinor, t.currency, baseCurrency, t.date)
-            if (base == null) { unconverted++; return@forEach }
+            // Same rules as Insights and envelopes: split lines count separately, excluded categories (transfers to
+            // people, loans given) never count as spend or income.
+            val lines = if (sign != 0 && t.splits.isNotEmpty()) t.splits.map { it.categoryId to it.amountMinor } else listOf(t.categoryId to t.amountMinor)
+            val counted = lines.filter { (c, _) -> c == null || c !in excludedCategoryIds }
+            if (counted.isEmpty()) return@forEach
+            var missingRate = false
+            val base = counted.sumOf { (_, a) -> fx.convert(a, t.currency, baseCurrency, t.date) ?: run { missingRate = true; 0L } }
+            if (missingRate) { unconverted++; return@forEach }
             if (t.type == TxType.INCOME) income = Math.addExact(income, base) else spent = Math.addExact(spent, sign * base)
         }
         val totalIncome = income + expectedIncomeMinor

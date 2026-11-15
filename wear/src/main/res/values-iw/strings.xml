@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Penny</string>
+    <string name="safe_to_spend">פנוי להוצאה</string>
+    <string name="per_day_left">%1$s ליום · נותרו %2$d ימים</string>
+    <string name="say_it">הוצאה בקול</string>
+    <string name="added">נוסף בטלפון</string>
+    <string name="not_understood">לא זוהה סכום</string>
+    <string name="no_phone">הטלפון לא מחובר. מוצג המספר האחרון הידוע.</string>
+</resources>

@@ -41,6 +41,18 @@ class SafeToSpendTest : FunSpec({
         s.perDayMinor shouldBe 41_000_00 / 21
     }
 
+    test("split lines count separately; the part in an excluded category (lent to friends) is not spend") {
+        val group = tx(TxType.EXPENSE, 1000, 2, "food").copy(splits = listOf(Split(250, "food"), Split(750, "loan.given")))
+        val s = SafeToSpendCalculator.compute(listOf(tx(TxType.INCOME, 5000, 1), group), period, LocalDate.of(2026, 11, 10), "INR", setOf("loan.given"))
+        s.spentMinor shouldBe 250
+        s.safeMinor shouldBe 4750
+    }
+
+    test("income in an excluded category does not count as income") {
+        val txs = listOf(tx(TxType.INCOME, 5000, 1), tx(TxType.INCOME, 900, 2, "loan.given"))
+        SafeToSpendCalculator.compute(txs, period, LocalDate.of(2026, 11, 10), "INR", setOf("loan.given")).incomeMinor shouldBe 5000
+    }
+
     test("pace turns on only after day 3 when spend share is 15 points ahead") {
         val txs = listOf(tx(TxType.INCOME, 30_000, 1), tx(TxType.EXPENSE, 15_000, 2))
         SafeToSpendCalculator.compute(txs, period, LocalDate.of(2026, 11, 3), "INR", emptySet()).aheadOfPace shouldBe false

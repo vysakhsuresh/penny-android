@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">Bezpiecznie do wydania w jednym spojrzeniu</string>
+    <string name="widget_quick_desc">Dodaj transakcję lub użyj szablonu jednym dotknięciem</string>
+    <string name="widget_envelopes_desc">Koperty i nadchodzące rachunki</string>
+    <string name="widget_safe_label">Bezpiecznie do wydania</string>
+    <string name="widget_quick_label">Szybkie dodawanie</string>
+    <string name="widget_envelopes_label">Budżety</string>
+    <string name="shortcut_add">Dodaj</string>
+    <string name="tile_label">Dodaj do Penny</string>
+</resources>

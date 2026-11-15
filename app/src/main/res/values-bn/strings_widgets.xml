@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">এক নজরে খরচ করার মতো অঙ্ক</string>
+    <string name="widget_quick_desc">এক ট্যাপে লেনদেন যোগ করুন বা টেমপ্লেট চালান</string>
+    <string name="widget_envelopes_desc">খাম আর আসন্ন বিল</string>
+    <string name="widget_safe_label">খরচ করার মতো</string>
+    <string name="widget_quick_label">কুইক অ্যাড</string>
+    <string name="widget_envelopes_label">বাজেট</string>
+    <string name="shortcut_add">যোগ করুন</string>
+    <string name="tile_label">Penny-তে যোগ করুন</string>
+</resources>

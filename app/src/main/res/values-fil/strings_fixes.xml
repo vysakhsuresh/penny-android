@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_failed">Hindi ito na-save. Walang nabago, pakisubukan ulit.</string>
+    <string name="no_app_for_action">Walang app sa phone na ito na makakapagbukas niyan.</string>
+    <string name="import_read_failed">Hindi mabasa ang file na iyan. Tingnan kung bank export ito (CSV, OFX, QIF, CAMT o MT940).</string>
+    <string name="template_default_name">Template</string>
+    <string name="item_default_name">Item</string>
+</resources>

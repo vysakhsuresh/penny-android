@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Penny</string>
+    <string name="safe_to_spend">Ligtas gastusin</string>
+    <string name="per_day_left">%1$s bawat araw · %2$d araw na lang</string>
+    <string name="say_it">Sabihin ang gastos</string>
+    <string name="added">Naidagdag sa phone mo</string>
+    <string name="not_understood">Hindi narinig ang halaga</string>
+    <string name="no_phone">Hindi nakakonekta ang phone. Ipinapakita ang huling alam na numero.</string>
+</resources>

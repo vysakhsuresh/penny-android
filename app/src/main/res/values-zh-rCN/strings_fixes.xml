@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_failed">未能保存。没有做任何更改，请重试。</string>
+    <string name="no_app_for_action">此手机上没有可以打开它的应用。</string>
+    <string name="import_read_failed">无法读取该文件。请确认它是银行导出文件（CSV、OFX、QIF、CAMT 或 MT940）。</string>
+    <string name="template_default_name">模板</string>
+    <string name="item_default_name">项目</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Penny</string>
+    <string name="safe_to_spend">Selamat dibelanjakan</string>
+    <string name="per_day_left">%1$s sehari · %2$d hari lagi</string>
+    <string name="say_it">Sebut perbelanjaan</string>
+    <string name="added">Ditambah pada telefon anda</string>
+    <string name="not_understood">Jumlah tidak dapat dikesan</string>
+    <string name="no_phone">Telefon tidak bersambung. Menunjukkan nombor terakhir yang diketahui.</string>
+</resources>

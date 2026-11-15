@@ -379,16 +379,24 @@ fun RecurringEditScreen(id: String, fromTx: String?, onBack: () -> Unit, onHisto
                     )
                     if (existing != null && future) vm.act(R.string.saved, after = onBack) { editFuture(it, id, java.time.LocalDate.parse(futureFrom), r) }
                     else vm.act(if (existing == null) R.string.recurring_added else R.string.saved, after = onBack) { book ->
-                        val g = saveRecurring(book, if (existing == null) null else id, r)
-                        // "Make recurring" from a transaction links that transaction as the first paid occurrence.
-                        if (seed != null && fromTx != null) transactions.update(fromTx, seed.copy(recurringId = null), groupId = g)
+                        val g = recurring.newGroup()
+                        val rid = if (existing == null) newId() else id
+                        if (existing == null) recurring.create(rid, book.profileId, r, g) else recurring.update(id, r, groupId = g)
+                        // "Make recurring" from a transaction links that transaction as the first paid occurrence, so the
+                        // bill does not show as due for a payment that was already made.
+                        if (seed != null && fromTx != null) {
+                            transactions.update(fromTx, seed.copy(recurringId = rid), groupId = g)
+                            if (!seed.date.isBefore(r.schedule.start)) occurrences.upsert(
+                                app.penny.core.planning.occurrenceId(rid, seed.date), book.profileId,
+                                app.penny.core.model.Occurrence(rid, seed.date, app.penny.core.model.OccurrenceStatus.PAID, fromTx, seed.amountMinor), g,
+                            )
+                        }
                         g
                     }
                 }, Modifier.padding(horizontal = 16.dp))
                 if (existing != null) TextButton(onClick = { vm.act(R.string.deleted, after = onBack) { recurring.delete(id) } }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.delete)) }
             }
         }
-        @Suppress("UNUSED_VARIABLE") val unused = DayOfWeek.MONDAY
     }
 }
 

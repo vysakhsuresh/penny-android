@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="faq_q">
+        <item>Penny è davvero gratis?</item>
+        <item>Penny legge i miei SMS?</item>
+        <item>Dove sono salvati i miei dati?</item>
+        <item>Cosa significa «disponibile da spendere»?</item>
+        <item>Come cambio il mio ciclo di paga?</item>
+        <item>Ho eliminato qualcosa per sbaglio. Posso recuperarlo?</item>
+        <item>Come registro dei soldi prestati a un amico?</item>
+        <item>Posso condividere un budget con il mio partner?</item>
+        <item>Come passo da un’altra app di finanze?</item>
+        <item>Perché i movimenti della mia app di pagamento non compaiono?</item>
+        <item>Come uso Penny su un nuovo telefono?</item>
+        <item>Posso usare più di una valuta?</item>
+        <item>Come blocco l’app?</item>
+        <item>Come elimino tutti i miei dati?</item>
+    </string-array>
+    <string-array name="faq_a">
+        <item>Sì. Ogni funzione è gratis. Penny Plus, facoltativo, copre solo i costi che crescono per ogni utente, come le commissioni per il collegamento bancario e lo spazio extra. Non c’è pubblicità e non vendiamo mai dati.</item>
+        <item>No. Penny non chiede mai il permesso per gli SMS. Può leggere le notifiche delle app di pagamento e delle banche che autorizzi, solo sul tuo telefono, e puoi disattivarlo quando vuoi.</item>
+        <item>Sul tuo telefono, cifrati. Se attivi la sincronizzazione, i dati vengono cifrati sul telefono prima di uscire, quindi il server conserva dati che non può leggere.</item>
+        <item>Sono i soldi che puoi spendere da ora fino al prossimo periodo di paga senza saltare bollette o obiettivi di risparmio: entrate, meno le bollette ancora da pagare, meno ciò che hai messo da parte, meno ciò che hai già speso.</item>
+        <item>Apri Impostazioni, Profilo, Ciclo di paga. Scegli mensile da qualsiasi giorno, due volte al mese, settimanale, ogni due settimane, ogni quattro settimane o «quando arrivano i soldi». La cronologia viene raggruppata di nuovo e non si perde nulla.</item>
+        <item>Sì. Subito dopo l’eliminazione, tocca Annulla. Più tardi, apri Impostazioni, Cestino: gli elementi eliminati restano lì per 30 giorni. Ogni modifica è anche nella Cronologia, dove puoi tornare a una versione precedente.</item>
+        <item>Apri la scheda Persone e tocca Registra prestito. Scegli la persona, l’importo e se li hai dati o ricevuti. Penny tiene un saldo aggiornato e può preparare un promemoria gentile da inviare.</item>
+        <item>Sì. Attiva la sincronizzazione, poi apri Impostazioni, Spazi condivisi e crea uno spazio. Invita il tuo partner con un link. Ognuno ha il proprio accesso e un ruolo, e puoi tenere private le spese personali.</item>
+        <item>Esporta un CSV dalla vecchia app o dalla banca, poi apri Impostazioni, Dati e backup, Importa. Penny riconosce i file di molte app e mostra un’anteprima con i duplicati prima di aggiungere qualcosa.</item>
+        <item>Controlla Impostazioni, Acquisizione: «Leggi notifiche di pagamento» deve essere attivo e Penny deve avere l’accesso alle notifiche nelle impostazioni del telefono. Vengono lette solo le app elencate per la tua regione, più quelle che aggiungi tu.</item>
+        <item>Attiva la sincronizzazione sul vecchio telefono e annota la frase di recupero. Sul nuovo telefono, accedi con la stessa email e digita la frase. Oppure ripristina un file di backup dalla tua cartella.</item>
+        <item>Sì. Ogni conto ha la sua valuta. I totali usano la tua valuta principale con il tasso di cambio della data del movimento, e ciò che non ha un tasso viene mostrato, mai stimato a caso.</item>
+        <item>Apri Impostazioni, Sicurezza, Blocco app. Imposta un PIN e consenti impronta o volto. Puoi anche bloccare gli screenshot e scegliere dopo quanto l’app si blocca di nuovo.</item>
+        <item>Apri Impostazioni, Dati e backup, Elimina tutto da questo telefono. Se la sincronizzazione è attiva, elimina anche l’account di sincronizzazione in Sincronizzazione e banche. Prima esporta, se potrebbe servirti qualcosa.</item>
+    </string-array>
+
+    <string-array name="guide_start">
+        <item>Scegli la tua regione. Imposta valuta, formato dei numeri e ciclo di paga abituale. Puoi cambiare tutto in seguito.</item>
+        <item>Di’ a Penny quando arrivano i soldi. Il budget segue il tuo vero ciclo di paga, non il mese di calendario.</item>
+        <item>Inserisci i contanti che hai adesso. Banche, portafogli e carte puoi aggiungerli dopo da Conti.</item>
+        <item>Tocca il pulsante più per aggiungere una spesa: scrivi l’importo, scegli una categoria, salva. Bastano circa tre secondi.</item>
+        <item>La Home mostra un solo numero: quanto è disponibile da spendere fino al prossimo stipendio.</item>
+    </string-array>
+    <string-array name="guide_safe">
+        <item>Il disponibile da spendere parte dalle entrate di questo periodo, incluso lo stipendio atteso ma non ancora ricevuto.</item>
+        <item>Toglie le bollette ancora da pagare in questo periodo e ciò che hai messo da parte per gli obiettivi.</item>
+        <item>Poi toglie ciò che hai già speso. I trasferimenti tra i tuoi conti non contano mai.</item>
+        <item>«Al giorno» divide ciò che resta per i giorni rimasti nel periodo.</item>
+        <item>Se le spese vanno più veloci del calendario, la Home mostra una nota color ambra, con calma. Penny non usa mai il rosso per i tuoi soldi.</item>
+    </string-array>
+    <string-array name="guide_budget">
+        <item>Una busta è un importo per una parte della vita, come cibo o trasporti, per ogni periodo.</item>
+        <item>Apri Budget e tocca Usa un modello, oppure aggiungi le buste una alla volta.</item>
+        <item>Scegli cosa succede agli avanzi: si riparte da zero, si riportano, o si riportano fino a un tetto.</item>
+        <item>Se una busta va oltre, tocca Copri da per spostare soldi da una che ne ha ancora. Viene registrato e si può annullare.</item>
+        <item>Vuoi che ogni unità abbia un compito? Attiva il budget a base zero nelle impostazioni del Profilo.</item>
+    </string-array>
+    <string-array name="guide_cycle">
+        <item>Molte persone sono pagate ogni mese, ma non il giorno 1; altre ogni due settimane, due volte al mese o quando un lavoro viene pagato.</item>
+        <item>Apri Impostazioni, Profilo, Ciclo di paga e scegli quello che corrisponde alla tua paga.</item>
+        <item>«Quando arrivano i soldi» avvia un nuovo periodo ogni volta che arriva un’entrata sopra una soglia: adatto a lavori occasionali e a soldi inviati dalla famiglia all’estero.</item>
+        <item>Cambiare il ciclo raggruppa di nuovo la cronologia e si può annullare.</item>
+    </string-array>
+    <string-array name="guide_capture">
+        <item>Attiva le notifiche di pagamento in Impostazioni, Acquisizione. Penny legge solo le app di pagamento e delle banche, sul tuo telefono.</item>
+        <item>Condividi con Penny un messaggio, una ricevuta o un estratto conto da qualsiasi app.</item>
+        <item>Scansiona una ricevuta con la fotocamera; Penny la legge sul telefono.</item>
+        <item>Detta un movimento a voce, ad esempio «250 di spesa ieri».</item>
+        <item>Gli elementi acquisiti aspettano in Verifica. Dopo dieci di fila dalla stessa app senza modifiche, Penny propone di aggiungerli in automatico.</item>
+    </string-array>
+    <string-array name="guide_people">
+        <item>Registra i soldi che presti o ricevi in prestito nella scheda Persone. Penny usa parole neutre: da ricevere e da dare.</item>
+        <item>Le restituzioni parziali vanno bene; aggiungi una voce per ciascuna.</item>
+        <item>I gruppi dividono le spese comuni in parti uguali, per importi esatti, percentuali, quote o voce per voce.</item>
+        <item>Semplifica i debiti trova il minor numero di pagamenti per sistemare tutti.</item>
+        <item>Gli spazi condivisi permettono a una famiglia di gestire il budget insieme, ognuno con il proprio accesso e ruolo.</item>
+    </string-array>
+    <string-array name="guide_bills">
+        <item>Aggiungi ogni bolletta una sola volta, con la frequenza con cui si ripete. Penny la prevede nel disponibile da spendere.</item>
+        <item>Quando una bolletta è pagata, segnala come pagata; il movimento viene creato per te. Oppure lascia che Penny la aggiunga in automatico.</item>
+        <item>Salta o modifica una singola scadenza senza toccare le altre, oppure modifica «questa e le successive».</item>
+        <item>Gli abbonamenti mostrano il costo annuo e quando il prezzo è aumentato, con un messaggio di disdetta già pronto.</item>
+        <item>Le rate mostrano il piano completo e quanti interessi faresti risparmiare con un rimborso anticipato.</item>
+    </string-array>
+    <string-array name="guide_goals">
+        <item>Un obiettivo ha un importo e, se vuoi, una data. Penny mostra quanto mettere da parte in ogni periodo.</item>
+        <item>Aggiungi soldi quando risparmi; prelevali quando ti servono.</item>
+        <item>Imposta un importo automatico per periodo, così conta nel disponibile da spendere.</item>
+        <item>Un fondo di emergenza suggerisce un obiettivo in base alle tue vere spese essenziali.</item>
+    </string-array>
+    <string-array name="guide_import">
+        <item>Esporta un CSV dalla tua banca o dall’app precedente.</item>
+        <item>Apri Impostazioni, Dati e backup, Importa da un file.</item>
+        <item>Penny riconosce molte app in automatico; per i file della banca, controlla le colonne.</item>
+        <item>Controlla l’anteprima. I probabili duplicati vengono saltati, salvo diversa indicazione.</item>
+        <item>Tocca Importa. Puoi annullare l’intera importazione con un tocco.</item>
+    </string-array>
+    <string-array name="guide_undo">
+        <item>Ogni modifica in Penny si può annullare per qualche secondo con il pulsante Annulla.</item>
+        <item>Gli elementi eliminati restano nel Cestino per 30 giorni.</item>
+        <item>Ogni movimento, conto e busta ha una Cronologia di ogni modifica, con chi l’ha fatta e quando.</item>
+        <item>Tocca «Torna a questa versione» per tornare indietro. Anche il ripristino si può annullare.</item>
+    </string-array>
+    <string-array name="guide_privacy">
+        <item>I tuoi dati vivono sul tuo telefono, in un database cifrato.</item>
+        <item>La sincronizzazione cifra sul telefono prima dell’invio; il server non può leggere i tuoi dati finanziari.</item>
+        <item>Penny non mostra pubblicità, non offre prestiti e non vende dati.</item>
+        <item>I conteggi anonimi facoltativi aiutano a migliorare l’app e non includono mai importi, beneficiari o note.</item>
+    </string-array>
+    <string-array name="guide_sync">
+        <item>Attiva la sincronizzazione in Impostazioni, Sincronizzazione e banche, con la tua email.</item>
+        <item>Annota la frase di recupero di 24 parole. Apre i tuoi dati sui nuovi telefoni e ripristina i backup cifrati.</item>
+        <item>Su un nuovo telefono, accedi con la stessa email e digita la frase.</item>
+        <item>Scegli una cartella di backup in Dati e backup per avere backup cifrati automatici sotto il tuo controllo.</item>
+    </string-array>
+
+    <string-array name="about_story">
+        <item>Penny è nata da una domanda semplice: quanto posso spendere oggi senza preoccuparmi della prossima settimana?</item>
+        <item>La maggior parte delle app di finanze risponde con grafici del passato o offerte di prestiti. Noi volevamo un solo numero, sereno, basato sul tuo vero ciclo di paga, sulle tue vere bollette e sulle persone della tua vita.</item>
+        <item>Penny è pensata per tutto il mondo: qualsiasi valuta, qualsiasi ciclo di paga, il modo in cui le persone gestiscono davvero i soldi, dai gruppi di risparmio ai soldi mandati a casa.</item>
+        <item>Ogni funzione è gratis. Non guadagniamo da pubblicità, prestiti o dai tuoi dati, e non lo faremo mai. Se Penny ti aiuta, una mancia o una recensione gentile la fa andare avanti.</item>
+    </string-array>
+    <string-array name="trust_never">
+        <item>Non mostriamo mai pubblicità.</item>
+        <item>Non offriamo mai prestiti, carte di credito o altri prodotti finanziari.</item>
+        <item>Non vendiamo né condividiamo mai i tuoi dati.</item>
+        <item>Non leggiamo mai i tuoi SMS.</item>
+        <item>Non vediamo mai i tuoi dati finanziari quando sincronizzi: sono cifrati sul tuo telefono.</item>
+        <item>Non mettiamo mai una funzione a pagamento. Plus copre solo i costi reali per utente.</item>
+        <item>Non usiamo mai il rosso per farti sentire in colpa per le spese.</item>
+    </string-array>
+    <string-array name="changelog">
+        <item>v1.0.0</item>
+        <item>Budget con buste su qualsiasi ciclo di paga, riporti, obiettivi e vista annuale.</item>
+        <item>Obiettivi, bollette, abbonamenti, rate e un piano per estinguere i debiti.</item>
+        <item>Prestiti, spese di gruppo, soldi mandati a casa e gruppi di risparmio.</item>
+        <item>Acquisizione da notifiche di pagamento, condivisione, ricevute e voce, con una coda di verifica e regole che imparano.</item>
+        <item>Analisi con grafici, previsioni, patrimonio netto e un coach sul dispositivo.</item>
+        <item>Sincronizzazione con crittografia end-to-end, spazi condivisi, backup cifrati, blocco app.</item>
+        <item>v0.1.0</item>
+        <item>Prima versione: disponibile da spendere, movimenti con annullamento e cronologia.</item>
+    </string-array>
+    <string-array name="licences">
+        <item>Plus Jakarta Sans — SIL Open Font License 1.1, The Plus Jakarta Sans Project Authors.</item>
+        <item>AndroidX e Jetpack Compose — Apache License 2.0, The Android Open Source Project.</item>
+        <item>Kotlin e librerie kotlinx — Apache License 2.0, JetBrains.</item>
+        <item>Dagger e Hilt — Apache License 2.0, Google.</item>
+        <item>Room — Apache License 2.0, Google.</item>
+        <item>SQLCipher for Android — licenza di tipo BSD, Zetetic LLC.</item>
+        <item>Tink — Apache License 2.0, Google.</item>
+        <item>OkHttp — Apache License 2.0, Square.</item>
+        <item>ML Kit Text Recognition — ML Kit Terms of Service, Google.</item>
+        <item>Material icons — Apache License 2.0, Google.</item>
+    </string-array>
+</resources>

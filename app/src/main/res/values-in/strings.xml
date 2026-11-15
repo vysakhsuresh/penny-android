@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tagline">Tahu berapa yang aman dibelanjakan.</string>
+
+    <!-- Common -->
+    <string name="save">Simpan</string>
+    <string name="cancel">Batal</string>
+    <string name="delete">Hapus</string>
+    <string name="undo">Urungkan</string>
+    <string name="restore">Pulihkan</string>
+    <string name="retry">Coba lagi</string>
+    <string name="back">Kembali</string>
+    <string name="next">Lanjut</string>
+    <string name="skip">Lewati</string>
+    <string name="done">Selesai</string>
+    <string name="none">Tidak ada</string>
+    <string name="loading">Memuat</string>
+    <string name="error_generic">Terjadi kesalahan saat membaca datamu. Tidak ada yang hilang.</string>
+
+    <!-- Onboarding (OB-01) -->
+    <string name="ob_step">Langkah %1$d dari %2$d</string>
+    <string name="ob_region_title">Kamu tinggal di mana?</string>
+    <string name="ob_region_body">Ini menentukan mata uang, format angka, dan siklus gaji yang umum. Semuanya bisa kamu ubah nanti.</string>
+    <string name="ob_cycle_title">Kapan uang masuk?</string>
+    <string name="ob_cycle_body">Anggaranmu mengikuti siklus gajimu yang sebenarnya.</string>
+    <string name="ob_account_title">Berapa uang tunai yang kamu punya sekarang?</string>
+    <string name="ob_account_body">Kita mulai dengan satu akun tunai. Tambahkan bank dan kartu nanti.</string>
+    <string name="ob_cash_name">Tunai</string>
+    <string name="ob_finish">Mulai pakai %1$s</string>
+
+    <!-- Cycles -->
+    <string name="cycle_monthly">Bulanan, mulai tanggal %1$d</string>
+    <string name="cycle_monthly_last">Bulanan, mulai hari terakhir</string>
+    <string name="cycle_semimonthly">Dua kali sebulan, tanggal %1$d dan hari terakhir</string>
+    <string name="cycle_weekly">Mingguan</string>
+    <string name="cycle_biweekly">Setiap dua minggu</string>
+    <string name="cycle_fourweekly">Setiap empat minggu</string>
+    <string name="cycle_quarterly">Per kuartal</string>
+    <string name="cycle_yearly">Tahunan</string>
+    <string name="cycle_onincome">Saat uang masuk</string>
+    <string name="cycle_default_suffix">%1$s (umum di sini)</string>
+    <string name="cycle_start_day">Tanggal mulai tiap bulan</string>
+
+    <!-- Home -->
+    <string name="safe_to_spend">Aman dibelanjakan</string>
+    <string name="per_day">%1$s per hari</string>
+    <string name="on_pace">Sesuai jalur</string>
+    <string name="ahead_of_pace">Pengeluaran lebih cepat dari kalender</string>
+    <string name="period_range">%1$s – %2$s</string>
+    <string name="prev_period">Periode sebelumnya</string>
+    <string name="next_period">Periode berikutnya</string>
+    <string name="this_period">Kembali ke periode ini</string>
+    <string name="income_spent">Pemasukan %1$s · Terpakai %2$s</string>
+    <string name="accounts">Akun</string>
+    <string name="transactions">Transaksi</string>
+    <string name="empty_period_title">Belum ada apa-apa di periode ini</string>
+    <string name="empty_period_body">Ketuk Tambah untuk mencatat transaksi pertamamu.</string>
+    <string name="add_transaction">Tambah transaksi</string>
+    <string name="trash">Sampah</string>
+    <string name="settings">Pengaturan</string>
+    <string name="today">Hari ini</string>
+    <string name="yesterday">Kemarin</string>
+    <string name="deleted_tx">Transaksi dihapus</string>
+    <string name="saved_tx">Transaksi disimpan</string>
+    <string name="uncategorised">Tanpa kategori</string>
+    <string name="transfer_to">Ke %1$s</string>
+    <string name="swipe_delete_hint">Geser ke kiri untuk menghapus</string>
+
+    <!-- Transaction form (TX-02) -->
+    <string name="new_transaction">Transaksi baru</string>
+    <string name="edit_transaction">Ubah transaksi</string>
+    <string name="type_expense">Pengeluaran</string>
+    <string name="type_income">Pemasukan</string>
+    <string name="type_transfer">Transfer</string>
+    <string name="type_refund">Pengembalian dana</string>
+    <string name="type_adjustment">Penyesuaian</string>
+    <string name="type_opening">Saldo awal</string>
+    <string name="field_type">Jenis</string>
+    <string name="field_amount">Jumlah</string>
+    <string name="field_amount_hint">Pakai + − × ÷ untuk menghitung</string>
+    <string name="amount_result">= %1$s</string>
+    <string name="amount_rounded">= %1$s (dibulatkan)</string>
+    <string name="field_currency">Mata uang</string>
+    <string name="field_account">Akun</string>
+    <string name="field_to_account">Ke akun</string>
+    <string name="field_to_amount">Jumlah diterima</string>
+    <string name="field_category">Kategori</string>
+    <string name="field_payee">Penerima</string>
+    <string name="field_date">Tanggal</string>
+    <string name="field_time">Waktu</string>
+    <string name="field_no_time">Tanpa waktu</string>
+    <string name="field_note">Catatan</string>
+    <string name="field_tags">Tag</string>
+    <string name="field_tags_hint">Pisahkan dengan koma</string>
+    <string name="field_status">Status</string>
+    <string name="status_pending">Tertunda</string>
+    <string name="status_cleared">Selesai</string>
+    <string name="status_reconciled">Direkonsiliasi</string>
+    <string name="field_direction">Arah</string>
+    <string name="direction_in">Menambah saldo</string>
+    <string name="direction_out">Mengurangi saldo</string>
+    <string name="field_private">Pribadi</string>
+    <string name="field_private_body">Sembunyikan penerima, catatan, dan lampiran dari orang lain di ruang bersama</string>
+    <string name="field_exclude_budget">Jangan hitung di anggaran</string>
+    <string name="field_exclude_reports">Jangan hitung di laporan</string>
+    <string name="field_splits">Pembagian</string>
+    <string name="field_attachments">Lampiran</string>
+    <string name="future_scheduled">Tanggal mendatang: ini akan dihitung sebagai terjadwal.</string>
+    <string name="history">Riwayat</string>
+    <string name="pick_date">Pilih tanggal</string>
+    <string name="pick_time">Pilih waktu</string>
+    <string name="clear_time">Hapus waktu</string>
+
+    <!-- Validation (TX-08) -->
+    <string name="err_amount_empty">Masukkan jumlah</string>
+    <string name="err_amount_invalid">Jumlah itu tidak valid</string>
+    <string name="err_amount_positive">Jumlah harus lebih dari nol. Jenis transaksi yang menentukan pemasukan atau pengeluaran.</string>
+    <string name="err_amount_decimals_none">%1$s tidak memakai desimal</string>
+    <string name="err_amount_decimals">%1$s memakai %2$d angka desimal</string>
+    <string name="err_amount_large">Jumlah itu terlalu besar</string>
+    <string name="err_divide_zero">Tidak bisa membagi dengan nol</string>
+    <string name="err_account_required">Pilih akun</string>
+    <string name="err_transfer_target">Pilih akun tujuan uang</string>
+    <string name="err_transfer_same">Pilih akun tujuan yang berbeda</string>
+    <string name="err_transfer_to_amount">Masukkan jumlah yang diterima dalam mata uang lain</string>
+    <string name="err_direction">Pilih apakah ini menambah atau mengurangi</string>
+    <string name="err_splits">Total pembagian harus sama dengan jumlah total</string>
+    <string name="tx_not_found">Transaksi ini sudah tidak ada.</string>
+
+    <!-- History (TX-05) -->
+    <string name="history_title">Riwayat</string>
+    <string name="history_created">Dibuat</string>
+    <string name="history_edited">Diubah</string>
+    <string name="history_deleted">Dihapus</string>
+    <string name="history_restored">Dipulihkan</string>
+    <string name="history_undo">Diurungkan</string>
+    <string name="history_reverted">Dikembalikan ke versi %1$d</string>
+    <string name="history_version">Versi %1$d</string>
+    <string name="history_by">%1$s · %2$s</string>
+    <string name="history_you">Kamu</string>
+    <string name="history_revert">Kembalikan ke versi ini</string>
+    <string name="history_change">%1$s: %2$s → %3$s</string>
+    <string name="history_set">%1$s: %2$s</string>
+    <string name="history_empty">Belum ada perubahan yang tercatat.</string>
+    <string name="reverted">Dikembalikan</string>
+
+    <!-- Trash (TX-03, HS-02) -->
+    <string name="trash_title">Sampah</string>
+    <string name="trash_body">Transaksi yang dihapus disimpan di sini selama 30 hari.</string>
+    <string name="trash_empty">Sampah kosong</string>
+    <string name="delete_forever">Hapus permanen</string>
+    <string name="restored">Dipulihkan</string>
+    <string name="deleted_forever">Dihapus permanen</string>
+
+    <!-- Settings -->
+    <string name="settings_region">Wilayah</string>
+    <string name="settings_region_body">Mata uang, format angka, dan siklus gaji mengikuti wilayah. Transaksi yang sudah ada tetap memakai mata uangnya sendiri.</string>
+    <string name="settings_sample">Contoh: %1$s</string>
+    <string name="region_changed">Wilayah diubah ke %1$s</string>
+    <string name="settings_cycle">Siklus gaji</string>
+    <string name="settings_about">%1$s gratis. Tanpa iklan, tanpa pinjaman, tanpa jual data.</string>
+
+    <plurals name="days_left">
+        <item quantity="other">%d hari lagi</item>
+    </plurals>
+    <plurals name="unconverted">
+        <item quantity="other">%d transaksi dalam mata uang lain belum dihitung</item>
+    </plurals>
+    <plurals name="trash_count">
+        <item quantity="other">%d item</item>
+    </plurals>
+</resources>

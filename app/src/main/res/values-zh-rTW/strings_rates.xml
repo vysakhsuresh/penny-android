@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exchange_rates">匯率</string>
+    <string name="rates_body">Penny 會依每筆交易當天的匯率換算。參考匯率會在連上 Wi-Fi 時下載並儲存在手機上；你自己設定的匯率一律優先。</string>
+    <string name="rates_updated">參考匯率截至 %1$s</string>
+    <string name="rates_never">尚未下載參考匯率</string>
+    <string name="rates_refreshed">匯率已更新</string>
+    <string name="rates_offline">無法連線到匯率來源。請在 Wi-Fi 環境下再試一次。</string>
+    <string name="refresh_now">立即重新整理</string>
+    <string name="add_manual_rate">新增我的匯率</string>
+    <string name="your_currencies">今日你的貨幣</string>
+    <string name="no_rate">無匯率</string>
+    <string name="manual_rates">你的匯率</string>
+    <string name="no_manual_rates">目前沒有。如果銀行或換匯處給你不同的匯率，可以新增一筆。</string>
+    <string name="rate_in_x">一單位折合 %1$s 的價值</string>
+    <string name="record_value">記錄價值</string>
+    <string name="record_value_body">它現在值多少？價值紀錄會計入淨資產。</string>
+    <string name="value_recorded">已記錄價值</string>
+    <string name="valuations">估值</string>
+    <string name="share_group_link">為沒有此 App 的人分享檢視畫面</string>
+    <string name="group_link_text">「%1$s」的餘額（唯讀，30 天後失效）：%2$s</string>
+    <string name="usage_counts">分享匿名使用次數</string>
+    <string name="usage_counts_hint">僅包含功能使用頻率，絕不包含金額、收款方、備註或你輸入的任何內容。預設為關閉。</string>
+    <string name="usage_counts_none">目前尚未統計任何內容。</string>
+    <string name="consent_until">授權有效至 %1$s</string>
+    <string name="reconsent">更新授權</string>
+    <string name="disconnect">中斷連線</string>
+    <string name="disconnected">已中斷連線。銀行連結及其儲存的存取權已刪除；這些帳戶現在改為手動管理。</string>
+    <string name="bank_needs_sync">請先在上方開啟同步，才能連結銀行。</string>
+    <string name="connect_with_token">使用設定權杖連結</string>
+    <string name="connect_in_browser">在服務供應商的安全頁面上連結</string>
+    <string name="simplefin_help">在你的 SimpleFIN Bridge 帳戶建立設定權杖，然後貼到這裡。Penny 的伺服器會用它換取存取權；權杖絕不會儲存在這支手機上。</string>
+    <string name="setup_token">設定權杖</string>
+    <string name="connect">連結</string>
+    <string name="bank_connected">銀行已連結。交易會在下次同步時送達。</string>
+    <string name="bank_cancelled">已取消連結。沒有連結任何內容。</string>
+    <plurals name="bank_synced"><item quantity="other">已新增或更新 %d 筆交易</item></plurals>
+    <string name="automation">自動化</string>
+    <string name="automation_sub">Tasker、捷徑和 Webhook</string>
+    <string name="automation_body">將 Penny 連結到自動化 App 和你自己的服務。除非你設定 Webhook 網址，否則所有內容都只會留在這支手機上。</string>
+    <string name="automation_apps">自動化 App</string>
+    <string name="allow_automation_apps">允許自動化 App 新增交易</string>
+    <string name="allow_automation_hint">Tasker、Automate 等 App 可以透過 intent 新增交易，但絕對無法讀取你的資料。</string>
+    <string name="deep_link_example">也可以從任何 App 或捷徑開啟 penny://add?amount=1250&amp;category=Groceries（金額以最小單位計）。</string>
+    <string name="webhooks">Webhook</string>
+    <string name="webhooks_body">將每筆新交易以簽章 JSON 傳送到你自己的伺服器。請只使用你能掌控的網址。</string>
+    <string name="webhook_url">Webhook 網址（https）</string>
+    <string name="https_only">僅允許 https 網址</string>
+    <string name="signing_secret">簽章密鑰（用於驗證 X-Penny-Signature 標頭）：</string>
+    <string name="create_secret">建立密鑰</string>
+    <string name="new_secret">新密鑰</string>
+    <string name="copy">複製</string>
+    <string name="send_now">立即傳送</string>
+    <plurals name="webhook_sent"><item quantity="other">已傳送 %d 筆交易</item></plurals>
+    <string name="ob_get_started">開始使用</string>
+    <string name="ob_sample">用範例資料體驗</string>
+    <string name="ob_point_safe">一個讓人安心的數字：發薪日前可安心花用的錢</string>
+    <string name="ob_point_world">任何貨幣、任何發薪週期，貼近你實際的用錢方式</string>
+    <string name="ob_point_private">從設計上保護隱私：資料留在手機上，端對端加密</string>
+    <string name="ob_point_free">所有功能免費。沒有廣告、沒有貸款，也不販售資料</string>
+    <string name="no_income_yet">本週期尚未記錄收入</string>
+    <string name="spent_more_than_income">支出已超過本週期收入</string>
+    <string name="get_address">取得我的轉寄地址</string>
+    <string name="new_address">新地址</string>
+    <string name="turn_off">關閉</string>
+    <string name="email_forwarding_privacy">將訂單、叫車和外送收據轉寄到這個地址。伺服器會立即將每封郵件加密給這支手機，並在 Penny 於此讀取後刪除。</string>
+    <string name="community_merchants">社群商家名稱</string>
+    <string name="community_merchants_hint">與你所在地區的人匿名分享收款方名稱和類別（絕不包含金額），並取得整理好的名稱。預設為關閉。</string>
+</resources>

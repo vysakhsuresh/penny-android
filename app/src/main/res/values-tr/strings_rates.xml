@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exchange_rates">Döviz kurları</string>
+    <string name="rates_body">Penny, her işlemin tarihindeki kurla çevirir. Referans kurlar Wi-Fi üzerinden indirilir ve telefonda saklanır; kendi kurların her zaman önceliklidir.</string>
+    <string name="rates_updated">Referans kurlar şu tarihe kadar: %1$s</string>
+    <string name="rates_never">Henüz referans kur indirilmedi</string>
+    <string name="rates_refreshed">Kurlar güncellendi</string>
+    <string name="rates_offline">Kur kaynağına ulaşılamadı. Wi-Fi’dayken tekrar dene.</string>
+    <string name="refresh_now">Şimdi yenile</string>
+    <string name="add_manual_rate">Kendi kurumu ekle</string>
+    <string name="your_currencies">Bugünkü para birimlerin</string>
+    <string name="no_rate">Kur yok</string>
+    <string name="manual_rates">Kurların</string>
+    <string name="no_manual_rates">Henüz yok. Bankan veya döviz bürosu farklı bir kur verdiyse ekle.</string>
+    <string name="rate_in_x">Bir birimin değeri (%1$s)</string>
+    <string name="record_value">Değer kaydet</string>
+    <string name="record_value_body">Bunun bugünkü değeri ne? Değer geçmişi net varlığı besler.</string>
+    <string name="value_recorded">Değer kaydedildi</string>
+    <string name="valuations">Değerlemeler</string>
+    <string name="share_group_link">Uygulaması olmayan kişiler için bir görünüm paylaş</string>
+    <string name="group_link_text">“%1$s” bakiyeleri (salt okunur, 30 gün sonra sona erer): %2$s</string>
+    <string name="usage_counts">Anonim kullanım sayılarını paylaş</string>
+    <string name="usage_counts_hint">Yalnızca özelliklerin ne sıklıkla kullanıldığı; asla tutarlar, alıcılar, notlar veya yazdığın hiçbir şey değil. Varsayılan olarak kapalı.</string>
+    <string name="usage_counts_none">Henüz bir şey sayılmadı.</string>
+    <string name="consent_until">onay bitişi: %1$s</string>
+    <string name="reconsent">Onayı yenile</string>
+    <string name="disconnect">Bağlantıyı kes</string>
+    <string name="disconnected">Bağlantı kesildi. Banka bağlantısı ve saklanan erişim bilgileri silindi; hesaplar artık manuel.</string>
+    <string name="bank_needs_sync">Banka bağlamak için yukarıdan eşitlemeyi aç.</string>
+    <string name="connect_with_token">Kurulum belirteciyle bağlan</string>
+    <string name="connect_in_browser">Sağlayıcının güvenli sayfasında bağlan</string>
+    <string name="simplefin_help">SimpleFIN Bridge hesabında bir kurulum belirteci oluştur ve buraya yapıştır. Penny’nin sunucusu bunu erişim bilgisiyle değiştirir; belirteç bu telefonda asla saklanmaz.</string>
+    <string name="setup_token">Kurulum belirteci</string>
+    <string name="connect">Bağlan</string>
+    <string name="bank_connected">Banka bağlandı. İşlemler bir sonraki eşitlemede gelir.</string>
+    <string name="bank_cancelled">Bağlantı iptal edildi. Hiçbir şey bağlanmadı.</string>
+    <plurals name="bank_synced"><item quantity="one">%d işlem eklendi veya güncellendi</item><item quantity="other">%d işlem eklendi veya güncellendi</item></plurals>
+    <string name="automation">Otomasyon</string>
+    <string name="automation_sub">Tasker, kısayollar ve webhook’lar</string>
+    <string name="automation_body">Penny’yi otomasyon uygulamalarına ve kendi hizmetlerine bağla. Bir webhook adresi belirlemediğin sürece her şey bu telefonda kalır.</string>
+    <string name="automation_apps">Otomasyon uygulamaları</string>
+    <string name="allow_automation_apps">Otomasyon uygulamalarının işlem eklemesine izin ver</string>
+    <string name="allow_automation_hint">Tasker, Automate ve benzeri uygulamalar bir intent ile işlem ekleyebilir. Verilerini asla okuyamazlar.</string>
+    <string name="deep_link_example">Ya da herhangi bir uygulamadan veya kısayoldan penny://add?amount=1250&amp;category=Groceries adresini aç (tutar alt birim cinsinden).</string>
+    <string name="webhooks">Webhook’lar</string>
+    <string name="webhooks_body">Her yeni işlemi imzalı JSON olarak kendi sunucuna gönder. Yalnızca kontrol ettiğin bir adres kullan.</string>
+    <string name="webhook_url">Webhook adresi (https)</string>
+    <string name="https_only">Yalnızca https adreslerine izin verilir</string>
+    <string name="signing_secret">İmzalama anahtarı (X-Penny-Signature başlığını doğrula):</string>
+    <string name="create_secret">Anahtar oluştur</string>
+    <string name="new_secret">Yeni anahtar</string>
+    <string name="copy">Kopyala</string>
+    <string name="send_now">Şimdi gönder</string>
+    <plurals name="webhook_sent"><item quantity="one">%d işlem gönderildi</item><item quantity="other">%d işlem gönderildi</item></plurals>
+    <string name="ob_get_started">Başla</string>
+    <string name="ob_sample">Örnek verilerle keşfet</string>
+    <string name="ob_point_safe">Tek bir sakin sayı: maaş gününe kadar ne kadar harcayabileceğin</string>
+    <string name="ob_point_world">Her para birimi, her maaş döngüsü; parayı gerçekte nasıl yönetiyorsan öyle</string>
+    <string name="ob_point_private">Tasarımı gereği gizli: telefonunda, uçtan uca şifreli</string>
+    <string name="ob_point_free">Tüm özellikler ücretsiz. Reklam yok, kredi yok, veri satışı yok</string>
+    <string name="no_income_yet">Bu dönemde henüz gelir kaydedilmedi</string>
+    <string name="spent_more_than_income">Harcama bu dönemin gelirinin üzerinde</string>
+    <string name="get_address">Yönlendirme adresimi al</string>
+    <string name="new_address">Yeni adres</string>
+    <string name="turn_off">Kapat</string>
+    <string name="email_forwarding_privacy">Sipariş, yolculuk ve yemek makbuzlarını bu adrese yönlendir. Sunucu her e-postayı hemen bu telefon için şifreler ve Penny burada okuduktan sonra siler.</string>
+    <string name="community_merchants">Topluluk işyeri adları</string>
+    <string name="community_merchants_hint">Alıcı adlarını ve kategorileri, asla tutarları değil, bölgendeki kişilerle anonim olarak paylaş ve karşılığında düzenli adlar al. Varsayılan olarak kapalı.</string>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">Il disponibile da spendere a colpo d’occhio</string>
+    <string name="widget_quick_desc">Aggiungi un movimento o usa un modello con un tocco</string>
+    <string name="widget_envelopes_desc">Buste e prossime scadenze</string>
+    <string name="widget_safe_label">Disponibile da spendere</string>
+    <string name="widget_quick_label">Aggiunta rapida</string>
+    <string name="widget_envelopes_label">Budget</string>
+    <string name="shortcut_add">Aggiungi</string>
+    <string name="tile_label">Aggiungi a Penny</string>
+</resources>

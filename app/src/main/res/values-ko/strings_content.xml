@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="faq_q">
+        <item>Penny는 정말 무료인가요?</item>
+        <item>Penny가 SMS를 읽나요?</item>
+        <item>데이터는 어디에 저장되나요?</item>
+        <item>‘쓸 수 있는 돈’은 무슨 뜻인가요?</item>
+        <item>급여 주기는 어떻게 바꾸나요?</item>
+        <item>실수로 삭제했어요. 되돌릴 수 있나요?</item>
+        <item>친구에게 빌려준 돈은 어떻게 기록하나요?</item>
+        <item>배우자나 연인과 예산을 공유할 수 있나요?</item>
+        <item>다른 가계부 앱에서 옮겨 오려면 어떻게 하나요?</item>
+        <item>결제 앱의 거래가 왜 보이지 않나요?</item>
+        <item>새 휴대폰에서 Penny를 쓰려면 어떻게 하나요?</item>
+        <item>여러 통화를 쓸 수 있나요?</item>
+        <item>앱을 잠그려면 어떻게 하나요?</item>
+        <item>내 데이터를 모두 삭제하려면 어떻게 하나요?</item>
+    </string-array>
+    <string-array name="faq_a">
+        <item>네. 모든 기능이 무료예요. 선택 사항인 Penny Plus는 은행 연결 수수료나 추가 저장 공간처럼 사용자마다 늘어나는 비용만 충당해요. 광고는 없고 데이터를 판매하지도 않아요.</item>
+        <item>아니요. Penny는 SMS 권한을 요청하지 않아요. 허용한 결제 앱과 은행 앱의 알림을 휴대폰 안에서만 읽을 수 있고, 언제든지 끌 수 있어요.</item>
+        <item>휴대폰에 암호화되어 저장돼요. 동기화를 켜도 데이터는 휴대폰을 떠나기 전에 암호화되므로, 서버는 읽을 수 없는 데이터만 보관해요.</item>
+        <item>지금부터 다음 급여 기간까지 청구서나 저축 목표에 지장 없이 쓸 수 있는 돈이에요. 수입에서 아직 낼 청구서, 따로 떼어 둔 돈, 이미 쓴 돈을 뺀 금액이에요.</item>
+        <item>설정 → 프로필 → 급여 주기를 여세요. 원하는 날부터 매월, 한 달에 두 번, 매주, 2주마다, 4주마다, ‘돈이 들어올 때’ 중에서 고를 수 있어요. 기록은 다시 묶이고 잃어버리는 것은 없어요.</item>
+        <item>네. 삭제한 직후라면 실행 취소를 누르세요. 나중에는 설정 → 휴지통을 여세요. 삭제한 항목은 30일 동안 보관돼요. 모든 변경은 기록에도 남아서 이전 버전으로 되돌릴 수 있어요.</item>
+        <item>사람 탭을 열고 빌려준 돈 기록을 누르세요. 상대, 금액, 준 돈인지 받은 돈인지 고르세요. Penny가 잔액을 계속 관리하고, 보낼 수 있는 정중한 알림 문구도 만들어 줘요.</item>
+        <item>네. 동기화를 켠 다음 설정 → 공유 스페이스를 열고 스페이스를 만드세요. 링크로 상대를 초대하세요. 각자 자기 로그인과 역할이 있고, 개인 지출은 비공개로 둘 수 있어요.</item>
+        <item>이전 앱이나 은행에서 CSV를 내보낸 다음 설정 → 데이터 및 백업 → 가져오기를 여세요. Penny는 여러 앱의 파일을 알아보고, 추가하기 전에 중복 항목과 함께 미리보기를 보여 줘요.</item>
+        <item>설정 → 자동 수집을 확인하세요. ‘결제 알림 읽기’가 켜져 있어야 하고, 휴대폰 설정에서 Penny의 알림 접근이 허용되어 있어야 해요. 내 지역에 등록된 앱과 직접 추가한 앱만 읽어요.</item>
+        <item>이전 휴대폰에서 동기화를 켜고 복구 문구를 적어 두세요. 새 휴대폰에서 같은 이메일로 로그인하고 문구를 입력하세요. 또는 폴더에서 백업 파일을 복원하세요.</item>
+        <item>네. 계좌마다 통화가 있어요. 합계는 거래 날짜의 환율로 기본 통화로 환산하고, 환율이 없는 항목은 추측하지 않고 그대로 표시해요.</item>
+        <item>설정 → 보안 → 앱 잠금을 여세요. PIN을 설정하고 지문이나 얼굴 인식을 허용하세요. 스크린샷을 막거나 다시 잠기는 시간을 고를 수도 있어요.</item>
+        <item>설정 → 데이터 및 백업 → 이 휴대폰의 모든 데이터 삭제를 여세요. 동기화를 켜 두었다면 동기화 및 은행에서 동기화 계정도 삭제하세요. 필요한 것이 있을 수 있다면 먼저 내보내세요.</item>
+    </string-array>
+
+    <string-array name="guide_start">
+        <item>지역을 고르세요. 통화, 숫자 형식, 일반적인 급여 주기가 설정돼요. 모두 나중에 바꿀 수 있어요.</item>
+        <item>돈이 언제 들어오는지 Penny에 알려 주세요. 예산은 달력의 한 달이 아니라 실제 급여 주기를 따라요.</item>
+        <item>지금 가진 현금을 입력하세요. 은행, 지갑, 카드는 나중에 계좌에서 추가하세요.</item>
+        <item>더하기 버튼을 눌러 지출을 추가하세요. 금액을 입력하고 카테고리를 고른 뒤 저장하면 돼요. 3초 정도 걸려요.</item>
+        <item>홈에는 숫자 하나가 보여요. 다음 월급날까지 쓸 수 있는 돈이에요.</item>
+    </string-array>
+    <string-array name="guide_safe">
+        <item>쓸 수 있는 돈은 이번 기간의 수입에서 시작해요. 아직 받지 않았지만 들어올 예정인 급여도 포함돼요.</item>
+        <item>이번 기간에 아직 낼 청구서와 목표를 위해 떼어 둔 돈을 빼요.</item>
+        <item>그다음 이미 쓴 돈을 빼요. 내 계좌 사이의 이체는 계산하지 않아요.</item>
+        <item>‘하루’는 남은 돈을 기간의 남은 날수로 나눈 금액이에요.</item>
+        <item>지출이 날짜보다 빠르면 홈에 차분한 주황색 메모가 보여요. Penny는 내 돈에 빨간색을 쓰지 않아요.</item>
+    </string-array>
+    <string-array name="guide_budget">
+        <item>봉투는 식비나 교통비처럼 생활의 한 부분에 기간마다 배정하는 금액이에요.</item>
+        <item>예산을 열고 템플릿 사용을 누르거나, 봉투를 하나씩 추가하세요.</item>
+        <item>남은 돈을 어떻게 할지 고르세요. 새로 시작, 이월, 한도까지 이월 중에서 고를 수 있어요.</item>
+        <item>봉투가 초과되면 채우기를 눌러 남은 돈이 있는 봉투에서 옮기세요. 기록이 남고 실행 취소할 수 있어요.</item>
+        <item>모든 돈에 할 일을 정해 주고 싶다면 프로필 설정에서 제로 기반 예산을 켜세요.</item>
+    </string-array>
+    <string-array name="guide_cycle">
+        <item>많은 사람이 월급을 받지만 1일에 받는 건 아니에요. 2주마다, 한 달에 두 번, 일이 끝날 때마다 받는 사람도 있어요.</item>
+        <item>설정 → 프로필 → 급여 주기를 열고 내 급여에 맞는 것을 고르세요.</item>
+        <item>‘돈이 들어올 때’는 일정 금액 이상의 수입이 들어올 때마다 새 기간을 시작해요. 프리랜서 일이나 해외 가족이 보내는 돈에 잘 맞아요.</item>
+        <item>주기를 바꾸면 기록이 다시 묶이고, 실행 취소할 수 있어요.</item>
+    </string-array>
+    <string-array name="guide_capture">
+        <item>설정 → 자동 수집에서 결제 알림을 켜세요. Penny는 결제 앱과 은행 앱만 휴대폰 안에서 읽어요.</item>
+        <item>어떤 앱에서든 메시지, 영수증, 명세서를 Penny로 공유하세요.</item>
+        <item>카메라로 영수증을 스캔하면 Penny가 휴대폰 안에서 읽어요.</item>
+        <item>‘어제 장보기에 250’처럼 음성으로 거래를 말하세요.</item>
+        <item>수집한 항목은 검토에서 기다려요. 한 앱에서 수정 없이 10건이 연속되면 Penny가 자동 추가를 제안해요.</item>
+    </string-array>
+    <string-array name="guide_people">
+        <item>빌려주거나 빌린 돈은 사람 탭에서 기록하세요. Penny는 받을 돈, 줄 돈처럼 중립적인 말을 써요.</item>
+        <item>일부만 갚아도 괜찮아요. 갚을 때마다 항목을 추가하세요.</item>
+        <item>그룹은 공동 비용을 균등하게, 정확한 금액, 비율, 지분, 항목별로 나눠요.</item>
+        <item>빚 단순화는 모두가 정산하는 데 필요한 송금 횟수를 최소로 찾아요.</item>
+        <item>공유 스페이스에서는 가족이 함께 예산을 관리할 수 있고, 각자 자기 로그인과 역할이 있어요.</item>
+    </string-array>
+    <string-array name="guide_bills">
+        <item>청구서마다 반복 주기와 함께 한 번만 추가하세요. Penny가 쓸 수 있는 돈에 미리 반영해요.</item>
+        <item>청구서를 냈다면 납부 완료로 표시하세요. 거래가 자동으로 만들어져요. Penny가 자동으로 추가하게 할 수도 있어요.</item>
+        <item>나머지는 그대로 두고 한 번만 건너뛰거나 바꿀 수 있고, ‘이번 및 이후’를 한꺼번에 바꿀 수도 있어요.</item>
+        <item>구독은 연간 비용과 가격이 오른 시점을 보여 주고, 해지 메시지 초안도 만들어 줘요.</item>
+        <item>할부(EMI)는 전체 상환 일정과 중도 상환 시 아낄 수 있는 이자를 보여 줘요.</item>
+    </string-array>
+    <string-array name="guide_goals">
+        <item>목표에는 목표 금액과, 원한다면 날짜가 있어요. Penny가 기간마다 떼어 둘 금액을 보여 줘요.</item>
+        <item>저축할 때 돈을 넣고, 필요할 때 꺼내세요.</item>
+        <item>기간마다 자동 금액을 정하면 쓸 수 있는 돈에 반영돼요.</item>
+        <item>비상금은 실제 필수 지출을 바탕으로 목표 금액을 제안해요.</item>
+    </string-array>
+    <string-array name="guide_import">
+        <item>은행이나 이전 앱에서 CSV를 내보내세요.</item>
+        <item>설정 → 데이터 및 백업 → 파일에서 가져오기를 여세요.</item>
+        <item>Penny는 여러 앱을 자동으로 알아봐요. 은행 파일은 열을 확인하세요.</item>
+        <item>미리보기를 확인하세요. 중복으로 보이는 항목은 따로 지정하지 않으면 건너뛰어요.</item>
+        <item>가져오기를 누르세요. 가져온 전체 내용을 한 번에 실행 취소할 수 있어요.</item>
+    </string-array>
+    <string-array name="guide_undo">
+        <item>Penny의 모든 변경은 몇 초 동안 실행 취소 버튼으로 되돌릴 수 있어요.</item>
+        <item>삭제한 항목은 30일 동안 휴지통에서 기다려요.</item>
+        <item>거래, 계좌, 봉투마다 모든 변경과 변경한 사람, 시간을 담은 기록이 있어요.</item>
+        <item>‘이 버전으로 되돌리기’를 누르면 되돌아가요. 되돌린 것도 다시 실행 취소할 수 있어요.</item>
+    </string-array>
+    <string-array name="guide_privacy">
+        <item>데이터는 휴대폰의 암호화된 데이터베이스에 저장돼요.</item>
+        <item>동기화는 보내기 전에 휴대폰에서 암호화하므로 서버는 내 돈 데이터를 읽을 수 없어요.</item>
+        <item>Penny는 광고를 보여 주지 않고, 대출을 권하지 않으며, 데이터를 판매하지 않아요.</item>
+        <item>선택 사항인 익명 집계는 앱 개선에 도움이 되며 금액, 거래처, 메모는 절대 포함하지 않아요.</item>
+    </string-array>
+    <string-array name="guide_sync">
+        <item>설정 → 동기화 및 은행에서 이메일로 동기화를 켜세요.</item>
+        <item>24단어 복구 문구를 적어 두세요. 새 휴대폰에서 데이터를 열고 암호화된 백업을 복원할 때 필요해요.</item>
+        <item>새 휴대폰에서 같은 이메일로 로그인하고 문구를 입력하세요.</item>
+        <item>데이터 및 백업에서 백업 폴더를 고르면 직접 관리하는 암호화 백업이 자동으로 만들어져요.</item>
+    </string-array>
+
+    <string-array name="about_story">
+        <item>Penny는 간단한 질문에서 시작했어요. 다음 주 걱정 없이 오늘 얼마를 쓸 수 있을까?</item>
+        <item>대부분의 가계부 앱은 지난 지출 차트나 대출 상품으로 답해요. 우리는 실제 급여 주기, 실제 청구서, 내 주변 사람들을 바탕으로 한 차분한 숫자 하나를 원했어요.</item>
+        <item>Penny는 전 세계를 위해 만들어졌어요. 어떤 통화, 어떤 급여 주기든, 계모임부터 고향 송금까지 사람들이 실제로 돈을 다루는 방식 그대로요.</item>
+        <item>모든 기능이 무료예요. 광고, 대출, 내 데이터로 돈을 벌지 않으며 앞으로도 그럴 거예요. Penny가 도움이 되었다면 후원이나 따뜻한 리뷰가 큰 힘이 돼요.</item>
+    </string-array>
+    <string-array name="trust_never">
+        <item>광고를 보여 주지 않아요.</item>
+        <item>대출, 신용카드, 기타 금융 상품을 권하지 않아요.</item>
+        <item>내 데이터를 판매하거나 공유하지 않아요.</item>
+        <item>SMS를 읽지 않아요.</item>
+        <item>동기화할 때 내 돈 데이터를 보지 않아요. 휴대폰에서 암호화되기 때문이에요.</item>
+        <item>기능을 유료로 막지 않아요. Plus는 사용자별 실제 비용만 충당해요.</item>
+        <item>빨간색으로 지출을 탓하지 않아요.</item>
+    </string-array>
+    <string-array name="changelog">
+        <item>v1.0.0</item>
+        <item>어떤 급여 주기에도 맞는 봉투 예산, 이월, 목표 금액, 연간 보기.</item>
+        <item>목표, 청구서, 구독, 할부(EMI), 빚 상환 계획.</item>
+        <item>빌려준 돈, 그룹 정산, 고향 송금, 계모임.</item>
+        <item>결제 알림, 공유, 영수증, 음성으로 자동 수집. 검토 대기열과 학습하는 규칙 포함.</item>
+        <item>차트, 예측, 순자산, 기기 내 코치가 있는 인사이트.</item>
+        <item>종단 간 암호화 동기화, 공유 스페이스, 암호화 백업, 앱 잠금.</item>
+        <item>v0.1.0</item>
+        <item>첫 버전: 쓸 수 있는 돈, 실행 취소와 기록이 있는 거래.</item>
+    </string-array>
+    <string-array name="licences">
+        <item>Plus Jakarta Sans — SIL Open Font License 1.1, The Plus Jakarta Sans Project Authors.</item>
+        <item>AndroidX 및 Jetpack Compose — Apache License 2.0, The Android Open Source Project.</item>
+        <item>Kotlin 및 kotlinx 라이브러리 — Apache License 2.0, JetBrains.</item>
+        <item>Dagger 및 Hilt — Apache License 2.0, Google.</item>
+        <item>Room — Apache License 2.0, Google.</item>
+        <item>SQLCipher for Android — BSD 스타일 라이선스, Zetetic LLC.</item>
+        <item>Tink — Apache License 2.0, Google.</item>
+        <item>OkHttp — Apache License 2.0, Square.</item>
+        <item>ML Kit Text Recognition — ML Kit 서비스 약관, Google.</item>
+        <item>머티리얼 아이콘 — Apache License 2.0, Google.</item>
+    </string-array>
+</resources>

@@ -131,7 +131,8 @@ object BudgetEngine {
         val spent = spent(env, target, input, cov)
         val budget = assigned + carried
         val available = budget - spent
-        val usedBp = if (budget <= 0) (if (spent > 0) 10_001 else 0) else ((spent * 10_000) / budget).toInt()
+        val usedBp = if (budget <= 0) (if (spent > 0) 10_001 else 0) else java.math.BigInteger.valueOf(spent).multiply(java.math.BigInteger.valueOf(10_000)).divide(java.math.BigInteger.valueOf(budget))
+            .min(java.math.BigInteger.valueOf(Int.MAX_VALUE.toLong())).max(java.math.BigInteger.valueOf(Int.MIN_VALUE.toLong())).toInt()
         val state = when {
             budget <= 0 && spent <= 0 -> EnvelopeState.OK
             spent > budget -> EnvelopeState.OVER

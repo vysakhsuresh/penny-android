@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tagline">לדעת כמה פנוי להוצאה.</string>
+
+    <!-- Common -->
+    <string name="save">שמירה</string>
+    <string name="cancel">ביטול</string>
+    <string name="delete">מחיקה</string>
+    <string name="undo">ביטול פעולה</string>
+    <string name="restore">שחזור</string>
+    <string name="retry">ניסיון נוסף</string>
+    <string name="back">חזרה</string>
+    <string name="next">הבא</string>
+    <string name="skip">דילוג</string>
+    <string name="done">סיום</string>
+    <string name="none">ללא</string>
+    <string name="loading">בטעינה</string>
+    <string name="error_generic">משהו השתבש בקריאת הנתונים. שום דבר לא אבד.</string>
+
+    <!-- Onboarding (OB-01) -->
+    <string name="ob_step">שלב %1$d מתוך %2$d</string>
+    <string name="ob_region_title">איפה הבית שלך?</string>
+    <string name="ob_region_body">ההגדרה הזו קובעת מטבע, תבנית מספרים ומחזור הכנסה רגיל. אפשר לשנות הכול בהמשך.</string>
+    <string name="ob_cycle_title">מתי הכסף נכנס?</string>
+    <string name="ob_cycle_body">התקציב עוקב אחרי מחזור ההכנסה האמיתי שלך.</string>
+    <string name="ob_account_title">כמה מזומן יש עכשיו?</string>
+    <string name="ob_account_body">מתחילים עם חשבון מזומן אחד. בנקים וכרטיסים אפשר להוסיף אחר כך.</string>
+    <string name="ob_cash_name">מזומן</string>
+    <string name="ob_finish">להתחיל להשתמש ב־%1$s</string>
+
+    <!-- Cycles -->
+    <string name="cycle_monthly">חודשי, מהיום ה־%1$d</string>
+    <string name="cycle_monthly_last">חודשי, מהיום האחרון</string>
+    <string name="cycle_semimonthly">פעמיים בחודש, ב־%1$d וביום האחרון</string>
+    <string name="cycle_weekly">שבועי</string>
+    <string name="cycle_biweekly">כל שבועיים</string>
+    <string name="cycle_fourweekly">כל ארבעה שבועות</string>
+    <string name="cycle_quarterly">רבעוני</string>
+    <string name="cycle_yearly">שנתי</string>
+    <string name="cycle_onincome">כשהכסף נכנס</string>
+    <string name="cycle_default_suffix">%1$s (המקובל כאן)</string>
+    <string name="cycle_start_day">יום תחילת החודש</string>
+
+    <!-- Home -->
+    <string name="safe_to_spend">פנוי להוצאה</string>
+    <string name="per_day">%1$s ליום</string>
+    <string name="on_pace">בקצב</string>
+    <string name="ahead_of_pace">ההוצאות מקדימות את לוח השנה</string>
+    <string name="period_range">%1$s – %2$s</string>
+    <string name="prev_period">התקופה הקודמת</string>
+    <string name="next_period">התקופה הבאה</string>
+    <string name="this_period">חזרה לתקופה הנוכחית</string>
+    <string name="income_spent">הכנסות %1$s · הוצאות %2$s</string>
+    <string name="accounts">חשבונות</string>
+    <string name="transactions">תנועות</string>
+    <string name="empty_period_title">עדיין אין כלום בתקופה הזו</string>
+    <string name="empty_period_body">הקשה על ״הוספה״ תתעד את התנועה הראשונה.</string>
+    <string name="add_transaction">הוספת תנועה</string>
+    <string name="trash">פח אשפה</string>
+    <string name="settings">הגדרות</string>
+    <string name="today">היום</string>
+    <string name="yesterday">אתמול</string>
+    <string name="deleted_tx">התנועה נמחקה</string>
+    <string name="saved_tx">התנועה נשמרה</string>
+    <string name="uncategorised">ללא קטגוריה</string>
+    <string name="transfer_to">אל %1$s</string>
+    <string name="swipe_delete_hint">החלקה שמאלה למחיקה</string>
+
+    <!-- Transaction form (TX-02) -->
+    <string name="new_transaction">תנועה חדשה</string>
+    <string name="edit_transaction">עריכת תנועה</string>
+    <string name="type_expense">הוצאה</string>
+    <string name="type_income">הכנסה</string>
+    <string name="type_transfer">העברה</string>
+    <string name="type_refund">החזר</string>
+    <string name="type_adjustment">תיקון יתרה</string>
+    <string name="type_opening">יתרת פתיחה</string>
+    <string name="field_type">סוג</string>
+    <string name="field_amount">סכום</string>
+    <string name="field_amount_hint">אפשר לחשב עם + − × ÷</string>
+    <string name="amount_result">= %1$s</string>
+    <string name="amount_rounded">= %1$s (מעוגל)</string>
+    <string name="field_currency">מטבע</string>
+    <string name="field_account">חשבון</string>
+    <string name="field_to_account">לחשבון</string>
+    <string name="field_to_amount">הסכום שהתקבל</string>
+    <string name="field_category">קטגוריה</string>
+    <string name="field_payee">מוטב</string>
+    <string name="field_date">תאריך</string>
+    <string name="field_time">שעה</string>
+    <string name="field_no_time">ללא שעה</string>
+    <string name="field_note">הערה</string>
+    <string name="field_tags">תגיות</string>
+    <string name="field_tags_hint">להפריד בפסיקים</string>
+    <string name="field_status">סטטוס</string>
+    <string name="status_pending">ממתינה</string>
+    <string name="status_cleared">נסלקה</string>
+    <string name="status_reconciled">הותאמה</string>
+    <string name="field_direction">כיוון</string>
+    <string name="direction_in">מוסיף ליתרה</string>
+    <string name="direction_out">מוריד מהיתרה</string>
+    <string name="field_private">פרטי</string>
+    <string name="field_private_body">הסתרת המוטב, ההערה והקבצים המצורפים מאחרים במרחבים משותפים</string>
+    <string name="field_exclude_budget">לא לכלול בתקציב</string>
+    <string name="field_exclude_reports">לא לכלול בדוחות</string>
+    <string name="field_splits">פיצולים</string>
+    <string name="field_attachments">קבצים מצורפים</string>
+    <string name="future_scheduled">תאריך עתידי: התנועה תיחשב כמתוזמנת.</string>
+    <string name="history">היסטוריה</string>
+    <string name="pick_date">בחירת תאריך</string>
+    <string name="pick_time">בחירת שעה</string>
+    <string name="clear_time">ניקוי השעה</string>
+
+    <!-- Validation (TX-08) -->
+    <string name="err_amount_empty">יש להזין סכום</string>
+    <string name="err_amount_invalid">הסכום הזה לא תקין</string>
+    <string name="err_amount_positive">הסכום חייב להיות גדול מאפס. הסוג קובע אם זו הכנסה או הוצאה.</string>
+    <string name="err_amount_decimals_none">ב־%1$s אין ספרות עשרוניות</string>
+    <string name="err_amount_decimals">ב־%1$s מותרות %2$d ספרות אחרי הנקודה</string>
+    <string name="err_amount_large">הסכום גדול מדי</string>
+    <string name="err_divide_zero">אי אפשר לחלק באפס</string>
+    <string name="err_account_required">יש לבחור חשבון</string>
+    <string name="err_transfer_target">יש לבחור את החשבון שאליו הכסף עובר</string>
+    <string name="err_transfer_same">יש לבחור חשבון אחר להעברה</string>
+    <string name="err_transfer_to_amount">יש להזין את הסכום שהתקבל במטבע השני</string>
+    <string name="err_direction">יש לבחור אם זה מוסיף או מוריד</string>
+    <string name="err_splits">סכום הפיצולים חייב להיות שווה לסך הכול</string>
+    <string name="tx_not_found">התנועה הזו כבר לא קיימת.</string>
+
+    <!-- History (TX-05) -->
+    <string name="history_title">היסטוריה</string>
+    <string name="history_created">נוצר</string>
+    <string name="history_edited">נערך</string>
+    <string name="history_deleted">נמחק</string>
+    <string name="history_restored">שוחזר</string>
+    <string name="history_undo">בוטל</string>
+    <string name="history_reverted">הוחזר לגרסה %1$d</string>
+    <string name="history_version">גרסה %1$d</string>
+    <string name="history_by">%1$s · %2$s</string>
+    <string name="history_you">את/ה</string>
+    <string name="history_revert">חזרה לגרסה הזו</string>
+    <string name="history_change">%1$s: %2$s ← %3$s</string>
+    <string name="history_set">%1$s: %2$s</string>
+    <string name="history_empty">עדיין לא תועדו שינויים.</string>
+    <string name="reverted">הוחזר</string>
+
+    <!-- Trash (TX-03, HS-02) -->
+    <string name="trash_title">פח אשפה</string>
+    <string name="trash_body">תנועות שנמחקו נשארות כאן 30 יום.</string>
+    <string name="trash_empty">פח האשפה ריק</string>
+    <string name="delete_forever">מחיקה לצמיתות</string>
+    <string name="restored">שוחזר</string>
+    <string name="deleted_forever">נמחק לצמיתות</string>
+
+    <!-- Settings -->
+    <string name="settings_region">אזור</string>
+    <string name="settings_region_body">המטבע, תבנית המספרים ומחזור ההכנסה נקבעים לפי האזור. תנועות קיימות שומרות על המטבע שלהן.</string>
+    <string name="settings_sample">דוגמה: %1$s</string>
+    <string name="region_changed">האזור שונה ל־%1$s</string>
+    <string name="settings_cycle">מחזור הכנסה</string>
+    <string name="settings_about">%1$s בחינם. בלי פרסומות, בלי הלוואות, בלי מכירת נתונים.</string>
+
+    <plurals name="days_left">
+        <item quantity="one">נותר %d יום</item>
+        <item quantity="two">נותרו %d ימים</item>
+        <item quantity="many">נותרו %d ימים</item>
+        <item quantity="other">נותרו %d ימים</item>
+    </plurals>
+    <plurals name="unconverted">
+        <item quantity="one">%d תנועה במטבע אחר עדיין לא נספרת</item>
+        <item quantity="two">%d תנועות במטבעות אחרים עדיין לא נספרות</item>
+        <item quantity="many">%d תנועות במטבעות אחרים עדיין לא נספרות</item>
+        <item quantity="other">%d תנועות במטבעות אחרים עדיין לא נספרות</item>
+    </plurals>
+    <plurals name="trash_count">
+        <item quantity="one">%d פריט</item>
+        <item quantity="two">%d פריטים</item>
+        <item quantity="many">%d פריטים</item>
+        <item quantity="other">%d פריטים</item>
+    </plurals>
+</resources>

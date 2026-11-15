@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tagline">اعرف المبلغ المتاح للإنفاق.</string>
+
+    <!-- Common -->
+    <string name="save">حفظ</string>
+    <string name="cancel">إلغاء</string>
+    <string name="delete">حذف</string>
+    <string name="undo">تراجع</string>
+    <string name="restore">استعادة</string>
+    <string name="retry">إعادة المحاولة</string>
+    <string name="back">رجوع</string>
+    <string name="next">التالي</string>
+    <string name="skip">تخطٍّ</string>
+    <string name="done">تم</string>
+    <string name="none">لا شيء</string>
+    <string name="loading">جارٍ التحميل</string>
+    <string name="error_generic">حدث خطأ أثناء قراءة بياناتك. لم يُفقد أي شيء.</string>
+
+    <!-- Onboarding (OB-01) -->
+    <string name="ob_step">الخطوة %1$d من %2$d</string>
+    <string name="ob_region_title">أين تعيش؟</string>
+    <string name="ob_region_body">يحدد هذا عملتك وتنسيق الأرقام ودورة الدخل المعتادة. يمكنك تغيير كل ذلك لاحقًا.</string>
+    <string name="ob_cycle_title">متى يصلك المال؟</string>
+    <string name="ob_cycle_body">تتبع ميزانيتك دورة دخلك الفعلية.</string>
+    <string name="ob_account_title">كم لديك من النقد الآن؟</string>
+    <string name="ob_account_body">نبدأ بحساب نقدي واحد. أضف البنوك والبطاقات لاحقًا.</string>
+    <string name="ob_cash_name">نقد</string>
+    <string name="ob_finish">ابدأ استخدام %1$s</string>
+
+    <!-- Cycles -->
+    <string name="cycle_monthly">شهريًا، من اليوم %1$d</string>
+    <string name="cycle_monthly_last">شهريًا، من آخر يوم</string>
+    <string name="cycle_semimonthly">مرتين في الشهر، في اليوم %1$d وآخر يوم</string>
+    <string name="cycle_weekly">أسبوعيًا</string>
+    <string name="cycle_biweekly">كل أسبوعين</string>
+    <string name="cycle_fourweekly">كل أربعة أسابيع</string>
+    <string name="cycle_quarterly">ربع سنوي</string>
+    <string name="cycle_yearly">سنويًا</string>
+    <string name="cycle_onincome">عند وصول المال</string>
+    <string name="cycle_default_suffix">%1$s (المعتاد هنا)</string>
+    <string name="cycle_start_day">يوم بداية الشهر</string>
+
+    <!-- Home -->
+    <string name="safe_to_spend">المتاح للإنفاق</string>
+    <string name="per_day">%1$s يوميًا</string>
+    <string name="on_pace">ضمن الوتيرة</string>
+    <string name="ahead_of_pace">الإنفاق أسرع من التقويم</string>
+    <string name="period_range">%1$s – %2$s</string>
+    <string name="prev_period">الفترة السابقة</string>
+    <string name="next_period">الفترة التالية</string>
+    <string name="this_period">العودة إلى هذه الفترة</string>
+    <string name="income_spent">الدخل %1$s · المُنفَق %2$s</string>
+    <string name="accounts">الحسابات</string>
+    <string name="transactions">المعاملات</string>
+    <string name="empty_period_title">لا شيء في هذه الفترة بعد</string>
+    <string name="empty_period_body">اضغط «إضافة» لتسجيل أول معاملة.</string>
+    <string name="add_transaction">إضافة معاملة</string>
+    <string name="trash">المهملات</string>
+    <string name="settings">الإعدادات</string>
+    <string name="today">اليوم</string>
+    <string name="yesterday">أمس</string>
+    <string name="deleted_tx">حُذفت المعاملة</string>
+    <string name="saved_tx">حُفظت المعاملة</string>
+    <string name="uncategorised">بلا فئة</string>
+    <string name="transfer_to">إلى %1$s</string>
+    <string name="swipe_delete_hint">اسحب لليسار للحذف</string>
+
+    <!-- Transaction form (TX-02) -->
+    <string name="new_transaction">معاملة جديدة</string>
+    <string name="edit_transaction">تعديل المعاملة</string>
+    <string name="type_expense">مصروف</string>
+    <string name="type_income">دخل</string>
+    <string name="type_transfer">تحويل</string>
+    <string name="type_refund">استرداد</string>
+    <string name="type_adjustment">تسوية</string>
+    <string name="type_opening">الرصيد الافتتاحي</string>
+    <string name="field_type">النوع</string>
+    <string name="field_amount">المبلغ</string>
+    <string name="field_amount_hint">استخدم + − × ÷ للحساب</string>
+    <string name="amount_result">= %1$s</string>
+    <string name="amount_rounded">= %1$s (مُقرَّب)</string>
+    <string name="field_currency">العملة</string>
+    <string name="field_account">الحساب</string>
+    <string name="field_to_account">إلى الحساب</string>
+    <string name="field_to_amount">المبلغ المستلَم</string>
+    <string name="field_category">الفئة</string>
+    <string name="field_payee">المستفيد</string>
+    <string name="field_date">التاريخ</string>
+    <string name="field_time">الوقت</string>
+    <string name="field_no_time">بلا وقت</string>
+    <string name="field_note">ملاحظة</string>
+    <string name="field_tags">الوسوم</string>
+    <string name="field_tags_hint">افصل بينها بفواصل</string>
+    <string name="field_status">الحالة</string>
+    <string name="status_pending">معلّقة</string>
+    <string name="status_cleared">مُصفّاة</string>
+    <string name="status_reconciled">مُطابَقة</string>
+    <string name="field_direction">الاتجاه</string>
+    <string name="direction_in">يضيف إلى الرصيد</string>
+    <string name="direction_out">يخصم من الرصيد</string>
+    <string name="field_private">خاص</string>
+    <string name="field_private_body">إخفاء المستفيد والملاحظة والمرفقات عن الآخرين في المساحات المشتركة</string>
+    <string name="field_exclude_budget">استبعاد من الميزانية</string>
+    <string name="field_exclude_reports">استبعاد من التقارير</string>
+    <string name="field_splits">التقسيمات</string>
+    <string name="field_attachments">المرفقات</string>
+    <string name="future_scheduled">تاريخ مستقبلي: ستُحتسب هذه المعاملة مُجدوَلة.</string>
+    <string name="history">السجل</string>
+    <string name="pick_date">اختر تاريخًا</string>
+    <string name="pick_time">اختر وقتًا</string>
+    <string name="clear_time">مسح الوقت</string>
+
+    <!-- Validation (TX-08) -->
+    <string name="err_amount_empty">أدخل مبلغًا</string>
+    <string name="err_amount_invalid">هذا المبلغ غير صالح</string>
+    <string name="err_amount_positive">يجب أن يكون المبلغ أكبر من صفر. النوع هو ما يحدد إن كان دخلًا أو إنفاقًا.</string>
+    <string name="err_amount_decimals_none">لا تحتوي %1$s على كسور عشرية</string>
+    <string name="err_amount_decimals">تسمح %1$s بـ %2$d منازل عشرية</string>
+    <string name="err_amount_large">هذا المبلغ كبير جدًا</string>
+    <string name="err_divide_zero">لا يمكن القسمة على صفر</string>
+    <string name="err_account_required">اختر حسابًا</string>
+    <string name="err_transfer_target">اختر الحساب الذي يذهب إليه المال</string>
+    <string name="err_transfer_same">اختر حسابًا مختلفًا للتحويل إليه</string>
+    <string name="err_transfer_to_amount">أدخل المبلغ المستلَم بالعملة الأخرى</string>
+    <string name="err_direction">اختر ما إذا كان هذا يضيف أو يخصم</string>
+    <string name="err_splits">يجب أن يساوي مجموع التقسيمات الإجمالي</string>
+    <string name="tx_not_found">هذه المعاملة لم تعد موجودة.</string>
+
+    <!-- History (TX-05) -->
+    <string name="history_title">السجل</string>
+    <string name="history_created">أُنشئت</string>
+    <string name="history_edited">عُدّلت</string>
+    <string name="history_deleted">حُذفت</string>
+    <string name="history_restored">استُعيدت</string>
+    <string name="history_undo">تم التراجع</string>
+    <string name="history_reverted">أُعيدت إلى الإصدار %1$d</string>
+    <string name="history_version">الإصدار %1$d</string>
+    <string name="history_by">%1$s · %2$s</string>
+    <string name="history_you">أنت</string>
+    <string name="history_revert">العودة إلى هذا الإصدار</string>
+    <string name="history_change">%1$s: %2$s ← %3$s</string>
+    <string name="history_set">%1$s: %2$s</string>
+    <string name="history_empty">لا توجد تغييرات مسجّلة بعد.</string>
+    <string name="reverted">تمت الإعادة</string>
+
+    <!-- Trash (TX-03, HS-02) -->
+    <string name="trash_title">المهملات</string>
+    <string name="trash_body">تبقى المعاملات المحذوفة هنا لمدة 30 يومًا.</string>
+    <string name="trash_empty">المهملات فارغة</string>
+    <string name="delete_forever">حذف نهائي</string>
+    <string name="restored">تمت الاستعادة</string>
+    <string name="deleted_forever">حُذف نهائيًا</string>
+
+    <!-- Settings -->
+    <string name="settings_region">المنطقة</string>
+    <string name="settings_region_body">تتبع العملة وتنسيق الأرقام ودورة الدخل المنطقة. تحتفظ المعاملات الحالية بعملتها.</string>
+    <string name="settings_sample">مثال: %1$s</string>
+    <string name="region_changed">تغيّرت المنطقة إلى %1$s</string>
+    <string name="settings_cycle">دورة الدخل</string>
+    <string name="settings_about">%1$s مجاني. بلا إعلانات ولا قروض ولا بيع للبيانات.</string>
+
+    <plurals name="days_left">
+        <item quantity="zero">يتبقّى %d يوم</item>
+        <item quantity="one">يتبقّى %d يوم</item>
+        <item quantity="two">يتبقّى %d يوم</item>
+        <item quantity="few">تتبقّى %d أيام</item>
+        <item quantity="many">يتبقّى %d يومًا</item>
+        <item quantity="other">يتبقّى %d يوم</item>
+    </plurals>
+    <plurals name="unconverted">
+        <item quantity="zero">%d معاملة بعملة أخرى لم تُحتسب بعد</item>
+        <item quantity="one">%d معاملة بعملة أخرى لم تُحتسب بعد</item>
+        <item quantity="two">%d معاملة بعملات أخرى لم تُحتسب بعد</item>
+        <item quantity="few">%d معاملات بعملات أخرى لم تُحتسب بعد</item>
+        <item quantity="many">%d معاملة بعملات أخرى لم تُحتسب بعد</item>
+        <item quantity="other">%d معاملة بعملات أخرى لم تُحتسب بعد</item>
+    </plurals>
+    <plurals name="trash_count">
+        <item quantity="zero">%d عنصر</item>
+        <item quantity="one">%d عنصر</item>
+        <item quantity="two">%d عنصر</item>
+        <item quantity="few">%d عناصر</item>
+        <item quantity="many">%d عنصرًا</item>
+        <item quantity="other">%d عنصر</item>
+    </plurals>
+</resources>

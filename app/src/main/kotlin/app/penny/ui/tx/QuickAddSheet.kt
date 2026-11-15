@@ -85,7 +85,7 @@ fun Book.smartCategories(now: LocalTime, n: Int = 6): List<String> {
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun QuickAddSheet(onDismiss: () -> Unit, onMore: (TxType) -> Unit, onVoice: () -> Unit, onScan: () -> Unit) {
+fun QuickAddSheet(onDismiss: () -> Unit, onMore: (TxType, Long?, String?) -> Unit, onVoice: () -> Unit, onScan: () -> Unit) {
     val sheet = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = sheet) {
         WithBook { ctx, vm ->
@@ -184,7 +184,7 @@ fun QuickAddSheet(onDismiss: () -> Unit, onMore: (TxType) -> Unit, onVoice: () -
                 }
                 Keypad(ctx.fmt.spec.decimalSeparator, ::key)
                 Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-                    TextButton(onClick = { onDismiss(); onMore(type) }) { Text(stringResource(R.string.more)) }
+                    TextButton(onClick = { onDismiss(); onMore(type, ok?.minor, category) /* keep what was typed */ }) { Text(stringResource(R.string.more)) }
                     Spacer(Modifier.weight(1f))
                     FilledTonalButton(onClick = ::save, enabled = ok != null && account != null, modifier = Modifier.heightIn(min = 52.dp)) {
                         Text(stringResource(R.string.save), style = MaterialTheme.typography.titleMedium)

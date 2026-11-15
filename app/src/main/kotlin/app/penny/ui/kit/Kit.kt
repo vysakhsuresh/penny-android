@@ -49,9 +49,15 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -136,8 +142,16 @@ fun PennyCard(
 ) {
     val m = modifier.fillMaxWidth().padding(horizontal = Penny.spacing.gutter.dp, vertical = 6.dp)
     val colors = CardDefaults.cardColors(containerColor = color)
-    if (onClick != null) Card(onClick = onClick, modifier = m, colors = colors, shape = MaterialTheme.shapes.large) { Column(Modifier.padding(padding).animateContentSize(), content = content) }
-    else Card(modifier = m, colors = colors, shape = MaterialTheme.shapes.large) { Column(Modifier.padding(padding).animateContentSize(), content = content) }
+    // The last row's divider would sit on the card edge; trim that 1 dp hairline here instead of at every call site.
+    val inner = Modifier.padding(padding).trimBottomHairline().animateContentSize()
+    if (onClick != null) Card(onClick = onClick, modifier = m, colors = colors, shape = MaterialTheme.shapes.large) { Column(inner, content = content) }
+    else Card(modifier = m, colors = colors, shape = MaterialTheme.shapes.large) { Column(inner, content = content) }
+}
+
+private fun Modifier.trimBottomHairline(): Modifier = this.clipToBounds().layout { measurable, constraints ->
+    val p = measurable.measure(constraints)
+    val trim = 1.dp.roundToPx().coerceAtMost(p.height)
+    layout(p.width, p.height - trim) { p.place(0, 0) }
 }
 
 /** List row: 56–72 dp, leading visual, two lines, trailing value. Long-press selects (TX-13). */
@@ -213,11 +227,19 @@ fun initials(s: String): String = s.trim().split(Regex("\\s+")).filter { it.isNo
 fun MoneyLabel(text: String, modifier: Modifier = Modifier, color: Color = Color.Unspecified, style: androidx.compose.ui.text.TextStyle = MaterialTheme.typography.bodyLarge, align: TextAlign? = null) {
     val hidden = LocalPenny.current.hideAmounts
     val hiddenLabel = stringResource(R.string.amount_hidden)
+    // Never clip digits (₹1,23,45,678 must not read as ₹1,23,45): shrink step by step until the amount fits, down to
+    // half size, and only then draw. Matters at 200% text and in narrow columns.
+    val shown = if (hidden) "••••" else text
+    var scale by remember(shown, style) { mutableStateOf(1f) }
+    var fitted by remember(shown, style) { mutableStateOf(false) }
+    val base = style.copy(fontFeatureSettings = app.penny.ui.theme.TabularNumbers)
+    val sized = if (base.fontSize.isSp && scale < 1f) base.copy(fontSize = base.fontSize * scale, lineHeight = if (base.lineHeight.isSp) base.lineHeight * scale else base.lineHeight) else base
     Text(
-        if (hidden) "••••" else text,
-        modifier = if (hidden) modifier.semantics { contentDescription = hiddenLabel } else modifier,
-        style = style.copy(fontFeatureSettings = app.penny.ui.theme.TabularNumbers),
-        color = color, maxLines = 1, textAlign = align,
+        shown,
+        modifier = (if (hidden) modifier.semantics { contentDescription = hiddenLabel } else modifier).drawWithContent { if (fitted) drawContent() },
+        style = sized,
+        color = color, maxLines = 1, softWrap = false, textAlign = align,
+        onTextLayout = { r -> if (r.hasVisualOverflow && scale > 0.5f && base.fontSize.isSp) scale *= 0.9f else fitted = true },
     )
 }
 

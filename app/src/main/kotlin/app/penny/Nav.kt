@@ -113,7 +113,10 @@ object Routes {
     const val MAIN = "main?tab={tab}"
     fun main(tab: String = "home") = "main?tab=$tab"
     const val TX = "tx/{id}?type={type}&amount={amount}&category={category}&payee={payee}&note={note}"
-    fun tx(id: String, type: TxType? = null) = "tx/$id" + (type?.let { "?type=${it.name}" } ?: "")
+    fun tx(id: String, type: TxType? = null, amountMinor: Long? = null, categoryId: String? = null): String {
+        val q = listOfNotNull(type?.let { "type=${it.name}" }, amountMinor?.let { "amount=$it" }, categoryId?.let { "category=${android.net.Uri.encode(it)}" })
+        return "tx/$id" + if (q.isEmpty()) "" else q.joinToString("&", prefix = "?")
+    }
     const val HISTORY = "history/{entity}/{id}"
     fun history(entity: String, id: String) = "history/$entity/$id"
     const val ACTIVITY = "activity?filter={filter}&search={search}"
@@ -204,7 +207,10 @@ fun PennyNavHost(nav: NavHostController, start: String, reduceMotion: Boolean) {
         popEnterTransition = { fadeIn(tween(dur)) },
         popExitTransition = { fadeOut(tween(dur / 2)) + slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(dur)) { it / 12 } },
     ) {
-        val back: () -> Unit = { nav.popBackStack() }
+        // Only the settled, resumed screen may pop: a double tap (or Save + back) would otherwise pop past Main to a blank host.
+        val back: () -> Unit = {
+            if (nav.currentBackStackEntry?.lifecycle?.currentState == androidx.lifecycle.Lifecycle.State.RESUMED && nav.previousBackStackEntry != null) nav.popBackStack()
+        }
         composable(Routes.ONBOARDING) {
             OnboardingScreen(hiltViewModel(), onImport = { nav.navigate(Routes.IMPORT) }) {
                 nav.navigate(Routes.main()) { popUpTo(Routes.ONBOARDING) { inclusive = true } }
@@ -284,7 +290,7 @@ fun PennyNavHost(nav: NavHostController, start: String, reduceMotion: Boolean) {
         composable(Routes.CAPTURE_SETTINGS) { CaptureSettingsScreen(back, go = { nav.navigate(it) }) }
         composable(Routes.SECURITY) { SecurityScreen(back) }
         composable(Routes.DATA) { DataScreen(back, go = { nav.navigate(it) }, onWiped = { nav.navigate(Routes.ONBOARDING) { popUpTo(0) } }) }
-        composable(Routes.IMPORT) { ImportScreen(back) }
+        composable(Routes.IMPORT, deepLinks = listOf(navDeepLink { uriPattern = "${Brand.DEEP_LINK_SCHEME}://import" })) { ImportScreen(back) }
         composable(
             Routes.SPACES, arguments = listOf(str("token")),
             deepLinks = listOf(navDeepLink { uriPattern = "${Brand.DEEP_LINK_SCHEME}://invite/{token}" }),
@@ -355,7 +361,7 @@ private fun MainTabs(nav: NavHostController, initial: String) {
     if (quickAdd) {
         QuickAddSheet(
             onDismiss = { quickAdd = false },
-            onMore = { type -> nav.navigate(Routes.tx(Routes.NEW, type)) },
+            onMore = { type, amount, category -> nav.navigate(Routes.tx(Routes.NEW, type, amount, category)) },
             onVoice = { nav.navigate(Routes.VOICE) },
             onScan = { nav.navigate(Routes.SCAN) },
         )

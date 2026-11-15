@@ -53,11 +53,13 @@ class AutomationReceiver : BroadcastReceiver() {
         if (intent.action != ACTION_ADD || !prefs.flag(FLAG_INTENTS)) return
         val pending = goAsync()
         CoroutineScope(SupervisorJob() + Dispatchers.Default).launch {
-            try {
+            // Any app can send this once the user allows it: bad input must be ignored, never crash Penny.
+            try { runCatching {
                 val b = store.ready()?.book ?: return@launch
                 val acct = intent.getStringExtra("account")?.let { n -> b.activeAccounts.firstOrNull { it.value.name.equals(n, true) }?.state?.id }
                     ?: b.profile.defaultAccountId ?: b.activeAccounts.firstOrNull()?.state?.id ?: return@launch
-                val currency = intent.getStringExtra("currency")?.uppercase() ?: b.accountMap[acct]?.value?.currency ?: b.profile.baseCurrency
+                val currency = intent.getStringExtra("currency")?.uppercase()?.takeIf { c -> runCatching { CurrencyUnit.of(c) }.isSuccess }
+                    ?: b.accountMap[acct]?.value?.currency ?: b.profile.baseCurrency
                 val amount = intent.getStringExtra("amount")?.replace(',', '.')?.toBigDecimalOrNull()?.abs()
                     ?.setScale(CurrencyUnit.of(currency).minorUnits, RoundingMode.HALF_EVEN)?.unscaledValue()?.toLong() ?: return@launch
                 if (amount <= 0) return@launch
@@ -67,7 +69,7 @@ class AutomationReceiver : BroadcastReceiver() {
                     accountId = acct, categoryId = cat, payee = intent.getStringExtra("payee"), note = intent.getStringExtra("note").orEmpty(),
                     date = b.today(), time = LocalTime.now(b.zone).withSecond(0).withNano(0), tz = b.profile.timezone, source = "automation",
                 ), applyRules = true)
-            } finally { pending.finish() }
+            }.onFailure { android.util.Log.w("Penny", "automation intent ignored", it) } } finally { pending.finish() }
         }
     }
 
@@ -93,7 +95,9 @@ object Webhooks {
         val url = prefs.string(KEY_URL)?.takeIf { it.startsWith("https://") } ?: return 0
         val secret = prefs.string(KEY_SECRET) ?: return 0
         // First delivery starts from now: history is never sent.
-        val after = repo.dao.kv("webhook.seq")?.toLongOrNull() ?: repo.dao.maxSeq().also { repo.dao.putKv(KvRow("webhook.seq", it.toString())) }
+        // One cursor per profile: a shared cursor skipped the other profile's events after switching.
+        val cursorKey = "webhook.seq.$pid"
+        val after = repo.dao.kv(cursorKey)?.toLongOrNull() ?: repo.dao.maxSeq().also { repo.dao.putKv(KvRow(cursorKey, it.toString())) }
         val events = repo.dao.localEventsAfter(pid, after, 200).map { it.toEvent() }
         val created = events.filter { it.entity == Entities.TRANSACTION && it.op == Op.CREATE }
         if (events.isEmpty()) return 0
@@ -121,7 +125,7 @@ object Webhooks {
             }.getOrDefault(false)
             if (!ok) return 0
         }
-        repo.dao.putKv(KvRow("webhook.seq", events.last().seq.toString()))
+        repo.dao.putKv(KvRow(cursorKey, events.last().seq.toString()))
         return created.size
     }
 }

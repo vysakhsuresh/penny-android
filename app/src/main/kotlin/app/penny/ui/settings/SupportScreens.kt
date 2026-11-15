@@ -1,5 +1,6 @@
 package app.penny.ui.settings
 
+import app.penny.ui.common.safeStart
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -89,7 +90,7 @@ fun HelpScreen(onBack: () -> Unit, go: (String) -> Unit) {
     fun email(subject: String) {
         val body = if (diag) "\n\n---\n${Brand.NAME} ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})\nAndroid ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})\n${Build.MANUFACTURER} ${Build.MODEL}\n" + context.getString(R.string.diag_no_data) else ""
         val i = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:")).putExtra(Intent.EXTRA_EMAIL, arrayOf(Brand.SUPPORT_EMAIL)).putExtra(Intent.EXTRA_SUBJECT, "${Brand.NAME}: $subject").putExtra(Intent.EXTRA_TEXT, body)
-        runCatching { context.startActivity(i) }
+        context.safeStart(i)
     }
     PennyScreen(stringResource(R.string.get_help), onBack) { pad ->
         LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 48.dp)) {
@@ -186,7 +187,7 @@ fun CoffeeScreen(onBack: () -> Unit) {
             Text(stringResource(R.string.coffee_never_gates), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 24.dp))
             Spacer(Modifier.height(12.dp))
             TextButton(onClick = {
-                runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + context.packageName))) }
+                context.safeStart(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + context.packageName)))
             }) { Icon(Icons.Outlined.Favorite, null); Spacer(Modifier.size(8.dp)); Text(stringResource(R.string.rate_instead)) }
         }
     }

@@ -1,5 +1,6 @@
 package app.penny.ui.insights
 
+import app.penny.ui.common.safeStart
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -117,7 +118,7 @@ fun InsightsScreen(padding: PaddingValues, go: (String) -> Unit) {
                     IconButton(onClick = {
                         // IN-09 digest: plain text summary to share with the household.
                         val text = context.getString(R.string.digest_text, shortDate(p.start), shortDate(p.endInclusive), ctx.money(s.incomeMinor), ctx.money(s.spentMinor), s.byCategory.take(3).joinToString { label(it.key) + " " + ctx.money(it.amountMinor) })
-                        context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, text), null))
+                        context.safeStart(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, text), null))
                     }) { Icon(Icons.Outlined.IosShare, stringResource(R.string.share_digest)) }
                 }
             }
@@ -268,7 +269,7 @@ fun CoachScreen(onBack: () -> Unit, onOpenTx: (String) -> Unit) {
             asked = text
             val parser = NaturalQueryParser(b.today(), b.profile.cycle, decimals, b.categories.associate { it.value.name.lowercase() to it.state.id }, b.accounts.associate { it.value.name.lowercase() to it.state.id })
             val prev = Periods.previous(b.period(), b.profile.cycle, b.periodContext)
-            answer = Coach(parser, tone).ask(text, b.rows, b.safeToSpend(b.period()).safeMinor, b.rows.filter { it.tx.date in prev })
+            answer = Coach(parser, tone, b.profile.baseCurrency, b.fx).ask(text, b.rows, b.safeToSpend(b.period()).safeMinor, b.rows.filter { it.tx.date in prev })
         }
         PennyScreen(stringResource(R.string.coach), onBack) { pad ->
             LazyColumn(Modifier.fillMaxSize().imePadding(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 48.dp)) {

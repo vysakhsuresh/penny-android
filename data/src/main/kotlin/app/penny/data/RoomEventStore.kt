@@ -34,41 +34,56 @@ class RoomEventStore(private val db: PennyDatabase) : EventStore {
     private var lamport: Long? = null
     override val changes: Flow<Long> = counter
 
-    private suspend fun nextClock(): Long = clockLock.withLock {
+    /** Caller holds [clockLock]. */
+    private suspend fun nextClockLocked(): Long {
         val next = (lamport ?: dao.maxLamport()) + 1
         lamport = next
-        next
+        return next
     }
 
+    /**
+     * Stamping, inserting and projecting happen under one lock and one transaction, so commit order always equals clock
+     * order on this device and every local event is projected on top of a state with lower clocks.
+     */
     override suspend fun append(events: List<Event>): List<Event> {
-        val stamped = events.map { EventOrder.stamp(it, nextClock()) }
-        val stored = db.withTransaction {
-            stamped.map { e ->
-                val seq = dao.insertEvent(e.toRow())
-                val s = e.copy(seq = seq)
-                project(s)
-                s
+        val stored = clockLock.withLock {
+            db.withTransaction {
+                events.map { raw ->
+                    val e = EventOrder.stamp(raw, nextClockLocked())
+                    val seq = dao.insertEvent(e.toRow())
+                    val s = e.copy(seq = seq)
+                    project(s)
+                    s
+                }
             }
         }
         counter.value++
         return stored
     }
 
-    override suspend fun ingest(events: List<Event>): List<Event> {
+    /**
+     * Ingests events from another device (or the user's own restored export when [remote] is false, so they are pushed
+     * when sync is turned on). Known ids are skipped; affected entities are re-projected in clock order.
+     */
+    override suspend fun ingest(events: List<Event>, remote: Boolean): List<Event> {
         if (events.isEmpty()) return emptyList()
         val unique = events.distinctBy { it.id }
-        val known = unique.map { it.id }.chunked(500).flatMap { dao.knownIds(it) }.toSet()
-        val fresh = unique.filter { it.id !in known }
-        if (fresh.isEmpty()) return emptyList()
-        val stored = db.withTransaction {
-            val out = fresh.sortedWith(EventOrder.comparator).map { e ->
-                val seq = dao.insertEvent(e.toRow(remote = true))
-                e.copy(seq = seq)
+        val stored = clockLock.withLock {
+            val known = unique.map { it.id }.chunked(500).flatMap { dao.knownIds(it) }.toSet()
+            val fresh = unique.filter { it.id !in known }
+            if (fresh.isEmpty()) return emptyList()
+            val out = db.withTransaction {
+                val rows = fresh.sortedWith(EventOrder.comparator).map { e ->
+                    val seq = dao.insertEvent(e.toRow(remote = remote))
+                    e.copy(seq = seq)
+                }
+                rows.map { it.entity to it.entityId }.toSet().forEach { (entity, id) -> reproject(entity, id) }
+                rows
             }
-            out.map { it.entity to it.entityId }.toSet().forEach { (entity, id) -> reproject(entity, id) }
+            // Raised before the lock is released: the next local edit always gets a higher clock than what it overwrites.
+            lamport = maxOf(lamport ?: dao.maxLamport(), fresh.maxOf { EventOrder.lamport(it) })
             out
         }
-        clockLock.withLock { lamport = maxOf(lamport ?: dao.maxLamport(), fresh.maxOf { EventOrder.lamport(it) }) }
         counter.value++
         return stored
     }

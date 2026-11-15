@@ -294,20 +294,35 @@ class TransactionFormViewModel @Inject constructor(
         return (if (errs.isEmpty()) tx else null) to errs
     }
 
+    private var saving = false
+
     fun save(onDone: () -> Unit) {
         val f = _form.value ?: return
         val r = ready() ?: return
         val (tx, errs) = build(f, r.book, r.fmt)
         _errors.value = errs
         if (tx == null) return
+        // Second tap while the first save is writing: ignore (would create a duplicate and pop twice).
+        if (saving) return
+        saving = true
         viewModelScope.launch {
-            val res = withContext(Dispatchers.Default) {
-                repo.saveTransaction(r.book, txId, tx).also { res ->
-                    // Attachments picked before the first save are linked to the new transaction in the same undo group.
-                    tx.attachmentIds.forEach { aid ->
-                        repo.attachments.get(aid)?.let { a -> if (a.value.transactionId != res.id) repo.attachments.update(aid, a.value.copy(transactionId = res.id), groupId = res.group) }
+            val res = try {
+                withContext(Dispatchers.Default) {
+                    runCatching {
+                        repo.saveTransaction(r.book, txId, tx).also { res ->
+                            // Attachments picked before the first save are linked to the new transaction in the same undo group.
+                            tx.attachmentIds.forEach { aid ->
+                                repo.attachments.get(aid)?.let { a -> if (a.value.transactionId != res.id) repo.attachments.update(aid, a.value.copy(transactionId = res.id), groupId = res.group) }
+                            }
+                        }
                     }
+                }.getOrElse { e ->
+                    android.util.Log.w("Penny", "save failed", e)
+                    undo.offer(UndoMessage(context.getString(R.string.action_failed), undo = null))
+                    return@launch
                 }
+            } finally {
+                saving = false
             }
             handle.remove<String>(KEY_FORM)
             if (res.duplicates.isNotEmpty()) {

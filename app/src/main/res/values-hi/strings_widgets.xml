@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">एक नज़र में खर्च करने लायक राशि</string>
+    <string name="widget_quick_desc">एक टैप में लेन-देन जोड़ें या टेम्पलेट चलाएं</string>
+    <string name="widget_envelopes_desc">लिफ़ाफ़े और आने वाले बिल</string>
+    <string name="widget_safe_label">खर्च करने लायक</string>
+    <string name="widget_quick_label">क्विक ऐड</string>
+    <string name="widget_envelopes_label">बजट</string>
+    <string name="shortcut_add">जोड़ें</string>
+    <string name="tile_label">Penny में जोड़ें</string>
+</resources>

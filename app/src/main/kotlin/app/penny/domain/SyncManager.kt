@@ -148,10 +148,15 @@ class SyncManager @Inject constructor(
             ensureKeys(all)
             val engine = SyncEngine(repo.store, dao, relay, ring)
             var pushed = 0; var pulled = 0
+            var firstError: Throwable? = null
+            // One stream that fails (unreadable batch, removed from a space) must not stop the others from syncing.
             (all + vault.names("sk.").map { it.removePrefix("sk.") }).distinct().forEach { s ->
-                val r = engine.sync(s); pushed += r.pushed; pulled += r.pulled
+                runCatching { engine.sync(s) }
+                    .onSuccess { r -> pushed += r.pushed; pulled += r.pulled }
+                    .onFailure { e -> android.util.Log.w("Penny", "sync failed for a stream", e); if (firstError == null) firstError = e }
             }
             shareSpaceKeys()
+            firstError?.let { throw it }
             prefs.setLong("sync.last", System.currentTimeMillis())
             _state.value = SyncState(SyncPhase.READY, prefs.string("sync.email"), System.currentTimeMillis(), region = prefs.string("sync.region").orEmpty())
             SyncResult(pushed, pulled)
@@ -212,8 +217,19 @@ class SyncManager @Inject constructor(
     suspend fun removeMember(spaceId: String, account: String) = relay.removeMember(spaceId, account)
     suspend fun leave(spaceId: String) {
         prefs.string("sync.accountId")?.let { relay.removeMember(spaceId, it) }
-        vault.put("sk.$spaceId", null)
+        forgetStream(spaceId)
         repo.store.eraseProfile(spaceId)
+    }
+
+    /**
+     * Stops syncing a stream on this device: drops its key and both cursors, so re-joining later pulls the full history
+     * instead of resuming from a stale cursor. Called when leaving a space or deleting a profile here.
+     */
+    suspend fun forgetStream(stream: String) {
+        vault.put("sk.$stream", null)
+        dao.deleteKv("sync.cursor.$stream")
+        dao.deleteKv("sync.pushed.$stream")
+        dao.deleteKv("sync.last.$stream")
     }
 
     suspend fun devices() = relay.devices()
@@ -246,3 +262,11 @@ class SyncManager @Inject constructor(
 
     suspend fun revokeAdvisor(id: String) = relay.deleteAdvisor(id)
 }
+
+@dagger.hilt.EntryPoint
+@dagger.hilt.InstallIn(dagger.hilt.components.SingletonComponent::class)
+interface SyncDeps { fun sync(): SyncManager }
+
+/** For code without injection (screens using the shared view model). */
+fun syncManager(context: Context): SyncManager =
+    dagger.hilt.android.EntryPointAccessors.fromApplication(context.applicationContext, SyncDeps::class.java).sync()

@@ -74,6 +74,13 @@ class RulesSearchTest : FunSpec({
         Dedupe.isDuplicate(a, tx("Starbucks", 451).copy(time = LocalTime.of(9, 30))) shouldBe false
     }
 
+    test("dedupe: two bank rows with different ids are two payments; a bank row and a notification can match") {
+        val a = tx("Starbucks", 450).copy(time = LocalTime.of(9, 0), externalIds = listOf("bank:c:1"))
+        Dedupe.isDuplicate(a, tx("Starbucks", 450).copy(time = LocalTime.of(9, 5), externalIds = listOf("bank:c:2"))) shouldBe false
+        Dedupe.isDuplicate(a, tx("Starbucks", 450).copy(time = LocalTime.of(9, 5), externalIds = listOf("notif:upi:1"))) shouldBe true
+        Dedupe.isDuplicate(a, tx("Other", 450).copy(externalIds = listOf("bank:c:1"))) shouldBe true
+    }
+
     test("natural language: coffee last month over 200") {
         val p = NaturalQueryParser(today, CycleRule.Monthly(1), 2)
         val q = p.parse("coffee last month over 200")
@@ -81,6 +88,14 @@ class RulesSearchTest : FunSpec({
         q.filter.from shouldBe LocalDate.of(2026, 10, 1)
         q.filter.to shouldBe LocalDate.of(2026, 10, 31)
         q.filter.minMinor shouldBe 20_000
+    }
+
+    test("natural language: more than / less than") {
+        val p = NaturalQueryParser(today, CycleRule.Monthly(1), 2)
+        val q = p.parse("taxi more than 200 less than 500")
+        q.filter.minMinor shouldBe 20_000
+        q.filter.maxMinor shouldBe 50_000
+        q.filter.text shouldBe "taxi"
     }
 
     test("natural language: jeep rides last kinsenas uses the pay cycle") {

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exchange_rates">汇率</string>
+    <string name="rates_body">Penny 按每笔交易当天的汇率换算。参考汇率在连接 Wi-Fi 时下载并保存在手机上；你自己设置的汇率始终优先。</string>
+    <string name="rates_updated">参考汇率截至 %1$s</string>
+    <string name="rates_never">尚未下载参考汇率</string>
+    <string name="rates_refreshed">汇率已更新</string>
+    <string name="rates_offline">无法连接汇率来源。请在 Wi-Fi 下重试。</string>
+    <string name="refresh_now">立即刷新</string>
+    <string name="add_manual_rate">添加我的汇率</string>
+    <string name="your_currencies">今日你的货币</string>
+    <string name="no_rate">无汇率</string>
+    <string name="manual_rates">你的汇率</string>
+    <string name="no_manual_rates">暂无。如果银行或兑换处给了你不同的汇率，可以添加一个。</string>
+    <string name="rate_in_x">一个单位折合 %1$s 的价值</string>
+    <string name="record_value">记录价值</string>
+    <string name="record_value_body">它现在值多少？价值记录会计入净资产。</string>
+    <string name="value_recorded">已记录价值</string>
+    <string name="valuations">估值</string>
+    <string name="share_group_link">为没有此应用的人分享视图</string>
+    <string name="group_link_text">“%1$s”的余额（只读，30 天后失效）：%2$s</string>
+    <string name="usage_counts">分享匿名使用次数</string>
+    <string name="usage_counts_hint">仅包含功能使用频率，绝不包含金额、收款方、备注或你输入的任何内容。默认关闭。</string>
+    <string name="usage_counts_none">尚未统计任何内容。</string>
+    <string name="consent_until">授权有效期至 %1$s</string>
+    <string name="reconsent">续期授权</string>
+    <string name="disconnect">断开连接</string>
+    <string name="disconnected">已断开连接。银行关联及其存储的访问权限已删除；这些账户现在改为手动管理。</string>
+    <string name="bank_needs_sync">请先在上方开启同步，再连接银行。</string>
+    <string name="connect_with_token">使用设置令牌连接</string>
+    <string name="connect_in_browser">在服务商的安全页面上连接</string>
+    <string name="simplefin_help">在你的 SimpleFIN Bridge 账户中创建设置令牌并粘贴到这里。Penny 的服务器会用它换取访问权限；令牌永远不会保存在这部手机上。</string>
+    <string name="setup_token">设置令牌</string>
+    <string name="connect">连接</string>
+    <string name="bank_connected">银行已连接。交易将在下次同步时到达。</string>
+    <string name="bank_cancelled">已取消连接。没有关联任何内容。</string>
+    <plurals name="bank_synced"><item quantity="other">已添加或更新 %d 笔交易</item></plurals>
+    <string name="automation">自动化</string>
+    <string name="automation_sub">Tasker、快捷方式和 Webhook</string>
+    <string name="automation_body">将 Penny 连接到自动化应用和你自己的服务。除非你设置了 Webhook 地址，否则所有内容都只保留在这部手机上。</string>
+    <string name="automation_apps">自动化应用</string>
+    <string name="allow_automation_apps">允许自动化应用添加交易</string>
+    <string name="allow_automation_hint">Tasker、Automate 等应用可以通过 intent 添加交易，但永远无法读取你的数据。</string>
+    <string name="deep_link_example">也可以从任何应用或快捷方式打开 penny://add?amount=1250&amp;category=Groceries（金额以最小单位计）。</string>
+    <string name="webhooks">Webhook</string>
+    <string name="webhooks_body">将每笔新交易以签名 JSON 发送到你自己的服务器。请只使用你能掌控的地址。</string>
+    <string name="webhook_url">Webhook 地址（https）</string>
+    <string name="https_only">仅允许 https 地址</string>
+    <string name="signing_secret">签名密钥（用于验证 X-Penny-Signature 标头）：</string>
+    <string name="create_secret">创建密钥</string>
+    <string name="new_secret">新密钥</string>
+    <string name="copy">复制</string>
+    <string name="send_now">立即发送</string>
+    <plurals name="webhook_sent"><item quantity="other">已发送 %d 笔交易</item></plurals>
+    <string name="ob_get_started">开始使用</string>
+    <string name="ob_sample">用示例数据体验</string>
+    <string name="ob_point_safe">一个让人安心的数字：发薪日前可安心花费的钱</string>
+    <string name="ob_point_world">任何货币、任何发薪周期，贴合你真实的用钱方式</string>
+    <string name="ob_point_private">从设计上保护隐私：数据在你的手机上，端到端加密</string>
+    <string name="ob_point_free">所有功能免费。没有广告，没有贷款，不出售数据</string>
+    <string name="no_income_yet">本周期尚未记录收入</string>
+    <string name="spent_more_than_income">支出已超过本周期收入</string>
+    <string name="get_address">获取我的转发地址</string>
+    <string name="new_address">新地址</string>
+    <string name="turn_off">关闭</string>
+    <string name="email_forwarding_privacy">将订单、出行和外卖收据转发到此地址。服务器会立即把每封邮件加密到这部手机，并在 Penny 在此读取后删除。</string>
+    <string name="community_merchants">社区商家名称</string>
+    <string name="community_merchants_hint">与你所在地区的人匿名分享收款方名称和分类（绝不包含金额），并获取规范的名称。默认关闭。</string>
+</resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exchange_rates">شرح تبادلہ</string>
+    <string name="rates_body">Penny ہر لین دین کی تاریخ کی شرح سے تبدیل کرتا ہے۔ حوالہ جاتی شرحیں Wi-Fi پر ڈاؤن لوڈ ہو کر فون پر رکھی جاتی ہیں؛ آپ کی اپنی شرحوں کو ہمیشہ ترجیح ملتی ہے۔</string>
+    <string name="rates_updated">%1$s تک کی حوالہ جاتی شرحیں</string>
+    <string name="rates_never">ابھی تک کوئی حوالہ جاتی شرح ڈاؤن لوڈ نہیں ہوئی</string>
+    <string name="rates_refreshed">شرحیں اپ ڈیٹ ہو گئیں</string>
+    <string name="rates_offline">شرحوں کے ذریعے تک رسائی نہیں ہو سکی۔ Wi-Fi پر دوبارہ کوشش کریں۔</string>
+    <string name="refresh_now">ابھی ریفریش کریں</string>
+    <string name="add_manual_rate">اپنی شرح شامل کریں</string>
+    <string name="your_currencies">آج آپ کی کرنسیاں</string>
+    <string name="no_rate">کوئی شرح نہیں</string>
+    <string name="manual_rates">آپ کی شرحیں</string>
+    <string name="no_manual_rates">ابھی کوئی نہیں۔ اگر آپ کے بینک یا ایکسچینج نے مختلف شرح دی ہو تو شامل کریں۔</string>
+    <string name="rate_in_x">ایک اکائی کی قدر %1$s میں</string>
+    <string name="record_value">قدر درج کریں</string>
+    <string name="record_value_body">آج اس کی قیمت کیا ہے؟ قدروں کا تاریخچہ خالص مالیت میں شامل ہوتا ہے۔</string>
+    <string name="value_recorded">قدر درج ہو گئی</string>
+    <string name="valuations">قدر پیمائیاں</string>
+    <string name="share_group_link">ایپ کے بغیر لوگوں کے لیے منظر شیئر کریں</string>
+    <string name="group_link_text">“%1$s” کے بیلنس (صرف پڑھنے کے لیے، 30 دن میں ختم): %2$s</string>
+    <string name="usage_counts">گمنام استعمال کی گنتی شیئر کریں</string>
+    <string name="usage_counts_hint">صرف یہ کہ خصوصیات کتنی بار استعمال ہوئیں، کبھی رقمیں، وصول کنندگان، نوٹس یا آپ کا ٹائپ کیا ہوا کچھ نہیں۔ ڈیفالٹ طور پر بند۔</string>
+    <string name="usage_counts_none">ابھی کچھ شمار نہیں ہوا۔</string>
+    <string name="consent_until">رضامندی %1$s تک</string>
+    <string name="reconsent">رضامندی کی تجدید کریں</string>
+    <string name="disconnect">منقطع کریں</string>
+    <string name="disconnected">منقطع ہو گیا۔ بینک لنک اور اس کی محفوظ رسائی حذف کر دی گئی؛ اکاؤنٹس اب دستی ہیں۔</string>
+    <string name="bank_needs_sync">بینک جوڑنے کے لیے اوپر سنک آن کریں۔</string>
+    <string name="connect_with_token">سیٹ اپ ٹوکن سے جوڑیں</string>
+    <string name="connect_in_browser">فراہم کنندہ کے محفوظ صفحے پر جوڑیں</string>
+    <string name="simplefin_help">اپنے SimpleFIN Bridge اکاؤنٹ میں سیٹ اپ ٹوکن بنائیں اور یہاں پیسٹ کریں۔ Penny کا سرور اسے رسائی سے بدل دیتا ہے؛ ٹوکن کبھی اس فون پر محفوظ نہیں ہوتا۔</string>
+    <string name="setup_token">سیٹ اپ ٹوکن</string>
+    <string name="connect">جوڑیں</string>
+    <string name="bank_connected">بینک جڑ گیا۔ لین دین اگلے سنک پر آئیں گے۔</string>
+    <string name="bank_cancelled">جوڑنا منسوخ ہو گیا۔ کچھ بھی منسلک نہیں ہوا۔</string>
+    <plurals name="bank_synced"><item quantity="one">%d لین دین شامل یا اپ ڈیٹ ہوا</item><item quantity="other">%d لین دین شامل یا اپ ڈیٹ ہوئے</item></plurals>
+    <string name="automation">آٹومیشن</string>
+    <string name="automation_sub">Tasker، شارٹ کٹس اور ویب ہکس</string>
+    <string name="automation_body">Penny کو آٹومیشن ایپس اور اپنی سروسز سے جوڑیں۔ جب تک آپ ویب ہک کا پتہ مقرر نہ کریں، سب کچھ اسی فون پر رہتا ہے۔</string>
+    <string name="automation_apps">آٹومیشن ایپس</string>
+    <string name="allow_automation_apps">آٹومیشن ایپس کو لین دین شامل کرنے دیں</string>
+    <string name="allow_automation_hint">Tasker، Automate اور اسی طرح کی ایپس intent کے ذریعے لین دین شامل کر سکتی ہیں۔ وہ کبھی آپ کا ڈیٹا نہیں پڑھ سکتیں۔</string>
+    <string name="deep_link_example">یا کسی بھی ایپ یا شارٹ کٹ سے penny://add?amount=1250&amp;category=Groceries کھولیں (رقم چھوٹی اکائیوں میں)۔</string>
+    <string name="webhooks">ویب ہکس</string>
+    <string name="webhooks_body">ہر نیا لین دین دستخط شدہ JSON کے طور پر اپنے سرور کو بھیجیں۔ صرف وہی پتہ استعمال کریں جو آپ کے کنٹرول میں ہو۔</string>
+    <string name="webhook_url">ویب ہک کا پتہ (https)</string>
+    <string name="https_only">صرف https پتوں کی اجازت ہے</string>
+    <string name="signing_secret">دستخطی راز (X-Penny-Signature ہیڈر کی تصدیق کریں):</string>
+    <string name="create_secret">راز بنائیں</string>
+    <string name="new_secret">نیا راز</string>
+    <string name="copy">کاپی کریں</string>
+    <string name="send_now">ابھی بھیجیں</string>
+    <plurals name="webhook_sent"><item quantity="one">%d لین دین بھیجا گیا</item><item quantity="other">%d لین دین بھیجے گئے</item></plurals>
+    <string name="ob_get_started">شروع کریں</string>
+    <string name="ob_sample">نمونہ ڈیٹا کے ساتھ دیکھیں</string>
+    <string name="ob_point_safe">ایک پرسکون عدد: تنخواہ تک کتنا خرچ کے لیے محفوظ ہے</string>
+    <string name="ob_point_world">کوئی بھی کرنسی، کوئی بھی تنخواہ سائیکل، جیسے آپ واقعی پیسہ سنبھالتے ہیں</string>
+    <string name="ob_point_private">بنیادی طور پر نجی: آپ کے فون پر، اینڈ ٹو اینڈ انکرپٹڈ</string>
+    <string name="ob_point_free">ہر خصوصیت مفت۔ نہ اشتہارات، نہ قرض، نہ ڈیٹا کی فروخت</string>
+    <string name="no_income_yet">اس مدت میں ابھی کوئی آمدنی درج نہیں ہوئی</string>
+    <string name="spent_more_than_income">خرچ اس مدت کی آمدنی سے زیادہ ہے</string>
+    <string name="get_address">میرا فارورڈنگ پتہ حاصل کریں</string>
+    <string name="new_address">نیا پتہ</string>
+    <string name="turn_off">بند کریں</string>
+    <string name="email_forwarding_privacy">آرڈر، سواری اور کھانے کی رسیدیں اس پتے پر فارورڈ کریں۔ سرور ہر ای میل کو فوراً اس فون کے لیے انکرپٹ کرتا ہے اور Penny کے یہاں پڑھ لینے کے بعد اسے حذف کر دیتا ہے۔</string>
+    <string name="community_merchants">کمیونٹی کے تاجر نام</string>
+    <string name="community_merchants_hint">وصول کنندگان کے نام اور زمرے، کبھی رقمیں نہیں، اپنے علاقے کے لوگوں کے ساتھ گمنام طور پر شیئر کریں، اور بدلے میں صاف نام پائیں۔ ڈیفالٹ طور پر بند۔</string>
+</resources>

@@ -57,6 +57,7 @@ class AlertService @Inject constructor(
     val notificationsOn: Boolean get() = prefs.flag("alerts.os")
 
     suspend fun run(book: Book): List<AlertRecord> {
+        deliverHeld(book)
         val today = book.today()
         val period = book.period()
         val fmt = MoneyFmt.of(book.profile, repo.packs.get(book.profile.regionPack))
@@ -79,12 +80,34 @@ class AlertService @Inject constructor(
         )
         if (drafts.isEmpty()) return emptyList()
         val now = System.currentTimeMillis()
-        val records = drafts.map { d -> AlertRecord(d.kind, d.key, d.objectEntity, d.objectId, title(d, fmt, book), body(d, fmt, book), now, amountMinor = d.amountMinor) }
+        val (notifyNow, _) = AlertEngine.plan(drafts, LocalTime.now(book.zone), settings())
+        val quiet = AlertEngine.inQuietHours(LocalTime.now(book.zone), settings())
+        // Mark what was notified, and what quiet hours held back, so held alerts are delivered in the next window
+        // instead of being lost (their keys are in history, so they are never drafted again).
+        val records = drafts.map { d ->
+            val via = when {
+                !notificationsOn || d.digestOnly -> emptyList()
+                notifyNow.any { it.key == d.key } -> listOf(VIA_OS)
+                quiet -> listOf(VIA_HELD)
+                else -> emptyList()
+            }
+            AlertRecord(d.kind, d.key, d.objectEntity, d.objectId, title(d, fmt, book), body(d, fmt, book), now, deliveredVia = via, amountMinor = d.amountMinor)
+        }
         val g = repo.alerts.newGroup()
         repo.alerts.createAll(book.profileId, records.map { repo.newId() to it }, groupId = g)
-        val (notifyNow, _) = AlertEngine.plan(drafts, LocalTime.now(book.zone), settings())
-        if (notificationsOn && notifyNow.isNotEmpty()) notify(records.filter { r -> notifyNow.any { it.key == r.key } })
+        if (notificationsOn && notifyNow.isNotEmpty()) notify(records.filter { VIA_OS in it.deliveredVia })
         return records
+    }
+
+    /** Delivers alerts held during quiet hours once the window opens (only recent ones, and only once). */
+    private suspend fun deliverHeld(book: Book) {
+        if (!notificationsOn || AlertEngine.inQuietHours(LocalTime.now(book.zone), settings())) return
+        val cutoff = System.currentTimeMillis() - 24 * 3_600_000L
+        val held = book.alerts.filter { VIA_HELD in it.value.deliveredVia && it.value.state == app.penny.core.model.AlertState.NEW && it.value.firedAtMillis >= cutoff }
+        if (held.isEmpty()) return
+        val g = repo.alerts.newGroup()
+        held.forEach { a -> repo.alerts.update(a.state.id, a.value.copy(deliveredVia = listOf(VIA_OS)), groupId = g) }
+        notify(held.map { it.value })
     }
 
     private fun money(fmt: MoneyFmt, v: Long?, book: Book) = fmt.format(v ?: 0, book.profile.baseCurrency)
@@ -144,3 +167,6 @@ class AlertService @Inject constructor(
         const val NOTIFY_ID = 4201
     }
 }
+
+private const val VIA_OS = "os"
+private const val VIA_HELD = "held"

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exchange_rates">Mga exchange rate</string>
+    <string name="rates_body">Nagko-convert ang Penny gamit ang rate sa petsa ng bawat transaksyon. Dina-download ang mga reference rate sa Wi-Fi at itinatago sa phone; laging inuuna ang sarili mong rate.</string>
+    <string name="rates_updated">Mga reference rate hanggang %1$s</string>
+    <string name="rates_never">Wala pang na-download na reference rate</string>
+    <string name="rates_refreshed">Na-update ang mga rate</string>
+    <string name="rates_offline">Hindi maabot ang pinagkukunan ng rate. Subukan ulit sa Wi-Fi.</string>
+    <string name="refresh_now">I-refresh ngayon</string>
+    <string name="add_manual_rate">Idagdag ang sarili kong rate</string>
+    <string name="your_currencies">Mga currency mo ngayon</string>
+    <string name="no_rate">Walang rate</string>
+    <string name="manual_rates">Mga rate mo</string>
+    <string name="no_manual_rates">Wala pa. Magdagdag kung iba ang rate na ibinigay ng bangko o money changer mo.</string>
+    <string name="rate_in_x">Halaga ng isang unit sa %1$s</string>
+    <string name="record_value">Itala ang halaga</string>
+    <string name="record_value_body">Magkano na ito ngayon? Ang history ng mga halaga ang batayan ng net worth.</string>
+    <string name="value_recorded">Naitala ang halaga</string>
+    <string name="valuations">Mga pagtataya ng halaga</string>
+    <string name="share_group_link">Magbahagi ng view para sa mga walang app</string>
+    <string name="group_link_text">Mga balanse para sa “%1$s” (pang-basa lang, mag-e-expire sa loob ng 30 araw): %2$s</string>
+    <string name="usage_counts">Ibahagi ang anonymous na bilang ng paggamit</string>
+    <string name="usage_counts_hint">Kung gaano lang kadalas ginagamit ang mga feature, hindi kailanman ang halaga, binayaran, tala o anumang tinype mo. Naka-off sa simula.</string>
+    <string name="usage_counts_none">Wala pang nabibilang.</string>
+    <string name="consent_until">may pahintulot hanggang %1$s</string>
+    <string name="reconsent">I-renew ang pahintulot</string>
+    <string name="disconnect">Idiskonekta</string>
+    <string name="disconnected">Nadiskonekta. Nabura ang link sa bangko at ang naka-save na access nito; manual na ang mga account.</string>
+    <string name="bank_needs_sync">I-on ang sync sa itaas para magkonekta ng bangko.</string>
+    <string name="connect_with_token">Kumonekta gamit ang setup token</string>
+    <string name="connect_in_browser">Kumonekta sa secure na page ng provider</string>
+    <string name="simplefin_help">Gumawa ng setup token sa SimpleFIN Bridge account mo at i-paste ito rito. Ipinapalit ito ng server ng Penny para sa access; hindi kailanman itinatago ang token sa phone na ito.</string>
+    <string name="setup_token">Setup token</string>
+    <string name="connect">Kumonekta</string>
+    <string name="bank_connected">Nakakonekta na ang bangko. Darating ang mga transaksyon sa susunod na sync.</string>
+    <string name="bank_cancelled">Kinansela ang pagkonekta. Walang na-link.</string>
+    <plurals name="bank_synced"><item quantity="one">%d transaksyon ang naidagdag o na-update</item><item quantity="other">%d transaksyon ang naidagdag o na-update</item></plurals>
+    <string name="automation">Automation</string>
+    <string name="automation_sub">Tasker, shortcut at webhook</string>
+    <string name="automation_body">Ikonekta ang Penny sa mga automation app at sarili mong serbisyo. Nananatili ang lahat sa phone na ito maliban kung maglagay ka ng webhook address.</string>
+    <string name="automation_apps">Mga automation app</string>
+    <string name="allow_automation_apps">Payagan ang mga automation app na magdagdag ng transaksyon</string>
+    <string name="allow_automation_hint">Puwedeng magdagdag ng transaksyon gamit ang intent ang Tasker, Automate at mga katulad na app. Hindi nila kailanman mababasa ang data mo.</string>
+    <string name="deep_link_example">O buksan ang penny://add?amount=1250&amp;category=Groceries mula sa anumang app o shortcut (halaga sa minor unit).</string>
+    <string name="webhooks">Mga webhook</string>
+    <string name="webhooks_body">Ipadala ang bawat bagong transaksyon sa sarili mong server bilang signed JSON. Gumamit lang ng address na hawak mo.</string>
+    <string name="webhook_url">Webhook address (https)</string>
+    <string name="https_only">Mga https address lang ang pinapayagan</string>
+    <string name="signing_secret">Signing secret (i-verify ang X-Penny-Signature header):</string>
+    <string name="create_secret">Gumawa ng secret</string>
+    <string name="new_secret">Bagong secret</string>
+    <string name="copy">Kopyahin</string>
+    <string name="send_now">Ipadala ngayon</string>
+    <plurals name="webhook_sent"><item quantity="one">%d transaksyon ang naipadala</item><item quantity="other">%d transaksyon ang naipadala</item></plurals>
+    <string name="ob_get_started">Magsimula</string>
+    <string name="ob_sample">Subukan gamit ang sample data</string>
+    <string name="ob_point_safe">Isang kalmadong numero: kung magkano ang ligtas gastusin hanggang sahod</string>
+    <string name="ob_point_world">Anumang currency, anumang pay cycle, ayon sa totoong paghawak mo ng pera</string>
+    <string name="ob_point_private">Pribado mula sa disenyo: nasa phone mo, encrypted end to end</string>
+    <string name="ob_point_free">Libre ang bawat feature. Walang ads, walang pautang, walang pagbebenta ng data</string>
+    <string name="no_income_yet">Wala pang naitalang kita sa period na ito</string>
+    <string name="spent_more_than_income">Mas mataas ang gastos kaysa sa kita sa period na ito</string>
+    <string name="get_address">Kunin ang forwarding address ko</string>
+    <string name="new_address">Bagong address</string>
+    <string name="turn_off">I-off</string>
+    <string name="email_forwarding_privacy">I-forward sa address na ito ang mga resibo ng order, sakay at pagkain. Agad ine-encrypt ng server ang bawat email para sa phone na ito at binubura ito kapag nabasa na ng Penny rito.</string>
+    <string name="community_merchants">Mga pangalan ng merchant mula sa komunidad</string>
+    <string name="community_merchants_hint">Ibahagi nang anonymous ang mga pangalan ng binayaran at kategorya, hindi kailanman ang halaga, sa mga tao sa rehiyon mo, at makatanggap ng malinis na pangalan. Naka-off sa simula.</string>
+</resources>

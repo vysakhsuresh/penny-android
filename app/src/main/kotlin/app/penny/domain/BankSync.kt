@@ -115,13 +115,16 @@ class BankSync @Inject constructor(private val sync: SyncManager, private val re
             when {
                 // Pending → posted (or amount corrected): update the same transaction.
                 seen != null -> {
-                    val upd = seen.value.copy(status = if (rt.pending) TxStatus.PENDING else if (seen.value.status == TxStatus.RECONCILED) TxStatus.RECONCILED else TxStatus.CLEARED, amountMinor = tx.amountMinor)
-                    if (repo.transactions.update(seen.state.id, upd, groupId = g) != null) n++
+                    // Read the current row, not the snapshot from before the network call: a category the user changed
+                    // while the sync ran must not be written back to its old value.
+                    val cur = repo.transactions.get(seen.state.id)?.takeIf { it.state.deletedAt == null }?.value ?: return@forEach
+                    val upd = cur.copy(status = if (rt.pending) TxStatus.PENDING else if (cur.status == TxStatus.RECONCILED) TxStatus.RECONCILED else TxStatus.CLEARED, amountMinor = tx.amountMinor)
+                    if (upd != cur && repo.transactions.update(seen.state.id, upd, groupId = g) != null) n++
                 }
                 else -> {
                     val dupe = Dedupe.candidates(tx, book.transactions.map { it.state.id to it.value }).firstOrNull()
                     if (dupe != null) {
-                        book.txMap[dupe]?.let { repo.transactions.update(dupe, Dedupe.merge(it.value, tx).copy(status = tx.status), reason = "merge", groupId = g) }
+                        repo.transactions.get(dupe)?.takeIf { it.state.deletedAt == null }?.let { repo.transactions.update(dupe, Dedupe.merge(it.value, tx).copy(status = tx.status), reason = "merge", groupId = g) }
                     } else {
                         repo.transactions.create(repo.newId(), book.profileId, RuleEngine.apply(tx, rules, RuleContext(accountName = book::accountName)).tx, g)
                     }

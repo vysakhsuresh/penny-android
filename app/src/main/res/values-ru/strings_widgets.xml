@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">Сколько можно потратить — с одного взгляда</string>
+    <string name="widget_quick_desc">Добавьте операцию или примените шаблон одним касанием</string>
+    <string name="widget_envelopes_desc">Конверты и ближайшие платежи</string>
+    <string name="widget_safe_label">Можно потратить</string>
+    <string name="widget_quick_label">Быстро добавить</string>
+    <string name="widget_envelopes_label">Бюджеты</string>
+    <string name="shortcut_add">Добавить</string>
+    <string name="tile_label">Добавить в Penny</string>
+</resources>

@@ -56,13 +56,28 @@ class BookViewModel @Inject constructor(
      */
     fun act(@StringRes message: Int? = null, messageText: String? = null, after: (() -> Unit)? = null, op: suspend PennyRepository.(Book) -> String?) {
         val book = (state.value as? BookLoad.Ready)?.book ?: return
+        // A second tap while the first save is still writing would create a duplicate and pop the screen twice.
+        if (!inFlight.compareAndSet(false, true)) return
         viewModelScope.launch {
-            val group = withContext(Dispatchers.Default) { runCatching { repo.op(book) }.getOrElse { e -> android.util.Log.w("Penny", "op failed", e); null } }
-            val text = messageText ?: message?.let(context::getString)
-            if (text != null) undo.offer(UndoMessage(text, undo = group?.let { g -> { repo.undo(g) } }))
-            after?.invoke()
+            try {
+                val outcome = withContext(Dispatchers.Default) { runCatching { repo.op(book) } }
+                outcome.onFailure { e ->
+                    android.util.Log.w("Penny", "op failed", e)
+                    // Never report success for a write that did not happen; keep the user on the screen with their input.
+                    undo.offer(UndoMessage(context.getString(app.penny.R.string.action_failed), undo = null))
+                    return@launch
+                }
+                val group = outcome.getOrNull()
+                val text = messageText ?: message?.let(context::getString)
+                if (text != null) undo.offer(UndoMessage(text, undo = group?.let { g -> { repo.undo(g) } }))
+                after?.invoke()
+            } finally {
+                inFlight.set(false)
+            }
         }
     }
+
+    private val inFlight = java.util.concurrent.atomic.AtomicBoolean(false)
 
     /** Runs without undo (reads, navigation side effects). */
     fun launch(block: suspend PennyRepository.() -> Unit) {
@@ -77,7 +92,12 @@ class BookViewModel @Inject constructor(
 fun WithBook(vm: BookViewModel = hiltViewModel(), modifier: Modifier = Modifier, content: @Composable (Ctx, BookViewModel) -> Unit) {
     val s by vm.state.collectAsStateWithLifecycle()
     when (val st = s) {
-        BookLoad.Loading, BookLoad.NoProfile -> LoadingState(modifier)
+        BookLoad.Loading -> LoadingState(modifier)
+        // Opened from a link or widget before setup finished: say so instead of spinning forever.
+        BookLoad.NoProfile -> app.penny.ui.kit.EmptyState(
+            androidx.compose.ui.res.stringResource(app.penny.R.string.setup_first),
+            androidx.compose.ui.res.stringResource(app.penny.R.string.setup_first_body), modifier,
+        )
         is BookLoad.Failed -> ErrorState(modifier)
         is BookLoad.Ready -> content(Ctx(st.book, st.pack, st.fmt), vm)
     }

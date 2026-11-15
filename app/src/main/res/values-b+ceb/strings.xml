@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tagline">Hibal-i kung pila ang luwas gastohon.</string>
+
+    <!-- Common -->
+    <string name="save">I-save</string>
+    <string name="cancel">Kanselahon</string>
+    <string name="delete">Papasa</string>
+    <string name="undo">Bawion</string>
+    <string name="restore">Ibalik</string>
+    <string name="retry">Sulayi pag-usab</string>
+    <string name="back">Balik</string>
+    <string name="next">Sunod</string>
+    <string name="skip">Laktawan</string>
+    <string name="done">Human na</string>
+    <string name="none">Wala</string>
+    <string name="loading">Nagkarga</string>
+    <string name="error_generic">Naay problema samtang gibasa ang imong data. Walay nawala.</string>
+
+    <!-- Onboarding (OB-01) -->
+    <string name="ob_step">Lakang %1$d sa %2$d</string>
+    <string name="ob_region_title">Asa ka nagpuyo?</string>
+    <string name="ob_region_body">Kini ang magbutang sa imong kwarta, porma sa numero ug kasagarang pay cycle. Mausab nimo kining tanan unya.</string>
+    <string name="ob_cycle_title">Kanus-a moabot ang kwarta?</string>
+    <string name="ob_cycle_body">Ang imong budget mosunod sa tinuod nimong pay cycle.</string>
+    <string name="ob_account_title">Pila ang imong cash karon?</string>
+    <string name="ob_account_body">Magsugod kita sa usa ka cash account. Idugang ang mga bangko ug card unya.</string>
+    <string name="ob_cash_name">Cash</string>
+    <string name="ob_finish">Sugdi ang paggamit sa %1$s</string>
+
+    <!-- Cycles -->
+    <string name="cycle_monthly">Binulan, sugod sa adlaw %1$d</string>
+    <string name="cycle_monthly_last">Binulan, sugod sa katapusang adlaw</string>
+    <string name="cycle_semimonthly">Kaduha sa usa ka bulan, sa %1$d ug sa katapusang adlaw</string>
+    <string name="cycle_weekly">Sinemana</string>
+    <string name="cycle_biweekly">Matag duha ka semana</string>
+    <string name="cycle_fourweekly">Matag upat ka semana</string>
+    <string name="cycle_quarterly">Matag tulo ka bulan</string>
+    <string name="cycle_yearly">Tinuig</string>
+    <string name="cycle_onincome">Kung moabot ang kwarta</string>
+    <string name="cycle_default_suffix">%1$s (kasagaran dinhi)</string>
+    <string name="cycle_start_day">Adlaw sa pagsugod sa bulan</string>
+
+    <!-- Home -->
+    <string name="safe_to_spend">Luwas gastohon</string>
+    <string name="per_day">%1$s matag adlaw</string>
+    <string name="on_pace">Sakto ang dagan</string>
+    <string name="ahead_of_pace">Ang gasto nag-una sa kalendaryo</string>
+    <string name="period_range">%1$s – %2$s</string>
+    <string name="prev_period">Miaging period</string>
+    <string name="next_period">Sunod nga period</string>
+    <string name="this_period">Balik niining period</string>
+    <string name="income_spent">Kita %1$s · Gasto %2$s</string>
+    <string name="accounts">Mga account</string>
+    <string name="transactions">Mga transaksyon</string>
+    <string name="empty_period_title">Wala pay sulod niining period</string>
+    <string name="empty_period_body">I-tap ang Dugang aron irekord ang imong unang transaksyon.</string>
+    <string name="add_transaction">Idugang ang transaksyon</string>
+    <string name="trash">Basurahan</string>
+    <string name="settings">Settings</string>
+    <string name="today">Karon</string>
+    <string name="yesterday">Gahapon</string>
+    <string name="deleted_tx">Napapas ang transaksyon</string>
+    <string name="saved_tx">Na-save ang transaksyon</string>
+    <string name="uncategorised">Walay kategorya</string>
+    <string name="transfer_to">Ngadto sa %1$s</string>
+    <string name="swipe_delete_hint">I-swipe pawala aron mapapas</string>
+
+    <!-- Transaction form (TX-02) -->
+    <string name="new_transaction">Bag-ong transaksyon</string>
+    <string name="edit_transaction">Usba ang transaksyon</string>
+    <string name="type_expense">Gasto</string>
+    <string name="type_income">Kita</string>
+    <string name="type_transfer">Pagbalhin</string>
+    <string name="type_refund">Refund</string>
+    <string name="type_adjustment">Pag-adjust</string>
+    <string name="type_opening">Sinugdang balanse</string>
+    <string name="field_type">Klase</string>
+    <string name="field_amount">Kantidad</string>
+    <string name="field_amount_hint">Gamita ang + − × ÷ aron mag-kwenta</string>
+    <string name="amount_result">= %1$s</string>
+    <string name="amount_rounded">= %1$s (gi-round)</string>
+    <string name="field_currency">Kwarta</string>
+    <string name="field_account">Account</string>
+    <string name="field_to_account">Ngadto sa account</string>
+    <string name="field_to_amount">Kantidad nga nadawat</string>
+    <string name="field_category">Kategorya</string>
+    <string name="field_payee">Payee</string>
+    <string name="field_date">Petsa</string>
+    <string name="field_time">Oras</string>
+    <string name="field_no_time">Walay oras</string>
+    <string name="field_note">Nota</string>
+    <string name="field_tags">Mga tag</string>
+    <string name="field_tags_hint">Bulaga gamit ang koma</string>
+    <string name="field_status">Status</string>
+    <string name="status_pending">Naghulat pa</string>
+    <string name="status_cleared">Na-clear</string>
+    <string name="status_reconciled">Na-reconcile</string>
+    <string name="field_direction">Direksyon</string>
+    <string name="direction_in">Modugang sa balanse</string>
+    <string name="direction_out">Mokuha sa balanse</string>
+    <string name="field_private">Pribado</string>
+    <string name="field_private_body">Itago ang payee, nota ug attachments gikan sa uban sa gipaambit nga mga space</string>
+    <string name="field_exclude_budget">Ayaw iapil sa budget</string>
+    <string name="field_exclude_reports">Ayaw iapil sa mga report</string>
+    <string name="field_splits">Mga bahin</string>
+    <string name="field_attachments">Mga attachment</string>
+    <string name="future_scheduled">Umaabot nga petsa: maihap kini isip naka-iskedyul.</string>
+    <string name="history">Kasaysayan</string>
+    <string name="pick_date">Pili og petsa</string>
+    <string name="pick_time">Pili og oras</string>
+    <string name="clear_time">Tangtanga ang oras</string>
+
+    <!-- Validation (TX-08) -->
+    <string name="err_amount_empty">Isulod ang kantidad</string>
+    <string name="err_amount_invalid">Dili kana sakto nga kantidad</string>
+    <string name="err_amount_positive">Ang kantidad kinahanglan labaw sa zero. Ang klase maoy magbutang kung kita o gasto.</string>
+    <string name="err_amount_decimals_none">Walay decimal ang %1$s</string>
+    <string name="err_amount_decimals">Ang %1$s motugot og %2$d ka decimal</string>
+    <string name="err_amount_large">Sobra kadako ang kantidad</string>
+    <string name="err_divide_zero">Dili ma-divide sa zero</string>
+    <string name="err_account_required">Pili og account</string>
+    <string name="err_transfer_target">Pilia ang account nga padulngan sa kwarta</string>
+    <string name="err_transfer_same">Pili og laing account nga balhinan</string>
+    <string name="err_transfer_to_amount">Isulod ang kantidad nga nadawat sa laing kwarta</string>
+    <string name="err_direction">Pilia kung modugang o mokuha kini</string>
+    <string name="err_splits">Ang mga bahin kinahanglan motakdo sa total</string>
+    <string name="tx_not_found">Wala na kining transaksyon.</string>
+
+    <!-- History (TX-05) -->
+    <string name="history_title">Kasaysayan</string>
+    <string name="history_created">Gihimo</string>
+    <string name="history_edited">Giusab</string>
+    <string name="history_deleted">Gipapas</string>
+    <string name="history_restored">Gibalik</string>
+    <string name="history_undo">Gibawi</string>
+    <string name="history_reverted">Gibalik sa bersyon %1$d</string>
+    <string name="history_version">Bersyon %1$d</string>
+    <string name="history_by">%1$s · %2$s</string>
+    <string name="history_you">Ikaw</string>
+    <string name="history_revert">Ibalik niining bersyon</string>
+    <string name="history_change">%1$s: %2$s → %3$s</string>
+    <string name="history_set">%1$s: %2$s</string>
+    <string name="history_empty">Wala pay kausaban nga narekord.</string>
+    <string name="reverted">Gibalik</string>
+
+    <!-- Trash (TX-03, HS-02) -->
+    <string name="trash_title">Basurahan</string>
+    <string name="trash_body">Ang napapas nga mga transaksyon magpabilin dinhi sulod sa 30 ka adlaw.</string>
+    <string name="trash_empty">Walay sulod ang basurahan</string>
+    <string name="delete_forever">Papasa sa hingpit</string>
+    <string name="restored">Nabalik</string>
+    <string name="deleted_forever">Napapas sa hingpit</string>
+
+    <!-- Settings -->
+    <string name="settings_region">Rehiyon</string>
+    <string name="settings_region_body">Ang kwarta, porma sa numero ug pay cycle mosunod sa rehiyon. Ang daan nga mga transaksyon magpabilin sa ilang kaugalingong kwarta.</string>
+    <string name="settings_sample">Pananglitan: %1$s</string>
+    <string name="region_changed">Giusab ang rehiyon ngadto sa %1$s</string>
+    <string name="settings_cycle">Pay cycle</string>
+    <string name="settings_about">Libre ang %1$s. Walay ads, walay utang, walay pagbaligya sa data.</string>
+
+    <plurals name="days_left">
+        <item quantity="one">%d ka adlaw nga nahabilin</item>
+        <item quantity="other">%d ka adlaw nga nahabilin</item>
+    </plurals>
+    <plurals name="unconverted">
+        <item quantity="one">%d ka transaksyon sa laing kwarta ang wala pa maihap</item>
+        <item quantity="other">%d ka transaksyon sa laing kwarta ang wala pa maihap</item>
+    </plurals>
+    <plurals name="trash_count">
+        <item quantity="one">%d ka butang</item>
+        <item quantity="other">%d ka butang</item>
+    </plurals>
+</resources>

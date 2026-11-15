@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand name comes from Brand.kt as @string/brand_name (generated). -->
+    <string name="tagline">Знайте, скільки можна витратити.</string>
+
+    <!-- Common -->
+    <string name="save">Зберегти</string>
+    <string name="cancel">Скасувати</string>
+    <string name="delete">Видалити</string>
+    <string name="undo">Скасувати</string>
+    <string name="restore">Відновити</string>
+    <string name="retry">Спробувати ще раз</string>
+    <string name="back">Назад</string>
+    <string name="next">Далі</string>
+    <string name="skip">Пропустити</string>
+    <string name="done">Готово</string>
+    <string name="none">Немає</string>
+    <string name="loading">Завантаження</string>
+    <string name="error_generic">Під час читання ваших даних сталася помилка. Нічого не втрачено.</string>
+
+    <!-- Onboarding (OB-01) -->
+    <string name="ob_step">Крок %1$d з %2$d</string>
+    <string name="ob_region_title">Де ви живете?</string>
+    <string name="ob_region_body">Від цього залежать валюта, формат чисел і звичний цикл виплат. Усе це можна змінити пізніше.</string>
+    <string name="ob_cycle_title">Коли надходять гроші?</string>
+    <string name="ob_cycle_body">Ваш бюджет відповідає вашому реальному циклу виплат.</string>
+    <string name="ob_account_title">Скільки готівки у вас зараз?</string>
+    <string name="ob_account_body">Почнімо з одного готівкового рахунку. Банки й картки можна додати пізніше.</string>
+    <string name="ob_cash_name">Готівка</string>
+    <string name="ob_finish">Почати користуватися %1$s</string>
+
+    <!-- Cycles -->
+    <string name="cycle_monthly">Щомісяця, з %1$d-го числа</string>
+    <string name="cycle_monthly_last">Щомісяця, з останнього дня</string>
+    <string name="cycle_semimonthly">Двічі на місяць: %1$d-го числа та в останній день</string>
+    <string name="cycle_weekly">Щотижня</string>
+    <string name="cycle_biweekly">Раз на два тижні</string>
+    <string name="cycle_fourweekly">Раз на чотири тижні</string>
+    <string name="cycle_quarterly">Щокварталу</string>
+    <string name="cycle_yearly">Щороку</string>
+    <string name="cycle_onincome">Коли надходять гроші</string>
+    <string name="cycle_default_suffix">%1$s (типово тут)</string>
+    <string name="cycle_start_day">День початку місяця</string>
+
+    <!-- Home -->
+    <string name="safe_to_spend">Можна витратити</string>
+    <string name="per_day">%1$s на день</string>
+    <string name="on_pace">У межах темпу</string>
+    <string name="ahead_of_pace">Витрати випереджають календар</string>
+    <string name="period_range">%1$s – %2$s</string>
+    <string name="prev_period">Попередній період</string>
+    <string name="next_period">Наступний період</string>
+    <string name="this_period">Повернутися до поточного періоду</string>
+    <string name="income_spent">Дохід %1$s · Витрачено %2$s</string>
+    <string name="accounts">Рахунки</string>
+    <string name="transactions">Операції</string>
+    <string name="empty_period_title">У цьому періоді поки нічого немає</string>
+    <string name="empty_period_body">Натисніть «Додати», щоб записати першу операцію.</string>
+    <string name="add_transaction">Додати операцію</string>
+    <string name="trash">Кошик</string>
+    <string name="settings">Налаштування</string>
+    <string name="today">Сьогодні</string>
+    <string name="yesterday">Учора</string>
+    <string name="deleted_tx">Операцію видалено</string>
+    <string name="saved_tx">Операцію збережено</string>
+    <string name="uncategorised">Без категорії</string>
+    <string name="transfer_to">На %1$s</string>
+    <string name="swipe_delete_hint">Проведіть ліворуч, щоб видалити</string>
+
+    <!-- Transaction form (TX-02) -->
+    <string name="new_transaction">Нова операція</string>
+    <string name="edit_transaction">Редагувати операцію</string>
+    <string name="type_expense">Витрата</string>
+    <string name="type_income">Дохід</string>
+    <string name="type_transfer">Переказ</string>
+    <string name="type_refund">Повернення коштів</string>
+    <string name="type_adjustment">Коригування</string>
+    <string name="type_opening">Початковий залишок</string>
+    <string name="field_type">Тип</string>
+    <string name="field_amount">Сума</string>
+    <string name="field_amount_hint">Використовуйте + − × ÷ для обчислень</string>
+    <string name="amount_result">= %1$s</string>
+    <string name="amount_rounded">= %1$s (округлено)</string>
+    <string name="field_currency">Валюта</string>
+    <string name="field_account">Рахунок</string>
+    <string name="field_to_account">На рахунок</string>
+    <string name="field_to_amount">Отримана сума</string>
+    <string name="field_category">Категорія</string>
+    <string name="field_payee">Одержувач</string>
+    <string name="field_date">Дата</string>
+    <string name="field_time">Час</string>
+    <string name="field_no_time">Без часу</string>
+    <string name="field_note">Нотатка</string>
+    <string name="field_tags">Мітки</string>
+    <string name="field_tags_hint">Розділяйте комами</string>
+    <string name="field_status">Статус</string>
+    <string name="status_pending">Очікує</string>
+    <string name="status_cleared">Проведено</string>
+    <string name="status_reconciled">Звірено</string>
+    <string name="field_direction">Напрямок</string>
+    <string name="direction_in">Збільшує залишок</string>
+    <string name="direction_out">Зменшує залишок</string>
+    <string name="field_private">Приватно</string>
+    <string name="field_private_body">Приховувати одержувача, нотатку та вкладення від інших у спільних просторах</string>
+    <string name="field_exclude_budget">Не враховувати в бюджеті</string>
+    <string name="field_exclude_reports">Не враховувати у звітах</string>
+    <string name="field_splits">Розподіл</string>
+    <string name="field_attachments">Вкладення</string>
+    <string name="future_scheduled">Майбутня дата: операцію буде враховано як заплановану.</string>
+    <string name="history">Історія</string>
+    <string name="pick_date">Виберіть дату</string>
+    <string name="pick_time">Виберіть час</string>
+    <string name="clear_time">Очистити час</string>
+
+    <!-- Validation (TX-08) -->
+    <string name="err_amount_empty">Введіть суму</string>
+    <string name="err_amount_invalid">Це недійсна сума</string>
+    <string name="err_amount_positive">Сума має бути більшою за нуль. Дохід чи витрату визначає тип.</string>
+    <string name="err_amount_decimals_none">%1$s не має десяткових знаків</string>
+    <string name="err_amount_decimals">%1$s допускає десяткових знаків: %2$d</string>
+    <string name="err_amount_large">Ця сума завелика</string>
+    <string name="err_divide_zero">Ділити на нуль не можна</string>
+    <string name="err_account_required">Виберіть рахунок</string>
+    <string name="err_transfer_target">Виберіть рахунок, на який надходять гроші</string>
+    <string name="err_transfer_same">Виберіть інший рахунок для переказу</string>
+    <string name="err_transfer_to_amount">Введіть отриману суму в іншій валюті</string>
+    <string name="err_direction">Виберіть, чи збільшує це залишок, чи зменшує</string>
+    <string name="err_splits">Сума розподілу має дорівнювати загальній</string>
+    <string name="tx_not_found">Цієї операції більше не існує.</string>
+
+    <!-- History (TX-05) -->
+    <string name="history_title">Історія</string>
+    <string name="history_created">Створено</string>
+    <string name="history_edited">Змінено</string>
+    <string name="history_deleted">Видалено</string>
+    <string name="history_restored">Відновлено</string>
+    <string name="history_undo">Скасовано</string>
+    <string name="history_reverted">Повернуто до версії %1$d</string>
+    <string name="history_version">Версія %1$d</string>
+    <string name="history_by">%1$s · %2$s</string>
+    <string name="history_you">Ви</string>
+    <string name="history_revert">Повернути цю версію</string>
+    <string name="history_change">%1$s: %2$s → %3$s</string>
+    <string name="history_set">%1$s: %2$s</string>
+    <string name="history_empty">Змін поки не записано.</string>
+    <string name="reverted">Повернуто</string>
+
+    <!-- Trash (TX-03, HS-02) -->
+    <string name="trash_title">Кошик</string>
+    <string name="trash_body">Видалені операції зберігаються тут 30 днів.</string>
+    <string name="trash_empty">Кошик порожній</string>
+    <string name="delete_forever">Видалити назавжди</string>
+    <string name="restored">Відновлено</string>
+    <string name="deleted_forever">Видалено назавжди</string>
+
+    <!-- Settings -->
+    <string name="settings_region">Регіон</string>
+    <string name="settings_region_body">Валюта, формат чисел і цикл виплат залежать від регіону. Наявні операції зберігають власну валюту.</string>
+    <string name="settings_sample">Приклад: %1$s</string>
+    <string name="region_changed">Регіон змінено на %1$s</string>
+    <string name="settings_cycle">Цикл виплат</string>
+    <string name="settings_about">%1$s безкоштовний. Без реклами, без кредитів, без продажу даних.</string>
+
+    <plurals name="days_left">
+        <item quantity="one">Залишився %d день</item>
+        <item quantity="few">Залишилося %d дні</item>
+        <item quantity="many">Залишилося %d днів</item>
+        <item quantity="other">Залишилося %d дня</item>
+    </plurals>
+    <plurals name="unconverted">
+        <item quantity="one">%d операцію в іншій валюті ще не враховано</item>
+        <item quantity="few">%d операції в інших валютах ще не враховано</item>
+        <item quantity="many">%d операцій в інших валютах ще не враховано</item>
+        <item quantity="other">%d операції в інших валютах ще не враховано</item>
+    </plurals>
+    <plurals name="trash_count">
+        <item quantity="one">%d елемент</item>
+        <item quantity="few">%d елементи</item>
+        <item quantity="many">%d елементів</item>
+        <item quantity="other">%d елемента</item>
+    </plurals>
+</resources>

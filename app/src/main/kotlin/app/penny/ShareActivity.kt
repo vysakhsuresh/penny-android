@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 /**
  * CP-05 / UX-09: anything shared to Penny lands in the review queue (text, receipt images via on-device OCR) or in
- * the importer (CSV, PDF statements), and a toast links to it. Nothing is posted without the user's review.
+ * the importer (bank files), and a toast links to it. Nothing is posted without the user's review.
  */
 @AndroidEntryPoint
 class ShareActivity : ComponentActivity() {
@@ -41,8 +41,11 @@ class ShareActivity : ComponentActivity() {
                     true
                 } ?: false
                 else -> {
-                    // CSV and PDF statements go to the importer, which previews before anything is saved.
-                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("${app.penny.core.Brand.DEEP_LINK_SCHEME}://home?tab=home"), this@ShareActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                    // Bank files (CSV, OFX, QIF, CAMT, MT940) go to the importer, which previews before anything is saved.
+                    val uri = stream(i)
+                    val saved = uri != null && runCatching { SharedImport.put(this@ShareActivity, uri) }.getOrDefault(false)
+                    if (!saved) Toast.makeText(this@ShareActivity, R.string.import_read_failed, Toast.LENGTH_LONG).show()
+                    else startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("${app.penny.core.Brand.DEEP_LINK_SCHEME}://import"), this@ShareActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
                     finish(); return@launch
                 }
             }
@@ -54,4 +57,45 @@ class ShareActivity : ComponentActivity() {
 
     @Suppress("DEPRECATION")
     private fun stream(i: Intent): Uri? = if (android.os.Build.VERSION.SDK_INT >= 33) i.getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java) else i.getParcelableExtra(Intent.EXTRA_STREAM)
+}
+
+/** Hand-off for a bank file shared to Penny: copied into app cache (the share grant ends with ShareActivity). */
+object SharedImport {
+    private const val MAX_BYTES = 20L * 1024 * 1024
+
+    private fun dir(context: android.content.Context) = java.io.File(context.cacheDir, "shared-import").apply { mkdirs() }
+
+    suspend fun put(context: android.content.Context, uri: Uri): Boolean = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+        val name = context.contentResolver.query(uri, arrayOf(android.provider.OpenableColumns.DISPLAY_NAME), null, null, null)
+            ?.use { c -> if (c.moveToFirst()) c.getString(0) else null } ?: "shared.csv"
+        val bytes = context.contentResolver.openInputStream(uri)?.use { s -> s.readNBytesCompat(MAX_BYTES) } ?: return@withContext false
+        dir(context).listFiles()?.forEach { it.delete() }
+        java.io.File(dir(context), "file").writeBytes(bytes)
+        java.io.File(dir(context), "name").writeText(name)
+        true
+    }
+
+    /** Returns (name, text) once and deletes it. */
+    fun take(context: android.content.Context): Pair<String, String>? {
+        val f = java.io.File(dir(context), "file")
+        if (!f.exists()) return null
+        val name = java.io.File(dir(context), "name").takeIf { it.exists() }?.readText() ?: "shared.csv"
+        val text = app.penny.ui.settings.readText(f.readBytes())
+        dir(context).listFiles()?.forEach { it.delete() }
+        return name to text
+    }
+
+    private fun java.io.InputStream.readNBytesCompat(max: Long): ByteArray {
+        val out = java.io.ByteArrayOutputStream()
+        val buf = ByteArray(8192)
+        var total = 0L
+        while (true) {
+            val n = read(buf)
+            if (n < 0) break
+            total += n
+            if (total > max) throw java.io.IOException("too large")
+            out.write(buf, 0, n)
+        }
+        return out.toByteArray()
+    }
 }

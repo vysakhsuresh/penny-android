@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Penny</string>
+    <string name="safe_to_spend">쓸 수 있는 돈</string>
+    <string name="per_day_left">하루 %1$s · %2$d일 남음</string>
+    <string name="say_it">지출 말하기</string>
+    <string name="added">휴대폰에 추가했어요</string>
+    <string name="not_understood">금액을 알아듣지 못했어요</string>
+    <string name="no_phone">휴대폰과 연결되지 않았어요. 마지막으로 확인한 숫자를 보여 줘요.</string>
+</resources>

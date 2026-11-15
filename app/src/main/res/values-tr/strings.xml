@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand name comes from Brand.kt as @string/brand_name (generated). -->
+    <string name="tagline">Ne kadar harcayabileceğini bil.</string>
+
+    <!-- Common -->
+    <string name="save">Kaydet</string>
+    <string name="cancel">İptal</string>
+    <string name="delete">Sil</string>
+    <string name="undo">Geri al</string>
+    <string name="restore">Geri yükle</string>
+    <string name="retry">Tekrar dene</string>
+    <string name="back">Geri</string>
+    <string name="next">İleri</string>
+    <string name="skip">Atla</string>
+    <string name="done">Bitti</string>
+    <string name="none">Yok</string>
+    <string name="loading">Yükleniyor</string>
+    <string name="error_generic">Verilerin okunurken bir sorun oluştu. Hiçbir şey kaybolmadı.</string>
+
+    <!-- Onboarding (OB-01) -->
+    <string name="ob_step">Adım %1$d / %2$d</string>
+    <string name="ob_region_title">Nerede yaşıyorsun?</string>
+    <string name="ob_region_body">Bu seçim para birimini, sayı biçimini ve olağan maaş döngünü belirler. Hepsini sonra değiştirebilirsin.</string>
+    <string name="ob_cycle_title">Para ne zaman geliyor?</string>
+    <string name="ob_cycle_body">Bütçen gerçek maaş döngünü izler.</string>
+    <string name="ob_account_title">Şu anda ne kadar nakit paran var?</string>
+    <string name="ob_account_body">Tek bir nakit hesabıyla başlıyoruz. Bankaları ve kartları sonra ekle.</string>
+    <string name="ob_cash_name">Nakit</string>
+    <string name="ob_finish">Kullanmaya başla: %1$s</string>
+
+    <!-- Cycles -->
+    <string name="cycle_monthly">Aylık, ayın %1$d. gününden</string>
+    <string name="cycle_monthly_last">Aylık, ayın son gününden</string>
+    <string name="cycle_semimonthly">Ayda iki kez, ayın %1$d. günü ve son günü</string>
+    <string name="cycle_weekly">Haftalık</string>
+    <string name="cycle_biweekly">İki haftada bir</string>
+    <string name="cycle_fourweekly">Dört haftada bir</string>
+    <string name="cycle_quarterly">Üç aylık</string>
+    <string name="cycle_yearly">Yıllık</string>
+    <string name="cycle_onincome">Para geldiğinde</string>
+    <string name="cycle_default_suffix">%1$s (burada olağan)</string>
+    <string name="cycle_start_day">Ayın başlangıç günü</string>
+
+    <!-- Home -->
+    <string name="safe_to_spend">Harcanabilir</string>
+    <string name="per_day">Günde %1$s</string>
+    <string name="on_pace">Planlanan hızda</string>
+    <string name="ahead_of_pace">Harcama takvimin önünde</string>
+    <string name="period_range">%1$s – %2$s</string>
+    <string name="prev_period">Önceki dönem</string>
+    <string name="next_period">Sonraki dönem</string>
+    <string name="this_period">Bu döneme dön</string>
+    <string name="income_spent">Gelir %1$s · Harcanan %2$s</string>
+    <string name="accounts">Hesaplar</string>
+    <string name="transactions">İşlemler</string>
+    <string name="empty_period_title">Bu dönemde henüz bir şey yok</string>
+    <string name="empty_period_body">İlk işlemini kaydetmek için Ekle’ye dokun.</string>
+    <string name="add_transaction">İşlem ekle</string>
+    <string name="trash">Çöp kutusu</string>
+    <string name="settings">Ayarlar</string>
+    <string name="today">Bugün</string>
+    <string name="yesterday">Dün</string>
+    <string name="deleted_tx">İşlem silindi</string>
+    <string name="saved_tx">İşlem kaydedildi</string>
+    <string name="uncategorised">Kategorisiz</string>
+    <string name="transfer_to">Alıcı: %1$s</string>
+    <string name="swipe_delete_hint">Silmek için sola kaydır</string>
+
+    <!-- Transaction form (TX-02) -->
+    <string name="new_transaction">Yeni işlem</string>
+    <string name="edit_transaction">İşlemi düzenle</string>
+    <string name="type_expense">Gider</string>
+    <string name="type_income">Gelir</string>
+    <string name="type_transfer">Transfer</string>
+    <string name="type_refund">İade</string>
+    <string name="type_adjustment">Düzeltme</string>
+    <string name="type_opening">Açılış bakiyesi</string>
+    <string name="field_type">Tür</string>
+    <string name="field_amount">Tutar</string>
+    <string name="field_amount_hint">Hesaplamak için + − × ÷ kullan</string>
+    <string name="amount_result">= %1$s</string>
+    <string name="amount_rounded">= %1$s (yuvarlandı)</string>
+    <string name="field_currency">Para birimi</string>
+    <string name="field_account">Hesap</string>
+    <string name="field_to_account">Alıcı hesap</string>
+    <string name="field_to_amount">Alınan tutar</string>
+    <string name="field_category">Kategori</string>
+    <string name="field_payee">Alıcı</string>
+    <string name="field_date">Tarih</string>
+    <string name="field_time">Saat</string>
+    <string name="field_no_time">Saat yok</string>
+    <string name="field_note">Not</string>
+    <string name="field_tags">Etiketler</string>
+    <string name="field_tags_hint">Virgülle ayır</string>
+    <string name="field_status">Durum</string>
+    <string name="status_pending">Beklemede</string>
+    <string name="status_cleared">Gerçekleşti</string>
+    <string name="status_reconciled">Mutabık</string>
+    <string name="field_direction">Yön</string>
+    <string name="direction_in">Bakiyeye ekler</string>
+    <string name="direction_out">Bakiyeden düşer</string>
+    <string name="field_private">Gizli</string>
+    <string name="field_private_body">Paylaşılan alanlarda alıcıyı, notu ve ekleri diğer kişilerden gizle</string>
+    <string name="field_exclude_budget">Bütçeye dahil etme</string>
+    <string name="field_exclude_reports">Raporlara dahil etme</string>
+    <string name="field_splits">Bölmeler</string>
+    <string name="field_attachments">Ekler</string>
+    <string name="future_scheduled">İleri tarih: bu işlem planlanmış sayılacak.</string>
+    <string name="history">Geçmiş</string>
+    <string name="pick_date">Tarih seç</string>
+    <string name="pick_time">Saat seç</string>
+    <string name="clear_time">Saati temizle</string>
+
+    <!-- Validation (TX-08) -->
+    <string name="err_amount_empty">Bir tutar gir</string>
+    <string name="err_amount_invalid">Bu geçerli bir tutar değil</string>
+    <string name="err_amount_positive">Tutar sıfırdan büyük olmalı. Gelir veya harcama olduğunu tür belirler.</string>
+    <string name="err_amount_decimals_none">%1$s ondalık basamak içermez</string>
+    <string name="err_amount_decimals">%1$s en fazla %2$d ondalık basamağa izin verir</string>
+    <string name="err_amount_large">Bu tutar çok büyük</string>
+    <string name="err_divide_zero">Sıfıra bölünemez</string>
+    <string name="err_account_required">Bir hesap seç</string>
+    <string name="err_transfer_target">Paranın gideceği hesabı seç</string>
+    <string name="err_transfer_same">Transfer için farklı bir hesap seç</string>
+    <string name="err_transfer_to_amount">Diğer para biriminde alınan tutarı gir</string>
+    <string name="err_direction">Bunun ekleme mi çıkarma mı olduğunu seç</string>
+    <string name="err_splits">Bölmelerin toplamı tutara eşit olmalı</string>
+    <string name="tx_not_found">Bu işlem artık mevcut değil.</string>
+
+    <!-- History (TX-05) -->
+    <string name="history_title">Geçmiş</string>
+    <string name="history_created">Oluşturuldu</string>
+    <string name="history_edited">Düzenlendi</string>
+    <string name="history_deleted">Silindi</string>
+    <string name="history_restored">Geri yüklendi</string>
+    <string name="history_undo">Geri alındı</string>
+    <string name="history_reverted">%1$d. sürüme döndürüldü</string>
+    <string name="history_version">Sürüm %1$d</string>
+    <string name="history_by">%1$s · %2$s</string>
+    <string name="history_you">Sen</string>
+    <string name="history_revert">Bu sürüme döndür</string>
+    <string name="history_change">%1$s: %2$s → %3$s</string>
+    <string name="history_set">%1$s: %2$s</string>
+    <string name="history_empty">Henüz kayıtlı değişiklik yok.</string>
+    <string name="reverted">Döndürüldü</string>
+
+    <!-- Trash (TX-03, HS-02) -->
+    <string name="trash_title">Çöp kutusu</string>
+    <string name="trash_body">Silinen işlemler 30 gün burada kalır.</string>
+    <string name="trash_empty">Çöp kutusu boş</string>
+    <string name="delete_forever">Kalıcı olarak sil</string>
+    <string name="restored">Geri yüklendi</string>
+    <string name="deleted_forever">Kalıcı olarak silindi</string>
+
+    <!-- Settings -->
+    <string name="settings_region">Bölge</string>
+    <string name="settings_region_body">Para birimi, sayı biçimi ve maaş döngüsü bölgeye göre belirlenir. Mevcut işlemler kendi para birimlerini korur.</string>
+    <string name="settings_sample">Örnek: %1$s</string>
+    <string name="region_changed">Bölge değiştirildi: %1$s</string>
+    <string name="settings_cycle">Maaş döngüsü</string>
+    <string name="settings_about">%1$s ücretsizdir. Reklam yok, kredi yok, veri satışı yok.</string>
+
+    <plurals name="days_left">
+        <item quantity="one">%d gün kaldı</item>
+        <item quantity="other">%d gün kaldı</item>
+    </plurals>
+    <plurals name="unconverted">
+        <item quantity="one">Başka para birimindeki %d işlem henüz hesaba katılmadı</item>
+        <item quantity="other">Başka para birimlerindeki %d işlem henüz hesaba katılmadı</item>
+    </plurals>
+    <plurals name="trash_count">
+        <item quantity="one">%d öğe</item>
+        <item quantity="other">%d öğe</item>
+    </plurals>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">Jumlah selamat dibelanjakan sepintas lalu</string>
+    <string name="widget_quick_desc">Tambah transaksi atau guna templat dengan satu ketikan</string>
+    <string name="widget_envelopes_desc">Sampul dan bil akan datang</string>
+    <string name="widget_safe_label">Selamat dibelanjakan</string>
+    <string name="widget_quick_label">Tambah pantas</string>
+    <string name="widget_envelopes_label">Bajet</string>
+    <string name="shortcut_add">Tambah</string>
+    <string name="tile_label">Tambah ke Penny</string>
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_failed">That did not save. Nothing was changed, please try again.</string>
+    <string name="no_app_for_action">No app on this phone can open that.</string>
+    <string name="import_read_failed">Could not read that file. Check that it is a bank export (CSV, OFX, QIF, CAMT or MT940).</string>
+    <string name="template_default_name">Template</string>
+    <string name="item_default_name">Item</string>
+    <string name="sync_status_active">Connected</string>
+    <string name="sync_status_needs_consent">Needs your OK again</string>
+    <string name="sync_status_broken">Not working, try reconnecting</string>
+    <string name="sync_status_disconnected">Disconnected</string>
+    <string name="remit_status_sent">Sent</string>
+    <string name="remit_status_received">Received</string>
+    <string name="remit_status_confirmed">Confirmed</string>
+    <string name="source_notification">Notification</string>
+    <string name="source_share">Shared</string>
+    <string name="source_email">Email</string>
+    <string name="source_other">Captured</string>
+    <string name="setup_first">Set up Penny first</string>
+    <string name="setup_first_body">Go back and finish the first steps, then try again.</string>
+</resources>

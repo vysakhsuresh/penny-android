@@ -11,6 +11,9 @@ import java.util.zip.Inflater
 
 data class SyncResult(val pushed: Int, val pulled: Int, val conflicts: Int = 0)
 
+/** A synced batch this app cannot read yet; sync stops before it so an update can read it later. */
+class SyncBlobException(val stream: String, cause: Throwable?) : Exception("Unreadable sync batch in $stream", cause)
+
 /** Supplies the stream key for a stream id (profile or space), or null when this device has no access. */
 fun interface KeyRing { fun key(stream: String): ByteArray? }
 
@@ -55,13 +58,24 @@ class SyncEngine(
         while (true) {
             val blobs = relay.pull(stream, cursor)
             if (blobs.isEmpty()) break
-            val events = blobs.flatMap { b ->
-                runCatching { PennyJson.decodeFromString(ser, String(inflate(StreamCrypto.open(key, StreamCrypto.unb64(b.blob), stream)))) }.getOrDefault(emptyList())
+            // Decode in order and stop at the first blob we cannot read (newer app version, key not yet right): the cursor
+            // only moves past blobs that were ingested, so nothing is skipped for good; the next sync retries it.
+            val events = mutableListOf<Event>()
+            var lastGood: Long? = null
+            var failure: Throwable? = null
+            for (b in blobs) {
+                val decoded = runCatching { PennyJson.decodeFromString(ser, String(inflate(StreamCrypto.open(key, StreamCrypto.unb64(b.blob), stream)))) }
+                if (decoded.isFailure) { failure = decoded.exceptionOrNull(); break }
+                events += decoded.getOrThrow()
+                lastGood = b.cursor
             }
             // Only events for this stream are accepted (a blob cannot smuggle events into another book).
             total += store.ingest(events.filter { it.profileId == stream }).size
-            cursor = blobs.last().cursor
-            dao.putKv(KvRow("sync.cursor.$stream", cursor.toString()))
+            if (lastGood != null) {
+                cursor = lastGood
+                dao.putKv(KvRow("sync.cursor.$stream", cursor.toString()))
+            }
+            if (failure != null) throw SyncBlobException(stream, failure)
             if (blobs.size < 200) break
         }
         dao.putKv(KvRow("sync.last.$stream", System.currentTimeMillis().toString()))

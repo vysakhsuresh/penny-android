@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Penny</string>
+    <string name="safe_to_spend">Có thể chi</string>
+    <string name="per_day_left">%1$s mỗi ngày · còn %2$d ngày</string>
+    <string name="say_it">Nói khoản chi</string>
+    <string name="added">Đã thêm trên điện thoại</string>
+    <string name="not_understood">Chưa nghe rõ số tiền</string>
+    <string name="no_phone">Chưa kết nối điện thoại. Đang hiện số liệu gần nhất.</string>
+</resources>

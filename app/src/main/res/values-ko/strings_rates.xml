@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exchange_rates">환율</string>
+    <string name="rates_body">Penny는 각 거래 날짜의 환율로 환산해요. 기준 환율은 Wi-Fi에서 내려받아 휴대폰에 보관하며, 직접 입력한 환율이 항상 우선이에요.</string>
+    <string name="rates_updated">기준 환율 (%1$s까지)</string>
+    <string name="rates_never">아직 내려받은 기준 환율이 없어요</string>
+    <string name="rates_refreshed">환율을 업데이트했어요</string>
+    <string name="rates_offline">환율 출처에 연결하지 못했어요. Wi-Fi에서 다시 시도하세요.</string>
+    <string name="refresh_now">지금 새로고침</string>
+    <string name="add_manual_rate">내 환율 추가</string>
+    <string name="your_currencies">오늘의 내 통화</string>
+    <string name="no_rate">환율 없음</string>
+    <string name="manual_rates">내 환율</string>
+    <string name="no_manual_rates">아직 없어요. 은행이나 환전소에서 다른 환율을 적용받았다면 추가하세요.</string>
+    <string name="rate_in_x">1단위의 %1$s 기준 가치</string>
+    <string name="record_value">가치 기록</string>
+    <string name="record_value_body">지금 가치는 얼마인가요? 가치 기록은 순자산에 반영돼요.</string>
+    <string name="value_recorded">가치를 기록했어요</string>
+    <string name="valuations">가치 평가</string>
+    <string name="share_group_link">앱이 없는 사람에게 보기 공유</string>
+    <string name="group_link_text">‘%1$s’ 잔액 (보기 전용, 30일 후 만료): %2$s</string>
+    <string name="usage_counts">익명 사용 횟수 공유</string>
+    <string name="usage_counts_hint">기능을 얼마나 자주 쓰는지만 보내요. 금액, 거래처, 메모, 입력한 내용은 절대 보내지 않아요. 기본값은 꺼짐이에요.</string>
+    <string name="usage_counts_none">아직 집계된 내용이 없어요.</string>
+    <string name="consent_until">%1$s까지 동의</string>
+    <string name="reconsent">동의 갱신</string>
+    <string name="disconnect">연결 해제</string>
+    <string name="disconnected">연결을 해제했어요. 은행 연결과 저장된 접근 권한은 삭제되었고, 계좌는 이제 수동으로 관리돼요.</string>
+    <string name="bank_needs_sync">은행을 연결하려면 위에서 동기화를 켜세요.</string>
+    <string name="connect_with_token">설정 토큰으로 연결</string>
+    <string name="connect_in_browser">제공업체의 보안 페이지에서 연결</string>
+    <string name="simplefin_help">SimpleFIN Bridge 계정에서 설정 토큰을 만들어 여기에 붙여 넣으세요. Penny 서버가 이를 접근 권한으로 교환하며, 토큰은 이 휴대폰에 저장되지 않아요.</string>
+    <string name="setup_token">설정 토큰</string>
+    <string name="connect">연결</string>
+    <string name="bank_connected">은행을 연결했어요. 거래는 다음 동기화 때 들어와요.</string>
+    <string name="bank_cancelled">연결을 취소했어요. 연결된 것은 없어요.</string>
+    <plurals name="bank_synced"><item quantity="other">거래 %d건을 추가하거나 업데이트했어요</item></plurals>
+    <string name="automation">자동화</string>
+    <string name="automation_sub">Tasker, 단축어, 웹훅</string>
+    <string name="automation_body">Penny를 자동화 앱과 내 서비스에 연결하세요. 웹훅 주소를 설정하지 않으면 모든 것이 이 휴대폰에만 남아요.</string>
+    <string name="automation_apps">자동화 앱</string>
+    <string name="allow_automation_apps">자동화 앱의 거래 추가 허용</string>
+    <string name="allow_automation_hint">Tasker, Automate 같은 앱은 인텐트로 거래를 추가할 수 있어요. 데이터를 읽을 수는 없어요.</string>
+    <string name="deep_link_example">또는 아무 앱이나 단축어에서 penny://add?amount=1250&amp;category=Groceries 를 여세요 (금액은 최소 단위).</string>
+    <string name="webhooks">웹훅</string>
+    <string name="webhooks_body">새 거래마다 서명된 JSON으로 내 서버에 보내요. 직접 관리하는 주소만 사용하세요.</string>
+    <string name="webhook_url">웹훅 주소 (https)</string>
+    <string name="https_only">https 주소만 사용할 수 있어요</string>
+    <string name="signing_secret">서명 비밀 키 (X-Penny-Signature 헤더 확인):</string>
+    <string name="create_secret">비밀 키 만들기</string>
+    <string name="new_secret">새 비밀 키</string>
+    <string name="copy">복사</string>
+    <string name="send_now">지금 보내기</string>
+    <plurals name="webhook_sent"><item quantity="other">거래 %d건을 보냈어요</item></plurals>
+    <string name="ob_get_started">시작하기</string>
+    <string name="ob_sample">샘플 데이터로 둘러보기</string>
+    <string name="ob_point_safe">차분한 숫자 하나: 월급날까지 쓸 수 있는 돈</string>
+    <string name="ob_point_world">어떤 통화, 어떤 급여 주기든 실제로 돈을 쓰는 방식 그대로</string>
+    <string name="ob_point_private">처음부터 비공개: 휴대폰에 저장되고 종단 간 암호화돼요</string>
+    <string name="ob_point_free">모든 기능 무료. 광고, 대출, 데이터 판매 없음</string>
+    <string name="no_income_yet">이번 기간에는 아직 수입 기록이 없어요</string>
+    <string name="spent_more_than_income">지출이 이번 기간 수입보다 많아요</string>
+    <string name="get_address">전달용 주소 받기</string>
+    <string name="new_address">새 주소</string>
+    <string name="turn_off">끄기</string>
+    <string name="email_forwarding_privacy">주문, 차량 호출, 음식 영수증을 이 주소로 전달하세요. 서버는 이메일을 바로 이 휴대폰용으로 암호화하고, Penny가 여기서 읽으면 삭제해요.</string>
+    <string name="community_merchants">커뮤니티 가맹점 이름</string>
+    <string name="community_merchants_hint">거래처 이름과 카테고리를 같은 지역 사람들과 익명으로 공유하고 깔끔한 이름을 받아요. 금액은 절대 공유하지 않아요. 기본값은 꺼짐이에요.</string>
+</resources>

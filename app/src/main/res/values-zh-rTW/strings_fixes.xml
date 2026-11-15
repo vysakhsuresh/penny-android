@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_failed">未能儲存。沒有做任何變更，請再試一次。</string>
+    <string name="no_app_for_action">這支手機上沒有可以開啟它的 App。</string>
+    <string name="import_read_failed">無法讀取這個檔案。請確認它是銀行匯出檔（CSV、OFX、QIF、CAMT 或 MT940）。</string>
+    <string name="template_default_name">範本</string>
+    <string name="item_default_name">項目</string>
+</resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exchange_rates">Taux de change</string>
+    <string name="rates_body">Penny convertit avec le taux du jour de chaque opération. Les taux de référence sont téléchargés en Wi-Fi et conservés sur le téléphone ; vos propres taux sont toujours prioritaires.</string>
+    <string name="rates_updated">Taux de référence jusqu’au %1$s</string>
+    <string name="rates_never">Aucun taux de référence téléchargé pour l’instant</string>
+    <string name="rates_refreshed">Taux mis à jour</string>
+    <string name="rates_offline">Source des taux injoignable. Réessayez en Wi-Fi.</string>
+    <string name="refresh_now">Actualiser</string>
+    <string name="add_manual_rate">Ajouter mon taux</string>
+    <string name="your_currencies">Vos devises aujourd’hui</string>
+    <string name="no_rate">Aucun taux</string>
+    <string name="manual_rates">Vos taux</string>
+    <string name="no_manual_rates">Aucun pour l’instant. Ajoutez-en un si votre banque ou bureau de change vous a donné un autre taux.</string>
+    <string name="rate_in_x">Valeur d’une unité en %1$s</string>
+    <string name="record_value">Enregistrer la valeur</string>
+    <string name="record_value_body">Combien cela vaut-il aujourd’hui ? L’historique des valeurs alimente le patrimoine net.</string>
+    <string name="value_recorded">Valeur enregistrée</string>
+    <string name="valuations">Valorisations</string>
+    <string name="share_group_link">Partager une vue pour les personnes sans l’app</string>
+    <string name="group_link_text">Soldes de « %1$s » (lecture seule, expire dans 30 jours) : %2$s</string>
+    <string name="usage_counts">Partager des statistiques d’usage anonymes</string>
+    <string name="usage_counts_hint">Uniquement la fréquence d’utilisation des fonctions, jamais de montants, bénéficiaires, notes ni rien de ce que vous saisissez. Désactivé par défaut.</string>
+    <string name="usage_counts_none">Rien de compté pour l’instant.</string>
+    <string name="consent_until">consentement jusqu’au %1$s</string>
+    <string name="reconsent">Renouveler le consentement</string>
+    <string name="disconnect">Déconnecter</string>
+    <string name="disconnected">Déconnecté. Le lien bancaire et ses accès enregistrés ont été supprimés ; les comptes sont désormais manuels.</string>
+    <string name="bank_needs_sync">Activez la synchronisation ci-dessus pour connecter une banque.</string>
+    <string name="connect_with_token">Connecter avec un jeton de configuration</string>
+    <string name="connect_in_browser">Connecter sur la page sécurisée du fournisseur</string>
+    <string name="simplefin_help">Créez un jeton de configuration dans votre compte SimpleFIN Bridge et collez-le ici. Le serveur de Penny l’échange contre un accès ; le jeton n’est jamais stocké sur ce téléphone.</string>
+    <string name="setup_token">Jeton de configuration</string>
+    <string name="connect">Connecter</string>
+    <string name="bank_connected">Banque connectée. Les opérations arrivent à la prochaine synchronisation.</string>
+    <string name="bank_cancelled">Connexion annulée. Rien n’a été lié.</string>
+    <plurals name="bank_synced"><item quantity="one">%d opération ajoutée ou mise à jour</item><item quantity="many">%d opérations ajoutées ou mises à jour</item><item quantity="other">%d opérations ajoutées ou mises à jour</item></plurals>
+    <string name="automation">Automatisation</string>
+    <string name="automation_sub">Tasker, raccourcis et webhooks</string>
+    <string name="automation_body">Connectez Penny à des apps d’automatisation et à vos propres services. Tout reste sur ce téléphone, sauf si vous définissez une adresse de webhook.</string>
+    <string name="automation_apps">Apps d’automatisation</string>
+    <string name="allow_automation_apps">Autoriser les apps d’automatisation à ajouter des opérations</string>
+    <string name="allow_automation_hint">Tasker, Automate et les apps similaires peuvent ajouter des opérations via un intent. Elles ne peuvent jamais lire vos données.</string>
+    <string name="deep_link_example">Ou ouvrez penny://add?amount=1250&amp;category=Groceries depuis n’importe quelle app ou raccourci (montant en unités mineures).</string>
+    <string name="webhooks">Webhooks</string>
+    <string name="webhooks_body">Envoyez chaque nouvelle opération à votre propre serveur en JSON signé. Utilisez uniquement une adresse que vous contrôlez.</string>
+    <string name="webhook_url">Adresse du webhook (https)</string>
+    <string name="https_only">Seules les adresses https sont autorisées</string>
+    <string name="signing_secret">Secret de signature (vérifiez l’en-tête X-Penny-Signature) :</string>
+    <string name="create_secret">Créer un secret</string>
+    <string name="new_secret">Nouveau secret</string>
+    <string name="copy">Copier</string>
+    <string name="send_now">Envoyer</string>
+    <plurals name="webhook_sent"><item quantity="one">%d opération envoyée</item><item quantity="many">%d opérations envoyées</item><item quantity="other">%d opérations envoyées</item></plurals>
+    <string name="ob_get_started">Commencer</string>
+    <string name="ob_sample">Découvrir avec des données d’exemple</string>
+    <string name="ob_point_safe">Un seul chiffre serein : ce que vous pouvez dépenser jusqu’à la paie</string>
+    <string name="ob_point_world">Toutes les devises, tous les cycles de paie, comme vous gérez vraiment votre argent</string>
+    <string name="ob_point_private">Privé par conception : sur votre téléphone, chiffré de bout en bout</string>
+    <string name="ob_point_free">Toutes les fonctions gratuites. Pas de pub, pas de crédit, pas de revente de données</string>
+    <string name="no_income_yet">Aucun revenu enregistré sur cette période pour l’instant</string>
+    <string name="spent_more_than_income">Les dépenses dépassent les revenus de cette période</string>
+    <string name="get_address">Obtenir mon adresse de transfert</string>
+    <string name="new_address">Nouvelle adresse</string>
+    <string name="turn_off">Désactiver</string>
+    <string name="email_forwarding_privacy">Transférez vos reçus de commandes, de trajets et de repas à cette adresse. Le serveur chiffre aussitôt chaque e-mail pour ce téléphone et le supprime dès que Penny l’a lu ici.</string>
+    <string name="community_merchants">Noms de commerçants de la communauté</string>
+    <string name="community_merchants_hint">Partagez anonymement les noms de bénéficiaires et les catégories, jamais les montants, avec les personnes de votre région, et recevez des noms nettoyés en retour. Désactivé par défaut.</string>
+</resources>

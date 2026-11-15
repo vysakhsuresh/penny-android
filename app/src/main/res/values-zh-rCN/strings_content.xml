@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="faq_q">
+        <item>Penny 真的免费吗？</item>
+        <item>Penny 会读取我的短信吗？</item>
+        <item>我的数据存储在哪里？</item>
+        <item>“可安心花费”是什么意思？</item>
+        <item>如何更改发薪周期？</item>
+        <item>我误删了内容，能找回来吗？</item>
+        <item>如何记录借给朋友的钱？</item>
+        <item>可以和伴侣共享预算吗？</item>
+        <item>如何从其他记账应用迁移过来？</item>
+        <item>为什么支付应用的交易没有显示？</item>
+        <item>如何在新手机上使用 Penny？</item>
+        <item>可以使用多种货币吗？</item>
+        <item>如何锁定应用？</item>
+        <item>如何删除我的所有数据？</item>
+    </string-array>
+    <string-array name="faq_a">
+        <item>是的。所有功能都免费。可选的 Penny Plus 只用于支付随用户增长的成本，例如银行连接费用和额外存储空间。没有广告，我们也从不出售数据。</item>
+        <item>不会。Penny 从不请求短信权限。它只能在你的手机上读取你允许的支付和银行应用的通知，你可以随时关闭。</item>
+        <item>加密存储在你的手机上。如果开启同步，数据会在离开手机之前加密，服务器保存的是它无法读取的数据。</item>
+        <item>指从现在到下个发薪周期，在不耽误账单和储蓄目标的情况下可以花的钱：收入，减去尚未支付的账单，减去预留的钱，再减去已经花掉的钱。</item>
+        <item>打开“设置”>“账本”>“发薪周期”。可以选择从任意一天开始的每月、每月两次、每周、每两周、每四周，或“钱到账时”。历史记录会重新归组，不会丢失任何内容。</item>
+        <item>可以。删除后立即点按“撤销”。之后可以打开“设置”>“回收站”：已删除的内容会保留 30 天。每次更改也都记录在“历史记录”中，你可以回到之前的版本。</item>
+        <item>打开“好友”标签页，点按“记录借款”。选择对象、金额，以及是借出还是收到。Penny 会持续记录余额，还可以帮你起草一条友好的提醒供你发送。</item>
+        <item>可以。开启同步后，打开“设置”>“共享空间”，创建一个空间，然后通过链接邀请伴侣。你们各自有自己的登录和角色，个人支出可以保持私密。</item>
+        <item>从旧应用或银行导出 CSV，然后打开“设置”>“数据与备份”>“导入”。Penny 能识别许多应用的文件，并在添加前显示包含重复项的预览。</item>
+        <item>请检查“设置”>“自动记录”：必须开启“读取付款通知”，并且在手机设置中允许 Penny 访问通知。Penny 只读取你所在地区列出的应用以及你自己添加的应用。</item>
+        <item>在旧手机上开启同步并记下恢复短语。在新手机上用同一个邮箱登录并输入短语。也可以从你的文件夹恢复备份文件。</item>
+        <item>可以。每个账户都有自己的货币。合计金额按交易日期的汇率换算为你的主货币，没有汇率的项目会如实显示，绝不猜测。</item>
+        <item>打开“设置”>“安全”>“应用锁”。设置 PIN 码，并允许使用指纹或面容解锁。你还可以禁止截屏，并选择应用多久后重新锁定。</item>
+        <item>打开“设置”>“数据与备份”>“删除此手机上的所有数据”。如果开启了同步，还要在“同步与银行”中删除同步账号。如果可能还需要某些内容，请先导出。</item>
+    </string-array>
+
+    <string-array name="guide_start">
+        <item>选择你的地区。它会设置你的货币、数字格式和常见发薪周期。之后都可以更改。</item>
+        <item>告诉 Penny 钱什么时候到账。预算跟随你实际的发薪周期，而不是日历月份。</item>
+        <item>输入你现在的现金。银行、钱包和卡片可以稍后在“账户”中添加。</item>
+        <item>点按加号按钮添加一笔支出：输入金额，选择分类，保存。大约只需三秒。</item>
+        <item>首页只显示一个数字：到下个发薪日为止可安心花费的钱。</item>
+    </string-array>
+    <string-array name="guide_safe">
+        <item>可安心花费从本周期的收入算起，包括你预计会收到但尚未到账的工资。</item>
+        <item>减去本周期仍需支付的账单，以及为目标预留的钱。</item>
+        <item>再减去你已经花掉的钱。自己账户之间的转账从不计入。</item>
+        <item>“每天”是将剩余金额除以本周期剩余的天数。</item>
+        <item>如果支出快于日历进度，首页会显示一条温和的琥珀色提示。Penny 从不对你的钱使用红色。</item>
+    </string-array>
+    <string-array name="guide_budget">
+        <item>信封是每个周期为生活中某一部分（例如餐饮或交通）安排的金额。</item>
+        <item>打开“预算”并点按“使用模板”，或逐个添加信封。</item>
+        <item>选择结余如何处理：重新开始、结转，或结转至上限。</item>
+        <item>如果某个信封超支，点按“调拨”从还有余额的信封转钱过来。此操作会被记录，并且可以撤销。</item>
+        <item>希望每一笔钱都有用途？在账本设置中开启零基预算。</item>
+    </string-array>
+    <string-array name="guide_cycle">
+        <item>很多人按月领薪，但不一定在 1 号；也有人每两周、每月两次，或在工作结算时领薪。</item>
+        <item>打开“设置”>“账本”>“发薪周期”，选择与你的薪资相符的周期。</item>
+        <item>“钱到账时”会在每次收到超过阈值的收入时开始新周期，适合零工收入和海外家人汇来的钱。</item>
+        <item>更改周期会重新归组历史记录，并且可以撤销。</item>
+    </string-array>
+    <string-array name="guide_capture">
+        <item>在“设置”>“自动记录”中开启付款通知。Penny 只在你的手机上读取支付和银行应用。</item>
+        <item>可以从任何应用将消息、收据或对账单分享给 Penny。</item>
+        <item>用相机扫描收据；Penny 会在手机上识别。</item>
+        <item>用语音说出一笔交易，例如“昨天买菜 250”。</item>
+        <item>自动记录的项目会在“待确认”中等待。同一应用连续十笔未经修改后，Penny 会提议自动添加。</item>
+    </string-array>
+    <string-array name="guide_people">
+        <item>在“好友”标签页记录你借出或借入的钱。Penny 使用中性的说法：应收和应付。</item>
+        <item>可以部分还款；每次还款添加一条记录即可。</item>
+        <item>群组可以平均分摊共同费用，也可以按确切金额、百分比、份额或逐项分摊。</item>
+        <item>“简化债务”会找出让所有人结清所需的最少付款次数。</item>
+        <item>共享空间让一家人一起管理预算，每人都有自己的登录和角色。</item>
+    </string-array>
+    <string-array name="guide_bills">
+        <item>每张账单只需添加一次，并设置重复频率。Penny 会在可安心花费中为它做好预留。</item>
+        <item>账单付清后标记为已付，系统会为你创建交易。也可以让 Penny 自动添加。</item>
+        <item>可以只跳过或更改某一次而不影响其他次，也可以更改“本次及以后”。</item>
+        <item>订阅会显示年度费用和涨价时间，并附有起草好的取消消息。</item>
+        <item>分期付款（EMI）会显示完整还款计划，以及提前还款可节省多少利息。</item>
+    </string-array>
+    <string-array name="guide_goals">
+        <item>目标有目标金额，也可以设置日期。Penny 会显示每个周期需要预留多少。</item>
+        <item>存钱时存入，需要时取出。</item>
+        <item>设置每个周期的自动金额，让它计入可安心花费。</item>
+        <item>应急基金会根据你实际的必要支出建议一个目标金额。</item>
+    </string-array>
+    <string-array name="guide_import">
+        <item>从银行或之前的应用导出 CSV。</item>
+        <item>打开“设置”>“数据与备份”>“从文件导入”。</item>
+        <item>Penny 能自动识别许多应用；对于银行文件，请检查各列。</item>
+        <item>查看预览。可能重复的项目会被跳过，除非你另行指定。</item>
+        <item>点按“导入”。整次导入可以一键撤销。</item>
+    </string-array>
+    <string-array name="guide_undo">
+        <item>Penny 中的每次更改都可以在几秒内用“撤销”按钮撤回。</item>
+        <item>已删除的内容会在回收站中保留 30 天。</item>
+        <item>每笔交易、每个账户和信封都有“历史记录”，记录每次更改、更改人和时间。</item>
+        <item>点按“还原到此版本”即可回退。回退本身也可以撤销。</item>
+    </string-array>
+    <string-array name="guide_privacy">
+        <item>你的数据保存在手机上的加密数据库中。</item>
+        <item>同步会在发送前在手机上加密；服务器无法读取你的财务数据。</item>
+        <item>Penny 不显示广告，不提供贷款，也不出售数据。</item>
+        <item>可选的匿名计数有助于改进应用，绝不包含金额、收款方或备注。</item>
+    </string-array>
+    <string-array name="guide_sync">
+        <item>在“设置”>“同步与银行”中用你的邮箱开启同步。</item>
+        <item>记下 24 个单词的恢复短语。它可以在新手机上打开你的数据，并恢复加密备份。</item>
+        <item>在新手机上用同一个邮箱登录并输入短语。</item>
+        <item>在“数据与备份”中选择备份文件夹，即可自动生成由你掌控的加密备份。</item>
+    </string-array>
+
+    <string-array name="about_story">
+        <item>Penny 源于一个简单的问题：今天我能花多少钱，而不用担心下周？</item>
+        <item>大多数记账应用用过去的图表或贷款推荐来回答。我们想要的是一个让人安心的数字，基于你真实的发薪周期、真实的账单和你身边的人。</item>
+        <item>Penny 为全世界而打造：任何货币、任何发薪周期，贴合人们真实的用钱方式，从互助储蓄会到给家里汇款。</item>
+        <item>所有功能都免费。我们不靠广告、贷款或你的数据赚钱，以后也不会。如果 Penny 对你有帮助，一笔小费或一条好评就能让它继续下去。</item>
+    </string-array>
+    <string-array name="trust_never">
+        <item>我们从不显示广告。</item>
+        <item>我们从不推荐贷款、信用卡或其他金融产品。</item>
+        <item>我们从不出售或分享你的数据。</item>
+        <item>我们从不读取你的短信。</item>
+        <item>同步时我们从不查看你的财务数据：它在你的手机上就已加密。</item>
+        <item>我们从不把功能放在付费墙后面。Plus 只覆盖每位用户的实际成本。</item>
+        <item>我们从不用红色来指责你的支出。</item>
+    </string-array>
+    <string-array name="changelog">
+        <item>v1.0.0</item>
+        <item>适用于任何发薪周期的信封预算、结转、目标金额和年度视图。</item>
+        <item>目标、账单、订阅、分期付款（EMI）和还债规划。</item>
+        <item>借款、群组分账、给家里汇款和互助储蓄会。</item>
+        <item>从付款通知、分享、收据和语音自动记录，附带待确认队列和会学习的规则。</item>
+        <item>包含图表、预测、净资产和设备端教练的分析。</item>
+        <item>端到端加密同步、共享空间、加密备份、应用锁。</item>
+        <item>v0.1.0</item>
+        <item>第一个版本：可安心花费，支持撤销和历史记录的交易。</item>
+    </string-array>
+    <string-array name="licences">
+        <item>Plus Jakarta Sans — SIL Open Font License 1.1，The Plus Jakarta Sans Project Authors。</item>
+        <item>AndroidX 和 Jetpack Compose — Apache License 2.0，The Android Open Source Project。</item>
+        <item>Kotlin 和 kotlinx 库 — Apache License 2.0，JetBrains。</item>
+        <item>Dagger 和 Hilt — Apache License 2.0，Google。</item>
+        <item>Room — Apache License 2.0，Google。</item>
+        <item>SQLCipher for Android — BSD 风格许可，Zetetic LLC。</item>
+        <item>Tink — Apache License 2.0，Google。</item>
+        <item>OkHttp — Apache License 2.0，Square。</item>
+        <item>ML Kit Text Recognition — ML Kit 服务条款，Google。</item>
+        <item>Material 图标 — Apache License 2.0，Google。</item>
+    </string-array>
+</resources>

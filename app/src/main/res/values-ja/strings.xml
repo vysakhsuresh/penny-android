@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tagline">安心して使えるお金がわかります。</string>
+
+    <!-- Common -->
+    <string name="save">保存</string>
+    <string name="cancel">キャンセル</string>
+    <string name="delete">削除</string>
+    <string name="undo">元に戻す</string>
+    <string name="restore">復元</string>
+    <string name="retry">再試行</string>
+    <string name="back">戻る</string>
+    <string name="next">次へ</string>
+    <string name="skip">スキップ</string>
+    <string name="done">完了</string>
+    <string name="none">なし</string>
+    <string name="loading">読み込み中</string>
+    <string name="error_generic">データの読み込み中に問題が発生しました。データは失われていません。</string>
+
+    <!-- Onboarding (OB-01) -->
+    <string name="ob_step">ステップ %1$d / %2$d</string>
+    <string name="ob_region_title">お住まいの地域は？</string>
+    <string name="ob_region_body">通貨、数値の表記、一般的な給与サイクルが設定されます。すべて後から変更できます。</string>
+    <string name="ob_cycle_title">収入はいつ入りますか？</string>
+    <string name="ob_cycle_body">予算は実際の給与サイクルに合わせて動きます。</string>
+    <string name="ob_account_title">今、現金はいくらありますか？</string>
+    <string name="ob_account_body">まずは現金口座を1つ作成します。銀行やカードは後から追加できます。</string>
+    <string name="ob_cash_name">現金</string>
+    <string name="ob_finish">%1$s を使い始める</string>
+
+    <!-- Cycles -->
+    <string name="cycle_monthly">毎月 %1$d 日から</string>
+    <string name="cycle_monthly_last">毎月 月末から</string>
+    <string name="cycle_semimonthly">月2回（%1$d 日と月末）</string>
+    <string name="cycle_weekly">毎週</string>
+    <string name="cycle_biweekly">2週間ごと</string>
+    <string name="cycle_fourweekly">4週間ごと</string>
+    <string name="cycle_quarterly">四半期ごと</string>
+    <string name="cycle_yearly">毎年</string>
+    <string name="cycle_onincome">入金があったとき</string>
+    <string name="cycle_default_suffix">%1$s（この地域で一般的）</string>
+    <string name="cycle_start_day">月の開始日</string>
+
+    <!-- Home -->
+    <string name="safe_to_spend">使えるお金</string>
+    <string name="per_day">1日あたり %1$s</string>
+    <string name="on_pace">順調です</string>
+    <string name="ahead_of_pace">支出が日数より早いペースです</string>
+    <string name="period_range">%1$s～%2$s</string>
+    <string name="prev_period">前の期間</string>
+    <string name="next_period">次の期間</string>
+    <string name="this_period">今の期間に戻る</string>
+    <string name="income_spent">収入 %1$s・支出 %2$s</string>
+    <string name="accounts">口座</string>
+    <string name="transactions">取引</string>
+    <string name="empty_period_title">この期間の記録はまだありません</string>
+    <string name="empty_period_body">「追加」をタップして最初の取引を記録しましょう。</string>
+    <string name="add_transaction">取引を追加</string>
+    <string name="trash">ゴミ箱</string>
+    <string name="settings">設定</string>
+    <string name="today">今日</string>
+    <string name="yesterday">昨日</string>
+    <string name="deleted_tx">取引を削除しました</string>
+    <string name="saved_tx">取引を保存しました</string>
+    <string name="uncategorised">未分類</string>
+    <string name="transfer_to">%1$s へ</string>
+    <string name="swipe_delete_hint">左にスワイプして削除</string>
+
+    <!-- Transaction form (TX-02) -->
+    <string name="new_transaction">新しい取引</string>
+    <string name="edit_transaction">取引を編集</string>
+    <string name="type_expense">支出</string>
+    <string name="type_income">収入</string>
+    <string name="type_transfer">振替</string>
+    <string name="type_refund">返金</string>
+    <string name="type_adjustment">調整</string>
+    <string name="type_opening">開始残高</string>
+    <string name="field_type">種類</string>
+    <string name="field_amount">金額</string>
+    <string name="field_amount_hint">＋ − × ÷ で計算できます</string>
+    <string name="amount_result">= %1$s</string>
+    <string name="amount_rounded">= %1$s（端数処理済み）</string>
+    <string name="field_currency">通貨</string>
+    <string name="field_account">口座</string>
+    <string name="field_to_account">振替先口座</string>
+    <string name="field_to_amount">受取額</string>
+    <string name="field_category">カテゴリ</string>
+    <string name="field_payee">支払先</string>
+    <string name="field_date">日付</string>
+    <string name="field_time">時刻</string>
+    <string name="field_no_time">時刻なし</string>
+    <string name="field_note">メモ</string>
+    <string name="field_tags">タグ</string>
+    <string name="field_tags_hint">カンマで区切ります</string>
+    <string name="field_status">状態</string>
+    <string name="status_pending">保留中</string>
+    <string name="status_cleared">確定済み</string>
+    <string name="status_reconciled">照合済み</string>
+    <string name="field_direction">方向</string>
+    <string name="direction_in">残高に加算</string>
+    <string name="direction_out">残高から減算</string>
+    <string name="field_private">非公開</string>
+    <string name="field_private_body">共有スペースの他のメンバーに支払先、メモ、添付ファイルを表示しません</string>
+    <string name="field_exclude_budget">予算に含めない</string>
+    <string name="field_exclude_reports">レポートに含めない</string>
+    <string name="field_splits">分割</string>
+    <string name="field_attachments">添付ファイル</string>
+    <string name="future_scheduled">未来の日付です。予定として扱われます。</string>
+    <string name="history">履歴</string>
+    <string name="pick_date">日付を選択</string>
+    <string name="pick_time">時刻を選択</string>
+    <string name="clear_time">時刻をクリア</string>
+
+    <!-- Validation (TX-08) -->
+    <string name="err_amount_empty">金額を入力してください</string>
+    <string name="err_amount_invalid">有効な金額ではありません</string>
+    <string name="err_amount_positive">金額は0より大きくしてください。収入か支出かは種類で決まります。</string>
+    <string name="err_amount_decimals_none">%1$s には小数がありません</string>
+    <string name="err_amount_decimals">%1$s は小数点以下 %2$d 桁までです</string>
+    <string name="err_amount_large">金額が大きすぎます</string>
+    <string name="err_divide_zero">0で割ることはできません</string>
+    <string name="err_account_required">口座を選択してください</string>
+    <string name="err_transfer_target">振替先の口座を選択してください</string>
+    <string name="err_transfer_same">別の振替先口座を選択してください</string>
+    <string name="err_transfer_to_amount">相手通貨での受取額を入力してください</string>
+    <string name="err_direction">加算か減算かを選択してください</string>
+    <string name="err_splits">分割の合計を総額と一致させてください</string>
+    <string name="tx_not_found">この取引はもう存在しません。</string>
+
+    <!-- History (TX-05) -->
+    <string name="history_title">履歴</string>
+    <string name="history_created">作成</string>
+    <string name="history_edited">編集</string>
+    <string name="history_deleted">削除</string>
+    <string name="history_restored">復元</string>
+    <string name="history_undo">取り消し</string>
+    <string name="history_reverted">バージョン %1$d に戻しました</string>
+    <string name="history_version">バージョン %1$d</string>
+    <string name="history_by">%1$s・%2$s</string>
+    <string name="history_you">あなた</string>
+    <string name="history_revert">このバージョンに戻す</string>
+    <string name="history_change">%1$s：%2$s → %3$s</string>
+    <string name="history_set">%1$s：%2$s</string>
+    <string name="history_empty">変更の記録はまだありません。</string>
+    <string name="reverted">元に戻しました</string>
+
+    <!-- Trash (TX-03, HS-02) -->
+    <string name="trash_title">ゴミ箱</string>
+    <string name="trash_body">削除した取引は30日間ここに保管されます。</string>
+    <string name="trash_empty">ゴミ箱は空です</string>
+    <string name="delete_forever">完全に削除</string>
+    <string name="restored">復元しました</string>
+    <string name="deleted_forever">完全に削除しました</string>
+
+    <!-- Settings -->
+    <string name="settings_region">地域</string>
+    <string name="settings_region_body">通貨、数値の表記、給与サイクルは地域に従います。既存の取引は元の通貨のままです。</string>
+    <string name="settings_sample">例：%1$s</string>
+    <string name="region_changed">地域を %1$s に変更しました</string>
+    <string name="settings_cycle">給与サイクル</string>
+    <string name="settings_about">%1$s は無料です。広告、ローン、データ販売はありません。</string>
+
+    <plurals name="days_left">
+        <item quantity="other">残り %d 日</item>
+    </plurals>
+    <plurals name="unconverted">
+        <item quantity="other">他の通貨の取引 %d 件はまだ集計に含まれていません</item>
+    </plurals>
+    <plurals name="trash_count">
+        <item quantity="other">%d 件</item>
+    </plurals>
+</resources>

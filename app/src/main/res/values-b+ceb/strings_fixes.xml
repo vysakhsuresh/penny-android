@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_failed">Wala kini ma-save. Walay nausab, palihug sulayi pag-usab.</string>
+    <string name="no_app_for_action">Walay app niining phone nga makaabri ana.</string>
+    <string name="import_read_failed">Dili mabasa kana nga file. Susiha kung bank export ba kini (CSV, OFX, QIF, CAMT o MT940).</string>
+    <string name="template_default_name">Template</string>
+    <string name="item_default_name">Butang</string>
+</resources>

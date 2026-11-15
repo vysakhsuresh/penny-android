@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tagline">清楚知道哪些錢可以安心花用。</string>
+
+    <!-- Common -->
+    <string name="save">儲存</string>
+    <string name="cancel">取消</string>
+    <string name="delete">刪除</string>
+    <string name="undo">復原</string>
+    <string name="restore">還原</string>
+    <string name="retry">重試</string>
+    <string name="back">返回</string>
+    <string name="next">下一步</string>
+    <string name="skip">略過</string>
+    <string name="done">完成</string>
+    <string name="none">無</string>
+    <string name="loading">載入中</string>
+    <string name="error_generic">讀取資料時發生問題。沒有遺失任何資料。</string>
+
+    <!-- Onboarding (OB-01) -->
+    <string name="ob_step">第 %1$d 步，共 %2$d 步</string>
+    <string name="ob_region_title">你住在哪裡？</string>
+    <string name="ob_region_body">這會設定你的貨幣、數字格式和常見發薪週期。之後都可以變更。</string>
+    <string name="ob_cycle_title">錢什麼時候入帳？</string>
+    <string name="ob_cycle_body">預算會依照你實際的發薪週期。</string>
+    <string name="ob_account_title">你現在有多少現金？</string>
+    <string name="ob_account_body">我們先從一個現金帳戶開始。銀行和卡片可以稍後新增。</string>
+    <string name="ob_cash_name">現金</string>
+    <string name="ob_finish">開始使用 %1$s</string>
+
+    <!-- Cycles -->
+    <string name="cycle_monthly">每月，從 %1$d 日起</string>
+    <string name="cycle_monthly_last">每月，從最後一天起</string>
+    <string name="cycle_semimonthly">每月兩次，%1$d 日和最後一天</string>
+    <string name="cycle_weekly">每週</string>
+    <string name="cycle_biweekly">每兩週</string>
+    <string name="cycle_fourweekly">每四週</string>
+    <string name="cycle_quarterly">每季</string>
+    <string name="cycle_yearly">每年</string>
+    <string name="cycle_onincome">錢入帳時</string>
+    <string name="cycle_default_suffix">%1$s（本地常見）</string>
+    <string name="cycle_start_day">每月起始日</string>
+
+    <!-- Home -->
+    <string name="safe_to_spend">可安心花用</string>
+    <string name="per_day">每天 %1$s</string>
+    <string name="on_pace">進度正常</string>
+    <string name="ahead_of_pace">支出快於日曆進度</string>
+    <string name="period_range">%1$s – %2$s</string>
+    <string name="prev_period">上一個週期</string>
+    <string name="next_period">下一個週期</string>
+    <string name="this_period">回到本週期</string>
+    <string name="income_spent">收入 %1$s · 支出 %2$s</string>
+    <string name="accounts">帳戶</string>
+    <string name="transactions">交易</string>
+    <string name="empty_period_title">本週期還沒有紀錄</string>
+    <string name="empty_period_body">輕觸「新增」記錄第一筆交易。</string>
+    <string name="add_transaction">新增交易</string>
+    <string name="trash">垃圾桶</string>
+    <string name="settings">設定</string>
+    <string name="today">今天</string>
+    <string name="yesterday">昨天</string>
+    <string name="deleted_tx">已刪除交易</string>
+    <string name="saved_tx">已儲存交易</string>
+    <string name="uncategorised">未分類</string>
+    <string name="transfer_to">轉至 %1$s</string>
+    <string name="swipe_delete_hint">向左滑動即可刪除</string>
+
+    <!-- Transaction form (TX-02) -->
+    <string name="new_transaction">新交易</string>
+    <string name="edit_transaction">編輯交易</string>
+    <string name="type_expense">支出</string>
+    <string name="type_income">收入</string>
+    <string name="type_transfer">轉帳</string>
+    <string name="type_refund">退款</string>
+    <string name="type_adjustment">調整</string>
+    <string name="type_opening">期初餘額</string>
+    <string name="field_type">類型</string>
+    <string name="field_amount">金額</string>
+    <string name="field_amount_hint">可用 + − × ÷ 計算</string>
+    <string name="amount_result">= %1$s</string>
+    <string name="amount_rounded">= %1$s（已四捨五入）</string>
+    <string name="field_currency">貨幣</string>
+    <string name="field_account">帳戶</string>
+    <string name="field_to_account">轉入帳戶</string>
+    <string name="field_to_amount">入帳金額</string>
+    <string name="field_category">類別</string>
+    <string name="field_payee">收款方</string>
+    <string name="field_date">日期</string>
+    <string name="field_time">時間</string>
+    <string name="field_no_time">無時間</string>
+    <string name="field_note">備註</string>
+    <string name="field_tags">標籤</string>
+    <string name="field_tags_hint">以逗號分隔</string>
+    <string name="field_status">狀態</string>
+    <string name="status_pending">待處理</string>
+    <string name="status_cleared">已入帳</string>
+    <string name="status_reconciled">已對帳</string>
+    <string name="field_direction">方向</string>
+    <string name="direction_in">增加餘額</string>
+    <string name="direction_out">減少餘額</string>
+    <string name="field_private">私密</string>
+    <string name="field_private_body">在共用空間中對其他人隱藏收款方、備註和附件</string>
+    <string name="field_exclude_budget">不計入預算</string>
+    <string name="field_exclude_reports">不計入報表</string>
+    <string name="field_splits">拆分</string>
+    <string name="field_attachments">附件</string>
+    <string name="future_scheduled">未來日期：將視為排定交易。</string>
+    <string name="history">歷程記錄</string>
+    <string name="pick_date">選擇日期</string>
+    <string name="pick_time">選擇時間</string>
+    <string name="clear_time">清除時間</string>
+
+    <!-- Validation (TX-08) -->
+    <string name="err_amount_empty">請輸入金額</string>
+    <string name="err_amount_invalid">金額無效</string>
+    <string name="err_amount_positive">金額必須大於零。收入或支出由類型決定。</string>
+    <string name="err_amount_decimals_none">%1$s 沒有小數</string>
+    <string name="err_amount_decimals">%1$s 最多 %2$d 位小數</string>
+    <string name="err_amount_large">金額過大</string>
+    <string name="err_divide_zero">無法除以零</string>
+    <string name="err_account_required">請選擇帳戶</string>
+    <string name="err_transfer_target">請選擇轉入帳戶</string>
+    <string name="err_transfer_same">請選擇另一個轉入帳戶</string>
+    <string name="err_transfer_to_amount">請輸入以另一種貨幣入帳的金額</string>
+    <string name="err_direction">請選擇增加或減少</string>
+    <string name="err_splits">拆分金額總和必須等於總額</string>
+    <string name="tx_not_found">這筆交易已不存在。</string>
+
+    <!-- History (TX-05) -->
+    <string name="history_title">歷程記錄</string>
+    <string name="history_created">已建立</string>
+    <string name="history_edited">已編輯</string>
+    <string name="history_deleted">已刪除</string>
+    <string name="history_restored">已還原</string>
+    <string name="history_undo">已復原</string>
+    <string name="history_reverted">已回復到版本 %1$d</string>
+    <string name="history_version">版本 %1$d</string>
+    <string name="history_by">%1$s · %2$s</string>
+    <string name="history_you">你</string>
+    <string name="history_revert">回復到此版本</string>
+    <string name="history_change">%1$s：%2$s → %3$s</string>
+    <string name="history_set">%1$s：%2$s</string>
+    <string name="history_empty">尚無變更紀錄。</string>
+    <string name="reverted">已回復</string>
+
+    <!-- Trash (TX-03, HS-02) -->
+    <string name="trash_title">垃圾桶</string>
+    <string name="trash_body">已刪除的交易會在這裡保留 30 天。</string>
+    <string name="trash_empty">垃圾桶是空的</string>
+    <string name="delete_forever">永久刪除</string>
+    <string name="restored">已還原</string>
+    <string name="deleted_forever">已永久刪除</string>
+
+    <!-- Settings -->
+    <string name="settings_region">地區</string>
+    <string name="settings_region_body">貨幣、數字格式和發薪週期會依照地區設定。現有交易保留原本的貨幣。</string>
+    <string name="settings_sample">範例：%1$s</string>
+    <string name="region_changed">地區已變更為 %1$s</string>
+    <string name="settings_cycle">發薪週期</string>
+    <string name="settings_about">%1$s 免費使用。沒有廣告、沒有貸款，也不販售資料。</string>
+
+    <plurals name="days_left">
+        <item quantity="other">剩下 %d 天</item>
+    </plurals>
+    <plurals name="unconverted">
+        <item quantity="other">%d 筆其他貨幣的交易尚未計入</item>
+    </plurals>
+    <plurals name="trash_count">
+        <item quantity="other">%d 個項目</item>
+    </plurals>
+</resources>

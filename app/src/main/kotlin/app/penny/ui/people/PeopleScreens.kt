@@ -1,5 +1,7 @@
 package app.penny.ui.people
 
+import app.penny.domain.ops.deleteLending
+import app.penny.ui.common.safeStart
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
@@ -190,7 +192,7 @@ fun PersonScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onEnt
                             OutlinedButton(onClick = {
                                 // PE-02: a reminder the user sends themselves; no automatic messages.
                                 val text = context.getString(if (v > 0) R.string.reminder_receive else R.string.reminder_give, p.value.name, ctx.money(kotlin.math.abs(v), cur))
-                                context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, text), null))
+                                context.safeStart(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, text), null))
                             }) { Text(stringResource(R.string.draft_reminder)) }
                         }
                     }
@@ -299,7 +301,7 @@ fun LendingEditScreen(id: String, personArg: String?, onBack: () -> Unit) {
                         g
                     }
                 }, Modifier.padding(horizontal = 16.dp))
-                if (existing != null) TextButton(onClick = { vm.act(R.string.deleted, after = onBack) { lending.delete(id) } }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.delete)) }
+                if (existing != null) TextButton(onClick = { vm.act(R.string.deleted, after = onBack) { deleteLending(it, id) } }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.delete)) }
             }
         }
     }

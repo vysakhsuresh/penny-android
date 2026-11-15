@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exchange_rates">Tassi di cambio</string>
+    <string name="rates_body">Penny converte con il tasso della data di ogni movimento. I tassi di riferimento si scaricano via Wi-Fi e restano sul telefono; i tuoi tassi hanno sempre la precedenza.</string>
+    <string name="rates_updated">Tassi di riferimento fino al %1$s</string>
+    <string name="rates_never">Nessun tasso di riferimento scaricato</string>
+    <string name="rates_refreshed">Tassi aggiornati</string>
+    <string name="rates_offline">Impossibile raggiungere la fonte dei tassi. Riprova con il Wi-Fi.</string>
+    <string name="refresh_now">Aggiorna ora</string>
+    <string name="add_manual_rate">Aggiungi un mio tasso</string>
+    <string name="your_currencies">Le tue valute oggi</string>
+    <string name="no_rate">Nessun tasso</string>
+    <string name="manual_rates">I tuoi tassi</string>
+    <string name="no_manual_rates">Ancora nessuno. Aggiungine uno se la tua banca o il cambiavalute ti ha dato un tasso diverso.</string>
+    <string name="rate_in_x">Valore di un’unità in %1$s</string>
+    <string name="record_value">Registra valore</string>
+    <string name="record_value_body">Quanto vale oggi? Lo storico dei valori alimenta il patrimonio netto.</string>
+    <string name="value_recorded">Valore registrato</string>
+    <string name="valuations">Valutazioni</string>
+    <string name="share_group_link">Condividi una vista per chi non ha l’app</string>
+    <string name="group_link_text">Saldi di «%1$s» (sola lettura, scade tra 30 giorni): %2$s</string>
+    <string name="usage_counts">Condividi conteggi d’uso anonimi</string>
+    <string name="usage_counts_hint">Solo quanto spesso usi le funzioni, mai importi, beneficiari, note o ciò che scrivi. Disattivato per impostazione predefinita.</string>
+    <string name="usage_counts_none">Ancora nessun conteggio.</string>
+    <string name="consent_until">consenso fino al %1$s</string>
+    <string name="reconsent">Rinnova consenso</string>
+    <string name="disconnect">Disconnetti</string>
+    <string name="disconnected">Disconnesso. Il collegamento alla banca e l’accesso salvato sono stati eliminati; ora i conti sono manuali.</string>
+    <string name="bank_needs_sync">Attiva la sincronizzazione qui sopra per collegare una banca.</string>
+    <string name="connect_with_token">Collega con un token di configurazione</string>
+    <string name="connect_in_browser">Collega sulla pagina sicura del fornitore</string>
+    <string name="simplefin_help">Crea un token di configurazione nel tuo account SimpleFIN Bridge e incollalo qui. Il server di Penny lo scambia con l’accesso; il token non viene mai salvato su questo telefono.</string>
+    <string name="setup_token">Token di configurazione</string>
+    <string name="connect">Collega</string>
+    <string name="bank_connected">Banca collegata. I movimenti arrivano alla prossima sincronizzazione.</string>
+    <string name="bank_cancelled">Collegamento annullato. Non è stato collegato nulla.</string>
+    <plurals name="bank_synced"><item quantity="one">%d movimento aggiunto o aggiornato</item><item quantity="other">%d movimenti aggiunti o aggiornati</item></plurals>
+    <string name="automation">Automazione</string>
+    <string name="automation_sub">Tasker, scorciatoie e webhook</string>
+    <string name="automation_body">Collega Penny alle app di automazione e ai tuoi servizi. Tutto resta su questo telefono a meno che tu non imposti un indirizzo webhook.</string>
+    <string name="automation_apps">App di automazione</string>
+    <string name="allow_automation_apps">Consenti alle app di automazione di aggiungere movimenti</string>
+    <string name="allow_automation_hint">Tasker, Automate e app simili possono aggiungere movimenti con un intent. Non possono mai leggere i tuoi dati.</string>
+    <string name="deep_link_example">Oppure apri penny://add?amount=1250&amp;category=Groceries da qualsiasi app o scorciatoia (importo in unità minori).</string>
+    <string name="webhooks">Webhook</string>
+    <string name="webhooks_body">Invia ogni nuovo movimento al tuo server come JSON firmato. Usa solo un indirizzo che controlli tu.</string>
+    <string name="webhook_url">Indirizzo webhook (https)</string>
+    <string name="https_only">Sono ammessi solo indirizzi https</string>
+    <string name="signing_secret">Segreto di firma (verifica l’intestazione X-Penny-Signature):</string>
+    <string name="create_secret">Crea segreto</string>
+    <string name="new_secret">Nuovo segreto</string>
+    <string name="copy">Copia</string>
+    <string name="send_now">Invia ora</string>
+    <plurals name="webhook_sent"><item quantity="one">%d movimento inviato</item><item quantity="other">%d movimenti inviati</item></plurals>
+    <string name="ob_get_started">Inizia</string>
+    <string name="ob_sample">Esplora con dati di esempio</string>
+    <string name="ob_point_safe">Un solo numero, con calma: quanto puoi spendere fino allo stipendio</string>
+    <string name="ob_point_world">Qualsiasi valuta, qualsiasi ciclo di paga, come gestisci davvero i soldi</string>
+    <string name="ob_point_private">Privata per progettazione: sul tuo telefono, con crittografia end-to-end</string>
+    <string name="ob_point_free">Ogni funzione gratis. Niente pubblicità, prestiti o vendita di dati</string>
+    <string name="no_income_yet">Nessuna entrata registrata in questo periodo</string>
+    <string name="spent_more_than_income">Le spese superano le entrate di questo periodo</string>
+    <string name="get_address">Ottieni il mio indirizzo di inoltro</string>
+    <string name="new_address">Nuovo indirizzo</string>
+    <string name="turn_off">Disattiva</string>
+    <string name="email_forwarding_privacy">Inoltra a questo indirizzo le ricevute di ordini, corse e cibo a domicilio. Il server cifra subito ogni email per questo telefono e la elimina appena Penny l’ha letta qui.</string>
+    <string name="community_merchants">Nomi esercenti della community</string>
+    <string name="community_merchants_hint">Condividi in forma anonima nomi di esercenti e categorie, mai importi, con chi vive nella tua regione, e ricevi nomi puliti. Disattivato per impostazione predefinita.</string>
+</resources>

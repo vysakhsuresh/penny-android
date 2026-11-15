@@ -8,7 +8,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.retryWhen
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -28,14 +28,18 @@ sealed interface BookLoad {
 class BookStore @Inject constructor(private val repo: PennyRepository) {
     val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
+    // Errors are caught per emission (decode/format) and the upstream is retried, so one bad snapshot never leaves the
+    // whole session stuck on the error screen; the next change or profile switch recovers.
     val state: StateFlow<BookLoad> = repo.observeBook().map { b ->
-        if (b == null) {
-            if (repo.currentProfileId.value == null) BookLoad.NoProfile else BookLoad.Loading
-        } else {
-            val pack = repo.packs.get(b.profile.regionPack)
-            BookLoad.Ready(b, pack, MoneyFmt.of(b.profile, pack))
-        }
-    }.catch { emit(BookLoad.Failed(it)) }
+        runCatching {
+            if (b == null) {
+                if (repo.currentProfileId.value == null) BookLoad.NoProfile else BookLoad.Loading
+            } else {
+                val pack = repo.packs.get(b.profile.regionPack)
+                BookLoad.Ready(b, pack, MoneyFmt.of(b.profile, pack))
+            }
+        }.getOrElse { BookLoad.Failed(it) }
+    }.retryWhen { cause, attempt -> emit(BookLoad.Failed(cause)); kotlinx.coroutines.delay(minOf(30_000L, 1_000L shl attempt.toInt().coerceAtMost(5))); true }
         .flowOn(Dispatchers.Default)
         .stateIn(scope, SharingStarted.Eagerly, BookLoad.Loading)
 

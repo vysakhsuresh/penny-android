@@ -44,7 +44,8 @@ suspend fun PennyRepository.importJson(json: String): Pair<String, Int> {
     val exp = PennyJson.decodeFromString(FullExport.serializer(), json)
     require(exp.app == Brand.EXPORT_APP_ID) { "Not a ${Brand.NAME} export" }
     require(exp.schema <= FullExport.SCHEMA) { "Export is from a newer version" }
-    val n = store.ingest(exp.events).size
+    // Own data: stored as local so it is pushed when sync is on (a restored phone must not keep it to itself).
+    val n = store.ingest(exp.events, remote = false).size
     return exp.profileId to n
 }
 

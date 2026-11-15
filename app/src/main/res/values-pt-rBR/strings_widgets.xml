@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">Livre para gastar num relance</string>
+    <string name="widget_quick_desc">Adicione uma transação ou use um modelo com um toque</string>
+    <string name="widget_envelopes_desc">Envelopes e próximas contas a pagar</string>
+    <string name="widget_safe_label">Livre para gastar</string>
+    <string name="widget_quick_label">Adição rápida</string>
+    <string name="widget_envelopes_label">Orçamentos</string>
+    <string name="shortcut_add">Adicionar</string>
+    <string name="tile_label">Adicionar ao Penny</string>
+</resources>

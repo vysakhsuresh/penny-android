@@ -1,5 +1,9 @@
 package app.penny.ui.people
 
+import app.penny.domain.ops.deleteCircleContribution
+import app.penny.domain.ops.deleteRemittance
+import app.penny.domain.ops.deleteGroupExpense
+import app.penny.ui.common.safeStart
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -118,7 +122,7 @@ fun GroupScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onExpe
                     val rows = listOf(listOf("date", "description", "payer", "amount", "currency", "split", "disputed")) + expenses.map { e ->
                         listOf(e.value.date.toString(), e.value.description, memberName(ctx, e.value.payerId, me), BigDecimal.valueOf(e.value.amountMinor, CurrencyUnit.of(e.value.currency).minorUnits).toPlainString(), e.value.currency, e.value.mode.name.lowercase(), e.value.disputed.toString())
                     }
-                    context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/csv").putExtra(Intent.EXTRA_TEXT, Csv.write(rows)).putExtra(Intent.EXTRA_SUBJECT, g.value.name), null))
+                    context.safeStart(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/csv").putExtra(Intent.EXTRA_TEXT, Csv.write(rows)).putExtra(Intent.EXTRA_SUBJECT, g.value.name), null))
                 }) { Icon(Icons.Outlined.IosShare, stringResource(R.string.export)) }
                 IconButton(onClick = { onEdit(id) }) { Icon(Icons.Outlined.Edit, stringResource(R.string.edit)) }
             },
@@ -168,7 +172,7 @@ fun GroupScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onExpe
                                 put("rows", kotlinx.serialization.json.JsonArray(rows.map { (n, v) -> kotlinx.serialization.json.buildJsonObject { put("label", kotlinx.serialization.json.JsonPrimitive(n)); put("value", kotlinx.serialization.json.JsonPrimitive(ctx.money(v, g.value.baseCurrency, signed = v > 0))) } }))
                             }.toString()
                             runCatching { svm.sync.advisorLink(json, 30) }.onSuccess { link ->
-                                context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, context.getString(R.string.group_link_text, g.value.name, link)), null))
+                                context.safeStart(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, context.getString(R.string.group_link_text, g.value.name, link)), null))
                             }
                         }
                     }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.share_group_link)) }
@@ -191,8 +195,8 @@ fun GroupScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onExpe
                     Column {
                         Text(stringResource(R.string.x_pays_y, memberName(ctx, d.from, me), memberName(ctx, d.to, me)) + " · " + ctx.money(d.amountMinor, g.value.baseCurrency))
                         if (involvesMe) SelectField(stringResource(R.string.field_account), account, b.activeAccounts.map { Choice(it.state.id, it.value.name) }, { account = it }, allowNone = true, noneLabel = stringResource(R.string.dont_post))
-                        if (d.from == Group.ME) TextButton(onClick = { context.startActivity(settleIntent(context, ctx, b.peopleMap[d.to]?.value, d.amountMinor, g.value.baseCurrency, g.value.name)) }) { Text(stringResource(R.string.pay_in_app)) }
-                        if (d.to == Group.ME) TextButton(onClick = { context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, context.getString(R.string.settle_request_text, ctx.money(d.amountMinor, g.value.baseCurrency), g.value.name)), null)) }) { Text(stringResource(R.string.send_request)) }
+                        if (d.from == Group.ME) TextButton(onClick = { context.safeStart(settleIntent(context, ctx, b.peopleMap[d.to]?.value, d.amountMinor, g.value.baseCurrency, g.value.name)) }) { Text(stringResource(R.string.pay_in_app)) }
+                        if (d.to == Group.ME) TextButton(onClick = { context.safeStart(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, context.getString(R.string.settle_request_text, ctx.money(d.amountMinor, g.value.baseCurrency), g.value.name)), null)) }) { Text(stringResource(R.string.send_request)) }
                     }
                 },
                 confirmButton = {
@@ -263,9 +267,11 @@ fun GroupExpenseEditScreen(id: String, groupArg: String?, onBack: () -> Unit) {
     WithBook { ctx, vm ->
         val b = ctx.book
         val existing = b.groupExpenses.firstOrNull { it.state.id == id }?.value
-        val groupId = existing?.groupId ?: groupArg ?: return@WithBook
-        val g = b.groups.firstOrNull { it.state.id == groupId }?.value ?: return@WithBook
+        val groupId = existing?.groupId ?: groupArg
+        val g = groupId?.let { gid -> b.groups.firstOrNull { it.state.id == gid }?.value }
+        if (groupId == null || g == null) { PennyScreen(stringResource(R.string.groups), onBack) { pad -> EmptyState(stringResource(R.string.not_found), stringResource(R.string.not_found_body), Modifier.padding(pad)) }; return@WithBook }
         val me = stringResource(R.string.you)
+        val itemDefault = stringResource(R.string.item_default_name)
         val members = listOf(Group.ME) + g.memberIds.filter { it != Group.ME }
         var desc by rememberSaveable { mutableStateOf(existing?.description.orEmpty()) }
         var payer by rememberSaveable { mutableStateOf(existing?.payerId ?: Group.ME) }
@@ -340,13 +346,13 @@ fun GroupExpenseEditScreen(id: String, groupArg: String?, onBack: () -> Unit) {
                     val lines = items.mapNotNull { line ->
                         val p = line.split('|')
                         val amt = parseAmount(p.getOrElse(1) { "" }, currency, ctx.fmt) ?: return@mapNotNull null
-                        ItemLine(p[0].ifBlank { "Item" }, amt, p.getOrElse(2) { "" }.split(',').filter { it.isNotEmpty() })
+                        ItemLine(p[0].ifBlank { itemDefault }, amt, p.getOrElse(2) { "" }.split(',').filter { it.isNotEmpty() })
                     }
                     val e = GroupExpense(groupId, desc.trim(), payer, a, currency, java.time.LocalDate.parse(date), mode, shares, lines, category, disputed = disputed, disputeNote = disputeNote, rateToBase = rate.replace(',', '.').ifBlank { null }, transactionId = existing?.transactionId)
                     if (!Splitting.validate(e)) { err = invalid; return@PrimaryButton }
                     vm.act(R.string.saved, after = onBack) { saveGroupExpense(it, if (existing == null) null else id, e, account.takeIf { existing == null && payer == Group.ME }) }
                 }, Modifier.padding(horizontal = 16.dp))
-                if (existing != null) TextButton(onClick = { vm.act(R.string.deleted, after = onBack) { groupExpenses.delete(id) } }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.delete)) }
+                if (existing != null) TextButton(onClick = { vm.act(R.string.deleted, after = onBack) { deleteGroupExpense(it, id) } }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.delete)) }
             }
         }
     }
@@ -378,7 +384,7 @@ fun RemittancesScreen(onBack: () -> Unit, onEdit: (String) -> Unit) {
                     val c = RemitCircle.cost(r.value)
                     ListRow(
                         if (r.value.outgoing) stringResource(R.string.to_x, r.value.receiver) else stringResource(R.string.from_x, r.value.sender),
-                        subtitle = listOfNotNull(shortDate(r.value.date), r.value.provider, c.totalBp?.let { stringResource(R.string.true_cost_x, "%.2f%%".format(it / 100.0)) }, r.value.status.name.lowercase()).joinToString(" · "),
+                        subtitle = listOfNotNull(shortDate(r.value.date), r.value.provider, c.totalBp?.let { stringResource(R.string.true_cost_x, "%.2f%%".format(it / 100.0)) }, stringResource(when (r.value.status) { app.penny.core.model.RemitStatus.SENT -> R.string.remit_status_sent; app.penny.core.model.RemitStatus.RECEIVED -> R.string.remit_status_received; app.penny.core.model.RemitStatus.CONFIRMED -> R.string.remit_status_confirmed })).joinToString(" · "),
                         trailingText = ctx.money(if (r.value.outgoing) r.value.sentMinor else r.value.receivedMinor, if (r.value.outgoing) r.value.sentCurrency else r.value.receivedCurrency),
                         onClick = { onEdit(r.state.id) }, divider = true,
                     )
@@ -449,7 +455,7 @@ fun RemittanceEditScreen(id: String, onBack: () -> Unit) {
                         midRate = mid.replace(',', '.').ifBlank { null }, provider = provider.trim(), purpose = purpose.trim(), date = java.time.LocalDate.parse(date), status = status, outgoing = outgoing, transactionId = existing?.transactionId)
                     vm.act(R.string.saved, after = onBack) { saveRemittance(it, if (existing == null) null else id, rem, account.takeIf { existing == null }) }
                 }, Modifier.padding(horizontal = 16.dp))
-                if (existing != null) TextButton(onClick = { vm.act(R.string.deleted, after = onBack) { remittances.delete(id) } }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.delete)) }
+                if (existing != null) TextButton(onClick = { vm.act(R.string.deleted, after = onBack) { deleteRemittance(it, id) } }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.delete)) }
             }
         }
     }
@@ -497,7 +503,7 @@ fun CircleScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Checkbox(m.name in r.paidBy, { on ->
                                         if (on) vm.act(R.string.recorded) { recordCircle(it, id, CircleContribution(id, r.n, m.name, c.value.contributionMinor, it.today()), account) }
-                                        else b.circleContributions.firstOrNull { it.value.circleId == id && it.value.round == r.n && it.value.memberName == m.name && !it.value.payout }?.let { e -> vm.act(R.string.deleted) { circleContributions.delete(e.state.id) } }
+                                        else b.circleContributions.firstOrNull { it.value.circleId == id && it.value.round == r.n && it.value.memberName == m.name && !it.value.payout }?.let { e -> vm.act(R.string.deleted) { deleteCircleContribution(it, e.state.id) } }
                                     })
                                     Text(m.name + if (m.isMe) " (" + stringResource(R.string.you) + ")" else "", modifier = Modifier.weight(1f))
                                 }

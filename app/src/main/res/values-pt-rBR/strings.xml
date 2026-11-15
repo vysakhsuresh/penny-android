@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tagline">Saiba quanto está livre para gastar.</string>
+
+    <!-- Common -->
+    <string name="save">Salvar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="delete">Excluir</string>
+    <string name="undo">Desfazer</string>
+    <string name="restore">Restaurar</string>
+    <string name="retry">Tentar de novo</string>
+    <string name="back">Voltar</string>
+    <string name="next">Avançar</string>
+    <string name="skip">Pular</string>
+    <string name="done">Concluído</string>
+    <string name="none">Nenhum</string>
+    <string name="loading">Carregando</string>
+    <string name="error_generic">Algo deu errado ao ler seus dados. Nada foi perdido.</string>
+
+    <!-- Onboarding (OB-01) -->
+    <string name="ob_step">Etapa %1$d de %2$d</string>
+    <string name="ob_region_title">Onde você mora?</string>
+    <string name="ob_region_body">Isso define sua moeda, o formato dos números e o ciclo de pagamento usual. Você pode mudar tudo depois.</string>
+    <string name="ob_cycle_title">Quando o dinheiro entra?</string>
+    <string name="ob_cycle_body">Seu orçamento acompanha seu ciclo de pagamento real.</string>
+    <string name="ob_account_title">Quanto você tem em dinheiro agora?</string>
+    <string name="ob_account_body">Começamos com uma conta de dinheiro. Adicione bancos e cartões depois.</string>
+    <string name="ob_cash_name">Dinheiro</string>
+    <string name="ob_finish">Começar a usar o %1$s</string>
+
+    <!-- Cycles -->
+    <string name="cycle_monthly">Mensal, a partir do dia %1$d</string>
+    <string name="cycle_monthly_last">Mensal, a partir do último dia</string>
+    <string name="cycle_semimonthly">Duas vezes por mês, no dia %1$d e no último dia</string>
+    <string name="cycle_weekly">Semanal</string>
+    <string name="cycle_biweekly">A cada duas semanas</string>
+    <string name="cycle_fourweekly">A cada quatro semanas</string>
+    <string name="cycle_quarterly">Trimestral</string>
+    <string name="cycle_yearly">Anual</string>
+    <string name="cycle_onincome">Quando o dinheiro entra</string>
+    <string name="cycle_default_suffix">%1$s (usual aqui)</string>
+    <string name="cycle_start_day">Dia de início no mês</string>
+
+    <!-- Home -->
+    <string name="safe_to_spend">Livre para gastar</string>
+    <string name="per_day">%1$s por dia</string>
+    <string name="on_pace">No ritmo</string>
+    <string name="ahead_of_pace">Os gastos estão à frente do calendário</string>
+    <string name="period_range">%1$s – %2$s</string>
+    <string name="prev_period">Período anterior</string>
+    <string name="next_period">Próximo período</string>
+    <string name="this_period">Voltar a este período</string>
+    <string name="income_spent">Receitas %1$s · Gastos %2$s</string>
+    <string name="accounts">Contas</string>
+    <string name="transactions">Transações</string>
+    <string name="empty_period_title">Nada neste período ainda</string>
+    <string name="empty_period_body">Toque em Adicionar para registrar sua primeira transação.</string>
+    <string name="add_transaction">Adicionar transação</string>
+    <string name="trash">Lixeira</string>
+    <string name="settings">Configurações</string>
+    <string name="today">Hoje</string>
+    <string name="yesterday">Ontem</string>
+    <string name="deleted_tx">Transação excluída</string>
+    <string name="saved_tx">Transação salva</string>
+    <string name="uncategorised">Sem categoria</string>
+    <string name="transfer_to">Para %1$s</string>
+    <string name="swipe_delete_hint">Deslize para a esquerda para excluir</string>
+
+    <!-- Transaction form (TX-02) -->
+    <string name="new_transaction">Nova transação</string>
+    <string name="edit_transaction">Editar transação</string>
+    <string name="type_expense">Despesa</string>
+    <string name="type_income">Receita</string>
+    <string name="type_transfer">Transferência</string>
+    <string name="type_refund">Reembolso</string>
+    <string name="type_adjustment">Ajuste</string>
+    <string name="type_opening">Saldo inicial</string>
+    <string name="field_type">Tipo</string>
+    <string name="field_amount">Valor</string>
+    <string name="field_amount_hint">Use + − × ÷ para calcular</string>
+    <string name="amount_result">= %1$s</string>
+    <string name="amount_rounded">= %1$s (arredondado)</string>
+    <string name="field_currency">Moeda</string>
+    <string name="field_account">Conta</string>
+    <string name="field_to_account">Conta de destino</string>
+    <string name="field_to_amount">Valor recebido</string>
+    <string name="field_category">Categoria</string>
+    <string name="field_payee">Favorecido</string>
+    <string name="field_date">Data</string>
+    <string name="field_time">Hora</string>
+    <string name="field_no_time">Sem hora</string>
+    <string name="field_note">Observação</string>
+    <string name="field_tags">Etiquetas</string>
+    <string name="field_tags_hint">Separe com vírgulas</string>
+    <string name="field_status">Status</string>
+    <string name="status_pending">Pendente</string>
+    <string name="status_cleared">Compensada</string>
+    <string name="status_reconciled">Conciliada</string>
+    <string name="field_direction">Direção</string>
+    <string name="direction_in">Soma ao saldo</string>
+    <string name="direction_out">Tira do saldo</string>
+    <string name="field_private">Privada</string>
+    <string name="field_private_body">Ocultar favorecido, observação e anexos das outras pessoas em espaços compartilhados</string>
+    <string name="field_exclude_budget">Deixar fora do orçamento</string>
+    <string name="field_exclude_reports">Deixar fora dos relatórios</string>
+    <string name="field_splits">Divisões</string>
+    <string name="field_attachments">Anexos</string>
+    <string name="future_scheduled">Data futura: será considerada agendada.</string>
+    <string name="history">Histórico</string>
+    <string name="pick_date">Escolha uma data</string>
+    <string name="pick_time">Escolha um horário</string>
+    <string name="clear_time">Limpar horário</string>
+
+    <!-- Validation (TX-08) -->
+    <string name="err_amount_empty">Informe um valor</string>
+    <string name="err_amount_invalid">Esse valor não é válido</string>
+    <string name="err_amount_positive">O valor precisa ser maior que zero. O tipo define se é receita ou gasto.</string>
+    <string name="err_amount_decimals_none">%1$s não tem casas decimais</string>
+    <string name="err_amount_decimals">%1$s permite %2$d casas decimais</string>
+    <string name="err_amount_large">Esse valor é grande demais</string>
+    <string name="err_divide_zero">Não é possível dividir por zero</string>
+    <string name="err_account_required">Escolha uma conta</string>
+    <string name="err_transfer_target">Escolha a conta para onde vai o dinheiro</string>
+    <string name="err_transfer_same">Escolha outra conta para a transferência</string>
+    <string name="err_transfer_to_amount">Informe o valor recebido na outra moeda</string>
+    <string name="err_direction">Escolha se isto soma ou tira</string>
+    <string name="err_splits">As divisões precisam somar o total</string>
+    <string name="tx_not_found">Esta transação não existe mais.</string>
+
+    <!-- History (TX-05) -->
+    <string name="history_title">Histórico</string>
+    <string name="history_created">Criada</string>
+    <string name="history_edited">Editada</string>
+    <string name="history_deleted">Excluída</string>
+    <string name="history_restored">Restaurada</string>
+    <string name="history_undo">Desfeita</string>
+    <string name="history_reverted">Revertida para a versão %1$d</string>
+    <string name="history_version">Versão %1$d</string>
+    <string name="history_by">%1$s · %2$s</string>
+    <string name="history_you">Você</string>
+    <string name="history_revert">Reverter para esta versão</string>
+    <string name="history_change">%1$s: %2$s → %3$s</string>
+    <string name="history_set">%1$s: %2$s</string>
+    <string name="history_empty">Nenhuma alteração registrada ainda.</string>
+    <string name="reverted">Revertido</string>
+
+    <!-- Trash (TX-03, HS-02) -->
+    <string name="trash_title">Lixeira</string>
+    <string name="trash_body">Transações excluídas ficam aqui por 30 dias.</string>
+    <string name="trash_empty">A lixeira está vazia</string>
+    <string name="delete_forever">Excluir para sempre</string>
+    <string name="restored">Restaurado</string>
+    <string name="deleted_forever">Excluído para sempre</string>
+
+    <!-- Settings -->
+    <string name="settings_region">Região</string>
+    <string name="settings_region_body">Moeda, formato dos números e ciclo de pagamento seguem a região. As transações existentes mantêm a própria moeda.</string>
+    <string name="settings_sample">Exemplo: %1$s</string>
+    <string name="region_changed">Região alterada para %1$s</string>
+    <string name="settings_cycle">Ciclo de pagamento</string>
+    <string name="settings_about">O %1$s é gratuito. Sem anúncios, sem empréstimos, sem venda de dados.</string>
+
+    <plurals name="days_left">
+        <item quantity="one">%d dia restante</item>
+        <item quantity="other">%d dias restantes</item>
+    </plurals>
+    <plurals name="unconverted">
+        <item quantity="one">%d transação em outra moeda ainda não foi contabilizada</item>
+        <item quantity="other">%d transações em outras moedas ainda não foram contabilizadas</item>
+    </plurals>
+    <plurals name="trash_count">
+        <item quantity="one">%d item</item>
+        <item quantity="other">%d itens</item>
+    </plurals>
+</resources>

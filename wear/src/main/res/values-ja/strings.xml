@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Penny</string>
+    <string name="safe_to_spend">使えるお金</string>
+    <string name="per_day_left">1日 %1$s・残り %2$d 日</string>
+    <string name="say_it">支出を話す</string>
+    <string name="added">スマートフォンに追加しました</string>
+    <string name="not_understood">金額を聞き取れませんでした</string>
+    <string name="no_phone">スマートフォンに接続されていません。最後の数値を表示しています。</string>
+</resources>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand name comes from Brand.kt as @string/brand_name (generated). -->
+    <string name="tagline">Weet wat je vrij kunt besteden.</string>
+
+    <!-- Common -->
+    <string name="save">Opslaan</string>
+    <string name="cancel">Annuleren</string>
+    <string name="delete">Verwijderen</string>
+    <string name="undo">Ongedaan maken</string>
+    <string name="restore">Terugzetten</string>
+    <string name="retry">Opnieuw proberen</string>
+    <string name="back">Terug</string>
+    <string name="next">Volgende</string>
+    <string name="skip">Overslaan</string>
+    <string name="done">Klaar</string>
+    <string name="none">Geen</string>
+    <string name="loading">Laden</string>
+    <string name="error_generic">Er ging iets mis bij het lezen van je gegevens. Er is niets verloren gegaan.</string>
+
+    <!-- Onboarding (OB-01) -->
+    <string name="ob_step">Stap %1$d van %2$d</string>
+    <string name="ob_region_title">Waar woon je?</string>
+    <string name="ob_region_body">Dit bepaalt je valuta, getalnotatie en gebruikelijke betaalcyclus. Je kunt alles later wijzigen.</string>
+    <string name="ob_cycle_title">Wanneer komt er geld binnen?</string>
+    <string name="ob_cycle_body">Je budget volgt je echte betaalcyclus.</string>
+    <string name="ob_account_title">Hoeveel contant geld heb je nu?</string>
+    <string name="ob_account_body">We beginnen met één kasrekening. Banken en kaarten voeg je later toe.</string>
+    <string name="ob_cash_name">Contant</string>
+    <string name="ob_finish">Begin met %1$s</string>
+
+    <!-- Cycles -->
+    <string name="cycle_monthly">Maandelijks, vanaf dag %1$d</string>
+    <string name="cycle_monthly_last">Maandelijks, vanaf de laatste dag</string>
+    <string name="cycle_semimonthly">Twee keer per maand, op de %1$de en de laatste dag</string>
+    <string name="cycle_weekly">Wekelijks</string>
+    <string name="cycle_biweekly">Om de twee weken</string>
+    <string name="cycle_fourweekly">Om de vier weken</string>
+    <string name="cycle_quarterly">Per kwartaal</string>
+    <string name="cycle_yearly">Jaarlijks</string>
+    <string name="cycle_onincome">Wanneer er geld binnenkomt</string>
+    <string name="cycle_default_suffix">%1$s (gebruikelijk hier)</string>
+    <string name="cycle_start_day">Startdag van de maand</string>
+
+    <!-- Home -->
+    <string name="safe_to_spend">Vrij te besteden</string>
+    <string name="per_day">%1$s per dag</string>
+    <string name="on_pace">Op schema</string>
+    <string name="ahead_of_pace">Je uitgaven lopen voor op de kalender</string>
+    <string name="period_range">%1$s – %2$s</string>
+    <string name="prev_period">Vorige periode</string>
+    <string name="next_period">Volgende periode</string>
+    <string name="this_period">Terug naar deze periode</string>
+    <string name="income_spent">Inkomsten %1$s · Uitgegeven %2$s</string>
+    <string name="accounts">Rekeningen</string>
+    <string name="transactions">Transacties</string>
+    <string name="empty_period_title">Nog niets in deze periode</string>
+    <string name="empty_period_body">Tik op Toevoegen om je eerste transactie vast te leggen.</string>
+    <string name="add_transaction">Transactie toevoegen</string>
+    <string name="trash">Prullenbak</string>
+    <string name="settings">Instellingen</string>
+    <string name="today">Vandaag</string>
+    <string name="yesterday">Gisteren</string>
+    <string name="deleted_tx">Transactie verwijderd</string>
+    <string name="saved_tx">Transactie opgeslagen</string>
+    <string name="uncategorised">Zonder categorie</string>
+    <string name="transfer_to">Naar %1$s</string>
+    <string name="swipe_delete_hint">Veeg naar links om te verwijderen</string>
+
+    <!-- Transaction form (TX-02) -->
+    <string name="new_transaction">Nieuwe transactie</string>
+    <string name="edit_transaction">Transactie bewerken</string>
+    <string name="type_expense">Uitgave</string>
+    <string name="type_income">Inkomsten</string>
+    <string name="type_transfer">Overboeking</string>
+    <string name="type_refund">Terugbetaling</string>
+    <string name="type_adjustment">Correctie</string>
+    <string name="type_opening">Beginsaldo</string>
+    <string name="field_type">Soort</string>
+    <string name="field_amount">Bedrag</string>
+    <string name="field_amount_hint">Gebruik + − × ÷ om te rekenen</string>
+    <string name="amount_result">= %1$s</string>
+    <string name="amount_rounded">= %1$s (afgerond)</string>
+    <string name="field_currency">Valuta</string>
+    <string name="field_account">Rekening</string>
+    <string name="field_to_account">Naar rekening</string>
+    <string name="field_to_amount">Ontvangen bedrag</string>
+    <string name="field_category">Categorie</string>
+    <string name="field_payee">Begunstigde</string>
+    <string name="field_date">Datum</string>
+    <string name="field_time">Tijd</string>
+    <string name="field_no_time">Geen tijd</string>
+    <string name="field_note">Notitie</string>
+    <string name="field_tags">Labels</string>
+    <string name="field_tags_hint">Scheiden met komma\'s</string>
+    <string name="field_status">Status</string>
+    <string name="status_pending">In behandeling</string>
+    <string name="status_cleared">Verwerkt</string>
+    <string name="status_reconciled">Afgestemd</string>
+    <string name="field_direction">Richting</string>
+    <string name="direction_in">Verhoogt het saldo</string>
+    <string name="direction_out">Verlaagt het saldo</string>
+    <string name="field_private">Privé</string>
+    <string name="field_private_body">Verberg begunstigde, notitie en bijlagen voor anderen in gedeelde ruimtes</string>
+    <string name="field_exclude_budget">Niet meetellen in budget</string>
+    <string name="field_exclude_reports">Niet meetellen in rapporten</string>
+    <string name="field_splits">Splitsingen</string>
+    <string name="field_attachments">Bijlagen</string>
+    <string name="future_scheduled">Datum in de toekomst: dit telt als gepland.</string>
+    <string name="history">Geschiedenis</string>
+    <string name="pick_date">Kies een datum</string>
+    <string name="pick_time">Kies een tijd</string>
+    <string name="clear_time">Tijd wissen</string>
+
+    <!-- Validation (TX-08) -->
+    <string name="err_amount_empty">Vul een bedrag in</string>
+    <string name="err_amount_invalid">Dat is geen geldig bedrag</string>
+    <string name="err_amount_positive">Het bedrag moet groter zijn dan nul. De soort bepaalt of het inkomsten of uitgaven zijn.</string>
+    <string name="err_amount_decimals_none">%1$s heeft geen decimalen</string>
+    <string name="err_amount_decimals">%1$s staat %2$d decimalen toe</string>
+    <string name="err_amount_large">Dat bedrag is te groot</string>
+    <string name="err_divide_zero">Delen door nul kan niet</string>
+    <string name="err_account_required">Kies een rekening</string>
+    <string name="err_transfer_target">Kies de rekening waar het geld naartoe gaat</string>
+    <string name="err_transfer_same">Kies een andere rekening om naar over te boeken</string>
+    <string name="err_transfer_to_amount">Vul het ontvangen bedrag in de andere valuta in</string>
+    <string name="err_direction">Kies of dit erbij komt of eraf gaat</string>
+    <string name="err_splits">De splitsingen moeten optellen tot het totaal</string>
+    <string name="tx_not_found">Deze transactie bestaat niet meer.</string>
+
+    <!-- History (TX-05) -->
+    <string name="history_title">Geschiedenis</string>
+    <string name="history_created">Aangemaakt</string>
+    <string name="history_edited">Bewerkt</string>
+    <string name="history_deleted">Verwijderd</string>
+    <string name="history_restored">Teruggezet</string>
+    <string name="history_undo">Ongedaan gemaakt</string>
+    <string name="history_reverted">Teruggezet naar versie %1$d</string>
+    <string name="history_version">Versie %1$d</string>
+    <string name="history_by">%1$s · %2$s</string>
+    <string name="history_you">Jij</string>
+    <string name="history_revert">Terugzetten naar deze versie</string>
+    <string name="history_change">%1$s: %2$s → %3$s</string>
+    <string name="history_set">%1$s: %2$s</string>
+    <string name="history_empty">Nog geen wijzigingen vastgelegd.</string>
+    <string name="reverted">Teruggezet</string>
+
+    <!-- Trash (TX-03, HS-02) -->
+    <string name="trash_title">Prullenbak</string>
+    <string name="trash_body">Verwijderde transacties blijven hier 30 dagen staan.</string>
+    <string name="trash_empty">De prullenbak is leeg</string>
+    <string name="delete_forever">Definitief verwijderen</string>
+    <string name="restored">Teruggezet</string>
+    <string name="deleted_forever">Definitief verwijderd</string>
+
+    <!-- Settings -->
+    <string name="settings_region">Regio</string>
+    <string name="settings_region_body">Valuta, getalnotatie en betaalcyclus volgen de regio. Bestaande transacties houden hun eigen valuta.</string>
+    <string name="settings_sample">Voorbeeld: %1$s</string>
+    <string name="region_changed">Regio gewijzigd naar %1$s</string>
+    <string name="settings_cycle">Betaalcyclus</string>
+    <string name="settings_about">%1$s is gratis. Geen advertenties, geen leningen, geen verkoop van gegevens.</string>
+
+    <plurals name="days_left">
+        <item quantity="one">Nog %d dag</item>
+        <item quantity="other">Nog %d dagen</item>
+    </plurals>
+    <plurals name="unconverted">
+        <item quantity="one">%d transactie in een andere valuta telt nog niet mee</item>
+        <item quantity="other">%d transacties in andere valuta tellen nog niet mee</item>
+    </plurals>
+    <plurals name="trash_count">
+        <item quantity="one">%d item</item>
+        <item quantity="other">%d items</item>
+    </plurals>
+</resources>

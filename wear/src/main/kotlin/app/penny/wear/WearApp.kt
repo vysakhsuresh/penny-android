@@ -102,7 +102,7 @@ private fun WearHome(s: WearSummary?, status: String?, onTemplate: (String) -> U
             status?.let { item { Text(it, style = MaterialTheme.typography.caption2) } }
             item {
                 Chip(
-                    onClick = { voice.launch(Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)) },
+                    onClick = { runCatching { voice.launch(Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)) } },
                     label = { Text(androidx.compose.ui.res.stringResource(R.string.say_it)) }, colors = ChipDefaults.primaryChipColors(), modifier = Modifier.fillMaxWidth(),
                 )
             }

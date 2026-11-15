@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="faq_q">
+        <item>Penny est-il vraiment gratuit ?</item>
+        <item>Penny lit-il mes SMS ?</item>
+        <item>Où sont stockées mes données ?</item>
+        <item>Que signifie « disponible à dépenser » ?</item>
+        <item>Comment changer mon cycle de paie ?</item>
+        <item>J’ai supprimé quelque chose par erreur. Puis-je le récupérer ?</item>
+        <item>Comment ajouter de l’argent prêté à un ami ?</item>
+        <item>Puis-je partager un budget avec mon ou ma partenaire ?</item>
+        <item>Comment passer d’une autre app de budget à Penny ?</item>
+        <item>Pourquoi les opérations de mon app de paiement n’apparaissent-elles pas ?</item>
+        <item>Comment utiliser Penny sur un nouveau téléphone ?</item>
+        <item>Puis-je utiliser plusieurs devises ?</item>
+        <item>Comment verrouiller l’app ?</item>
+        <item>Comment supprimer toutes mes données ?</item>
+    </string-array>
+    <string-array name="faq_a">
+        <item>Oui. Toutes les fonctions sont gratuites. L’option Penny Plus couvre uniquement les coûts qui augmentent avec chaque utilisateur, comme les frais de connexion bancaire et le stockage supplémentaire. Il n’y a pas de pub et nous ne vendons jamais de données.</item>
+        <item>Non. Penny ne demande jamais l’autorisation SMS. Il peut lire les notifications des apps de paiement et bancaires que vous autorisez, uniquement sur votre téléphone, et vous pouvez désactiver cela à tout moment.</item>
+        <item>Sur votre téléphone, chiffrées. Si vous activez la synchronisation, elles sont chiffrées sur votre téléphone avant de partir : le serveur stocke des données qu’il ne peut pas lire.</item>
+        <item>C’est l’argent que vous pouvez dépenser d’ici votre prochaine période de paie sans manquer vos factures ni vos objectifs d’épargne : revenus, moins les factures encore à payer, moins ce que vous mettez de côté, moins ce que vous avez déjà dépensé.</item>
+        <item>Ouvrez Paramètres, Profil, Cycle de paie. Choisissez mensuel à partir de n’importe quel jour, deux fois par mois, hebdomadaire, toutes les deux semaines, toutes les quatre semaines ou « à chaque rentrée d’argent ». L’historique est regroupé à nouveau et rien n’est perdu.</item>
+        <item>Oui. Juste après la suppression, touchez Annuler. Plus tard, ouvrez Paramètres, Corbeille : les éléments supprimés y restent 30 jours. Chaque modification figure aussi dans l’Historique, où vous pouvez revenir à une version antérieure.</item>
+        <item>Ouvrez l’onglet Personnes et touchez Enregistrer un prêt. Choisissez la personne, le montant et si vous l’avez donné ou reçu. Penny tient un solde à jour et peut préparer un rappel bienveillant que vous enverrez vous-même.</item>
+        <item>Oui. Activez la synchronisation, puis ouvrez Paramètres, Espaces partagés, et créez un espace. Invitez votre partenaire avec un lien. Chacun a son propre identifiant et un rôle, et vous pouvez garder vos dépenses personnelles privées.</item>
+        <item>Exportez un CSV depuis votre ancienne app ou votre banque, puis ouvrez Paramètres, Données et sauvegarde, Importer. Penny reconnaît les fichiers de nombreuses apps et affiche un aperçu avec les doublons avant d’ajouter quoi que ce soit.</item>
+        <item>Vérifiez Paramètres, Saisie : « Lire les notifications de paiement » doit être activé, et Penny doit avoir l’accès aux notifications dans les paramètres du téléphone. Seules les apps listées pour votre région, plus celles que vous ajoutez, sont lues.</item>
+        <item>Activez la synchronisation sur votre ancien téléphone et notez la phrase de récupération. Sur le nouveau téléphone, connectez-vous avec la même adresse e-mail et saisissez la phrase. Ou restaurez un fichier de sauvegarde depuis votre dossier.</item>
+        <item>Oui. Chaque compte a sa propre devise. Les totaux utilisent votre devise principale avec le taux de change du jour de l’opération, et tout ce qui n’a pas de taux est signalé, jamais deviné.</item>
+        <item>Ouvrez Paramètres, Sécurité, Verrouillage de l’app. Définissez un PIN et autorisez votre empreinte ou votre visage. Vous pouvez aussi bloquer les captures d’écran et choisir le délai avant un nouveau verrouillage.</item>
+        <item>Ouvrez Paramètres, Données et sauvegarde, Tout supprimer sur ce téléphone. Si la synchronisation est activée, supprimez aussi votre compte de synchronisation dans Synchronisation et banques. Exportez d’abord si vous risquez d’avoir besoin de quelque chose.</item>
+    </string-array>
+
+    <string-array name="guide_start">
+        <item>Choisissez votre région. Elle définit votre devise, le style des nombres et votre cycle de paie habituel. Vous pourrez tout modifier plus tard.</item>
+        <item>Indiquez à Penny quand l’argent arrive. Votre budget suit votre vrai cycle de paie, pas le mois calendaire.</item>
+        <item>Saisissez les espèces que vous avez maintenant. Ajoutez banques, portefeuilles et cartes plus tard depuis Comptes.</item>
+        <item>Touchez le bouton plus pour ajouter une dépense : saisissez le montant, choisissez une catégorie, enregistrez. Cela prend environ trois secondes.</item>
+        <item>L’accueil affiche un seul chiffre : ce que vous pouvez dépenser jusqu’à la prochaine paie.</item>
+    </string-array>
+    <string-array name="guide_safe">
+        <item>Le disponible à dépenser part des revenus de cette période, y compris le salaire attendu mais pas encore reçu.</item>
+        <item>On retire les factures encore à payer sur cette période et ce que vous mettez de côté pour vos objectifs.</item>
+        <item>Puis on retire ce que vous avez déjà dépensé. Les virements entre vos propres comptes ne comptent jamais.</item>
+        <item>« Par jour » divise ce qui reste par le nombre de jours restants dans la période.</item>
+        <item>Si les dépenses vont plus vite que le calendrier, l’accueil affiche une note ambre discrète. Penny n’utilise jamais le rouge pour votre argent.</item>
+    </string-array>
+    <string-array name="guide_budget">
+        <item>Une enveloppe est un montant pour un poste de la vie, comme l’alimentation ou les transports, pour chaque période.</item>
+        <item>Ouvrez Budgets et touchez Utiliser un modèle, ou ajoutez les enveloppes une par une.</item>
+        <item>Choisissez ce qu’il advient du reste : repartir de zéro, reporter, ou reporter jusqu’à un plafond.</item>
+        <item>Si une enveloppe est dépassée, touchez Couvrir depuis pour déplacer de l’argent d’une enveloppe qui en a encore. C’est enregistré et peut être annulé.</item>
+        <item>Vous préférez que chaque unité ait un rôle ? Activez le budget base zéro dans les paramètres du profil.</item>
+    </string-array>
+    <string-array name="guide_cycle">
+        <item>Beaucoup de personnes sont payées au mois, mais pas le 1er ; d’autres toutes les deux semaines, deux fois par mois, ou à chaque mission payée.</item>
+        <item>Ouvrez Paramètres, Profil, Cycle de paie, et choisissez celui qui correspond à votre paie.</item>
+        <item>« À chaque rentrée d’argent » démarre une nouvelle période chaque fois qu’un revenu au-dessus d’un seuil arrive, ce qui convient aux missions ponctuelles et à l’argent envoyé par la famille depuis l’étranger.</item>
+        <item>Changer de cycle regroupe à nouveau l’historique et peut être annulé.</item>
+    </string-array>
+    <string-array name="guide_capture">
+        <item>Activez les notifications de paiement dans Paramètres, Saisie. Penny lit uniquement les apps de paiement et bancaires, sur votre téléphone.</item>
+        <item>Partagez un message, un reçu ou un relevé vers Penny depuis n’importe quelle app.</item>
+        <item>Scannez un reçu avec l’appareil photo ; Penny le lit sur le téléphone.</item>
+        <item>Dictez une opération, par exemple « 250 de courses hier ».</item>
+        <item>Les éléments saisis attendent dans À vérifier. Après dix éléments d’affilée d’une même app sans modification, Penny propose de les ajouter automatiquement.</item>
+    </string-array>
+    <string-array name="guide_people">
+        <item>Enregistrez l’argent que vous prêtez ou empruntez dans l’onglet Personnes. Penny emploie des mots neutres : à recevoir et à rendre.</item>
+        <item>Les remboursements partiels sont possibles ; ajoutez une entrée pour chacun.</item>
+        <item>Les groupes répartissent les frais communs à parts égales, par montants exacts, pourcentages, parts ou article par article.</item>
+        <item>Simplifier les dettes trouve le moins de paiements possible pour que tout le monde soit quitte.</item>
+        <item>Les espaces partagés permettent à un foyer de gérer un budget ensemble, chacun avec son identifiant et son rôle.</item>
+    </string-array>
+    <string-array name="guide_bills">
+        <item>Ajoutez chaque facture une seule fois, avec sa fréquence. Penny l’anticipe dans le disponible à dépenser.</item>
+        <item>Quand une facture est payée, marquez-la payée ; l’opération est créée pour vous. Ou laissez Penny l’ajouter automatiquement.</item>
+        <item>Passez ou modifiez une seule échéance sans toucher aux autres, ou modifiez « celle-ci et les suivantes ».</item>
+        <item>Les abonnements affichent leur coût annuel et la date de la dernière hausse de prix, avec un message de résiliation prérédigé.</item>
+        <item>Les mensualités de prêt affichent l’échéancier complet et les intérêts qu’un remboursement anticipé ferait économiser.</item>
+    </string-array>
+    <string-array name="guide_goals">
+        <item>Un objectif a un montant cible et, si vous le souhaitez, une date. Penny indique combien mettre de côté à chaque période.</item>
+        <item>Ajoutez de l’argent quand vous épargnez ; retirez-en quand vous en avez besoin.</item>
+        <item>Définissez un montant automatique par période pour qu’il soit pris en compte dans le disponible à dépenser.</item>
+        <item>Une épargne de précaution propose une cible fondée sur vos vraies dépenses essentielles.</item>
+    </string-array>
+    <string-array name="guide_import">
+        <item>Exportez un CSV depuis votre banque ou votre app précédente.</item>
+        <item>Ouvrez Paramètres, Données et sauvegarde, Importer depuis un fichier.</item>
+        <item>Penny reconnaît automatiquement de nombreuses apps ; pour les fichiers bancaires, vérifiez les colonnes.</item>
+        <item>Vérifiez l’aperçu. Les doublons probables sont ignorés, sauf indication contraire.</item>
+        <item>Touchez Importer. Vous pouvez annuler toute l’importation en un geste.</item>
+    </string-array>
+    <string-array name="guide_undo">
+        <item>Chaque modification dans Penny peut être annulée pendant quelques secondes avec le bouton Annuler.</item>
+        <item>Les éléments supprimés attendent 30 jours dans la Corbeille.</item>
+        <item>Chaque opération, compte et enveloppe a un Historique de toutes les modifications, avec leur auteur et leur date.</item>
+        <item>Touchez « Revenir à cette version » pour revenir en arrière. Ce retour peut lui aussi être annulé.</item>
+    </string-array>
+    <string-array name="guide_privacy">
+        <item>Vos données restent sur votre téléphone, dans une base de données chiffrée.</item>
+        <item>La synchronisation chiffre sur votre téléphone avant l’envoi ; le serveur ne peut pas lire vos données financières.</item>
+        <item>Penny n’affiche pas de pub, ne propose pas de crédit et ne vend pas de données.</item>
+        <item>Des statistiques anonymes facultatives aident à améliorer l’app et n’incluent jamais de montants, bénéficiaires ou notes.</item>
+    </string-array>
+    <string-array name="guide_sync">
+        <item>Activez la synchronisation dans Paramètres, Synchronisation et banques, avec votre adresse e-mail.</item>
+        <item>Notez la phrase de récupération de 24 mots. Elle ouvre vos données sur un nouveau téléphone et restaure les sauvegardes chiffrées.</item>
+        <item>Sur un nouveau téléphone, connectez-vous avec la même adresse e-mail et saisissez la phrase.</item>
+        <item>Choisissez un dossier de sauvegarde dans Données et sauvegarde pour des sauvegardes chiffrées automatiques que vous contrôlez.</item>
+    </string-array>
+
+    <string-array name="about_story">
+        <item>Penny est né d’une question simple : combien puis-je dépenser aujourd’hui sans m’inquiéter pour la semaine prochaine ?</item>
+        <item>La plupart des apps de budget répondent avec des graphiques du passé ou des offres de crédit. Nous voulions un seul chiffre serein, fondé sur votre vrai cycle de paie, vos vraies factures et les personnes qui comptent pour vous.</item>
+        <item>Penny est conçu pour le monde entier : toutes les devises, tous les cycles de paie, la façon dont les gens gèrent vraiment leur argent, des tontines aux envois d’argent à la famille.</item>
+        <item>Toutes les fonctions sont gratuites. Nous ne gagnons rien grâce à la pub, au crédit ou à vos données, et cela ne changera pas. Si Penny vous aide, un pourboire ou un avis bienveillant le fait vivre.</item>
+    </string-array>
+    <string-array name="trust_never">
+        <item>Nous n’affichons jamais de pub.</item>
+        <item>Nous ne proposons jamais de crédit, de carte de crédit ni d’autres produits financiers.</item>
+        <item>Nous ne vendons ni ne partageons jamais vos données.</item>
+        <item>Nous ne lisons jamais vos SMS.</item>
+        <item>Nous ne voyons jamais vos données financières quand vous synchronisez : elles sont chiffrées sur votre téléphone.</item>
+        <item>Nous ne rendons jamais une fonction payante. Plus couvre uniquement de vrais coûts par utilisateur.</item>
+        <item>Nous n’utilisons jamais le rouge pour culpabiliser vos dépenses.</item>
+    </string-array>
+    <string-array name="changelog">
+        <item>v1.0.0</item>
+        <item>Budgets avec enveloppes sur n’importe quel cycle de paie, reports, cibles et vue annuelle.</item>
+        <item>Objectifs, factures, abonnements, mensualités de prêt et planificateur de remboursement de dettes.</item>
+        <item>Prêts entre proches, partage de frais en groupe, argent envoyé à la famille et tontines.</item>
+        <item>Saisie depuis les notifications de paiement, le partage, les reçus et la voix, avec une file de vérification et des règles qui apprennent.</item>
+        <item>Analyses avec graphiques, prévisions, patrimoine net et coach sur l’appareil.</item>
+        <item>Synchronisation chiffrée de bout en bout, espaces partagés, sauvegardes chiffrées, verrouillage de l’app.</item>
+        <item>v0.1.0</item>
+        <item>Première version : disponible à dépenser, opérations avec annulation et historique.</item>
+    </string-array>
+    <string-array name="licences">
+        <item>Plus Jakarta Sans — SIL Open Font License 1.1, The Plus Jakarta Sans Project Authors.</item>
+        <item>AndroidX et Jetpack Compose — Apache License 2.0, The Android Open Source Project.</item>
+        <item>Kotlin et bibliothèques kotlinx — Apache License 2.0, JetBrains.</item>
+        <item>Dagger et Hilt — Apache License 2.0, Google.</item>
+        <item>Room — Apache License 2.0, Google.</item>
+        <item>SQLCipher for Android — licence de type BSD, Zetetic LLC.</item>
+        <item>Tink — Apache License 2.0, Google.</item>
+        <item>OkHttp — Apache License 2.0, Square.</item>
+        <item>ML Kit Text Recognition — ML Kit Terms of Service, Google.</item>
+        <item>Material icons — Apache License 2.0, Google.</item>
+    </string-array>
+</resources>

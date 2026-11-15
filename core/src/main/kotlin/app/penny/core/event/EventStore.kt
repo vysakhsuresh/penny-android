@@ -22,7 +22,7 @@ interface EventStore {
      * SY-02: merges events from another device. Already-known ids are skipped; affected entities are re-projected in
      * [EventOrder] so every device converges. Returns the events that were new.
      */
-    suspend fun ingest(events: List<Event>): List<Event>
+    suspend fun ingest(events: List<Event>, remote: Boolean = true): List<Event>
 
     /** Local events after [seq] for one stream (profile or space id), oldest first, for pushing. */
     suspend fun eventsAfter(profileId: String, seq: Long, limit: Int = 500): List<Event>
@@ -54,7 +54,7 @@ class InMemoryEventStore : EventStore {
         stored
     }
 
-    override suspend fun ingest(events: List<Event>): List<Event> = mutex.withLock {
+    override suspend fun ingest(events: List<Event>, remote: Boolean): List<Event> = mutex.withLock {
         val known = log.map { it.id }.toSet()
         val fresh = events.filter { it.id !in known }.distinctBy { it.id }
         if (fresh.isEmpty()) return@withLock emptyList()

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="faq_q">
+        <item>Is Penny echt gratis?</item>
+        <item>Leest Penny mijn sms\'jes?</item>
+        <item>Waar worden mijn gegevens opgeslagen?</item>
+        <item>Wat betekent „vrij te besteden”?</item>
+        <item>Hoe wijzig ik mijn betaalcyclus?</item>
+        <item>Ik heb per ongeluk iets verwijderd. Kan ik het terugkrijgen?</item>
+        <item>Hoe voeg ik geld toe dat ik aan een vriend heb geleend?</item>
+        <item>Kan ik een budget delen met mijn partner?</item>
+        <item>Hoe stap ik over van een andere geldapp?</item>
+        <item>Waarom verschijnen transacties uit mijn betaalapp niet?</item>
+        <item>Hoe gebruik ik Penny op een nieuwe telefoon?</item>
+        <item>Kan ik meer dan één valuta gebruiken?</item>
+        <item>Hoe vergrendel ik de app?</item>
+        <item>Hoe verwijder ik al mijn gegevens?</item>
+    </string-array>
+    <string-array name="faq_a">
+        <item>Ja. Elke functie is gratis. Het optionele Penny Plus dekt alleen kosten die per gebruiker groeien, zoals kosten voor bankkoppelingen en extra opslag. Er zijn geen advertenties en we verkopen nooit gegevens.</item>
+        <item>Nee. Penny vraagt nooit om sms-toestemming. Het kan meldingen lezen van betaal- en bankapps die je toestaat, alleen op je telefoon, en je kunt dat altijd uitzetten.</item>
+        <item>Op je telefoon, versleuteld. Als je synchronisatie aanzet, worden ze op je telefoon versleuteld voordat ze vertrekken, zodat de server gegevens bewaart die hij niet kan lezen.</item>
+        <item>Het is het geld dat je vanaf nu tot je volgende betaalperiode kunt uitgeven zonder vaste lasten of spaardoelen te missen: inkomsten, min vaste lasten die nog betaald moeten worden, min wat je opzij zet, min wat je al hebt uitgegeven.</item>
+        <item>Open Instellingen, Profiel, Betaalcyclus. Kies maandelijks vanaf elke dag, twee keer per maand, wekelijks, om de twee weken, om de vier weken of „wanneer er geld binnenkomt”. De geschiedenis wordt opnieuw ingedeeld en er gaat niets verloren.</item>
+        <item>Ja. Tik direct na het verwijderen op Ongedaan maken. Later open je Instellingen, Prullenbak: verwijderde items blijven daar 30 dagen. Elke wijziging staat ook in Geschiedenis, waar je terug kunt naar een eerdere versie.</item>
+        <item>Open het tabblad Mensen en tik op Lening vastleggen. Kies de persoon, het bedrag en of je het gaf of ontving. Penny houdt een lopend saldo bij en kan een vriendelijke herinnering opstellen die je zelf verstuurt.</item>
+        <item>Ja. Zet synchronisatie aan, open dan Instellingen, Gedeelde ruimtes, en maak een ruimte aan. Nodig je partner uit met een link. Ieder heeft een eigen login en rol, en je kunt persoonlijke uitgaven privé houden.</item>
+        <item>Exporteer een CSV uit je oude app of bank, en open dan Instellingen, Gegevens en back-up, Importeren. Penny herkent bestanden van veel apps en toont een voorbeeld met dubbele items voordat er iets wordt toegevoegd.</item>
+        <item>Controleer Instellingen, Vastleggen: „Betaalmeldingen lezen” moet aanstaan, en Penny moet toegang tot meldingen hebben in de instellingen van je telefoon. Alleen apps die voor je regio worden genoemd, plus de apps die je zelf toevoegt, worden gelezen.</item>
+        <item>Zet synchronisatie aan op je oude telefoon en schrijf de herstelzin op. Log op de nieuwe telefoon in met hetzelfde e-mailadres en typ de zin. Of zet een back-upbestand uit je map terug.</item>
+        <item>Ja. Elke rekening heeft een eigen valuta. Totalen gebruiken je hoofdvaluta met de wisselkoers op de transactiedatum, en alles zonder koers wordt getoond, nooit geschat.</item>
+        <item>Open Instellingen, Beveiliging, App-vergrendeling. Stel een PIN in en sta je vingerafdruk of gezicht toe. Je kunt ook screenshots blokkeren en kiezen hoe snel de app weer vergrendelt.</item>
+        <item>Open Instellingen, Gegevens en back-up, Alles op deze telefoon verwijderen. Als synchronisatie aanstaat, verwijder dan ook je synchronisatieaccount in Synchronisatie en banken. Exporteer eerst als je nog iets nodig kunt hebben.</item>
+    </string-array>
+
+    <string-array name="guide_start">
+        <item>Kies je regio. Die bepaalt je valuta, getalnotatie en gebruikelijke betaalcyclus. Je kunt alles later wijzigen.</item>
+        <item>Vertel Penny wanneer er geld binnenkomt. Je budget volgt je echte betaalcyclus, niet de kalendermaand.</item>
+        <item>Vul het contante geld in dat je nu hebt. Banken, wallets en kaarten voeg je later toe via Rekeningen.</item>
+        <item>Tik op de plusknop om een uitgave toe te voegen: typ het bedrag, kies een categorie, sla op. Het kost ongeveer drie seconden.</item>
+        <item>Start toont één getal: wat je tot de volgende betaaldag vrij kunt besteden.</item>
+    </string-array>
+    <string-array name="guide_safe">
+        <item>Vrij te besteden begint met de inkomsten van deze periode, inclusief salaris dat je verwacht maar nog niet hebt ontvangen.</item>
+        <item>Daar gaan de vaste lasten af die deze periode nog betaald moeten worden en wat je voor doelen opzij zet.</item>
+        <item>Daarna gaat eraf wat je al hebt uitgegeven. Overboekingen tussen je eigen rekeningen tellen nooit mee.</item>
+        <item>„Per dag” deelt wat over is door het aantal resterende dagen in de periode.</item>
+        <item>Als je uitgaven voorlopen op de kalender, toont Start een rustige oranje melding. Penny gebruikt nooit rood voor je geld.</item>
+    </string-array>
+    <string-array name="guide_budget">
+        <item>Een envelop is een bedrag voor één deel van je leven, zoals eten of vervoer, per periode.</item>
+        <item>Open Budgetten en tik op Een sjabloon gebruiken, of voeg enveloppen één voor één toe.</item>
+        <item>Kies wat er met het restant gebeurt: opnieuw beginnen, meenemen, of meenemen tot een maximum.</item>
+        <item>Gaat een envelop erover, tik dan op Aanvullen uit om geld te verplaatsen uit een envelop die nog iets over heeft. Dit wordt vastgelegd en kan ongedaan worden gemaakt.</item>
+        <item>Wil je dat elk bedrag een taak heeft? Zet budgetteren vanaf nul aan in de profielinstellingen.</item>
+    </string-array>
+    <string-array name="guide_cycle">
+        <item>Veel mensen worden maandelijks betaald, maar niet op de 1e; anderen worden om de twee weken, twee keer per maand of per opdracht betaald.</item>
+        <item>Open Instellingen, Profiel, Betaalcyclus, en kies wat bij je salaris past.</item>
+        <item>„Wanneer er geld binnenkomt” start een nieuwe periode telkens als er inkomen boven een drempel binnenkomt. Dat past bij klussenwerk en geld van familie in het buitenland.</item>
+        <item>Het wijzigen van de cyclus deelt de geschiedenis opnieuw in en kan ongedaan worden gemaakt.</item>
+    </string-array>
+    <string-array name="guide_capture">
+        <item>Zet betaalmeldingen aan in Instellingen, Vastleggen. Penny leest alleen betaal- en bankapps, op je telefoon.</item>
+        <item>Deel een bericht, bon of afschrift vanuit elke app met Penny.</item>
+        <item>Scan een bon met de camera; Penny leest hem op de telefoon.</item>
+        <item>Spreek een transactie in, zoals „250 aan boodschappen gisteren”.</item>
+        <item>Vastgelegde items wachten in Controleren. Na tien op rij van één app zonder wijzigingen biedt Penny aan ze automatisch toe te voegen.</item>
+    </string-array>
+    <string-array name="guide_people">
+        <item>Leg geld dat je uitleent of leent vast in het tabblad Mensen. Penny gebruikt neutrale woorden: te ontvangen en te geven.</item>
+        <item>Gedeeltelijke terugbetalingen zijn prima; voeg voor elke betaling een regel toe.</item>
+        <item>Groepen verdelen gedeelde kosten gelijk, op exacte bedragen, percentages, aandelen of per item.</item>
+        <item>Schulden vereenvoudigen zoekt het kleinste aantal betalingen om iedereen te verrekenen.</item>
+        <item>Met gedeelde ruimtes budgetteert een huishouden samen, ieder met een eigen login en rol.</item>
+    </string-array>
+    <string-array name="guide_bills">
+        <item>Voeg elke vaste last één keer toe, met hoe vaak hij terugkomt. Penny houdt er rekening mee in vrij te besteden.</item>
+        <item>Is een vaste last betaald, markeer hem dan als betaald; de transactie wordt voor je aangemaakt. Of laat Penny hem automatisch toevoegen.</item>
+        <item>Sla één keer over of wijzig één keer zonder de rest te raken, of wijzig „deze en toekomstige”.</item>
+        <item>Abonnementen tonen hun jaarkosten en wanneer de prijs omhoogging, met een opgesteld opzegbericht.</item>
+        <item>EMI\'s tonen het volledige schema en hoeveel rente een vervroegde aflossing zou besparen.</item>
+    </string-array>
+    <string-array name="guide_goals">
+        <item>Een doel heeft een doelbedrag en, als je wilt, een datum. Penny laat zien wat je elke periode opzij moet zetten.</item>
+        <item>Voeg geld toe als je spaart; neem geld op als je het nodig hebt.</item>
+        <item>Stel een automatisch bedrag per periode in, zodat het meetelt in vrij te besteden.</item>
+        <item>Een noodfonds stelt een doelbedrag voor op basis van je echte basisuitgaven.</item>
+    </string-array>
+    <string-array name="guide_import">
+        <item>Exporteer een CSV uit je bank of vorige app.</item>
+        <item>Open Instellingen, Gegevens en back-up, Importeren uit een bestand.</item>
+        <item>Penny herkent veel apps automatisch; controleer bij bankbestanden de kolommen.</item>
+        <item>Bekijk het voorbeeld. Waarschijnlijke dubbele items worden overgeslagen, tenzij je anders kiest.</item>
+        <item>Tik op Importeren. Je kunt de hele import met één tik ongedaan maken.</item>
+    </string-array>
+    <string-array name="guide_undo">
+        <item>Elke wijziging in Penny kan een paar seconden lang ongedaan worden gemaakt met de knop Ongedaan maken.</item>
+        <item>Verwijderde items wachten 30 dagen in de prullenbak.</item>
+        <item>Elke transactie, rekening en envelop heeft een geschiedenis van elke wijziging, wie die deed en wanneer.</item>
+        <item>Tik op „Terugzetten naar deze versie” om terug te gaan. Ook het terugzetten zelf kan ongedaan worden gemaakt.</item>
+    </string-array>
+    <string-array name="guide_privacy">
+        <item>Je gegevens staan op je telefoon, in een versleutelde database.</item>
+        <item>Synchronisatie versleutelt op je telefoon voordat er iets wordt verstuurd; de server kan je geldgegevens niet lezen.</item>
+        <item>Penny toont geen advertenties, biedt geen leningen aan en verkoopt geen gegevens.</item>
+        <item>Optionele anonieme tellingen helpen de app te verbeteren en bevatten nooit bedragen, begunstigden of notities.</item>
+    </string-array>
+    <string-array name="guide_sync">
+        <item>Zet synchronisatie aan in Instellingen, Synchronisatie en banken, met je e-mailadres.</item>
+        <item>Schrijf de herstelzin van 24 woorden op. Die opent je gegevens op nieuwe telefoons en zet versleutelde back-ups terug.</item>
+        <item>Log op een nieuwe telefoon in met hetzelfde e-mailadres en typ de zin.</item>
+        <item>Kies een back-upmap in Gegevens en back-up voor automatische, versleutelde back-ups die jij beheert.</item>
+    </string-array>
+
+    <string-array name="about_story">
+        <item>Penny begon met een eenvoudige vraag: hoeveel kan ik vandaag uitgeven zonder me zorgen te maken over volgende week?</item>
+        <item>De meeste geldapps antwoorden met grafieken van het verleden of aanbiedingen voor leningen. Wij wilden één rustig getal, gebaseerd op je echte betaalcyclus, je echte vaste lasten en de mensen in je leven.</item>
+        <item>Penny is gemaakt voor de hele wereld: elke valuta, elke betaalcyclus, zoals mensen echt met geld omgaan, van spaarkringen tot geld naar huis sturen.</item>
+        <item>Elke functie is gratis. We verdienen niets aan advertenties, leningen of je gegevens, en dat blijft zo. Helpt Penny je, dan houdt een fooi of een vriendelijke review het draaiende.</item>
+    </string-array>
+    <string-array name="trust_never">
+        <item>We tonen nooit advertenties.</item>
+        <item>We bieden nooit leningen, creditcards of andere financiële producten aan.</item>
+        <item>We verkopen of delen je gegevens nooit.</item>
+        <item>We lezen nooit je sms\'jes.</item>
+        <item>We zien je geldgegevens nooit als je synchroniseert: ze worden op je telefoon versleuteld.</item>
+        <item>We zetten nooit een functie achter een betaalmuur. Plus dekt alleen echte kosten per gebruiker.</item>
+        <item>We gebruiken nooit rood om je uitgaven af te keuren.</item>
+    </string-array>
+    <string-array name="changelog">
+        <item>v1.0.0</item>
+        <item>Budgetten met enveloppen op elke betaalcyclus, meenemen van restanten, doelen en een jaarweergave.</item>
+        <item>Doelen, vaste lasten, abonnementen, EMI\'s en een planner om schulden af te lossen.</item>
+        <item>Uitlenen, kosten delen in groepen, geld naar huis en spaarkringen.</item>
+        <item>Vastleggen uit betaalmeldingen, delen, bonnen en spraak, met een controlelijst en regels die leren.</item>
+        <item>Inzichten met grafieken, prognose, vermogen en een coach op het apparaat.</item>
+        <item>End-to-end versleutelde synchronisatie, gedeelde ruimtes, versleutelde back-ups, app-vergrendeling.</item>
+        <item>v0.1.0</item>
+        <item>Eerste versie: vrij te besteden, transacties met ongedaan maken en geschiedenis.</item>
+    </string-array>
+    <string-array name="licences">
+        <item>Plus Jakarta Sans — SIL Open Font License 1.1, The Plus Jakarta Sans Project Authors.</item>
+        <item>AndroidX en Jetpack Compose — Apache License 2.0, The Android Open Source Project.</item>
+        <item>Kotlin en kotlinx-bibliotheken — Apache License 2.0, JetBrains.</item>
+        <item>Dagger en Hilt — Apache License 2.0, Google.</item>
+        <item>Room — Apache License 2.0, Google.</item>
+        <item>SQLCipher for Android — BSD-achtige licentie, Zetetic LLC.</item>
+        <item>Tink — Apache License 2.0, Google.</item>
+        <item>OkHttp — Apache License 2.0, Square.</item>
+        <item>ML Kit Text Recognition — ML Kit Terms of Service, Google.</item>
+        <item>Material icons — Apache License 2.0, Google.</item>
+    </string-array>
+</resources>

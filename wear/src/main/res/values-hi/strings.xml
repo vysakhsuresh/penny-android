@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Penny</string>
+    <string name="safe_to_spend">खर्च करने लायक</string>
+    <string name="per_day_left">%1$s प्रतिदिन · %2$d दिन बाकी</string>
+    <string name="say_it">खर्च बोलें</string>
+    <string name="added">आपके फ़ोन पर जोड़ा गया</string>
+    <string name="not_understood">कोई राशि समझ नहीं आई</string>
+    <string name="no_phone">फ़ोन कनेक्ट नहीं है। आखिरी पता आंकड़ा दिखाया जा रहा है।</string>
+</resources>

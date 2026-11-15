@@ -1,5 +1,6 @@
 package app.penny.ui.tx
 
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -88,6 +89,7 @@ import app.penny.ui.kit.parseAmount
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ActivityScreen(initialFilter: String?, onBack: () -> Unit, onOpen: (String) -> Unit, focusSearch: Boolean = false) {
+    val searchFocus = androidx.compose.runtime.remember { androidx.compose.ui.focus.FocusRequester() }
     WithBook { ctx, vm ->
         val b = ctx.book
         val context = LocalContext.current
@@ -138,8 +140,10 @@ fun ActivityScreen(initialFilter: String?, onBack: () -> Unit, onOpen: (String) 
                                 query, { query = it }, placeholder = { Text(stringResource(R.string.search_hint)) }, singleLine = true,
                                 leadingIcon = { Icon(Icons.Outlined.Search, null) },
                                 trailingIcon = { if (query.isNotEmpty()) IconButton(onClick = { query = "" }) { Icon(Icons.Outlined.Close, stringResource(R.string.clear)) } },
-                                modifier = Modifier.fillMaxWidth().padding(end = 8.dp), shape = MaterialTheme.shapes.extraLarge,
+                                modifier = Modifier.fillMaxWidth().padding(end = 8.dp).focusRequester(searchFocus), shape = MaterialTheme.shapes.extraLarge,
                             )
+                            // Opened from Home's search button: put the cursor in the field and show the keyboard.
+                            androidx.compose.runtime.LaunchedEffect(Unit) { if (focusSearch) runCatching { searchFocus.requestFocus() } }
                         },
                         navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back)) } },
                     )
@@ -191,7 +195,11 @@ fun ActivityScreen(initialFilter: String?, onBack: () -> Unit, onOpen: (String) 
                 }
                 if (showFilters) item { FilterPanel(ctx, filter, ::setFilter) }
                 item {
-                    val spend = hits.sumOf { if (it.tx.type == TxType.EXPENSE) it.tx.amountMinor else if (it.tx.type == TxType.REFUND) -it.tx.amountMinor else 0 }
+                    // In the book's currency: rows in other currencies are converted (rows without a rate are left out).
+                    val spend = hits.sumOf { r ->
+                        val sign = when (r.tx.type) { TxType.EXPENSE -> 1L; TxType.REFUND -> -1L; else -> 0L }
+                        if (sign == 0L) 0L else sign * (ctx.book.fx.convert(r.tx.amountMinor, r.tx.currency, ctx.base, r.tx.date) ?: 0L)
+                    }
                     Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 6.dp)) {
                         Text(pluralStringResource(R.plurals.results_n, hits.size, hits.size), style = MaterialTheme.typography.labelLarge, modifier = Modifier.weight(1f))
                         MoneyLabel(stringResource(R.string.spent_x, ctx.money(spend)), style = MaterialTheme.typography.labelLarge)

@@ -58,11 +58,12 @@ class PhoneWearService : WearableListenerService() {
             when (event.path) {
                 WearPaths.ADD_TEMPLATE -> {
                     val id = String(event.data)
-                    b.templates.firstOrNull { it.state.id == id }?.let { t ->
+                    // Reply "ok" only when something was saved; an empty reply makes the watch say it could not add.
+                    val saved = b.templates.firstOrNull { it.state.id == id }?.let { t ->
                         val tx = b.fromTemplate(t.value).copy(source = "watch")
-                        if (tx.amountMinor > 0 && tx.accountId.isNotEmpty()) repo.saveTransaction(b, null, tx)
-                    }
-                    reply(event.sourceNodeId, WearPaths.ADDED, "ok")
+                        if (tx.amountMinor > 0 && tx.accountId.isNotEmpty()) runCatching { repo.saveTransaction(b, null, tx) }.isSuccess else false
+                    } ?: false
+                    reply(event.sourceNodeId, WearPaths.ADDED, if (saved) "ok" else "")
                 }
                 WearPaths.ADD_VOICE -> {
                     val r = VoiceGrammar(b.profile.baseCurrency, b.today(), b.categories.associate { it.value.name.lowercase() to it.state.id }, b.accounts.associate { it.value.name.lowercase() to it.state.id })
@@ -81,10 +82,12 @@ class PhoneWearService : WearableListenerService() {
             }
             // Every exchange refreshes the watch summary.
             val s = b.safeToSpend(b.period())
+            // Same rule as the widgets: amounts stay off the watch when hidden or when the app lock is on.
+            val hidden = prefs.appearance.value.hideAmounts || prefs.security.value.lockEnabled
             val summary = WearSummary(
-                ready.fmt.format(s.safeMinor, b.profile.baseCurrency), ready.fmt.format(s.perDayMinor, b.profile.baseCurrency), s.daysLeft + 1,
-                b.templates.filter { it.value.favourite }.take(8).map { WearTemplate(it.state.id, it.value.name, it.value.amountMinor?.let { a -> ready.fmt.format(a, it.value.currency) }) },
-                hidden = prefs.appearance.value.hideAmounts,
+                if (hidden) "" else ready.fmt.format(s.safeMinor, b.profile.baseCurrency), if (hidden) "" else ready.fmt.format(s.perDayMinor, b.profile.baseCurrency), s.daysLeft + 1,
+                b.templates.filter { it.value.favourite }.take(8).map { WearTemplate(it.state.id, it.value.name, if (hidden) null else it.value.amountMinor?.let { a -> ready.fmt.format(a, it.value.currency) }) },
+                hidden = hidden,
             )
             reply(event.sourceNodeId, WearPaths.SUMMARY, json.encodeToString(WearSummary.serializer(), summary))
         }

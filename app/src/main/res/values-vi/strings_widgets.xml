@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">Xem nhanh số tiền có thể chi</string>
+    <string name="widget_quick_desc">Thêm giao dịch hoặc dùng mẫu chỉ với một chạm</string>
+    <string name="widget_envelopes_desc">Phong bì và hóa đơn sắp tới</string>
+    <string name="widget_safe_label">Có thể chi</string>
+    <string name="widget_quick_label">Thêm nhanh</string>
+    <string name="widget_envelopes_label">Ngân sách</string>
+    <string name="shortcut_add">Thêm</string>
+    <string name="tile_label">Thêm vào Penny</string>
+</resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exchange_rates">為替レート</string>
+    <string name="rates_body">Penny は各取引の日付のレートで換算します。参考レートは Wi-Fi 接続時にダウンロードされ、端末に保存されます。ご自身で設定したレートが常に優先されます。</string>
+    <string name="rates_updated">参考レート（%1$s まで）</string>
+    <string name="rates_never">参考レートはまだダウンロードされていません</string>
+    <string name="rates_refreshed">レートを更新しました</string>
+    <string name="rates_offline">レートの取得元に接続できませんでした。Wi-Fi 接続時にもう一度お試しください。</string>
+    <string name="refresh_now">今すぐ更新</string>
+    <string name="add_manual_rate">自分のレートを追加</string>
+    <string name="your_currencies">今日の通貨</string>
+    <string name="no_rate">レートなし</string>
+    <string name="manual_rates">自分のレート</string>
+    <string name="no_manual_rates">まだありません。銀行や両替所で異なるレートが適用された場合に追加してください。</string>
+    <string name="rate_in_x">1単位あたりの %1$s での価値</string>
+    <string name="record_value">評価額を記録</string>
+    <string name="record_value_body">現在の価値はいくらですか？評価額の履歴は純資産に反映されます。</string>
+    <string name="value_recorded">評価額を記録しました</string>
+    <string name="valuations">評価額</string>
+    <string name="share_group_link">アプリがない人向けに表示を共有</string>
+    <string name="group_link_text">「%1$s」の残高（閲覧のみ、30日後に失効）：%2$s</string>
+    <string name="usage_counts">匿名の利用回数を共有</string>
+    <string name="usage_counts_hint">機能の利用回数のみで、金額、支払先、メモ、入力内容は一切含みません。初期設定はオフです。</string>
+    <string name="usage_counts_none">まだ何も集計されていません。</string>
+    <string name="consent_until">同意の期限：%1$s</string>
+    <string name="reconsent">同意を更新</string>
+    <string name="disconnect">接続を解除</string>
+    <string name="disconnected">接続を解除しました。銀行との連携と保存されたアクセス情報は削除され、口座は手動管理になりました。</string>
+    <string name="bank_needs_sync">銀行と接続するには、上で同期をオンにしてください。</string>
+    <string name="connect_with_token">セットアップトークンで接続</string>
+    <string name="connect_in_browser">プロバイダの安全なページで接続</string>
+    <string name="simplefin_help">SimpleFIN Bridge のアカウントでセットアップトークンを作成し、ここに貼り付けてください。Penny のサーバーがこれをアクセス権と交換します。トークンがこの端末に保存されることはありません。</string>
+    <string name="setup_token">セットアップトークン</string>
+    <string name="connect">接続</string>
+    <string name="bank_connected">銀行と接続しました。取引は次回の同期で届きます。</string>
+    <string name="bank_cancelled">接続をキャンセルしました。何も連携されていません。</string>
+    <plurals name="bank_synced"><item quantity="other">%d 件の取引を追加または更新しました</item></plurals>
+    <string name="automation">自動化</string>
+    <string name="automation_sub">Tasker、ショートカット、Webhook</string>
+    <string name="automation_body">Penny を自動化アプリやご自身のサービスと連携できます。Webhook のアドレスを設定しない限り、すべてこの端末内にとどまります。</string>
+    <string name="automation_apps">自動化アプリ</string>
+    <string name="allow_automation_apps">自動化アプリによる取引の追加を許可</string>
+    <string name="allow_automation_hint">Tasker、Automate などのアプリはインテントで取引を追加できます。データを読み取ることはできません。</string>
+    <string name="deep_link_example">または、任意のアプリやショートカットから penny://add?amount=1250&amp;category=Groceries を開きます（金額は最小単位）。</string>
+    <string name="webhooks">Webhook</string>
+    <string name="webhooks_body">新しい取引をそれぞれ署名付き JSON としてご自身のサーバーに送信します。ご自身が管理するアドレスのみを使用してください。</string>
+    <string name="webhook_url">Webhook アドレス（https）</string>
+    <string name="https_only">https のアドレスのみ使用できます</string>
+    <string name="signing_secret">署名シークレット（X-Penny-Signature ヘッダーを検証）：</string>
+    <string name="create_secret">シークレットを作成</string>
+    <string name="new_secret">新しいシークレット</string>
+    <string name="copy">コピー</string>
+    <string name="send_now">今すぐ送信</string>
+    <plurals name="webhook_sent"><item quantity="other">%d 件の取引を送信しました</item></plurals>
+    <string name="ob_get_started">はじめる</string>
+    <string name="ob_sample">サンプルデータで試す</string>
+    <string name="ob_point_safe">落ち着いて見られる1つの数字：給料日まで使えるお金</string>
+    <string name="ob_point_world">どの通貨、どの給与サイクルにも対応。実際のお金の使い方に合わせます</string>
+    <string name="ob_point_private">設計からプライベート：データは端末内に、エンドツーエンドで暗号化</string>
+    <string name="ob_point_free">すべての機能が無料。広告、ローン、データ販売はありません</string>
+    <string name="no_income_yet">この期間の収入はまだ記録されていません</string>
+    <string name="spent_more_than_income">支出がこの期間の収入を上回っています</string>
+    <string name="get_address">転送用アドレスを取得</string>
+    <string name="new_address">新しいアドレス</string>
+    <string name="turn_off">オフにする</string>
+    <string name="email_forwarding_privacy">注文、配車、フードデリバリーの領収書をこのアドレスに転送してください。サーバーは各メールをすぐにこの端末向けに暗号化し、Penny がここで読み取った後に削除します。</string>
+    <string name="community_merchants">コミュニティの店舗名</string>
+    <string name="community_merchants_hint">支払先名とカテゴリ（金額は含みません）を同じ地域の人と匿名で共有し、整った店舗名を受け取ります。初期設定はオフです。</string>
+</resources>

@@ -114,7 +114,7 @@ fun ReviewScreen(onBack: () -> Unit, cvm: CaptureViewModel = hiltViewModel()) {
                     PennyCard {
                         Column(Modifier.padding(vertical = 8.dp)) {
                             Row(Modifier.padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically) {
-                                Pill(item.value.source.substringBefore(':').replaceFirstChar(Char::uppercase) + " · " + item.value.sourceDetail.substringAfterLast('.'))
+                                Pill(stringResource(when (item.value.source.substringBefore(':')) { "notification" -> R.string.source_notification; "share" -> R.string.source_share; "email" -> R.string.source_email; else -> R.string.source_other }) + " · " + item.value.sourceDetail.substringAfterLast('.'))
                                 Spacer(Modifier.weight(1f))
                                 Text(stringResource(R.string.confidence_x, item.value.confidence), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
@@ -221,12 +221,19 @@ fun ScanScreen(onBack: () -> Unit, onDone: () -> Unit) {
         val scope = rememberCoroutineScope()
         var text by rememberSaveable { mutableStateOf<String?>(null) }
         var image by rememberSaveable { mutableStateOf<String?>(null) }
-        var busy by rememberSaveable { mutableStateOf(false) }
+        // Not saveable: the OCR job dies with the composition, so a restored "busy" would spin forever.
+        var busy by remember { mutableStateOf(false) }
         var failed by rememberSaveable { mutableStateOf(false) }
         fun read(uri: Uri) {
             busy = true; failed = false; image = uri.toString()
-            scope.launch { text = Ocr.recognize(context, uri); busy = false; if (text == null) failed = true }
+            scope.launch {
+                text = runCatching { Ocr.recognize(context, uri) }.getOrNull()
+                busy = false
+                if (text == null) failed = true
+            }
         }
+        // Rotated or restored while a read was running: start it again.
+        LaunchedEffect(Unit) { val i = image; if (i != null && text == null && !failed && !busy) read(Uri.parse(i)) }
         val cameraFile = remember { File(File(context.cacheDir, "scans").apply { mkdirs() }, "scan.jpg") }
         val cameraUri = remember { FileProvider.getUriForFile(context, context.packageName + ".files", cameraFile) }
         val camera = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { ok -> if (ok) read(cameraUri) }
@@ -235,7 +242,7 @@ fun ScanScreen(onBack: () -> Unit, onDone: () -> Unit) {
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                 Text(stringResource(R.string.scan_body), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(20.dp))
                 Row(Modifier.padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    FilledTonalButton(onClick = { camera.launch(cameraUri) }) { Icon(Icons.Outlined.CameraAlt, null); Spacer(Modifier.size(8.dp)); Text(stringResource(R.string.take_photo)) }
+                    FilledTonalButton(onClick = { runCatching { camera.launch(cameraUri) }.onFailure { failed = true } }) { Icon(Icons.Outlined.CameraAlt, null); Spacer(Modifier.size(8.dp)); Text(stringResource(R.string.take_photo)) }
                     OutlinedButton(onClick = { gallery.launch(arrayOf("image/*")) }) { Icon(Icons.Outlined.Image, null); Spacer(Modifier.size(8.dp)); Text(stringResource(R.string.choose_image)) }
                 }
                 if (busy) Row(Modifier.padding(20.dp), verticalAlignment = Alignment.CenterVertically) { CircularProgressIndicator(Modifier.size(24.dp)); Spacer(Modifier.size(12.dp)); Text(stringResource(R.string.reading_receipt)) }

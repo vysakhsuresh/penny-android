@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="faq_q">
+        <item>Penny 真的免費嗎？</item>
+        <item>Penny 會讀取我的簡訊嗎？</item>
+        <item>我的資料儲存在哪裡？</item>
+        <item>「可安心花用」是什麼意思？</item>
+        <item>如何變更發薪週期？</item>
+        <item>我不小心刪除了東西，可以救回來嗎？</item>
+        <item>如何記錄借給朋友的錢？</item>
+        <item>可以和另一半共用預算嗎？</item>
+        <item>如何從其他記帳 App 轉移過來？</item>
+        <item>為什麼支付 App 的交易沒有顯示？</item>
+        <item>如何在新手機上使用 Penny？</item>
+        <item>可以使用多種貨幣嗎？</item>
+        <item>如何鎖定 App？</item>
+        <item>如何刪除我所有的資料？</item>
+    </string-array>
+    <string-array name="faq_a">
+        <item>是的。所有功能都免費。選用的 Penny Plus 只用來支付隨使用者增加的成本，例如銀行連結費用和額外儲存空間。沒有廣告，我們也絕不販售資料。</item>
+        <item>不會。Penny 絕不要求簡訊權限。它只能在你的手機上讀取你允許的支付和銀行 App 通知，你隨時都可以關閉。</item>
+        <item>加密儲存在你的手機上。如果開啟同步，資料會在離開手機前加密，伺服器儲存的是它無法讀取的資料。</item>
+        <item>指從現在到下個發薪週期，在不影響帳單和儲蓄目標的情況下可以花的錢：收入，減去尚未支付的帳單，減去預留的錢，再減去已經花掉的錢。</item>
+        <item>開啟「設定」>「帳本」>「發薪週期」。可以選擇從任何一天開始的每月、每月兩次、每週、每兩週、每四週，或「錢入帳時」。歷程記錄會重新分組，不會遺失任何內容。</item>
+        <item>可以。刪除後立即輕觸「復原」。之後可以開啟「設定」>「垃圾桶」：已刪除的項目會保留 30 天。每次變更也都記錄在「歷程記錄」中，你可以回到先前的版本。</item>
+        <item>開啟「好友」分頁，輕觸「記錄借貸」。選擇對象、金額，以及是借出還是收到。Penny 會持續記錄餘額，還可以幫你草擬一則友善的提醒讓你傳送。</item>
+        <item>可以。開啟同步後，前往「設定」>「共用空間」建立空間，然後透過連結邀請另一半。你們各自有自己的登入和角色，個人支出可以保持私密。</item>
+        <item>從舊 App 或銀行匯出 CSV，然後開啟「設定」>「資料與備份」>「匯入」。Penny 能辨識許多 App 的檔案，並在新增前顯示含重複項目的預覽。</item>
+        <item>請檢查「設定」>「自動記錄」：必須開啟「讀取付款通知」，而且在手機設定中允許 Penny 存取通知。Penny 只會讀取你所在地區列出的 App 以及你自行新增的 App。</item>
+        <item>在舊手機上開啟同步並抄下復原詞組。在新手機上用同一個電子郵件登入並輸入詞組。也可以從你的資料夾還原備份檔。</item>
+        <item>可以。每個帳戶都有自己的貨幣。總計會依交易日期的匯率換算成你的主要貨幣，沒有匯率的項目會如實顯示，絕不猜測。</item>
+        <item>開啟「設定」>「安全性」>「App 鎖定」。設定 PIN 碼，並允許使用指紋或臉部辨識。你也可以封鎖螢幕截圖，並選擇 App 多久後重新鎖定。</item>
+        <item>開啟「設定」>「資料與備份」>「刪除這支手機上的所有資料」。如果有開啟同步，也請在「同步與銀行」中刪除同步帳號。如果可能還需要某些內容，請先匯出。</item>
+    </string-array>
+
+    <string-array name="guide_start">
+        <item>選擇你的地區。它會設定你的貨幣、數字格式和常見發薪週期。之後都可以變更。</item>
+        <item>告訴 Penny 錢什麼時候入帳。預算會依照你實際的發薪週期，而不是日曆月份。</item>
+        <item>輸入你目前的現金。銀行、錢包和卡片可以稍後在「帳戶」中新增。</item>
+        <item>輕觸加號按鈕新增一筆支出：輸入金額、選擇類別、儲存。大約只要三秒。</item>
+        <item>首頁只顯示一個數字：到下個發薪日為止可安心花用的錢。</item>
+    </string-array>
+    <string-array name="guide_safe">
+        <item>可安心花用從本週期的收入算起，包括預計會收到但尚未入帳的薪資。</item>
+        <item>扣除本週期仍需支付的帳單，以及為目標預留的錢。</item>
+        <item>再扣除已經花掉的錢。自己帳戶之間的轉帳一律不計入。</item>
+        <item>「每天」是將剩餘金額除以本週期剩下的天數。</item>
+        <item>如果支出快於日曆進度，首頁會顯示一則溫和的琥珀色提示。Penny 絕不對你的錢使用紅色。</item>
+    </string-array>
+    <string-array name="guide_budget">
+        <item>信封是每個週期為生活中某個部分（例如飲食或交通）安排的金額。</item>
+        <item>開啟「預算」並輕觸「使用範本」，或逐一新增信封。</item>
+        <item>選擇結餘的處理方式：重新開始、結轉，或結轉至上限。</item>
+        <item>如果某個信封超支，輕觸「調撥」從還有餘額的信封移入金額。此動作會被記錄，而且可以復原。</item>
+        <item>希望每一塊錢都有用途嗎？在帳本設定中開啟零基預算。</item>
+    </string-array>
+    <string-array name="guide_cycle">
+        <item>很多人按月領薪，但不一定在 1 號；也有人每兩週、每月兩次，或在工作結算時領薪。</item>
+        <item>開啟「設定」>「帳本」>「發薪週期」，選擇符合你薪資的週期。</item>
+        <item>「錢入帳時」會在每次收到超過門檻的收入時開始新週期，適合接案收入和海外家人匯來的錢。</item>
+        <item>變更週期會重新分組歷程記錄，而且可以復原。</item>
+    </string-array>
+    <string-array name="guide_capture">
+        <item>在「設定」>「自動記錄」中開啟付款通知。Penny 只會在你的手機上讀取支付和銀行 App。</item>
+        <item>可以從任何 App 將訊息、收據或對帳單分享給 Penny。</item>
+        <item>用相機掃描收據；Penny 會在手機上辨識。</item>
+        <item>用語音說出一筆交易，例如「昨天買菜 250」。</item>
+        <item>自動記錄的項目會在「待確認」中等候。同一個 App 連續十筆未經修改後，Penny 會提議自動新增。</item>
+    </string-array>
+    <string-array name="guide_people">
+        <item>在「好友」分頁記錄你借出或借入的錢。Penny 使用中性的說法：應收和應付。</item>
+        <item>可以部分還款；每次還款新增一筆紀錄即可。</item>
+        <item>群組可以平均分攤共同費用，也可以依確切金額、百分比、份數或逐項分攤。</item>
+        <item>「簡化債務」會找出讓所有人結清所需的最少付款次數。</item>
+        <item>共用空間讓一家人一起管理預算，每個人都有自己的登入和角色。</item>
+    </string-array>
+    <string-array name="guide_bills">
+        <item>每筆帳單只需新增一次，並設定重複頻率。Penny 會在可安心花用中預先保留。</item>
+        <item>帳單付清後標示為已付，系統會為你建立交易。也可以讓 Penny 自動新增。</item>
+        <item>可以只略過或變更某一次而不影響其他次，也可以變更「這次及之後」。</item>
+        <item>訂閱會顯示年度費用和漲價時間，並附上草擬好的取消訊息。</item>
+        <item>分期付款（EMI）會顯示完整還款時程，以及提前還款可省下多少利息。</item>
+    </string-array>
+    <string-array name="guide_goals">
+        <item>目標有目標金額，也可以設定日期。Penny 會顯示每個週期需要預留多少。</item>
+        <item>存錢時存入，需要時取出。</item>
+        <item>設定每個週期的自動金額，讓它計入可安心花用。</item>
+        <item>緊急預備金會依你實際的必要支出建議目標金額。</item>
+    </string-array>
+    <string-array name="guide_import">
+        <item>從銀行或先前的 App 匯出 CSV。</item>
+        <item>開啟「設定」>「資料與備份」>「從檔案匯入」。</item>
+        <item>Penny 能自動辨識許多 App；如果是銀行檔案，請檢查各欄位。</item>
+        <item>檢查預覽。可能重複的項目會被略過，除非你另行指定。</item>
+        <item>輕觸「匯入」。整次匯入可以一鍵復原。</item>
+    </string-array>
+    <string-array name="guide_undo">
+        <item>Penny 中的每項變更都可以在幾秒內用「復原」按鈕撤回。</item>
+        <item>已刪除的項目會在垃圾桶中保留 30 天。</item>
+        <item>每筆交易、每個帳戶和信封都有「歷程記錄」，記下每次變更、變更者和時間。</item>
+        <item>輕觸「回復到此版本」即可回到先前狀態。回復本身也可以復原。</item>
+    </string-array>
+    <string-array name="guide_privacy">
+        <item>你的資料存放在手機上的加密資料庫中。</item>
+        <item>同步會在傳送前於手機上加密；伺服器無法讀取你的財務資料。</item>
+        <item>Penny 不顯示廣告、不提供貸款，也不販售資料。</item>
+        <item>選用的匿名計數有助於改善 App，絕不包含金額、收款方或備註。</item>
+    </string-array>
+    <string-array name="guide_sync">
+        <item>在「設定」>「同步與銀行」中使用你的電子郵件開啟同步。</item>
+        <item>抄下 24 個單字的復原詞組。它能在新手機上開啟你的資料，並還原加密備份。</item>
+        <item>在新手機上用同一個電子郵件登入並輸入詞組。</item>
+        <item>在「資料與備份」中選擇備份資料夾，即可自動產生由你掌控的加密備份。</item>
+    </string-array>
+
+    <string-array name="about_story">
+        <item>Penny 源自一個簡單的問題：今天我能花多少錢，而不必擔心下週？</item>
+        <item>大多數記帳 App 用過去的圖表或貸款推薦來回答。我們想要的是一個讓人安心的數字，依據你真實的發薪週期、真實的帳單，以及你生活中的人。</item>
+        <item>Penny 為全世界打造：任何貨幣、任何發薪週期，貼近人們實際的用錢方式，從互助會到匯錢回家。</item>
+        <item>所有功能都免費。我們不靠廣告、貸款或你的資料賺錢，以後也不會。如果 Penny 對你有幫助，一點小費或一則好評能讓它繼續走下去。</item>
+    </string-array>
+    <string-array name="trust_never">
+        <item>我們絕不顯示廣告。</item>
+        <item>我們絕不推銷貸款、信用卡或其他金融商品。</item>
+        <item>我們絕不販售或分享你的資料。</item>
+        <item>我們絕不讀取你的簡訊。</item>
+        <item>同步時我們絕不會看到你的財務資料：資料在你的手機上就已加密。</item>
+        <item>我們絕不把功能鎖在付費牆後。Plus 只支付每位使用者的實際成本。</item>
+        <item>我們絕不用紅色來責備你的支出。</item>
+    </string-array>
+    <string-array name="changelog">
+        <item>v1.0.0</item>
+        <item>適用任何發薪週期的信封預算、結轉、目標金額和年度檢視。</item>
+        <item>目標、帳單、訂閱、分期付款（EMI）和還債規劃。</item>
+        <item>借貸、群組分帳、匯錢回家和互助會。</item>
+        <item>從付款通知、分享、收據和語音自動記錄，附待確認佇列和會學習的規則。</item>
+        <item>包含圖表、預測、淨資產和裝置端教練的分析。</item>
+        <item>端對端加密同步、共用空間、加密備份、App 鎖定。</item>
+        <item>v0.1.0</item>
+        <item>第一個版本：可安心花用，可復原並有歷程記錄的交易。</item>
+    </string-array>
+    <string-array name="licences">
+        <item>Plus Jakarta Sans — SIL Open Font License 1.1，The Plus Jakarta Sans Project Authors。</item>
+        <item>AndroidX 和 Jetpack Compose — Apache License 2.0，The Android Open Source Project。</item>
+        <item>Kotlin 和 kotlinx 程式庫 — Apache License 2.0，JetBrains。</item>
+        <item>Dagger 和 Hilt — Apache License 2.0，Google。</item>
+        <item>Room — Apache License 2.0，Google。</item>
+        <item>SQLCipher for Android — BSD 風格授權，Zetetic LLC。</item>
+        <item>Tink — Apache License 2.0，Google。</item>
+        <item>OkHttp — Apache License 2.0，Square。</item>
+        <item>ML Kit Text Recognition — ML Kit 服務條款，Google。</item>
+        <item>Material 圖示 — Apache License 2.0，Google。</item>
+    </string-array>
+</resources>

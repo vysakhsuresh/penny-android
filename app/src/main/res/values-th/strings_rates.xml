@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exchange_rates">อัตราแลกเปลี่ยน</string>
+    <string name="rates_body">Penny แปลงสกุลเงินด้วยอัตราของวันที่ในแต่ละรายการ อัตราอ้างอิงจะดาวน์โหลดผ่าน Wi-Fi และเก็บไว้ในโทรศัพท์ อัตราที่คุณกำหนดเองจะใช้ก่อนเสมอ</string>
+    <string name="rates_updated">อัตราอ้างอิงถึง %1$s</string>
+    <string name="rates_never">ยังไม่ได้ดาวน์โหลดอัตราอ้างอิง</string>
+    <string name="rates_refreshed">อัปเดตอัตราแล้ว</string>
+    <string name="rates_offline">เชื่อมต่อแหล่งอัตราไม่ได้ ลองอีกครั้งผ่าน Wi-Fi</string>
+    <string name="refresh_now">รีเฟรชตอนนี้</string>
+    <string name="add_manual_rate">เพิ่มอัตราของฉันเอง</string>
+    <string name="your_currencies">สกุลเงินของคุณวันนี้</string>
+    <string name="no_rate">ไม่มีอัตรา</string>
+    <string name="manual_rates">อัตราของคุณ</string>
+    <string name="no_manual_rates">ยังไม่มี เพิ่มได้หากธนาคารหรือร้านแลกเงินให้อัตราที่ต่างออกไป</string>
+    <string name="rate_in_x">มูลค่าหนึ่งหน่วยเป็น %1$s</string>
+    <string name="record_value">บันทึกมูลค่า</string>
+    <string name="record_value_body">วันนี้สิ่งนี้มีมูลค่าเท่าไร ประวัติมูลค่าจะใช้คำนวณความมั่งคั่งสุทธิ</string>
+    <string name="value_recorded">บันทึกมูลค่าแล้ว</string>
+    <string name="valuations">การประเมินมูลค่า</string>
+    <string name="share_group_link">แชร์มุมมองให้คนที่ไม่มีแอป</string>
+    <string name="group_link_text">ยอดคงเหลือของ “%1$s” (อ่านอย่างเดียว หมดอายุใน 30 วัน): %2$s</string>
+    <string name="usage_counts">แชร์สถิติการใช้งานแบบไม่ระบุตัวตน</string>
+    <string name="usage_counts_hint">นับเฉพาะความถี่ในการใช้ฟีเจอร์ ไม่มีจำนวนเงิน ผู้รับเงิน บันทึกย่อ หรือสิ่งที่คุณพิมพ์ ปิดไว้เป็นค่าเริ่มต้น</string>
+    <string name="usage_counts_none">ยังไม่มีการนับ</string>
+    <string name="consent_until">ยินยอมถึง %1$s</string>
+    <string name="reconsent">ต่ออายุความยินยอม</string>
+    <string name="disconnect">ยกเลิกการเชื่อมต่อ</string>
+    <string name="disconnected">ยกเลิกการเชื่อมต่อแล้ว ลิงก์ธนาคารและสิทธิ์เข้าถึงที่เก็บไว้ถูกลบแล้ว บัญชีเปลี่ยนเป็นแบบบันทึกเอง</string>
+    <string name="bank_needs_sync">เปิดการซิงค์ด้านบนเพื่อเชื่อมต่อธนาคาร</string>
+    <string name="connect_with_token">เชื่อมต่อด้วยโทเค็นการตั้งค่า</string>
+    <string name="connect_in_browser">เชื่อมต่อในหน้าที่ปลอดภัยของผู้ให้บริการ</string>
+    <string name="simplefin_help">สร้างโทเค็นการตั้งค่าในบัญชี SimpleFIN Bridge แล้ววางที่นี่ เซิร์ฟเวอร์ของ Penny จะแลกโทเค็นเป็นสิทธิ์เข้าถึง และจะไม่เก็บโทเค็นไว้ในโทรศัพท์เครื่องนี้</string>
+    <string name="setup_token">โทเค็นการตั้งค่า</string>
+    <string name="connect">เชื่อมต่อ</string>
+    <string name="bank_connected">เชื่อมต่อธนาคารแล้ว รายการจะเข้ามาในการซิงค์ครั้งถัดไป</string>
+    <string name="bank_cancelled">ยกเลิกการเชื่อมต่อแล้ว ไม่มีการเชื่อมโยงใด</string>
+    <plurals name="bank_synced"><item quantity="other">เพิ่มหรืออัปเดต %d รายการ</item></plurals>
+    <string name="automation">ระบบอัตโนมัติ</string>
+    <string name="automation_sub">Tasker ทางลัด และเว็บฮุก</string>
+    <string name="automation_body">เชื่อมต่อ Penny กับแอประบบอัตโนมัติและบริการของคุณเอง ทุกอย่างอยู่ในโทรศัพท์เครื่องนี้ เว้นแต่คุณตั้งที่อยู่เว็บฮุก</string>
+    <string name="automation_apps">แอประบบอัตโนมัติ</string>
+    <string name="allow_automation_apps">อนุญาตให้แอประบบอัตโนมัติเพิ่มรายการ</string>
+    <string name="allow_automation_hint">Tasker, Automate และแอปที่คล้ายกันเพิ่มรายการได้ด้วย intent แต่จะอ่านข้อมูลของคุณไม่ได้</string>
+    <string name="deep_link_example">หรือเปิด penny://add?amount=1250&amp;category=Groceries จากแอปหรือทางลัดใดก็ได้ (จำนวนเงินเป็นหน่วยย่อย)</string>
+    <string name="webhooks">เว็บฮุก</string>
+    <string name="webhooks_body">ส่งรายการใหม่แต่ละรายการไปยังเซิร์ฟเวอร์ของคุณเป็น JSON ที่ลงนามแล้ว ใช้เฉพาะที่อยู่ที่คุณควบคุม</string>
+    <string name="webhook_url">ที่อยู่เว็บฮุก (https)</string>
+    <string name="https_only">อนุญาตเฉพาะที่อยู่ https</string>
+    <string name="signing_secret">รหัสลับสำหรับลงนาม (ตรวจสอบส่วนหัว X-Penny-Signature):</string>
+    <string name="create_secret">สร้างรหัสลับ</string>
+    <string name="new_secret">รหัสลับใหม่</string>
+    <string name="copy">คัดลอก</string>
+    <string name="send_now">ส่งตอนนี้</string>
+    <plurals name="webhook_sent"><item quantity="other">ส่ง %d รายการแล้ว</item></plurals>
+    <string name="ob_get_started">เริ่มต้นใช้งาน</string>
+    <string name="ob_sample">ลองใช้กับข้อมูลตัวอย่าง</string>
+    <string name="ob_point_safe">ตัวเลขเดียวที่ชัดเจน: ใช้จ่ายได้เท่าไรจนถึงวันเงินเดือนออก</string>
+    <string name="ob_point_world">ทุกสกุลเงิน ทุกรอบรายได้ ตามวิธีจัดการเงินจริงของคุณ</string>
+    <string name="ob_point_private">ออกแบบให้เป็นส่วนตัว: อยู่ในโทรศัพท์ เข้ารหัสตั้งแต่ต้นทางถึงปลายทาง</string>
+    <string name="ob_point_free">ทุกฟีเจอร์ใช้ฟรี ไม่มีโฆษณา ไม่มีสินเชื่อ ไม่ขายข้อมูล</string>
+    <string name="no_income_yet">ยังไม่มีรายรับในรอบนี้</string>
+    <string name="spent_more_than_income">รายจ่ายสูงกว่ารายรับของรอบนี้</string>
+    <string name="get_address">รับที่อยู่สำหรับส่งต่ออีเมล</string>
+    <string name="new_address">ที่อยู่ใหม่</string>
+    <string name="turn_off">ปิด</string>
+    <string name="email_forwarding_privacy">ส่งต่อใบเสร็จการสั่งซื้อ การเดินทาง และอาหารมาที่อยู่นี้ เซิร์ฟเวอร์จะเข้ารหัสอีเมลแต่ละฉบับถึงโทรศัพท์เครื่องนี้ทันที และลบทิ้งเมื่อ Penny อ่านที่นี่แล้ว</string>
+    <string name="community_merchants">ชื่อร้านค้าจากชุมชน</string>
+    <string name="community_merchants_hint">แชร์ชื่อผู้รับเงินและหมวดหมู่ (ไม่รวมจำนวนเงิน) แบบไม่ระบุตัวตนกับผู้ใช้ในภูมิภาคเดียวกัน และรับชื่อที่เรียบร้อยกลับมา ปิดไว้เป็นค่าเริ่มต้น</string>
+</resources>

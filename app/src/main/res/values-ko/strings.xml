@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tagline">쓸 수 있는 돈을 한눈에 알아보세요.</string>
+
+    <!-- Common -->
+    <string name="save">저장</string>
+    <string name="cancel">취소</string>
+    <string name="delete">삭제</string>
+    <string name="undo">실행 취소</string>
+    <string name="restore">복원</string>
+    <string name="retry">다시 시도</string>
+    <string name="back">뒤로</string>
+    <string name="next">다음</string>
+    <string name="skip">건너뛰기</string>
+    <string name="done">완료</string>
+    <string name="none">없음</string>
+    <string name="loading">불러오는 중</string>
+    <string name="error_generic">데이터를 읽는 중에 문제가 생겼어요. 잃어버린 데이터는 없어요.</string>
+
+    <!-- Onboarding (OB-01) -->
+    <string name="ob_step">%2$d단계 중 %1$d단계</string>
+    <string name="ob_region_title">어디에 사세요?</string>
+    <string name="ob_region_body">통화, 숫자 형식, 일반적인 급여 주기가 설정돼요. 모두 나중에 바꿀 수 있어요.</string>
+    <string name="ob_cycle_title">돈은 언제 들어오나요?</string>
+    <string name="ob_cycle_body">예산은 실제 급여 주기에 맞춰 움직여요.</string>
+    <string name="ob_account_title">지금 현금이 얼마나 있나요?</string>
+    <string name="ob_account_body">현금 계좌 하나로 시작해요. 은행과 카드는 나중에 추가하세요.</string>
+    <string name="ob_cash_name">현금</string>
+    <string name="ob_finish">%1$s 시작하기</string>
+
+    <!-- Cycles -->
+    <string name="cycle_monthly">매월 %1$d일부터</string>
+    <string name="cycle_monthly_last">매월 말일부터</string>
+    <string name="cycle_semimonthly">한 달에 두 번, %1$d일과 말일</string>
+    <string name="cycle_weekly">매주</string>
+    <string name="cycle_biweekly">2주마다</string>
+    <string name="cycle_fourweekly">4주마다</string>
+    <string name="cycle_quarterly">분기마다</string>
+    <string name="cycle_yearly">매년</string>
+    <string name="cycle_onincome">돈이 들어올 때</string>
+    <string name="cycle_default_suffix">%1$s (이 지역에서 일반적)</string>
+    <string name="cycle_start_day">월 시작일</string>
+
+    <!-- Home -->
+    <string name="safe_to_spend">쓸 수 있는 돈</string>
+    <string name="per_day">하루 %1$s</string>
+    <string name="on_pace">순조로워요</string>
+    <string name="ahead_of_pace">지출이 날짜보다 빠르게 늘고 있어요</string>
+    <string name="period_range">%1$s – %2$s</string>
+    <string name="prev_period">이전 기간</string>
+    <string name="next_period">다음 기간</string>
+    <string name="this_period">이번 기간으로</string>
+    <string name="income_spent">수입 %1$s · 지출 %2$s</string>
+    <string name="accounts">계좌</string>
+    <string name="transactions">거래</string>
+    <string name="empty_period_title">이 기간에는 아직 거래가 없어요</string>
+    <string name="empty_period_body">추가를 눌러 첫 거래를 기록하세요.</string>
+    <string name="add_transaction">거래 추가</string>
+    <string name="trash">휴지통</string>
+    <string name="settings">설정</string>
+    <string name="today">오늘</string>
+    <string name="yesterday">어제</string>
+    <string name="deleted_tx">거래를 삭제했어요</string>
+    <string name="saved_tx">거래를 저장했어요</string>
+    <string name="uncategorised">미분류</string>
+    <string name="transfer_to">%1$s(으)로</string>
+    <string name="swipe_delete_hint">왼쪽으로 밀어서 삭제</string>
+
+    <!-- Transaction form (TX-02) -->
+    <string name="new_transaction">새 거래</string>
+    <string name="edit_transaction">거래 수정</string>
+    <string name="type_expense">지출</string>
+    <string name="type_income">수입</string>
+    <string name="type_transfer">이체</string>
+    <string name="type_refund">환불</string>
+    <string name="type_adjustment">조정</string>
+    <string name="type_opening">시작 잔액</string>
+    <string name="field_type">유형</string>
+    <string name="field_amount">금액</string>
+    <string name="field_amount_hint">+ − × ÷ 로 계산할 수 있어요</string>
+    <string name="amount_result">= %1$s</string>
+    <string name="amount_rounded">= %1$s (반올림)</string>
+    <string name="field_currency">통화</string>
+    <string name="field_account">계좌</string>
+    <string name="field_to_account">받는 계좌</string>
+    <string name="field_to_amount">받은 금액</string>
+    <string name="field_category">카테고리</string>
+    <string name="field_payee">거래처</string>
+    <string name="field_date">날짜</string>
+    <string name="field_time">시간</string>
+    <string name="field_no_time">시간 없음</string>
+    <string name="field_note">메모</string>
+    <string name="field_tags">태그</string>
+    <string name="field_tags_hint">쉼표로 구분하세요</string>
+    <string name="field_status">상태</string>
+    <string name="status_pending">대기 중</string>
+    <string name="status_cleared">확정됨</string>
+    <string name="status_reconciled">대사 완료</string>
+    <string name="field_direction">방향</string>
+    <string name="direction_in">잔액에 더하기</string>
+    <string name="direction_out">잔액에서 빼기</string>
+    <string name="field_private">비공개</string>
+    <string name="field_private_body">공유 스페이스의 다른 사람에게 거래처, 메모, 첨부 파일을 숨겨요</string>
+    <string name="field_exclude_budget">예산에서 제외</string>
+    <string name="field_exclude_reports">보고서에서 제외</string>
+    <string name="field_splits">분할</string>
+    <string name="field_attachments">첨부 파일</string>
+    <string name="future_scheduled">미래 날짜예요. 예정된 거래로 계산돼요.</string>
+    <string name="history">기록</string>
+    <string name="pick_date">날짜 선택</string>
+    <string name="pick_time">시간 선택</string>
+    <string name="clear_time">시간 지우기</string>
+
+    <!-- Validation (TX-08) -->
+    <string name="err_amount_empty">금액을 입력하세요</string>
+    <string name="err_amount_invalid">올바른 금액이 아니에요</string>
+    <string name="err_amount_positive">금액은 0보다 커야 해요. 수입인지 지출인지는 유형으로 정해져요.</string>
+    <string name="err_amount_decimals_none">%1$s에는 소수점이 없어요</string>
+    <string name="err_amount_decimals">%1$s은(는) 소수점 이하 %2$d자리까지 쓸 수 있어요</string>
+    <string name="err_amount_large">금액이 너무 커요</string>
+    <string name="err_divide_zero">0으로 나눌 수 없어요</string>
+    <string name="err_account_required">계좌를 선택하세요</string>
+    <string name="err_transfer_target">돈을 받을 계좌를 선택하세요</string>
+    <string name="err_transfer_same">다른 계좌를 받는 계좌로 선택하세요</string>
+    <string name="err_transfer_to_amount">다른 통화로 받은 금액을 입력하세요</string>
+    <string name="err_direction">더할지 뺄지 선택하세요</string>
+    <string name="err_splits">분할 금액의 합이 총액과 같아야 해요</string>
+    <string name="tx_not_found">이 거래는 더 이상 없어요.</string>
+
+    <!-- History (TX-05) -->
+    <string name="history_title">기록</string>
+    <string name="history_created">생성됨</string>
+    <string name="history_edited">수정됨</string>
+    <string name="history_deleted">삭제됨</string>
+    <string name="history_restored">복원됨</string>
+    <string name="history_undo">실행 취소됨</string>
+    <string name="history_reverted">버전 %1$d(으)로 되돌림</string>
+    <string name="history_version">버전 %1$d</string>
+    <string name="history_by">%1$s · %2$s</string>
+    <string name="history_you">나</string>
+    <string name="history_revert">이 버전으로 되돌리기</string>
+    <string name="history_change">%1$s: %2$s → %3$s</string>
+    <string name="history_set">%1$s: %2$s</string>
+    <string name="history_empty">아직 기록된 변경이 없어요.</string>
+    <string name="reverted">되돌렸어요</string>
+
+    <!-- Trash (TX-03, HS-02) -->
+    <string name="trash_title">휴지통</string>
+    <string name="trash_body">삭제한 거래는 30일 동안 여기에 보관돼요.</string>
+    <string name="trash_empty">휴지통이 비어 있어요</string>
+    <string name="delete_forever">영구 삭제</string>
+    <string name="restored">복원했어요</string>
+    <string name="deleted_forever">영구 삭제했어요</string>
+
+    <!-- Settings -->
+    <string name="settings_region">지역</string>
+    <string name="settings_region_body">통화, 숫자 형식, 급여 주기는 지역을 따라요. 기존 거래는 원래 통화를 유지해요.</string>
+    <string name="settings_sample">예: %1$s</string>
+    <string name="region_changed">지역을 %1$s(으)로 바꿨어요</string>
+    <string name="settings_cycle">급여 주기</string>
+    <string name="settings_about">%1$s은(는) 무료예요. 광고, 대출, 데이터 판매가 없어요.</string>
+
+    <plurals name="days_left">
+        <item quantity="other">%d일 남음</item>
+    </plurals>
+    <plurals name="unconverted">
+        <item quantity="other">다른 통화로 된 거래 %d건은 아직 계산되지 않았어요</item>
+    </plurals>
+    <plurals name="trash_count">
+        <item quantity="other">%d개 항목</item>
+    </plurals>
+</resources>

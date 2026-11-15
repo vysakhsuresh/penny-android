@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">Lihat sekilas yang aman dibelanjakan</string>
+    <string name="widget_quick_desc">Tambah transaksi atau jalankan template dengan satu ketukan</string>
+    <string name="widget_envelopes_desc">Amplop dan tagihan mendatang</string>
+    <string name="widget_safe_label">Aman dibelanjakan</string>
+    <string name="widget_quick_label">Tambah cepat</string>
+    <string name="widget_envelopes_label">Anggaran</string>
+    <string name="shortcut_add">Tambah</string>
+    <string name="tile_label">Tambah ke Penny</string>
+</resources>

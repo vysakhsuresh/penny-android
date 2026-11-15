@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Penny</string>
+    <string name="safe_to_spend">Disponible à dépenser</string>
+    <string name="per_day_left">%1$s par jour · %2$d jours restants</string>
+    <string name="say_it">Dicter une dépense</string>
+    <string name="added">Ajoutée sur votre téléphone</string>
+    <string name="not_understood">Aucun montant compris</string>
+    <string name="no_phone">Téléphone non connecté. Dernier montant connu affiché.</string>
+</resources>

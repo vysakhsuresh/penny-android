@@ -1,5 +1,6 @@
 package app.penny.ui.settings
 
+import app.penny.ui.common.safeStart
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
@@ -207,7 +208,14 @@ fun ProfileSettingsScreen(onBack: () -> Unit, onDeleted: () -> Unit, onRates: ()
                 SwitchRow(stringResource(R.string.business_book), p.business != null, { on -> save(p.copy(business = if (on) BusinessSettings() else null, kind = if (on) ProfileKind.BUSINESS else ProfileKind.PERSONAL)) }, subtitle = stringResource(R.string.business_book_hint))
                 p.business?.let { bs ->
                     SwitchRow(stringResource(R.string.mileage), bs.mileage, { save(p.copy(business = bs.copy(mileage = it))) })
-                    TextInput((bs.vatRateBp / 100.0).toString(), { v -> v.replace(',', '.').toBigDecimalOrNull()?.let { save(p.copy(business = bs.copy(vatRateBp = it.multiply(java.math.BigDecimal(100)).toInt()))) } }, stringResource(R.string.vat_rate_pct), keyboard = KeyboardType.Decimal)
+                    // Local text; committed when the value parses and the user pauses, so typing does not write an event per key.
+                    var vat by rememberSaveable(bs.vatRateBp) { mutableStateOf(java.math.BigDecimal(bs.vatRateBp).movePointLeft(2).stripTrailingZeros().toPlainString()) }
+                    TextInput(vat, { vat = it }, stringResource(R.string.vat_rate_pct), keyboard = KeyboardType.Decimal)
+                    androidx.compose.runtime.LaunchedEffect(vat) {
+                        kotlinx.coroutines.delay(800)
+                        val bp = vat.replace(',', '.').toBigDecimalOrNull()?.movePointRight(2)?.toInt()?.takeIf { it in 0..10_000 } ?: return@LaunchedEffect
+                        if (bp != bs.vatRateBp) save(p.copy(business = bs.copy(vatRateBp = bp)))
+                    }
                 }
                 SectionHeader(stringResource(R.string.language))
                 Text(stringResource(R.string.language_body), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(horizontal = 20.dp))
@@ -215,7 +223,7 @@ fun ProfileSettingsScreen(onBack: () -> Unit, onDeleted: () -> Unit, onRates: ()
                     // ST-10: per-app language through the system (Android 13+) or app settings, independent of region.
                     val i = if (Build.VERSION.SDK_INT >= 33) android.content.Intent(android.provider.Settings.ACTION_APP_LOCALE_SETTINGS, android.net.Uri.parse("package:" + context.packageName))
                     else android.content.Intent(android.provider.Settings.ACTION_LOCALE_SETTINGS)
-                    runCatching { context.startActivity(i) }
+                    context.safeStart(i)
                 }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.change_language)) }
                 SectionHeader(stringResource(R.string.danger_zone))
                 TextButton(onClick = { deleting = true }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.delete_profile), color = MaterialTheme.colorScheme.error) }
@@ -229,6 +237,8 @@ fun ProfileSettingsScreen(onBack: () -> Unit, onDeleted: () -> Unit, onRates: ()
                 vm.launch {
                     val pid = currentProfileId.value ?: return@launch
                     store.eraseProfile(pid)
+                    // Stop syncing it here, or the next sync would pull later edits from other devices into a hidden half-book.
+                    runCatching { app.penny.domain.syncManager(vm.context).forgetStream(pid) }
                     // Open another profile on this device if there is one; the Profiles screen sends to onboarding otherwise.
                     val remaining = dao.observeAllOf(app.penny.core.event.Entities.PROFILE).first().map { it.id }.filter { it != pid && it != prefs.security.value.duressProfileId }
                     prefs.setCurrentProfile(remaining.firstOrNull())
@@ -311,11 +321,12 @@ fun ProfilesScreen(onBack: () -> Unit, onSwitched: () -> Unit, onNone: () -> Uni
                 confirmButton = {
                     TextButton(enabled = name.isNotBlank(), onClick = {
                         adding = false
+                        // Navigate only after the profile exists: leaving first would cancel this screen's scope mid-write.
                         vm.launch {
                             val pid = createProfile(anyPack, name.trim(), baseCycle, kind, vm.context.getString(R.string.ob_cash_name), 0)
                             prefs.setCurrentProfile(pid)
+                            kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) { onSwitched() }
                         }
-                        onSwitched()
                     }) { Text(stringResource(R.string.create)) }
                 },
                 dismissButton = { TextButton(onClick = { adding = false }) { Text(stringResource(R.string.cancel)) } },
@@ -383,7 +394,7 @@ fun AlertSettingsScreen(onBack: () -> Unit) {
                 SectionHeader(stringResource(R.string.watchlists), action = stringResource(R.string.add), onAction = { watch = true })
                 if (ctx.book.watchlists.isEmpty()) Text(stringResource(R.string.watchlists_hint), style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 20.dp))
                 ctx.book.watchlists.forEach { w ->
-                    ListRow(w.value.value, subtitle = w.value.target.name.lowercase(), trailingText = ctx.money(w.value.limitMinor, w.value.currency),
+                    ListRow(w.value.value, subtitle = stringResource(watchTargetLabel(w.value.target)), trailingText = ctx.money(w.value.limitMinor, w.value.currency),
                         trailing = { TextButton(onClick = { vm.act(R.string.deleted) { watchlists.delete(w.state.id) } }) { Text(stringResource(R.string.delete)) } }, divider = true)
                 }
             }
@@ -402,7 +413,7 @@ fun AlertSettingsScreen(onBack: () -> Unit) {
                 onDismissRequest = { watch = false }, title = { Text(stringResource(R.string.add_watchlist)) },
                 text = {
                     Column {
-                        Segmented(WatchTarget.entries.map { Choice(it, it.name.lowercase().replaceFirstChar(Char::uppercase)) }, target, { target = it })
+                        Segmented(WatchTarget.entries.map { Choice(it, stringResource(watchTargetLabel(it))) }, target, { target = it })
                         TextInput(value, { value = it }, stringResource(R.string.value))
                         AmountInput(limit, { limit = it }, ctx.base, ctx.fmt, stringResource(R.string.limit_per_period))
                     }
@@ -446,7 +457,15 @@ fun SecurityScreen(onBack: () -> Unit) {
         pinDialog?.let { which ->
             var pin by rememberSaveable { mutableStateOf("") }
             var pin2 by rememberSaveable { mutableStateOf("") }
-            val ok = pin.length >= 4 && pin == pin2 && pin.all(Char::isDigit)
+            // PBKDF2 is deliberately slow: check "duress equals real PIN" off the main thread, after typing pauses.
+            var same by androidx.compose.runtime.remember { mutableStateOf(false) }
+            androidx.compose.runtime.LaunchedEffect(pin, which) {
+                same = false
+                if (which != "duress" || s.pinHash.isEmpty() || pin.length < 4) return@LaunchedEffect
+                kotlinx.coroutines.delay(300)
+                same = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) { PinHasher.verify(pin, s.pinHash) }
+            }
+            val ok = pin.length >= 4 && pin == pin2 && pin.all(Char::isDigit) && !same
             AlertDialog(
                 onDismissRequest = { pinDialog = null },
                 title = { Text(stringResource(if (which == "pin") R.string.set_pin else R.string.set_duress_pin)) },
@@ -454,14 +473,15 @@ fun SecurityScreen(onBack: () -> Unit) {
                     Column {
                         OutlinedTextField(pin, { pin = it.take(12) }, label = { Text(stringResource(R.string.pin)) }, singleLine = true, keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(keyboardType = KeyboardType.NumberPassword), visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation())
                         OutlinedTextField(pin2, { pin2 = it.take(12) }, label = { Text(stringResource(R.string.repeat_pin)) }, singleLine = true, keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(keyboardType = KeyboardType.NumberPassword), visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation())
-                        if (which == "duress" && s.pinHash.isNotEmpty() && pin.isNotEmpty() && PinHasher.verify(pin, s.pinHash)) Text(stringResource(R.string.duress_same), color = MaterialTheme.colorScheme.error)
+                        if (same) Text(stringResource(R.string.duress_same), color = MaterialTheme.colorScheme.error)
                     }
                 },
                 confirmButton = {
                     TextButton(enabled = ok, onClick = {
-                        val h = PinHasher.hash(pin)
-                        if (which == "pin") vm.prefs.setSecurity(s.copy(pinHash = h, lockEnabled = true))
-                        else vm.launch {
+                        val typed = pin
+                        vm.launch {
+                            val h = PinHasher.hash(typed)
+                            if (which == "pin") { prefs.setSecurity(prefs.security.value.copy(pinHash = h, lockEnabled = true)); return@launch }
                             // SE-05: the decoy book has plausible sample data and is never listed.
                             val decoy = s.duressProfileId ?: createProfile(packs.get(ctx.book.profile.regionPack), ctx.book.profile.name, ctx.book.profile.cycle, ProfileKind.PERSONAL, context.getString(R.string.ob_cash_name), 0, decoy = true).also { pid ->
                                 app.penny.domain.SampleData.seed(this, pid)
@@ -475,4 +495,10 @@ fun SecurityScreen(onBack: () -> Unit) {
             )
         }
     }
+}
+
+private fun watchTargetLabel(t: WatchTarget): Int = when (t) {
+    WatchTarget.PAYEE -> R.string.field_payee
+    WatchTarget.TAG -> R.string.field_tags
+    WatchTarget.CATEGORY -> R.string.field_category
 }

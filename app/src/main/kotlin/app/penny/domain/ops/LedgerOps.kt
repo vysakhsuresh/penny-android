@@ -57,8 +57,8 @@ data class SaveResult(val id: String, val group: String, val duplicates: List<St
  * Creates or updates a transaction (TX-02): links the payee entity, records a learning signal when the category of an
  * existing payee is corrected (RU-03), and reports duplicates (TX-10) so the UI can offer "Keep both / Merge".
  */
-suspend fun PennyRepository.saveTransaction(book: Book, id: String?, tx: Transaction, applyRules: Boolean = false): SaveResult {
-    val g = transactions.newGroup()
+suspend fun PennyRepository.saveTransaction(book: Book, id: String?, tx: Transaction, applyRules: Boolean = false, group: String? = null): SaveResult {
+    val g = group ?: transactions.newGroup()
     var t = tx
     if (applyRules) t = RuleEngine.apply(t, book.rules.map { it.state.id to it.value }, RuleContext(accountName = book::accountName)).tx
     val payeeId = ensurePayee(book, t.payee, g)

@@ -41,3 +41,18 @@ Decisions not covered by `docs/SPEC.md`, chosen by the rule in SPEC §0.7 (free,
 32. **Wear OS app shares the phone app id** and talks only to the paired phone over the Data Layer; it stores nothing but the last summary.
 33. **Translations are machine drafts** in 30 languages (LO-01 allows this before native review). Strings added after the translation pass fall back to English until the next pass.
 34. **Trash auto-purges after 30 days** in the daily worker; purge before that waits behind the 5-second undo.
+
+### 2026-11-16 — system bug sweep
+35. **The app lock is an overlay above navigation**, not a replacement for it, so locking never loses the back stack, a half-filled form or a pending camera/file result. Unlock state is process-scoped: after process death Penny always starts locked. PIN back-off (failures and lockout end) is persisted.
+36. **Failed writes never show success.** `act` and the transaction form report "That did not save" and keep the user on the screen; a second tap while a save is running is ignored.
+37. **Undo expiry runs in the app-scoped controller**, not the snackbar, so "delete forever" happens even if the screen rotates or the app is backgrounded during the 5 seconds; exactly one of undo or expiry runs.
+38. **Scheduled posting is idempotent**: one run at a time, deterministic ids (`<occurrence>#tx`, `auto:<goal>:<period>`), and existence checked including deleted rows, so a bill the user deleted or reopened is never posted again. The daily worker covers every profile, not only the open one.
+39. **Dedupe**: two records from the same source with different external ids (two bank rows, two notifications) are two payments; only different sources fall back to fuzzy matching. Notification keys use the notification's own timestamp so re-posts match.
+40. **Sync never skips a batch it cannot read**: the cursor stops before it and sync reports an error, so an app update can read it later. One failing stream does not stop the others. Leaving a space or deleting a profile drops its key and cursors.
+41. **Restoring your own export marks events as local**, so they are pushed when sync is turned on.
+42. **Clock stamping happens inside the store lock and transaction**, so commit order equals Lamport order on each device.
+43. **Totals across currencies are converted** (safe-to-spend bills and goals, Activity "spent", coach answers); amounts without a rate are left out and counted, never added as raw numbers. Split lines and excluded categories follow the same rules everywhere.
+44. **Deleting a people record removes what it posted** (remittance, lending entry, group expense, circle contribution) in the same undo group; editing it keeps the posted transaction in step.
+45. **Backups fail instead of falling back to plaintext** when encryption is on but the key cannot be unwrapped.
+46. **The relay never receives a space name**; invites carry an empty summary.
+47. **Shared bank files go to the importer** through a one-shot cache file; PDF sharing was removed because there is no PDF statement parser.

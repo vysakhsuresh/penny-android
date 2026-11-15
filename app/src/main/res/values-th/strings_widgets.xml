@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">ดูยอดใช้จ่ายได้ในแวบเดียว</string>
+    <string name="widget_quick_desc">เพิ่มรายการหรือใช้เทมเพลตในแตะเดียว</string>
+    <string name="widget_envelopes_desc">ซองงบประมาณและบิลที่ใกล้ครบกำหนด</string>
+    <string name="widget_safe_label">ใช้จ่ายได้</string>
+    <string name="widget_quick_label">เพิ่มด่วน</string>
+    <string name="widget_envelopes_label">งบประมาณ</string>
+    <string name="shortcut_add">เพิ่ม</string>
+    <string name="tile_label">เพิ่มใน Penny</string>
+</resources>

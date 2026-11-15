@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">הסכום הפנוי להוצאה במבט אחד</string>
+    <string name="widget_quick_desc">הוספת תנועה או הפעלת תבנית בהקשה אחת</string>
+    <string name="widget_envelopes_desc">מעטפות וחשבונות קרובים</string>
+    <string name="widget_safe_label">פנוי להוצאה</string>
+    <string name="widget_quick_label">הוספה מהירה</string>
+    <string name="widget_envelopes_label">תקציבים</string>
+    <string name="shortcut_add">הוספה</string>
+    <string name="tile_label">הוספה ל־Penny</string>
+</resources>

@@ -76,7 +76,10 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="application/pdf" />
+                <data android:mimeType="application/x-ofx" />
+                <data android:mimeType="application/vnd.intu.qfx" />
+                <data android:mimeType="application/qif" />
+                <data android:mimeType="text/comma-separated-values" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />

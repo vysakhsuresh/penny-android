@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">安心して使えるお金をひと目で</string>
+    <string name="widget_quick_desc">取引の追加やテンプレートの実行をワンタップで</string>
+    <string name="widget_envelopes_desc">封筒と今後の支払い予定</string>
+    <string name="widget_safe_label">使えるお金</string>
+    <string name="widget_quick_label">クイック追加</string>
+    <string name="widget_envelopes_label">予算</string>
+    <string name="shortcut_add">追加</string>
+    <string name="tile_label">Penny に追加</string>
+</resources>

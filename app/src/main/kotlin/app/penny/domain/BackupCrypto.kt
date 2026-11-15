@@ -72,7 +72,10 @@ object BackupCrypto {
     }
 
     fun maybeEncrypt(prefs: AppPrefs, json: String): ByteArray {
-        val (salt, key) = runCatching { storedKey(prefs) }.getOrNull() ?: return json.toByteArray()
+        // Plain JSON only when encryption was never turned on. If it is on but the key cannot be unwrapped (Keystore key
+        // lost, prefs restored on another phone) the backup fails loudly instead of writing everything in the clear.
+        if (!enabled(prefs)) return json.toByteArray()
+        val (salt, key) = storedKey(prefs) ?: throw IllegalStateException("Backup encryption key unavailable")
         val c = Cipher.getInstance("AES/GCM/NoPadding").apply { init(Cipher.ENCRYPT_MODE, SecretKeySpec(key, "AES")) }
         return MAGIC + salt + c.iv + c.doFinal(json.toByteArray())
     }

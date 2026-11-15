@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">Ligtas gastusin sa isang tingin</string>
+    <string name="widget_quick_desc">Magdagdag ng transaksyon o gumamit ng template sa isang tap</string>
+    <string name="widget_envelopes_desc">Mga envelope at paparating na bayarin</string>
+    <string name="widget_safe_label">Ligtas gastusin</string>
+    <string name="widget_quick_label">Mabilis na dagdag</string>
+    <string name="widget_envelopes_label">Mga budget</string>
+    <string name="shortcut_add">Idagdag</string>
+    <string name="tile_label">Idagdag sa Penny</string>
+</resources>

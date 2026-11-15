@@ -17,7 +17,14 @@ object Dedupe {
 
     fun isDuplicate(a: Transaction, b: Transaction): Boolean {
         if (a.accountId != b.accountId || a.amountMinor != b.amountMinor || a.currency != b.currency || a.type != b.type) return false
-        if (a.externalIds.isNotEmpty() && b.externalIds.isNotEmpty() && a.externalIds.intersect(b.externalIds.toSet()).isNotEmpty()) return true
+        if (a.externalIds.isNotEmpty() && b.externalIds.isNotEmpty()) {
+            if (a.externalIds.intersect(b.externalIds.toSet()).isNotEmpty()) return true
+            // Same source (two bank rows, two notifications) with different ids: two real payments, e.g. two coffees.
+            // Only different sources (a bank row vs the notification of the same payment) fall through to fuzzy matching.
+            val sa = a.externalIds.map { it.substringBefore(':') }.toSet()
+            val sb = b.externalIds.map { it.substringBefore(':') }.toSet()
+            if (sa.intersect(sb).isNotEmpty()) return false
+        }
         val ta = LocalDateTime.of(a.date, a.time ?: LocalTime.NOON)
         val tb = LocalDateTime.of(b.date, b.time ?: LocalTime.NOON)
         val hours = kotlin.math.abs(ChronoUnit.MINUTES.between(ta, tb)) / 60.0

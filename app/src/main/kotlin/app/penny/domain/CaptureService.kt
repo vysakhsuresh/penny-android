@@ -14,6 +14,7 @@ import app.penny.core.rules.Dedupe
 import app.penny.core.rules.RuleContext
 import app.penny.core.rules.RuleEngine
 import app.penny.domain.ops.saveTransaction
+import kotlinx.coroutines.sync.withLock
 import java.time.LocalTime
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -55,7 +56,19 @@ class CaptureService @Inject constructor(
         return RuleEngine.apply(withMemory, book.rules.map { it.state.id to it.value }, RuleContext(app = raw.substringBefore('\n'), accountName = book::accountName)).tx
     }
 
-    override suspend fun captured(source: String, detail: String, raw: String, parsed: ParsedCapture, externalId: String) {
+    /** Captures arrive concurrently (apps re-post notifications); one at a time, with ids seen this session remembered. */
+    private val lock = kotlinx.coroutines.sync.Mutex()
+    private val seen = object : LinkedHashMap<String, Boolean>(64, 0.75f, true) {
+        override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, Boolean>?) = size > 500
+    }
+
+    override suspend fun captured(source: String, detail: String, raw: String, parsed: ParsedCapture, externalId: String) = lock.withLock {
+        // The book snapshot lags our own writes by a moment, so a second copy arriving right after would pass the check below.
+        if (seen.put(externalId, true) != null) return@withLock
+        capturedLocked(source, detail, raw, parsed, externalId)
+    }
+
+    private suspend fun capturedLocked(source: String, detail: String, raw: String, parsed: ParsedCapture, externalId: String) {
         val book = store.ready()?.book ?: return
         val src = book.captureSources.firstOrNull { it.value.source == "$source:$detail" }
         if (src?.value?.alwaysIgnore == true) return
@@ -82,7 +95,8 @@ class CaptureService @Inject constructor(
     suspend fun accept(book: Book, item: Stored<CaptureItem>, edited: Transaction?): String {
         val g = repo.captures.newGroup()
         val tx = (edited ?: item.value.proposed).copy(status = TxStatus.CLEARED)
-        val res = repo.saveTransaction(book, null, tx)
+        // One undo group: undoing "Add" removes the transaction and puts the item back in the queue.
+        val res = repo.saveTransaction(book, null, tx, group = g)
         repo.captures.update(item.state.id, item.value.copy(state = CaptureState.ACCEPTED), groupId = g)
         val src = book.captureSources.firstOrNull { it.value.source == item.value.source }
         val streak = if (edited == null || edited == item.value.proposed) (src?.value?.acceptsInRow ?: 0) + 1 else 0

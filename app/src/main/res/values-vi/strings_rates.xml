@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exchange_rates">Tỷ giá</string>
+    <string name="rates_body">Penny quy đổi theo tỷ giá của ngày giao dịch. Tỷ giá tham chiếu được tải qua Wi-Fi và lưu trên điện thoại; tỷ giá do bạn nhập luôn được ưu tiên.</string>
+    <string name="rates_updated">Tỷ giá tham chiếu đến %1$s</string>
+    <string name="rates_never">Chưa tải tỷ giá tham chiếu nào</string>
+    <string name="rates_refreshed">Đã cập nhật tỷ giá</string>
+    <string name="rates_offline">Không kết nối được nguồn tỷ giá. Hãy thử lại khi có Wi-Fi.</string>
+    <string name="refresh_now">Làm mới ngay</string>
+    <string name="add_manual_rate">Thêm tỷ giá của tôi</string>
+    <string name="your_currencies">Các loại tiền của bạn hôm nay</string>
+    <string name="no_rate">Chưa có tỷ giá</string>
+    <string name="manual_rates">Tỷ giá của bạn</string>
+    <string name="no_manual_rates">Chưa có. Hãy thêm nếu ngân hàng hoặc nơi đổi tiền cho bạn tỷ giá khác.</string>
+    <string name="rate_in_x">Giá trị của một đơn vị tính bằng %1$s</string>
+    <string name="record_value">Ghi giá trị</string>
+    <string name="record_value_body">Hôm nay tài sản này đáng giá bao nhiêu? Lịch sử giá trị được dùng để tính tài sản ròng.</string>
+    <string name="value_recorded">Đã ghi giá trị</string>
+    <string name="valuations">Định giá</string>
+    <string name="share_group_link">Chia sẻ bản xem cho người không có ứng dụng</string>
+    <string name="group_link_text">Số dư của “%1$s” (chỉ xem, hết hạn sau 30 ngày): %2$s</string>
+    <string name="usage_counts">Chia sẻ số liệu sử dụng ẩn danh</string>
+    <string name="usage_counts_hint">Chỉ là tần suất dùng các tính năng, không bao giờ có số tiền, người nhận, ghi chú hay bất cứ gì bạn đã nhập. Mặc định tắt.</string>
+    <string name="usage_counts_none">Chưa đếm gì.</string>
+    <string name="consent_until">đồng ý đến %1$s</string>
+    <string name="reconsent">Gia hạn đồng ý</string>
+    <string name="disconnect">Ngắt kết nối</string>
+    <string name="disconnected">Đã ngắt kết nối. Liên kết ngân hàng và quyền truy cập đã lưu đã bị xóa; các tài khoản giờ là tài khoản thủ công.</string>
+    <string name="bank_needs_sync">Bật đồng bộ ở trên để kết nối ngân hàng.</string>
+    <string name="connect_with_token">Kết nối bằng mã thiết lập</string>
+    <string name="connect_in_browser">Kết nối trên trang bảo mật của nhà cung cấp</string>
+    <string name="simplefin_help">Tạo mã thiết lập trong tài khoản SimpleFIN Bridge của bạn và dán vào đây. Máy chủ của Penny đổi mã này lấy quyền truy cập; mã không bao giờ được lưu trên điện thoại này.</string>
+    <string name="setup_token">Mã thiết lập</string>
+    <string name="connect">Kết nối</string>
+    <string name="bank_connected">Đã kết nối ngân hàng. Giao dịch sẽ có ở lần đồng bộ tiếp theo.</string>
+    <string name="bank_cancelled">Đã hủy kết nối. Không có gì được liên kết.</string>
+    <plurals name="bank_synced"><item quantity="other">Đã thêm hoặc cập nhật %d giao dịch</item></plurals>
+    <string name="automation">Tự động hóa</string>
+    <string name="automation_sub">Tasker, phím tắt và webhook</string>
+    <string name="automation_body">Kết nối Penny với ứng dụng tự động hóa và dịch vụ của riêng bạn. Mọi thứ ở lại trên điện thoại này trừ khi bạn đặt địa chỉ webhook.</string>
+    <string name="automation_apps">Ứng dụng tự động hóa</string>
+    <string name="allow_automation_apps">Cho phép ứng dụng tự động hóa thêm giao dịch</string>
+    <string name="allow_automation_hint">Tasker, Automate và các ứng dụng tương tự có thể thêm giao dịch bằng intent. Chúng không bao giờ đọc được dữ liệu của bạn.</string>
+    <string name="deep_link_example">Hoặc mở penny://add?amount=1250&amp;category=Groceries từ bất kỳ ứng dụng hay phím tắt nào (số tiền tính bằng đơn vị nhỏ nhất).</string>
+    <string name="webhooks">Webhook</string>
+    <string name="webhooks_body">Gửi mỗi giao dịch mới đến máy chủ của bạn dưới dạng JSON có chữ ký. Chỉ dùng địa chỉ do bạn quản lý.</string>
+    <string name="webhook_url">Địa chỉ webhook (https)</string>
+    <string name="https_only">Chỉ cho phép địa chỉ https</string>
+    <string name="signing_secret">Khóa ký (dùng để xác minh header X-Penny-Signature):</string>
+    <string name="create_secret">Tạo khóa</string>
+    <string name="new_secret">Khóa mới</string>
+    <string name="copy">Sao chép</string>
+    <string name="send_now">Gửi ngay</string>
+    <plurals name="webhook_sent"><item quantity="other">Đã gửi %d giao dịch</item></plurals>
+    <string name="ob_get_started">Bắt đầu</string>
+    <string name="ob_sample">Khám phá với dữ liệu mẫu</string>
+    <string name="ob_point_safe">Một con số rõ ràng: số tiền có thể chi đến ngày nhận lương</string>
+    <string name="ob_point_world">Mọi loại tiền, mọi chu kỳ lương, đúng cách bạn thật sự quản lý tiền</string>
+    <string name="ob_point_private">Riêng tư từ thiết kế: nằm trên điện thoại của bạn, mã hóa đầu cuối</string>
+    <string name="ob_point_free">Mọi tính năng đều miễn phí. Không quảng cáo, không cho vay, không bán dữ liệu</string>
+    <string name="no_income_yet">Kỳ này chưa ghi nhận thu nhập nào</string>
+    <string name="spent_more_than_income">Chi tiêu đang cao hơn thu nhập của kỳ này</string>
+    <string name="get_address">Lấy địa chỉ chuyển tiếp của tôi</string>
+    <string name="new_address">Địa chỉ mới</string>
+    <string name="turn_off">Tắt</string>
+    <string name="email_forwarding_privacy">Chuyển tiếp hóa đơn mua hàng, đi xe và đồ ăn đến địa chỉ này. Máy chủ mã hóa từng email cho điện thoại này ngay lập tức và xóa email khi Penny đã đọc xong ở đây.</string>
+    <string name="community_merchants">Tên cửa hàng từ cộng đồng</string>
+    <string name="community_merchants_hint">Chia sẻ ẩn danh tên người nhận và danh mục, không bao giờ có số tiền, với mọi người trong khu vực của bạn và nhận lại tên gọn gàng. Mặc định tắt.</string>
+</resources>

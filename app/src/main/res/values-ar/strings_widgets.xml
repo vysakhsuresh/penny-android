@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">المتاح للإنفاق بنظرة سريعة</string>
+    <string name="widget_quick_desc">أضف معاملة أو شغّل قالبًا بلمسة واحدة</string>
+    <string name="widget_envelopes_desc">الظروف والفواتير القادمة</string>
+    <string name="widget_safe_label">المتاح للإنفاق</string>
+    <string name="widget_quick_label">إضافة سريعة</string>
+    <string name="widget_envelopes_label">الميزانيات</string>
+    <string name="shortcut_add">إضافة</string>
+    <string name="tile_label">إضافة إلى Penny</string>
+</resources>

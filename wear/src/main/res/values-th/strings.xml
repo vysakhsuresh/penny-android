@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Penny</string>
+    <string name="safe_to_spend">ใช้จ่ายได้</string>
+    <string name="per_day_left">วันละ %1$s · เหลือ %2$d วัน</string>
+    <string name="say_it">พูดรายจ่าย</string>
+    <string name="added">เพิ่มในโทรศัพท์แล้ว</string>
+    <string name="not_understood">ไม่ได้ยินจำนวนเงิน</string>
+    <string name="no_phone">ไม่ได้เชื่อมต่อโทรศัพท์ แสดงตัวเลขล่าสุดที่ทราบ</string>
+</resources>

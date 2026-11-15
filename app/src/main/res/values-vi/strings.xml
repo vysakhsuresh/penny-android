@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tagline">Biết rõ số tiền bạn có thể chi.</string>
+
+    <!-- Common -->
+    <string name="save">Lưu</string>
+    <string name="cancel">Hủy</string>
+    <string name="delete">Xóa</string>
+    <string name="undo">Hoàn tác</string>
+    <string name="restore">Khôi phục</string>
+    <string name="retry">Thử lại</string>
+    <string name="back">Quay lại</string>
+    <string name="next">Tiếp</string>
+    <string name="skip">Bỏ qua</string>
+    <string name="done">Xong</string>
+    <string name="none">Không có</string>
+    <string name="loading">Đang tải</string>
+    <string name="error_generic">Đã xảy ra lỗi khi đọc dữ liệu của bạn. Không có gì bị mất.</string>
+
+    <!-- Onboarding (OB-01) -->
+    <string name="ob_step">Bước %1$d / %2$d</string>
+    <string name="ob_region_title">Bạn sống ở đâu?</string>
+    <string name="ob_region_body">Mục này đặt loại tiền, định dạng số và chu kỳ lương thường dùng. Bạn có thể đổi tất cả sau.</string>
+    <string name="ob_cycle_title">Khi nào bạn có tiền vào?</string>
+    <string name="ob_cycle_body">Ngân sách của bạn đi theo chu kỳ lương thực tế.</string>
+    <string name="ob_account_title">Hiện bạn có bao nhiêu tiền mặt?</string>
+    <string name="ob_account_body">Bắt đầu với một tài khoản tiền mặt. Thêm ngân hàng và thẻ sau.</string>
+    <string name="ob_cash_name">Tiền mặt</string>
+    <string name="ob_finish">Bắt đầu dùng %1$s</string>
+
+    <!-- Cycles -->
+    <string name="cycle_monthly">Hằng tháng, từ ngày %1$d</string>
+    <string name="cycle_monthly_last">Hằng tháng, từ ngày cuối tháng</string>
+    <string name="cycle_semimonthly">Hai lần mỗi tháng, vào ngày %1$d và ngày cuối tháng</string>
+    <string name="cycle_weekly">Hằng tuần</string>
+    <string name="cycle_biweekly">Hai tuần một lần</string>
+    <string name="cycle_fourweekly">Bốn tuần một lần</string>
+    <string name="cycle_quarterly">Hằng quý</string>
+    <string name="cycle_yearly">Hằng năm</string>
+    <string name="cycle_onincome">Khi có tiền vào</string>
+    <string name="cycle_default_suffix">%1$s (phổ biến ở đây)</string>
+    <string name="cycle_start_day">Ngày bắt đầu trong tháng</string>
+
+    <!-- Home -->
+    <string name="safe_to_spend">Có thể chi</string>
+    <string name="per_day">%1$s mỗi ngày</string>
+    <string name="on_pace">Đúng nhịp</string>
+    <string name="ahead_of_pace">Chi tiêu đang nhanh hơn lịch</string>
+    <string name="period_range">%1$s – %2$s</string>
+    <string name="prev_period">Kỳ trước</string>
+    <string name="next_period">Kỳ sau</string>
+    <string name="this_period">Về kỳ này</string>
+    <string name="income_spent">Thu nhập %1$s · Đã chi %2$s</string>
+    <string name="accounts">Tài khoản</string>
+    <string name="transactions">Giao dịch</string>
+    <string name="empty_period_title">Kỳ này chưa có gì</string>
+    <string name="empty_period_body">Chạm Thêm để ghi giao dịch đầu tiên.</string>
+    <string name="add_transaction">Thêm giao dịch</string>
+    <string name="trash">Thùng rác</string>
+    <string name="settings">Cài đặt</string>
+    <string name="today">Hôm nay</string>
+    <string name="yesterday">Hôm qua</string>
+    <string name="deleted_tx">Đã xóa giao dịch</string>
+    <string name="saved_tx">Đã lưu giao dịch</string>
+    <string name="uncategorised">Chưa phân loại</string>
+    <string name="transfer_to">Đến %1$s</string>
+    <string name="swipe_delete_hint">Vuốt sang trái để xóa</string>
+
+    <!-- Transaction form (TX-02) -->
+    <string name="new_transaction">Giao dịch mới</string>
+    <string name="edit_transaction">Sửa giao dịch</string>
+    <string name="type_expense">Chi tiêu</string>
+    <string name="type_income">Thu nhập</string>
+    <string name="type_transfer">Chuyển khoản</string>
+    <string name="type_refund">Hoàn tiền</string>
+    <string name="type_adjustment">Điều chỉnh</string>
+    <string name="type_opening">Số dư đầu</string>
+    <string name="field_type">Loại</string>
+    <string name="field_amount">Số tiền</string>
+    <string name="field_amount_hint">Dùng + − × ÷ để tính</string>
+    <string name="amount_result">= %1$s</string>
+    <string name="amount_rounded">= %1$s (đã làm tròn)</string>
+    <string name="field_currency">Loại tiền</string>
+    <string name="field_account">Tài khoản</string>
+    <string name="field_to_account">Đến tài khoản</string>
+    <string name="field_to_amount">Số tiền nhận được</string>
+    <string name="field_category">Danh mục</string>
+    <string name="field_payee">Người nhận</string>
+    <string name="field_date">Ngày</string>
+    <string name="field_time">Giờ</string>
+    <string name="field_no_time">Không có giờ</string>
+    <string name="field_note">Ghi chú</string>
+    <string name="field_tags">Thẻ</string>
+    <string name="field_tags_hint">Phân cách bằng dấu phẩy</string>
+    <string name="field_status">Trạng thái</string>
+    <string name="status_pending">Đang chờ</string>
+    <string name="status_cleared">Đã ghi nhận</string>
+    <string name="status_reconciled">Đã đối soát</string>
+    <string name="field_direction">Chiều</string>
+    <string name="direction_in">Cộng vào số dư</string>
+    <string name="direction_out">Trừ khỏi số dư</string>
+    <string name="field_private">Riêng tư</string>
+    <string name="field_private_body">Ẩn người nhận, ghi chú và tệp đính kèm với người khác trong không gian chung</string>
+    <string name="field_exclude_budget">Không tính vào ngân sách</string>
+    <string name="field_exclude_reports">Không tính vào báo cáo</string>
+    <string name="field_splits">Chia nhỏ</string>
+    <string name="field_attachments">Tệp đính kèm</string>
+    <string name="future_scheduled">Ngày trong tương lai: giao dịch này sẽ được tính là đã lên lịch.</string>
+    <string name="history">Lịch sử</string>
+    <string name="pick_date">Chọn ngày</string>
+    <string name="pick_time">Chọn giờ</string>
+    <string name="clear_time">Xóa giờ</string>
+
+    <!-- Validation (TX-08) -->
+    <string name="err_amount_empty">Nhập số tiền</string>
+    <string name="err_amount_invalid">Số tiền không hợp lệ</string>
+    <string name="err_amount_positive">Số tiền phải lớn hơn 0. Loại giao dịch sẽ quyết định là thu hay chi.</string>
+    <string name="err_amount_decimals_none">%1$s không có phần thập phân</string>
+    <string name="err_amount_decimals">%1$s cho phép %2$d chữ số thập phân</string>
+    <string name="err_amount_large">Số tiền quá lớn</string>
+    <string name="err_divide_zero">Không thể chia cho 0</string>
+    <string name="err_account_required">Chọn một tài khoản</string>
+    <string name="err_transfer_target">Chọn tài khoản nhận tiền</string>
+    <string name="err_transfer_same">Chọn một tài khoản khác để chuyển đến</string>
+    <string name="err_transfer_to_amount">Nhập số tiền nhận được bằng loại tiền kia</string>
+    <string name="err_direction">Chọn cộng vào hay trừ đi</string>
+    <string name="err_splits">Các phần chia nhỏ phải cộng lại bằng tổng</string>
+    <string name="tx_not_found">Giao dịch này không còn tồn tại.</string>
+
+    <!-- History (TX-05) -->
+    <string name="history_title">Lịch sử</string>
+    <string name="history_created">Đã tạo</string>
+    <string name="history_edited">Đã sửa</string>
+    <string name="history_deleted">Đã xóa</string>
+    <string name="history_restored">Đã khôi phục</string>
+    <string name="history_undo">Đã hoàn tác</string>
+    <string name="history_reverted">Đã quay về phiên bản %1$d</string>
+    <string name="history_version">Phiên bản %1$d</string>
+    <string name="history_by">%1$s · %2$s</string>
+    <string name="history_you">Bạn</string>
+    <string name="history_revert">Quay về phiên bản này</string>
+    <string name="history_change">%1$s: %2$s → %3$s</string>
+    <string name="history_set">%1$s: %2$s</string>
+    <string name="history_empty">Chưa có thay đổi nào được ghi lại.</string>
+    <string name="reverted">Đã quay về</string>
+
+    <!-- Trash (TX-03, HS-02) -->
+    <string name="trash_title">Thùng rác</string>
+    <string name="trash_body">Giao dịch đã xóa được giữ ở đây trong 30 ngày.</string>
+    <string name="trash_empty">Thùng rác trống</string>
+    <string name="delete_forever">Xóa vĩnh viễn</string>
+    <string name="restored">Đã khôi phục</string>
+    <string name="deleted_forever">Đã xóa vĩnh viễn</string>
+
+    <!-- Settings -->
+    <string name="settings_region">Khu vực</string>
+    <string name="settings_region_body">Loại tiền, định dạng số và chu kỳ lương đi theo khu vực. Giao dịch hiện có vẫn giữ loại tiền riêng.</string>
+    <string name="settings_sample">Ví dụ: %1$s</string>
+    <string name="region_changed">Đã đổi khu vực thành %1$s</string>
+    <string name="settings_cycle">Chu kỳ lương</string>
+    <string name="settings_about">%1$s miễn phí. Không quảng cáo, không cho vay, không bán dữ liệu.</string>
+
+    <plurals name="days_left">
+        <item quantity="other">Còn %d ngày</item>
+    </plurals>
+    <plurals name="unconverted">
+        <item quantity="other">%d giao dịch bằng loại tiền khác chưa được tính</item>
+    </plurals>
+    <plurals name="trash_count">
+        <item quantity="other">%d mục</item>
+    </plurals>
+</resources>

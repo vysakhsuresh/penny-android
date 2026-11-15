@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exchange_rates">Wisselkoersen</string>
+    <string name="rates_body">Penny rekent om met de koers op de datum van elke transactie. Referentiekoersen worden via wifi gedownload en op de telefoon bewaard; je eigen koersen gaan altijd voor.</string>
+    <string name="rates_updated">Referentiekoersen tot en met %1$s</string>
+    <string name="rates_never">Nog geen referentiekoersen gedownload</string>
+    <string name="rates_refreshed">Koersen bijgewerkt</string>
+    <string name="rates_offline">De koersbron is niet bereikbaar. Probeer het opnieuw via wifi.</string>
+    <string name="refresh_now">Nu vernieuwen</string>
+    <string name="add_manual_rate">Eigen koers toevoegen</string>
+    <string name="your_currencies">Je valuta vandaag</string>
+    <string name="no_rate">Geen koers</string>
+    <string name="manual_rates">Je koersen</string>
+    <string name="no_manual_rates">Nog geen. Voeg er een toe als je bank of wisselkantoor je een andere koers gaf.</string>
+    <string name="rate_in_x">Waarde van één eenheid in %1$s</string>
+    <string name="record_value">Waarde vastleggen</string>
+    <string name="record_value_body">Wat is dit vandaag waard? De waardegeschiedenis telt mee in je vermogen.</string>
+    <string name="value_recorded">Waarde vastgelegd</string>
+    <string name="valuations">Waarderingen</string>
+    <string name="share_group_link">Deel een weergave voor mensen zonder de app</string>
+    <string name="group_link_text">Saldi voor „%1$s” (alleen lezen, verloopt over 30 dagen): %2$s</string>
+    <string name="usage_counts">Anonieme gebruikstellingen delen</string>
+    <string name="usage_counts_hint">Alleen hoe vaak functies worden gebruikt, nooit bedragen, begunstigden, notities of iets wat je typte. Standaard uit.</string>
+    <string name="usage_counts_none">Nog niets geteld.</string>
+    <string name="consent_until">toestemming tot %1$s</string>
+    <string name="reconsent">Toestemming verlengen</string>
+    <string name="disconnect">Verbinding verbreken</string>
+    <string name="disconnected">Verbinding verbroken. De bankkoppeling en de opgeslagen toegang zijn verwijderd; de rekeningen zijn nu handmatig.</string>
+    <string name="bank_needs_sync">Zet hierboven synchronisatie aan om een bank te koppelen.</string>
+    <string name="connect_with_token">Koppelen met een installatietoken</string>
+    <string name="connect_in_browser">Koppelen via de beveiligde pagina van de aanbieder</string>
+    <string name="simplefin_help">Maak een installatietoken aan in je SimpleFIN Bridge-account en plak het hier. De server van Penny ruilt het in voor toegang; het token wordt nooit op deze telefoon bewaard.</string>
+    <string name="setup_token">Installatietoken</string>
+    <string name="connect">Koppelen</string>
+    <string name="bank_connected">Bank gekoppeld. Transacties komen binnen bij de volgende synchronisatie.</string>
+    <string name="bank_cancelled">Koppelen geannuleerd. Er is niets gekoppeld.</string>
+    <plurals name="bank_synced"><item quantity="one">%d transactie toegevoegd of bijgewerkt</item><item quantity="other">%d transacties toegevoegd of bijgewerkt</item></plurals>
+    <string name="automation">Automatisering</string>
+    <string name="automation_sub">Tasker, snelkoppelingen en webhooks</string>
+    <string name="automation_body">Koppel Penny aan automatiseringsapps en je eigen diensten. Alles blijft op deze telefoon, tenzij je een webhookadres instelt.</string>
+    <string name="automation_apps">Automatiseringsapps</string>
+    <string name="allow_automation_apps">Automatiseringsapps transacties laten toevoegen</string>
+    <string name="allow_automation_hint">Tasker, Automate en vergelijkbare apps kunnen transacties toevoegen met een intent. Ze kunnen je gegevens nooit lezen.</string>
+    <string name="deep_link_example">Of open penny://add?amount=1250&amp;category=Groceries vanuit elke app of snelkoppeling (bedrag in kleinste eenheden).</string>
+    <string name="webhooks">Webhooks</string>
+    <string name="webhooks_body">Stuur elke nieuwe transactie als ondertekende JSON naar je eigen server. Gebruik alleen een adres dat je zelf beheert.</string>
+    <string name="webhook_url">Webhookadres (https)</string>
+    <string name="https_only">Alleen https-adressen zijn toegestaan</string>
+    <string name="signing_secret">Ondertekeningsgeheim (controleer de header X-Penny-Signature):</string>
+    <string name="create_secret">Geheim aanmaken</string>
+    <string name="new_secret">Nieuw geheim</string>
+    <string name="copy">Kopiëren</string>
+    <string name="send_now">Nu versturen</string>
+    <plurals name="webhook_sent"><item quantity="one">%d transactie verstuurd</item><item quantity="other">%d transacties verstuurd</item></plurals>
+    <string name="ob_get_started">Aan de slag</string>
+    <string name="ob_sample">Verkennen met voorbeeldgegevens</string>
+    <string name="ob_point_safe">Eén rustig getal: wat je tot je volgende salaris vrij kunt besteden</string>
+    <string name="ob_point_world">Elke valuta, elke betaalcyclus, zoals jij echt met geld omgaat</string>
+    <string name="ob_point_private">Privé vanaf het ontwerp: op je telefoon, end-to-end versleuteld</string>
+    <string name="ob_point_free">Elke functie gratis. Geen advertenties, geen leningen, geen verkoop van gegevens</string>
+    <string name="no_income_yet">Nog geen inkomsten vastgelegd in deze periode</string>
+    <string name="spent_more_than_income">De uitgaven liggen boven de inkomsten van deze periode</string>
+    <string name="get_address">Mijn doorstuuradres ophalen</string>
+    <string name="new_address">Nieuw adres</string>
+    <string name="turn_off">Uitzetten</string>
+    <string name="email_forwarding_privacy">Stuur bonnen van bestellingen, ritten en maaltijden door naar dit adres. De server versleutelt elke e-mail direct voor deze telefoon en verwijdert hem zodra Penny hem hier heeft gelezen.</string>
+    <string name="community_merchants">Winkelnamen uit de community</string>
+    <string name="community_merchants_hint">Deel anoniem namen van begunstigden en categorieën, nooit bedragen, met mensen in je regio en krijg nette namen terug. Standaard uit.</string>
+</resources>

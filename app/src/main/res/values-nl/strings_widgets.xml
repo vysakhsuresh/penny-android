@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">Vrij te besteden in één oogopslag</string>
+    <string name="widget_quick_desc">Voeg een transactie toe of gebruik een sjabloon met één tik</string>
+    <string name="widget_envelopes_desc">Enveloppen en komende vaste lasten</string>
+    <string name="widget_safe_label">Vrij te besteden</string>
+    <string name="widget_quick_label">Snel toevoegen</string>
+    <string name="widget_envelopes_label">Budgetten</string>
+    <string name="shortcut_add">Toevoegen</string>
+    <string name="tile_label">Toevoegen aan Penny</string>
+</resources>

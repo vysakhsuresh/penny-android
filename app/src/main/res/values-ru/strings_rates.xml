@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exchange_rates">Курсы валют</string>
+    <string name="rates_body">Penny пересчитывает по курсу на дату каждой операции. Справочные курсы загружаются по Wi-Fi и хранятся на телефоне; ваши собственные курсы всегда в приоритете.</string>
+    <string name="rates_updated">Справочные курсы по %1$s</string>
+    <string name="rates_never">Справочные курсы ещё не загружены</string>
+    <string name="rates_refreshed">Курсы обновлены</string>
+    <string name="rates_offline">Не удалось связаться с источником курсов. Повторите по Wi-Fi.</string>
+    <string name="refresh_now">Обновить</string>
+    <string name="add_manual_rate">Добавить свой курс</string>
+    <string name="your_currencies">Ваши валюты сегодня</string>
+    <string name="no_rate">Нет курса</string>
+    <string name="manual_rates">Ваши курсы</string>
+    <string name="no_manual_rates">Пока нет. Добавьте курс, если банк или обменник дал вам другой.</string>
+    <string name="rate_in_x">Стоимость одной единицы в %1$s</string>
+    <string name="record_value">Записать стоимость</string>
+    <string name="record_value_body">Сколько это стоит сегодня? История стоимости учитывается в чистых активах.</string>
+    <string name="value_recorded">Стоимость записана</string>
+    <string name="valuations">Оценки</string>
+    <string name="share_group_link">Поделиться просмотром с теми, у кого нет приложения</string>
+    <string name="group_link_text">Балансы группы «%1$s» (только просмотр, срок действия 30 дней): %2$s</string>
+    <string name="usage_counts">Отправлять анонимную статистику использования</string>
+    <string name="usage_counts_hint">Только частота использования функций, никогда суммы, получатели, заметки или что-либо введённое вами. По умолчанию выключено.</string>
+    <string name="usage_counts_none">Пока ничего не подсчитано.</string>
+    <string name="consent_until">согласие до %1$s</string>
+    <string name="reconsent">Продлить согласие</string>
+    <string name="disconnect">Отключить</string>
+    <string name="disconnected">Отключено. Связь с банком и сохранённый доступ удалены; счета теперь ведутся вручную.</string>
+    <string name="bank_needs_sync">Включите синхронизацию выше, чтобы подключить банк.</string>
+    <string name="connect_with_token">Подключить с помощью токена настройки</string>
+    <string name="connect_in_browser">Подключить на защищённой странице провайдера</string>
+    <string name="simplefin_help">Создайте токен настройки в своей учётной записи SimpleFIN Bridge и вставьте его сюда. Сервер Penny обменяет его на доступ; токен никогда не хранится на этом телефоне.</string>
+    <string name="setup_token">Токен настройки</string>
+    <string name="connect">Подключить</string>
+    <string name="bank_connected">Банк подключён. Операции появятся при следующей синхронизации.</string>
+    <string name="bank_cancelled">Подключение отменено. Ничего не связано.</string>
+    <plurals name="bank_synced"><item quantity="one">Добавлена или обновлена %d операция</item><item quantity="few">Добавлено или обновлено %d операции</item><item quantity="many">Добавлено или обновлено %d операций</item><item quantity="other">Добавлено или обновлено %d операции</item></plurals>
+    <string name="automation">Автоматизация</string>
+    <string name="automation_sub">Tasker, ярлыки и веб-хуки</string>
+    <string name="automation_body">Подключите Penny к приложениям автоматизации и собственным сервисам. Всё остаётся на этом телефоне, если вы не укажете адрес веб-хука.</string>
+    <string name="automation_apps">Приложения автоматизации</string>
+    <string name="allow_automation_apps">Разрешить приложениям автоматизации добавлять операции</string>
+    <string name="allow_automation_hint">Tasker, Automate и похожие приложения могут добавлять операции с помощью интента. Читать ваши данные они не могут.</string>
+    <string name="deep_link_example">Или откройте penny://add?amount=1250&amp;category=Groceries из любого приложения или ярлыка (сумма в минимальных единицах).</string>
+    <string name="webhooks">Веб-хуки</string>
+    <string name="webhooks_body">Отправляйте каждую новую операцию на свой сервер в виде подписанного JSON. Используйте только адрес, которым вы управляете.</string>
+    <string name="webhook_url">Адрес веб-хука (https)</string>
+    <string name="https_only">Разрешены только адреса https</string>
+    <string name="signing_secret">Секрет подписи (проверяйте заголовок X-Penny-Signature):</string>
+    <string name="create_secret">Создать секрет</string>
+    <string name="new_secret">Новый секрет</string>
+    <string name="copy">Копировать</string>
+    <string name="send_now">Отправить сейчас</string>
+    <plurals name="webhook_sent"><item quantity="one">Отправлена %d операция</item><item quantity="few">Отправлено %d операции</item><item quantity="many">Отправлено %d операций</item><item quantity="other">Отправлено %d операции</item></plurals>
+    <string name="ob_get_started">Начать</string>
+    <string name="ob_sample">Посмотреть на примере данных</string>
+    <string name="ob_point_safe">Одно спокойное число: сколько можно потратить до зарплаты</string>
+    <string name="ob_point_world">Любая валюта, любой цикл выплат — так, как вы на самом деле обращаетесь с деньгами</string>
+    <string name="ob_point_private">Конфиденциальность по умолчанию: всё на вашем телефоне, со сквозным шифрованием</string>
+    <string name="ob_point_free">Все функции бесплатны. Без рекламы, кредитов и продажи данных</string>
+    <string name="no_income_yet">В этом периоде ещё нет доходов</string>
+    <string name="spent_more_than_income">Расходы превышают доход за этот период</string>
+    <string name="get_address">Получить адрес для пересылки</string>
+    <string name="new_address">Новый адрес</string>
+    <string name="turn_off">Выключить</string>
+    <string name="email_forwarding_privacy">Пересылайте на этот адрес чеки за заказы, поездки и еду. Сервер сразу шифрует каждое письмо для этого телефона и удаляет его, как только Penny прочитает его здесь.</string>
+    <string name="community_merchants">Названия продавцов от сообщества</string>
+    <string name="community_merchants_hint">Анонимно делитесь названиями получателей и категориями (никогда суммами) с людьми в вашем регионе и получайте понятные названия в ответ. По умолчанию выключено.</string>
+</resources>

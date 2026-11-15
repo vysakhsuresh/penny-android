@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tagline">รู้ว่าใช้จ่ายได้เท่าไร</string>
+
+    <string name="save">บันทึก</string>
+    <string name="cancel">ยกเลิก</string>
+    <string name="delete">ลบ</string>
+    <string name="undo">เลิกทำ</string>
+    <string name="restore">กู้คืน</string>
+    <string name="retry">ลองอีกครั้ง</string>
+    <string name="back">กลับ</string>
+    <string name="next">ถัดไป</string>
+    <string name="skip">ข้าม</string>
+    <string name="done">เสร็จ</string>
+    <string name="none">ไม่มี</string>
+    <string name="loading">กำลังโหลด</string>
+    <string name="error_generic">เกิดข้อผิดพลาดขณะอ่านข้อมูล ข้อมูลไม่ได้สูญหาย</string>
+
+    <string name="ob_step">ขั้นตอนที่ %1$d จาก %2$d</string>
+    <string name="ob_region_title">คุณอาศัยอยู่ที่ไหน</string>
+    <string name="ob_region_body">ใช้กำหนดสกุลเงิน รูปแบบตัวเลข และรอบรายได้ที่ใช้กันทั่วไป เปลี่ยนได้ทั้งหมดภายหลัง</string>
+    <string name="ob_cycle_title">เงินเข้าเมื่อไร</string>
+    <string name="ob_cycle_body">งบประมาณจะตามรอบรายได้จริงของคุณ</string>
+    <string name="ob_account_title">ตอนนี้มีเงินสดเท่าไร</string>
+    <string name="ob_account_body">เริ่มจากบัญชีเงินสดหนึ่งบัญชี เพิ่มธนาคารและบัตรได้ภายหลัง</string>
+    <string name="ob_cash_name">เงินสด</string>
+    <string name="ob_finish">เริ่มใช้ %1$s</string>
+
+    <string name="cycle_monthly">รายเดือน เริ่มวันที่ %1$d</string>
+    <string name="cycle_monthly_last">รายเดือน เริ่มวันสุดท้ายของเดือน</string>
+    <string name="cycle_semimonthly">เดือนละสองครั้ง วันที่ %1$d และวันสุดท้ายของเดือน</string>
+    <string name="cycle_weekly">รายสัปดาห์</string>
+    <string name="cycle_biweekly">ทุกสองสัปดาห์</string>
+    <string name="cycle_fourweekly">ทุกสี่สัปดาห์</string>
+    <string name="cycle_quarterly">รายไตรมาส</string>
+    <string name="cycle_yearly">รายปี</string>
+    <string name="cycle_onincome">เมื่อเงินเข้า</string>
+    <string name="cycle_default_suffix">%1$s (ที่ใช้กันทั่วไป)</string>
+    <string name="cycle_start_day">วันเริ่มต้นของเดือน</string>
+
+    <string name="safe_to_spend">ใช้จ่ายได้</string>
+    <string name="per_day">วันละ %1$s</string>
+    <string name="on_pace">ตามแผน</string>
+    <string name="ahead_of_pace">ใช้จ่ายเร็วกว่าปฏิทิน</string>
+    <string name="period_range">%1$s – %2$s</string>
+    <string name="prev_period">รอบก่อนหน้า</string>
+    <string name="next_period">รอบถัดไป</string>
+    <string name="this_period">กลับไปรอบนี้</string>
+    <string name="income_spent">รายรับ %1$s · ใช้ไป %2$s</string>
+    <string name="accounts">บัญชี</string>
+    <string name="transactions">รายการ</string>
+    <string name="empty_period_title">ยังไม่มีรายการในรอบนี้</string>
+    <string name="empty_period_body">แตะเพิ่มเพื่อบันทึกรายการแรก</string>
+    <string name="add_transaction">เพิ่มรายการ</string>
+    <string name="trash">ถังขยะ</string>
+    <string name="settings">การตั้งค่า</string>
+    <string name="today">วันนี้</string>
+    <string name="yesterday">เมื่อวาน</string>
+    <string name="deleted_tx">ลบรายการแล้ว</string>
+    <string name="saved_tx">บันทึกรายการแล้ว</string>
+    <string name="uncategorised">ไม่มีหมวดหมู่</string>
+    <string name="transfer_to">ไปยัง %1$s</string>
+    <string name="swipe_delete_hint">ปัดซ้ายเพื่อลบ</string>
+
+    <string name="new_transaction">รายการใหม่</string>
+    <string name="edit_transaction">แก้ไขรายการ</string>
+    <string name="type_expense">รายจ่าย</string>
+    <string name="type_income">รายรับ</string>
+    <string name="type_transfer">โอน</string>
+    <string name="type_refund">เงินคืน</string>
+    <string name="type_adjustment">ปรับยอด</string>
+    <string name="type_opening">ยอดยกมา</string>
+    <string name="field_type">ประเภท</string>
+    <string name="field_amount">จำนวนเงิน</string>
+    <string name="field_amount_hint">ใช้ + − × ÷ เพื่อคำนวณ</string>
+    <string name="amount_result">= %1$s</string>
+    <string name="amount_rounded">= %1$s (ปัดเศษ)</string>
+    <string name="field_currency">สกุลเงิน</string>
+    <string name="field_account">บัญชี</string>
+    <string name="field_to_account">ไปยังบัญชี</string>
+    <string name="field_to_amount">จำนวนที่ได้รับ</string>
+    <string name="field_category">หมวดหมู่</string>
+    <string name="field_payee">ผู้รับเงิน</string>
+    <string name="field_date">วันที่</string>
+    <string name="field_time">เวลา</string>
+    <string name="field_no_time">ไม่ระบุเวลา</string>
+    <string name="field_note">บันทึกย่อ</string>
+    <string name="field_tags">แท็ก</string>
+    <string name="field_tags_hint">คั่นด้วยเครื่องหมายจุลภาค</string>
+    <string name="field_status">สถานะ</string>
+    <string name="status_pending">รอดำเนินการ</string>
+    <string name="status_cleared">เคลียร์แล้ว</string>
+    <string name="status_reconciled">กระทบยอดแล้ว</string>
+    <string name="field_direction">ทิศทาง</string>
+    <string name="direction_in">เพิ่มยอดคงเหลือ</string>
+    <string name="direction_out">หักจากยอดคงเหลือ</string>
+    <string name="field_private">ส่วนตัว</string>
+    <string name="field_private_body">ซ่อนผู้รับเงิน บันทึกย่อ และไฟล์แนบจากผู้อื่นในพื้นที่ที่แชร์</string>
+    <string name="field_exclude_budget">ไม่นับในงบประมาณ</string>
+    <string name="field_exclude_reports">ไม่นับในรายงาน</string>
+    <string name="field_splits">แบ่งรายการ</string>
+    <string name="field_attachments">ไฟล์แนบ</string>
+    <string name="future_scheduled">วันที่ในอนาคต: รายการนี้จะนับเป็นรายการตามกำหนด</string>
+    <string name="history">ประวัติ</string>
+    <string name="pick_date">เลือกวันที่</string>
+    <string name="pick_time">เลือกเวลา</string>
+    <string name="clear_time">ล้างเวลา</string>
+
+    <string name="err_amount_empty">กรอกจำนวนเงิน</string>
+    <string name="err_amount_invalid">จำนวนเงินไม่ถูกต้อง</string>
+    <string name="err_amount_positive">จำนวนเงินต้องมากกว่าศูนย์ ประเภทรายการจะกำหนดว่าเป็นรายรับหรือรายจ่าย</string>
+    <string name="err_amount_decimals_none">%1$s ไม่มีทศนิยม</string>
+    <string name="err_amount_decimals">%1$s ใช้ทศนิยมได้ %2$d ตำแหน่ง</string>
+    <string name="err_amount_large">จำนวนเงินมากเกินไป</string>
+    <string name="err_divide_zero">หารด้วยศูนย์ไม่ได้</string>
+    <string name="err_account_required">เลือกบัญชี</string>
+    <string name="err_transfer_target">เลือกบัญชีที่รับเงิน</string>
+    <string name="err_transfer_same">เลือกบัญชีปลายทางอื่น</string>
+    <string name="err_transfer_to_amount">กรอกจำนวนที่ได้รับในอีกสกุลเงิน</string>
+    <string name="err_direction">เลือกว่าเพิ่มหรือหักยอด</string>
+    <string name="err_splits">ยอดที่แบ่งต้องรวมเท่ากับยอดทั้งหมด</string>
+    <string name="tx_not_found">ไม่มีรายการนี้แล้ว</string>
+
+    <string name="history_title">ประวัติ</string>
+    <string name="history_created">สร้าง</string>
+    <string name="history_edited">แก้ไข</string>
+    <string name="history_deleted">ลบ</string>
+    <string name="history_restored">กู้คืน</string>
+    <string name="history_undo">เลิกทำ</string>
+    <string name="history_reverted">ย้อนกลับเป็นเวอร์ชัน %1$d</string>
+    <string name="history_version">เวอร์ชัน %1$d</string>
+    <string name="history_by">%1$s · %2$s</string>
+    <string name="history_you">คุณ</string>
+    <string name="history_revert">ย้อนกลับเป็นเวอร์ชันนี้</string>
+    <string name="history_change">%1$s: %2$s → %3$s</string>
+    <string name="history_set">%1$s: %2$s</string>
+    <string name="history_empty">ยังไม่มีการเปลี่ยนแปลงที่บันทึกไว้</string>
+    <string name="reverted">ย้อนกลับแล้ว</string>
+
+    <string name="trash_title">ถังขยะ</string>
+    <string name="trash_body">รายการที่ลบจะอยู่ที่นี่ 30 วัน</string>
+    <string name="trash_empty">ถังขยะว่างเปล่า</string>
+    <string name="delete_forever">ลบถาวร</string>
+    <string name="restored">กู้คืนแล้ว</string>
+    <string name="deleted_forever">ลบถาวรแล้ว</string>
+
+    <string name="settings_region">ภูมิภาค</string>
+    <string name="settings_region_body">สกุลเงิน รูปแบบตัวเลข และรอบรายได้จะตามภูมิภาค รายการที่มีอยู่ยังคงใช้สกุลเงินเดิม</string>
+    <string name="settings_sample">ตัวอย่าง: %1$s</string>
+    <string name="region_changed">เปลี่ยนภูมิภาคเป็น %1$s แล้ว</string>
+    <string name="settings_cycle">รอบรายได้</string>
+    <string name="settings_about">%1$s ใช้ฟรี ไม่มีโฆษณา ไม่มีสินเชื่อ ไม่ขายข้อมูล</string>
+
+    <plurals name="days_left">
+        <item quantity="other">เหลือ %d วัน</item>
+    </plurals>
+    <plurals name="unconverted">
+        <item quantity="other">ยังไม่นับ %d รายการในสกุลเงินอื่น</item>
+    </plurals>
+    <plurals name="trash_count">
+        <item quantity="other">%d รายการ</item>
+    </plurals>
+</resources>

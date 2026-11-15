@@ -66,6 +66,8 @@ import app.penny.ui.common.MoneyFmt
 import app.penny.ui.common.cycleLabel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.util.Locale
@@ -90,13 +92,25 @@ class OnboardingViewModel @Inject constructor(private val repo: PennyRepository)
         return all.distinctBy { it::class to (it as? CycleRule.Monthly)?.startDay }
     }
 
-    fun finish(pack: RegionalPack, cycle: CycleRule, cashName: String, cashText: String, sample: Boolean = false, done: () -> Unit) {
+    /** Busy and the outcome live here, not in the composition: rotation during seeding must neither strand nor repeat it. */
+    val busy = kotlinx.coroutines.flow.MutableStateFlow(false)
+    /** null while working; "main" or "import" when the profile exists and the screen should leave. */
+    val done = kotlinx.coroutines.flow.MutableStateFlow<String?>(null)
+
+    fun finish(pack: RegionalPack, cycle: CycleRule, cashName: String, cashText: String, sample: Boolean = false, target: String = "main") {
+        if (!busy.compareAndSet(false, true)) return
         val minor = (AmountCalculator.evaluate(cashText, CurrencyUnit.of(pack.currency), MoneyFmt.of(pack).spec) as? AmountResult.Ok)?.minor ?: 0
         viewModelScope.launch {
-            val pid = repo.completeOnboarding(pack, cycle, cashName, minor)
-            // "Explore with sample data": a realistic month to try every screen; delete the profile later to start fresh.
-            if (sample) app.penny.domain.SampleData.seed(repo, pid)
-            done()
+            try {
+                val pid = repo.completeOnboarding(pack, cycle, cashName, minor)
+                // "Explore with sample data": a realistic month to try every screen; delete the profile later to start fresh.
+                if (sample) app.penny.domain.SampleData.seed(repo, pid)
+                done.value = target
+            } catch (e: Exception) {
+                if (e is kotlinx.coroutines.CancellationException) throw e
+                android.util.Log.w("Penny", "onboarding failed", e)
+                busy.value = false
+            }
         }
     }
 }
@@ -110,15 +124,15 @@ fun OnboardingScreen(vm: OnboardingViewModel, onImport: () -> Unit, onDone: () -
     var cycleIndex by rememberSaveable { mutableStateOf(0) }
     var cash by rememberSaveable { mutableStateOf("") }
     var query by rememberSaveable { mutableStateOf("") }
-    var busy by rememberSaveable { mutableStateOf(false) }
+    val busy by vm.busy.collectAsState()
+    val finished by vm.done.collectAsState()
+    LaunchedEffect(finished) { when (finished) { "main" -> onDone(); "import" -> { onDone(); onImport() } } }
     val pack = vm.packs.first { it.id == packId }
     val cycles = vm.cycleOptions(pack)
     val cashName = stringResource(R.string.ob_cash_name)
 
-    fun finish(sample: Boolean = false, then: () -> Unit = onDone) {
-        if (busy) return
-        busy = true
-        vm.finish(pack, cycles.getOrElse(cycleIndex) { pack.payCycleDefault }, cashName, cash, sample, then)
+    fun finish(sample: Boolean = false, target: String = "main") {
+        vm.finish(pack, cycles.getOrElse(cycleIndex) { pack.payCycleDefault }, cashName, cash, sample, target)
     }
 
     Column(Modifier.fillMaxSize().safeDrawingPadding().imePadding().padding(horizontal = 24.dp, vertical = 16.dp)) {
@@ -164,7 +178,7 @@ fun OnboardingScreen(vm: OnboardingViewModel, onImport: () -> Unit, onDone: () -
                     )
                     Spacer(Modifier.height(24.dp))
                     // OB-03 / OB-04: bring data from another app, or join a household, right after setup.
-                    OutlinedButton(onClick = { finish(then = { onDone(); onImport() }) }, enabled = !busy) { Text(stringResource(R.string.ob_import)) }
+                    OutlinedButton(onClick = { finish(target = "import") }, enabled = !busy) { Text(stringResource(R.string.ob_import)) }
                     Spacer(Modifier.height(8.dp))
                     Text(stringResource(R.string.ob_join_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }

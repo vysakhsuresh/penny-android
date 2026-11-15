@@ -29,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -93,14 +94,17 @@ fun LockScreen(onUnlocked: () -> Unit, vm: BookViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val sec = vm.prefs.security.value
     var pin by rememberSaveable { mutableStateOf("") }
-    var fails by rememberSaveable { mutableStateOf(0) }
-    var wait by rememberSaveable { mutableStateOf(0) }
+    // Failure count and lockout end are persisted, so killing the app or re-locking cannot reset the back-off.
+    var fails by remember { mutableStateOf(vm.prefs.long("pin.fails").toInt()) }
+    fun secondsLeft() = ((vm.prefs.long("pin.lockUntil") - System.currentTimeMillis()) / 1000).coerceAtLeast(0).toInt()
+    var wait by remember { mutableStateOf(secondsLeft()) }
     val scope = rememberCoroutineScope()
     val title = stringResource(R.string.unlock_title)
     val bioOk = sec.biometric && canUseBiometrics(context)
-    fun bio() { (context as? FragmentActivity)?.let { promptBiometric(it, title) { onUnlocked() } } }
+    fun unlocked() { fails = 0; vm.prefs.setLong("pin.fails", 0); vm.prefs.setLong("pin.lockUntil", 0); onUnlocked() }
+    fun bio() { (context as? FragmentActivity)?.let { promptBiometric(it, title) { unlocked() } } }
     LaunchedEffect(Unit) { if (bioOk) bio() }
-    LaunchedEffect(wait) { if (wait > 0) { delay(1000); wait-- } }
+    LaunchedEffect(wait) { if (wait > 0) { delay(1000); wait = secondsLeft() } }
 
     fun submit() {
         val p = pin
@@ -109,12 +113,19 @@ fun LockScreen(onUnlocked: () -> Unit, vm: BookViewModel = hiltViewModel()) {
             val ok = sec.pinHash.isNotEmpty() && PinHasher.verify(p, sec.pinHash)
             val duress = !ok && sec.duressPinHash.isNotEmpty() && PinHasher.verify(p, sec.duressPinHash) && sec.duressProfileId != null
             kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) { when {
-                ok -> { fails = 0; onUnlocked() }
+                ok -> unlocked()
                 duress -> {
                     vm.prefs.setCurrentProfile(sec.duressProfileId)
-                    onUnlocked()
+                    unlocked()
                 }
-                else -> { fails++; if (fails >= 5) wait = 30 * (fails - 4) }
+                else -> {
+                    fails++
+                    vm.prefs.setLong("pin.fails", fails.toLong())
+                    if (fails >= 5) {
+                        vm.prefs.setLong("pin.lockUntil", System.currentTimeMillis() + 30_000L * (fails - 4))
+                        wait = secondsLeft()
+                    }
+                }
             } }
         }
     }

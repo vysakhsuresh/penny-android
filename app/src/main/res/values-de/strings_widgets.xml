@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">Frei verfügbar auf einen Blick</string>
+    <string name="widget_quick_desc">Buchung hinzufügen oder Vorlage mit einem Tipp nutzen</string>
+    <string name="widget_envelopes_desc">Umschläge und anstehende Rechnungen</string>
+    <string name="widget_safe_label">Frei verfügbar</string>
+    <string name="widget_quick_label">Schnell erfassen</string>
+    <string name="widget_envelopes_label">Budgets</string>
+    <string name="shortcut_add">Hinzufügen</string>
+    <string name="tile_label">Zu Penny hinzufügen</string>
+</resources>

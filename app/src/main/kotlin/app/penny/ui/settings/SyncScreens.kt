@@ -1,5 +1,6 @@
 package app.penny.ui.settings
 
+import app.penny.ui.common.safeStart
 import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -66,7 +67,11 @@ import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
-class SyncViewModel @Inject constructor(val sync: SyncManager) : ViewModel()
+class SyncViewModel @Inject constructor(val sync: SyncManager) : ViewModel() {
+    /** Recovery words live here, not in the saved-state bundle (which is written to disk): they survive rotation only. */
+    val newPhrase = androidx.compose.runtime.mutableStateOf<List<String>?>(null)
+    val phraseInput = androidx.compose.runtime.mutableStateOf("")
+}
 
 /**
  * US-01, SE-02/03/06, SY-02/04/09, CP-10, US-14: sign in by emailed code, recovery phrase, sync status and pending
@@ -82,8 +87,8 @@ fun SyncScreen(onBack: () -> Unit, svm: SyncViewModel = hiltViewModel()) {
         var relay by rememberSaveable { mutableStateOf("") }
         var code by rememberSaveable { mutableStateOf("") }
         var codeSent by rememberSaveable { mutableStateOf(false) }
-        var newPhrase by rememberSaveable { mutableStateOf<List<String>?>(null) }
-        var phraseInput by rememberSaveable { mutableStateOf("") }
+        var newPhrase by svm.newPhrase
+        var phraseInput by svm.phraseInput
         var error by rememberSaveable { mutableStateOf<String?>(null) }
         var devices by remember { mutableStateOf<List<DeviceInfo>?>(null) }
         var deleteAccount by rememberSaveable { mutableStateOf(false) }
@@ -217,7 +222,7 @@ private fun BankSection(ctx: app.penny.ui.common.Ctx, bvm: BankViewModel = hiltV
             ListRow(
                 l.value.institution.ifBlank { l.value.provider },
                 subtitle = listOfNotNull(
-                    l.value.provider, l.value.status.name.lowercase().replace('_', ' '),
+                    l.value.provider, stringResource(when (l.value.status) { app.penny.core.model.SyncStatus.ACTIVE -> R.string.sync_status_active; app.penny.core.model.SyncStatus.NEEDS_CONSENT -> R.string.sync_status_needs_consent; app.penny.core.model.SyncStatus.BROKEN -> R.string.sync_status_broken; app.penny.core.model.SyncStatus.DISCONNECTED -> R.string.sync_status_disconnected }),
                     l.value.lastFetchMillis?.let { stringResource(R.string.last_synced, DateFormat.getDateTimeInstance().format(Date(it))) },
                     l.value.consentExpiry?.let { stringResource(R.string.consent_until, app.penny.ui.common.shortDate(it)) },
                 ).joinToString(" · "),
@@ -226,7 +231,7 @@ private fun BankSection(ctx: app.penny.ui.common.Ctx, bvm: BankViewModel = hiltV
                 TextButton(onClick = { scope.launch { message = runCatching { bvm.bank.syncOne(ctx.book, l.state.id) }.fold({ context.resources.getQuantityString(R.plurals.bank_synced, it, it) }, { it.message }) } }) { Text(stringResource(R.string.sync_now)) }
                 TextButton(onClick = {
                     scope.launch {
-                        runCatching { bvm.bank.reconsent(ctx.book, l.state.id, null) }.onSuccess { c -> c?.redirectUrl?.let { u -> context.startActivity(Intent(Intent.ACTION_VIEW, android.net.Uri.parse(u))) } }.onFailure { message = it.message }
+                        runCatching { bvm.bank.reconsent(ctx.book, l.state.id, null) }.onSuccess { c -> c?.redirectUrl?.let { u -> context.safeStart(Intent(Intent.ACTION_VIEW, android.net.Uri.parse(u))) } }.onFailure { message = it.message }
                     }
                 }) { Text(stringResource(R.string.reconsent)) }
                 TextButton(onClick = { scope.launch { runCatching { bvm.bank.disconnect(ctx.book, l.state.id) }; message = context.getString(R.string.disconnected) } }) { Text(stringResource(R.string.disconnect)) }
@@ -238,7 +243,7 @@ private fun BankSection(ctx: app.penny.ui.common.Ctx, bvm: BankViewModel = hiltV
         ListRow(p.name, subtitle = stringResource(if (p.kind == "token") R.string.connect_with_token else R.string.connect_in_browser), onClick = {
             if (p.kind == "token") tokenFor = p.id
             else scope.launch {
-                runCatching { bvm.bank.connect(ctx.book, p.id, null) }.onSuccess { c -> c.redirectUrl?.let { u -> context.startActivity(Intent(Intent.ACTION_VIEW, android.net.Uri.parse(u))) } }
+                runCatching { bvm.bank.connect(ctx.book, p.id, null) }.onSuccess { c -> c.redirectUrl?.let { u -> context.safeStart(Intent(Intent.ACTION_VIEW, android.net.Uri.parse(u))) } }
                     .onFailure { message = if (it.message?.contains("plus_required") == true) context.getString(R.string.bank_sync_needs_plus) else it.message }
             }
         }, divider = true)
@@ -271,6 +276,10 @@ fun BankCallbackScreen(state: String?, params: Map<String, String>, onDone: () -
         var msg by rememberSaveable { mutableStateOf<String?>(null) }
         val context = LocalContext.current
         LaunchedEffect(state) {
+            // A one-time code: exchange it once. Recreation (rotation, unlock) must not send it again and overwrite
+            // "connected" with an error.
+            if (msg != null) return@LaunchedEffect
+            if (state != null && !handledBankStates.add(state)) return@LaunchedEffect
             msg = if (state == null) context.getString(R.string.bank_cancelled)
             else runCatching { bvm.bank.complete(ctx.book, state, params) }.fold({ context.getString(R.string.bank_connected) }, { it.message })
         }
@@ -304,7 +313,7 @@ private fun AdvisorSection(svm: SyncViewModel, ctx: app.penny.ui.common.Ctx) {
                     ins.byCategory.take(12).map { s -> kotlinx.serialization.json.buildJsonObject { put("label", kotlinx.serialization.json.JsonPrimitive(b.categoryMap[s.key]?.value?.name ?: s.key)); put("value", kotlinx.serialization.json.JsonPrimitive(ctx.money(s.amountMinor))) } }))
             }.toString()
             runCatching { svm.sync.advisorLink(json, days) }.onSuccess { link ->
-                context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, link), null))
+                context.safeStart(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, link), null))
             }
         }
     }, modifier = Modifier.padding(horizontal = 16.dp)) { Text(stringResource(R.string.create_advisor_link)) }
@@ -348,9 +357,9 @@ fun SpacesScreen(onBack: () -> Unit, initialToken: String? = null, svm: SyncView
                     SelectField(stringResource(R.string.invite_as), inviteRole, listOf(Role.ADMIN, Role.EDITOR, Role.CONTRIBUTOR, Role.VIEWER).map { Choice(it, roleLabel(context, it)) }, { it?.let { r -> inviteRole = r } })
                     FilledTonalButton(onClick = {
                         scope.launch {
-                            runCatching { svm.sync.invite(ctx.book.profileId, inviteRole, ctx.book.profile.name) }.onSuccess { inv ->
+                            runCatching { svm.sync.invite(ctx.book.profileId, inviteRole, "") /* the relay never sees the book name (E2EE) */ }.onSuccess { inv ->
                                 val text = context.getString(R.string.invite_text, ctx.book.profile.name, svm.sync.inviteLink(inv.token))
-                                context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, text), null))
+                                context.safeStart(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, text), null))
                             }.onFailure { error = it.message }
                         }
                     }, modifier = Modifier.padding(horizontal = 16.dp), enabled = st.phase == SyncPhase.READY) { Text(stringResource(R.string.invite_someone)) }
@@ -398,8 +407,11 @@ fun PlusScreen(onBack: () -> Unit) {
                 }
             }
             TextButton(onClick = { Billing.restore(context) }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.restore_purchases)) }
-            TextButton(onClick = { runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, android.net.Uri.parse("https://play.google.com/store/account/subscriptions?package=" + context.packageName))) } }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.manage_cancel)) }
+            TextButton(onClick = { context.safeStart(Intent(Intent.ACTION_VIEW, android.net.Uri.parse("https://play.google.com/store/account/subscriptions?package=" + context.packageName))) }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.manage_cancel)) }
             Text(stringResource(R.string.plus_downgrade_note), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(20.dp))
         }
     }
 }
+
+/** Bank callback states already exchanged in this process. */
+private val handledBankStates: MutableSet<String> = java.util.Collections.synchronizedSet(mutableSetOf())

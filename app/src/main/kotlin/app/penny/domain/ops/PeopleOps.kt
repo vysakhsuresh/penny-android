@@ -2,7 +2,6 @@ package app.penny.domain.ops
 
 import app.penny.core.model.Circle
 import app.penny.core.model.CircleContribution
-import app.penny.core.model.DefaultCategories
 import app.penny.core.model.Group
 import app.penny.core.model.GroupExpense
 import app.penny.core.model.LendDirection
@@ -16,7 +15,6 @@ import app.penny.core.model.TxType
 import app.penny.core.planning.Splitting
 import app.penny.domain.Book
 import app.penny.domain.PennyRepository
-import java.time.LocalDate
 import java.time.LocalTime
 
 suspend fun PennyRepository.savePerson(book: Book, id: String?, p: Person): String {
@@ -53,7 +51,10 @@ suspend fun PennyRepository.saveLending(book: Book, id: String?, e: LendingEntry
         val newId = newId()
         lending.create(newId, book.profileId, entry, g)
         entry.transactionId?.let { t -> book.txMap[t] ?: transactions.get(t)?.let { s -> transactions.update(t, s.value.copy(lendingId = newId), groupId = g) } }
-    } else lending.update(id, entry, groupId = g)
+    } else {
+        lending.update(id, entry, groupId = g)
+        updateLinkedTx(book, entry.transactionId, g) { it.copy(amountMinor = entry.amountMinor, currency = entry.currency, date = entry.date, note = entry.note, payee = book.personName(entry.personId)) }
+    }
     return g
 }
 
@@ -85,7 +86,19 @@ suspend fun PennyRepository.saveGroupExpense(book: Book, id: String?, e: GroupEx
         ), g)
         exp = exp.copy(transactionId = txId)
     }
-    if (id == null) groupExpenses.create(newId(), book.profileId, exp, g) else groupExpenses.update(id, exp, groupId = g)
+    if (id == null) groupExpenses.create(newId(), book.profileId, exp, g) else {
+        groupExpenses.update(id, exp, groupId = g)
+        val mine = Splitting.shares(exp)[Group.ME] ?: 0
+        updateLinkedTx(book, exp.transactionId, g) {
+            it.copy(
+                amountMinor = exp.amountMinor, currency = exp.currency, categoryId = exp.categoryId, payee = exp.description, date = exp.date, note = exp.note,
+                splits = if (mine < exp.amountMinor) listOfNotNull(
+                    app.penny.core.model.Split(mine, exp.categoryId).takeIf { mine > 0 },
+                    app.penny.core.model.Split(exp.amountMinor - mine, catId(book.profileId, "loan.given"), note = "Others' share"),
+                ) else emptyList(),
+            )
+        }
+    }
     return g
 }
 
@@ -135,7 +148,16 @@ suspend fun PennyRepository.saveRemittance(book: Book, id: String?, r: Remittanc
         ), g)
         rem = rem.copy(transactionId = txId)
     }
-    if (id == null) remittances.create(newId(), book.profileId, rem, g) else remittances.update(id, rem, groupId = g)
+    if (id == null) remittances.create(newId(), book.profileId, rem, g) else {
+        remittances.update(id, rem, groupId = g)
+        updateLinkedTx(book, rem.transactionId, g) {
+            it.copy(
+                amountMinor = if (rem.outgoing) rem.sentMinor + rem.feeMinor else rem.receivedMinor,
+                currency = if (rem.outgoing) rem.sentCurrency else rem.receivedCurrency,
+                payee = if (rem.outgoing) rem.receiver else rem.sender, date = rem.date, note = rem.purpose,
+            )
+        }
+    }
     return g
 }
 
@@ -164,5 +186,49 @@ suspend fun PennyRepository.recordCircle(book: Book, circleId: String, c: Circle
     return g
 }
 
-@Suppress("unused")
-private val unusedKeys = listOf(DefaultCategories.TRANSFERS, LocalDate.MIN)
+// ---------------------------------------------------------------- Linked ledger transactions
+
+/** Soft-deletes the ledger transaction a people record posted, in the record's undo group. */
+private suspend fun PennyRepository.deleteLinkedTx(book: Book, txId: String?, group: String) {
+    if (txId != null && book.txMap.containsKey(txId)) transactions.delete(txId, group)
+}
+
+/** Keeps the posted transaction in step with an edited record (amount, date, note, payee), in the same undo group. */
+private suspend fun PennyRepository.updateLinkedTx(book: Book, txId: String?, group: String, change: (Transaction) -> Transaction) {
+    val cur = txId?.let { book.txMap[it]?.value } ?: return
+    val next = change(cur)
+    if (next != cur) transactions.update(txId, next, groupId = group)
+}
+
+/** Deleting the record removes what it posted: a deleted remittance must not stay in balances and spend. */
+suspend fun PennyRepository.deleteLending(book: Book, id: String): String {
+    val g = lending.newGroup()
+    val e = book.lending.firstOrNull { it.state.id == id }?.value
+    lending.delete(id, g)
+    deleteLinkedTx(book, e?.transactionId, g)
+    return g
+}
+
+suspend fun PennyRepository.deleteGroupExpense(book: Book, id: String): String {
+    val g = groupExpenses.newGroup()
+    val e = book.groupExpenses.firstOrNull { it.state.id == id }?.value
+    groupExpenses.delete(id, g)
+    deleteLinkedTx(book, e?.transactionId, g)
+    return g
+}
+
+suspend fun PennyRepository.deleteRemittance(book: Book, id: String): String {
+    val g = remittances.newGroup()
+    val r = book.remittances.firstOrNull { it.state.id == id }?.value
+    remittances.delete(id, g)
+    deleteLinkedTx(book, r?.transactionId, g)
+    return g
+}
+
+suspend fun PennyRepository.deleteCircleContribution(book: Book, id: String): String {
+    val g = circleContributions.newGroup()
+    val c = book.circleContributions.firstOrNull { it.state.id == id }?.value
+    circleContributions.delete(id, g)
+    deleteLinkedTx(book, c?.transactionId, g)
+    return g
+}

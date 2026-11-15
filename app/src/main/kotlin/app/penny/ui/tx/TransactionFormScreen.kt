@@ -211,11 +211,12 @@ fun TransactionFormScreen(
     }
     if (templateDialog) {
         var name by rememberSaveable { mutableStateOf(formState?.payee.orEmpty()) }
+        val templateDefault = stringResource(R.string.template_default_name)
         AlertDialog(
             onDismissRequest = { templateDialog = false },
             title = { Text(stringResource(R.string.save_as_template)) },
             text = { OutlinedTextField(name, { name = it }, label = { Text(stringResource(R.string.field_name)) }, singleLine = true) },
-            confirmButton = { TextButton(onClick = { vm.saveTemplate(name.ifBlank { "Template" }); templateDialog = false }, enabled = name.isNotBlank()) { Text(stringResource(R.string.save)) } },
+            confirmButton = { TextButton(onClick = { vm.saveTemplate(name.ifBlank { templateDefault }); templateDialog = false }, enabled = name.isNotBlank()) { Text(stringResource(R.string.save)) } },
             dismissButton = { TextButton(onClick = { templateDialog = false }) { Text(stringResource(R.string.cancel)) } },
         )
     }

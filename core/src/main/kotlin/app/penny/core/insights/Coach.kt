@@ -25,7 +25,15 @@ data class CoachAnswer(
  * IN-08 on-device coach: classifies a question into an intent, turns the rest into a filter with the natural-language
  * parser and answers from the user's own rows. No network, no model download, no product suggestions.
  */
-class Coach(private val parser: NaturalQueryParser, private val tone: CoachTone) {
+class Coach(
+    private val parser: NaturalQueryParser,
+    private val tone: CoachTone,
+    /** When set, totals are converted to this currency (a JPY and a USD row never add up as raw numbers). */
+    private val base: String? = null,
+    private val fx: app.penny.core.budget.FxConverter = app.penny.core.budget.FxConverter.SameCurrencyOnly,
+) {
+    private fun Row.baseAmount(): Long = if (base == null) tx.amountMinor else fx.convert(tx.amountMinor, tx.currency, base, tx.date) ?: 0
+
     fun ask(question: String, rows: List<Row>, safeToSpendMinor: Long? = null, previousPeriodRows: List<Row> = emptyList()): CoachAnswer {
         val q = question.lowercase()
         val intent = when {
@@ -41,23 +49,24 @@ class Coach(private val parser: NaturalQueryParser, private val tone: CoachTone)
         val cleaned = q.replace(Regex("\\b(how much|did i|do i|have i|what|was|is|my|can i|afford|biggest|largest|average|how many|times|compare|where|money|go|went|breakdown|total|spend|spent)\\b"), " ")
         val parsed = parser.parse(cleaned)
         val hits = TxSearch.filter(rows, parsed.filter)
-        val spendHits = hits.filter { it.tx.type == TxType.EXPENSE || it.tx.type == TxType.INCOME && parsed.filter.types.contains(TxType.INCOME) }
-        fun sum(list: List<Row>) = list.sumOf { if (it.tx.type == TxType.REFUND) -it.tx.amountMinor else it.tx.amountMinor }
+        // Refunds reduce what was spent, so they are part of the answer.
+        val spendHits = hits.filter { it.tx.type == TxType.EXPENSE || it.tx.type == TxType.REFUND || it.tx.type == TxType.INCOME && parsed.filter.types.contains(TxType.INCOME) }
+        fun sum(list: List<Row>) = list.sumOf { if (it.tx.type == TxType.REFUND) -it.baseAmount() else it.baseAmount() }
         return when (intent) {
             CoachIntent.TOTAL, CoachIntent.UNKNOWN -> CoachAnswer(intent, sum(spendHits), null, parsed.understood, spendHits.take(50), tone)
             CoachIntent.AVERAGE -> CoachAnswer(intent, if (spendHits.isEmpty()) 0 else sum(spendHits) / spendHits.size, spendHits.size.toLong(), parsed.understood, spendHits.take(50), tone)
             CoachIntent.COUNT -> CoachAnswer(intent, spendHits.size.toLong(), sum(spendHits), parsed.understood, spendHits.take(50), tone)
             CoachIntent.BIGGEST -> {
-                val top = spendHits.sortedByDescending { it.tx.amountMinor }.take(5)
-                CoachAnswer(intent, top.firstOrNull()?.tx?.amountMinor, null, parsed.understood, top, tone, top.firstOrNull()?.tx?.payee)
+                val top = spendHits.filter { it.tx.type != TxType.REFUND }.sortedByDescending { it.baseAmount() }.take(5)
+                CoachAnswer(intent, top.firstOrNull()?.baseAmount(), null, parsed.understood, top, tone, top.firstOrNull()?.tx?.payee)
             }
             CoachIntent.COMPARE -> {
                 val prev = TxSearch.filter(previousPeriodRows, parsed.filter.copy(from = null, to = null))
                 CoachAnswer(intent, sum(spendHits), sum(prev), parsed.understood, spendHits.take(50), tone)
             }
             CoachIntent.WHERE_MONEY_WENT -> {
-                val top = spendHits.groupBy { it.tx.categoryId }.maxByOrNull { (_, l) -> l.sumOf { it.tx.amountMinor } }
-                CoachAnswer(intent, top?.value?.sumOf { it.tx.amountMinor }, sum(spendHits), parsed.understood, top?.value.orEmpty().take(50), tone, top?.key)
+                val top = spendHits.groupBy { it.tx.categoryId }.maxByOrNull { (_, l) -> sum(l) }
+                CoachAnswer(intent, top?.value?.let(::sum), sum(spendHits), parsed.understood, top?.value.orEmpty().take(50), tone, top?.key)
             }
             CoachIntent.CAN_I_AFFORD -> {
                 val ask = Regex("([0-9][0-9.,]*)").find(q)?.value?.let { app.penny.core.capture.AmountText.toMinor(it, rows.firstOrNull()?.tx?.currency ?: "USD") }

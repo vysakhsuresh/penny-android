@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Penny</string>
+    <string name="safe_to_spend">Можна витратити</string>
+    <string name="per_day_left">%1$s на день · днів залишилося: %2$d</string>
+    <string name="say_it">Назвати витрату</string>
+    <string name="added">Додано на телефоні</string>
+    <string name="not_understood">Не вдалося розпізнати суму</string>
+    <string name="no_phone">Телефон не підключено. Показано останнє відоме значення.</string>
+</resources>

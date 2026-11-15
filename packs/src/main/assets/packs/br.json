@@ -6,14 +6,13 @@
     "pt-BR"
   ],
   "languages": [
-    "pt",
-    "en"
+    "pt"
   ],
   "currency": "BRL",
   "number_grouping": "standard",
   "pay_cycle_default": {
     "type": "monthly",
-    "startDay": 5
+    "startDay": 1
   },
   "first_day_of_week": "SUNDAY",
   "fiscal_year_start": "01-01",
@@ -21,70 +20,166 @@
   "holidays": [],
   "festival_windows": [
     {
-      "name": "Natal",
-      "month": 12
+      "name": "Volta às aulas",
+      "month": 1
     },
     {
       "name": "Carnaval",
       "month": 2
     },
     {
-      "name": "Volta às aulas",
-      "month": 2
+      "name": "Dia das Mães",
+      "month": 5
+    },
+    {
+      "name": "Festas Juninas",
+      "month": 6
+    },
+    {
+      "name": "Black Friday",
+      "month": 11
     },
     {
       "name": "13º salário",
       "month": 11
+    },
+    {
+      "name": "Natal",
+      "month": 12
     }
   ],
-  "circle_names": [
-    "Consórcio",
-    "Caixinha"
-  ],
+  "circle_names": [],
   "payment_apps": [
-    {
-      "name": "Nubank",
-      "package": null,
-      "parser_id": null
-    },
     {
       "name": "Pix",
       "package": null,
       "parser_id": null
     },
     {
-      "name": "Itaú",
-      "package": null,
-      "parser_id": null
-    },
-    {
-      "name": "PicPay",
-      "package": null,
-      "parser_id": null
+      "name": "Nubank",
+      "package": "com.nu.production",
+      "parser_id": "br_card_purchase"
     },
     {
       "name": "Mercado Pago",
+      "package": "com.mercadopago.wallet",
+      "parser_id": "br_card_purchase"
+    },
+    {
+      "name": "PicPay",
+      "package": "com.picpay",
+      "parser_id": "br_card_purchase"
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "Itaú",
+      "package": "com.itau",
+      "parser_id": null
+    },
+    {
+      "name": "Bradesco",
+      "package": "com.bradesco",
+      "parser_id": null
+    },
+    {
+      "name": "Banco do Brasil",
+      "package": "br.com.bb.android",
+      "parser_id": null
+    },
+    {
+      "name": "CAIXA",
+      "package": "br.com.gabba.Caixa",
+      "parser_id": null
+    },
+    {
+      "name": "Inter",
+      "package": "br.com.intermedium",
+      "parser_id": "br_card_purchase"
+    },
+    {
+      "name": "C6 Bank",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Santander",
       "package": null,
       "parser_id": null
     }
   ],
-  "bank_apps": [],
-  "aggregator_provider": null,
+  "aggregator_provider": "pluggy",
   "settlement_schemes": [
     "Pix"
   ],
   "typical_amount_chips": [
-    5,
     10,
     20,
     50,
-    100
+    100,
+    200
   ],
-  "cancellation_guides": [],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Amazon Prime|https://www.amazon.com.br/gp/primecentral",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
   "price_points": {
     "plus_monthly": 1490,
     "plus_yearly": 9990,
     "plus_lifetime": 29900
   },
-  "privacy_text_ref": null
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "br_card_purchase",
+      "packages": [
+        "com.nu.production",
+        "br.com.intermedium",
+        "com.picpay",
+        "com.mercadopago.wallet"
+      ],
+      "regex": "Compra(?:\\s+no\\s+(?:débito|crédito))?\\s+(?:de\\s+)?R\\$\\s?(?<amount>[0-9][0-9.]*(?:,[0-9]{1,2})?)\\s+(?:APROVADA\\s+)?em\\s+(?<payee>[^\\n]+?)(?=\\s+(?:para o cartão|no cartão|com o cartão|foi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "BRL",
+      "numberLocale": "pt-BR",
+      "confidence": 90
+    },
+    {
+      "id": "br_pix_received",
+      "packages": [
+        "com.nu.production",
+        "br.com.intermedium",
+        "com.picpay",
+        "com.mercadopago.wallet"
+      ],
+      "regex": "(?:recebeu|recebid[oa])[^\\n]*?R\\$\\s?(?<amount>[0-9][0-9.]*(?:,[0-9]{1,2})?)(?:\\s+de\\s+(?<payee>[^\\n]+?)(?=[.!,]?\\s*(?:\\n|$)))?",
+      "type": "income",
+      "currency": "BRL",
+      "numberLocale": "pt-BR",
+      "confidence": 85
+    },
+    {
+      "id": "br_pix_sent",
+      "packages": [
+        "com.nu.production",
+        "br.com.intermedium",
+        "com.picpay",
+        "com.mercadopago.wallet"
+      ],
+      "regex": "(?:Pix|Transferência|Pagamento)\\s+(?:enviad[oa]|realizad[oa]|feit[oa])[^\\n]*?R\\$\\s?(?<amount>[0-9][0-9.]*(?:,[0-9]{1,2})?)(?:\\s+para\\s+(?<payee>[^\\n]+?)(?=[.!,]?\\s*(?:\\n|$)))?",
+      "type": "expense",
+      "currency": "BRL",
+      "numberLocale": "pt-BR",
+      "confidence": 85
+    }
+  ],
+  "gold_price_per_gram": null,
+  "connectors": [
+    "pluggy",
+    "belvo"
+  ],
+  "tax_year_label": null
 }

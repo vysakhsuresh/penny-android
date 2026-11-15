@@ -1,0 +1,169 @@
+{
+  "schema": 1,
+  "id": "NL",
+  "name": "Nederland",
+  "locales": [
+    "nl-NL"
+  ],
+  "languages": [
+    "nl",
+    "en"
+  ],
+  "currency": "EUR",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 1
+  },
+  "first_day_of_week": "MONDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "Europe/Amsterdam",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Koningsdag",
+      "month": 4
+    },
+    {
+      "name": "Vakantiegeld",
+      "month": 5
+    },
+    {
+      "name": "Zomervakantie",
+      "month": 7
+    },
+    {
+      "name": "Black Friday",
+      "month": 11
+    },
+    {
+      "name": "Sinterklaas",
+      "month": 12
+    },
+    {
+      "name": "Kerst",
+      "month": 12
+    }
+  ],
+  "circle_names": [],
+  "payment_apps": [
+    {
+      "name": "Tikkie",
+      "package": "com.abnamro.nl.tikkie",
+      "parser_id": null
+    },
+    {
+      "name": "Revolut",
+      "package": "com.revolut.revolut",
+      "parser_id": "eu_revolut_received"
+    },
+    {
+      "name": "bunq",
+      "package": "com.bunq.android",
+      "parser_id": null
+    },
+    {
+      "name": "PayPal",
+      "package": "com.paypal.android.p2pmobile",
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "ING",
+      "package": "com.ing.mobile",
+      "parser_id": null
+    },
+    {
+      "name": "Rabobank",
+      "package": "nl.rabomobiel",
+      "parser_id": null
+    },
+    {
+      "name": "ABN AMRO",
+      "package": "com.abnamro.nl.mobile.payments",
+      "parser_id": null
+    },
+    {
+      "name": "SNS",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "ASN Bank",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": "tink",
+  "settlement_schemes": [
+    "Tikkie",
+    "iDEAL",
+    "revolut",
+    "SEPA"
+  ],
+  "typical_amount_chips": [
+    2,
+    5,
+    10,
+    20,
+    50
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Amazon Prime|https://www.amazon.nl/gp/primecentral",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 349,
+    "plus_yearly": 2499,
+    "plus_lifetime": 6999
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "eu_revolut_received",
+      "packages": [
+        "com.revolut.revolut"
+      ],
+      "regex": "(?:You(?:\\'ve| have)? received|Received)\\s+€\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+from\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "income",
+      "currency": "EUR",
+      "numberLocale": "en",
+      "confidence": 85
+    },
+    {
+      "id": "eu_revolut_sent_you",
+      "packages": [
+        "com.revolut.revolut"
+      ],
+      "regex": "(?<payee>[^\\n€]+?)\\s+sent you\\s+€\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)",
+      "type": "income",
+      "currency": "EUR",
+      "numberLocale": "en",
+      "confidence": 85
+    },
+    {
+      "id": "eu_revolut_spent",
+      "packages": [
+        "com.revolut.revolut"
+      ],
+      "regex": "(?:You(?:\\'ve)? (?:spent|paid)|Spent|Paid)?\\s*€\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+(?:at|to)\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "EUR",
+      "numberLocale": "en",
+      "confidence": 85
+    }
+  ],
+  "gold_price_per_gram": null,
+  "connectors": [
+    "tink",
+    "gocardless",
+    "truelayer",
+    "plaid",
+    "saltedge"
+  ],
+  "tax_year_label": null
+}

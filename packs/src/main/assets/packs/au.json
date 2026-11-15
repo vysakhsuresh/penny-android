@@ -20,26 +20,37 @@
   "holidays": [],
   "festival_windows": [
     {
+      "name": "Back to school",
+      "month": 1
+    },
+    {
+      "name": "EOFY sales",
+      "month": 6
+    },
+    {
+      "name": "Black Friday",
+      "month": 11
+    },
+    {
       "name": "Christmas",
       "month": 12
     },
     {
-      "name": "EOFY",
-      "month": 6
-    },
-    {
-      "name": "Back to school",
-      "month": 1
+      "name": "Boxing Day sales",
+      "month": 12
     }
   ],
-  "circle_names": [
-    "Savings circle"
-  ],
+  "circle_names": [],
   "payment_apps": [
     {
-      "name": "CommBank",
+      "name": "PayID",
       "package": null,
       "parser_id": null
+    },
+    {
+      "name": "PayPal",
+      "package": "com.paypal.android.p2pmobile",
+      "parser_id": "au_paypal_received"
     },
     {
       "name": "Up",
@@ -47,26 +58,37 @@
       "parser_id": null
     },
     {
-      "name": "ANZ",
-      "package": null,
-      "parser_id": null
-    },
-    {
       "name": "Beem",
-      "package": null,
-      "parser_id": null
-    },
-    {
-      "name": "PayID",
       "package": null,
       "parser_id": null
     }
   ],
-  "bank_apps": [],
-  "aggregator_provider": null,
+  "bank_apps": [
+    {
+      "name": "CommBank",
+      "package": "com.commbank.netbank",
+      "parser_id": null
+    },
+    {
+      "name": "ANZ",
+      "package": "com.anz.android.gomoney",
+      "parser_id": null
+    },
+    {
+      "name": "Westpac",
+      "package": "org.westpac.bank",
+      "parser_id": null
+    },
+    {
+      "name": "NAB",
+      "package": "au.com.nab.mobile",
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": "basiq",
   "settlement_schemes": [
     "PayID",
-    "Beem"
+    "paypal"
   ],
   "typical_amount_chips": [
     5,
@@ -75,11 +97,57 @@
     50,
     100
   ],
-  "cancellation_guides": [],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Amazon Prime|https://www.amazon.com.au/gp/primecentral",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
   "price_points": {
     "plus_monthly": 499,
-    "plus_yearly": 3999,
+    "plus_yearly": 3599,
     "plus_lifetime": 9999
   },
-  "privacy_text_ref": null
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "au_paypal_received",
+      "packages": [
+        "com.paypal.android.p2pmobile"
+      ],
+      "regex": "You(?:\\'ve)? received\\s+(?:\\$|A\\$)?\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)(?:\\s+AUD)?\\s+from\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "income",
+      "currency": "AUD",
+      "numberLocale": "en",
+      "confidence": 88
+    },
+    {
+      "id": "au_paypal_sent_you",
+      "packages": [
+        "com.paypal.android.p2pmobile"
+      ],
+      "regex": "(?<payee>[^\\n]+?)\\s+sent you\\s+(?:\\$|A\\$)?\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)",
+      "type": "income",
+      "currency": "AUD",
+      "numberLocale": "en",
+      "confidence": 88
+    },
+    {
+      "id": "au_paypal_sent",
+      "packages": [
+        "com.paypal.android.p2pmobile"
+      ],
+      "regex": "You (?:sent|paid)\\s+(?:\\$|A\\$)?\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)(?:\\s+AUD)?\\s+to\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "AUD",
+      "numberLocale": "en",
+      "confidence": 88
+    }
+  ],
+  "gold_price_per_gram": null,
+  "connectors": [
+    "basiq"
+  ],
+  "tax_year_label": "financial year"
 }

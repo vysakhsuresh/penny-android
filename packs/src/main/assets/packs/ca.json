@@ -1,0 +1,164 @@
+{
+  "schema": 1,
+  "id": "CA",
+  "name": "Canada",
+  "locales": [
+    "en-CA",
+    "fr-CA"
+  ],
+  "languages": [
+    "en",
+    "fr"
+  ],
+  "currency": "CAD",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "biweekly",
+    "anchor": "2026-01-09"
+  },
+  "first_day_of_week": "SUNDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "America/Toronto",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "RRSP season",
+      "month": 2
+    },
+    {
+      "name": "Back to school",
+      "month": 8
+    },
+    {
+      "name": "Thanksgiving",
+      "month": 10
+    },
+    {
+      "name": "Black Friday",
+      "month": 11
+    },
+    {
+      "name": "Holidays",
+      "month": 12
+    },
+    {
+      "name": "Boxing Day",
+      "month": 12
+    }
+  ],
+  "circle_names": [],
+  "payment_apps": [
+    {
+      "name": "Interac e-Transfer",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "PayPal",
+      "package": "com.paypal.android.p2pmobile",
+      "parser_id": "ca_paypal_received"
+    },
+    {
+      "name": "Wealthsimple",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "KOHO",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "RBC",
+      "package": "com.rbc.mobile.android",
+      "parser_id": null
+    },
+    {
+      "name": "TD",
+      "package": "com.td",
+      "parser_id": null
+    },
+    {
+      "name": "Scotiabank",
+      "package": "com.scotiabank.banking",
+      "parser_id": null
+    },
+    {
+      "name": "BMO",
+      "package": "com.bmo.mobile",
+      "parser_id": null
+    },
+    {
+      "name": "CIBC",
+      "package": "com.cibc.android.mobi",
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": "plaid",
+  "settlement_schemes": [
+    "Interac e-Transfer",
+    "paypal"
+  ],
+  "typical_amount_chips": [
+    5,
+    10,
+    20,
+    50,
+    100
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Amazon Prime|https://www.amazon.ca/gp/primecentral",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 499,
+    "plus_yearly": 3599,
+    "plus_lifetime": 9999
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "ca_paypal_received",
+      "packages": [
+        "com.paypal.android.p2pmobile"
+      ],
+      "regex": "You(?:\\'ve)? received\\s+(?:\\$|C\\$|CA\\$)?\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)(?:\\s+CAD)?\\s+from\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "income",
+      "currency": "CAD",
+      "numberLocale": "en",
+      "confidence": 88
+    },
+    {
+      "id": "ca_paypal_sent_you",
+      "packages": [
+        "com.paypal.android.p2pmobile"
+      ],
+      "regex": "(?<payee>[^\\n]+?)\\s+sent you\\s+(?:\\$|C\\$|CA\\$)?\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)",
+      "type": "income",
+      "currency": "CAD",
+      "numberLocale": "en",
+      "confidence": 88
+    },
+    {
+      "id": "ca_paypal_sent",
+      "packages": [
+        "com.paypal.android.p2pmobile"
+      ],
+      "regex": "You (?:sent|paid)\\s+(?:\\$|C\\$|CA\\$)?\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)(?:\\s+CAD)?\\s+to\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "CAD",
+      "numberLocale": "en",
+      "confidence": 88
+    }
+  ],
+  "gold_price_per_gram": null,
+  "connectors": [
+    "plaid"
+  ],
+  "tax_year_label": "tax year"
+}

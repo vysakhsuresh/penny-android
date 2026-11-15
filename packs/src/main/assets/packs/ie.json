@@ -1,0 +1,193 @@
+{
+  "schema": 1,
+  "id": "IE",
+  "name": "Ireland",
+  "locales": [
+    "en-IE",
+    "ga-IE"
+  ],
+  "languages": [
+    "en",
+    "ga"
+  ],
+  "currency": "EUR",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 1
+  },
+  "first_day_of_week": "MONDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "Europe/Dublin",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "St Patrick's Day",
+      "month": 3
+    },
+    {
+      "name": "Summer holiday",
+      "month": 7
+    },
+    {
+      "name": "Back to school",
+      "month": 8
+    },
+    {
+      "name": "Black Friday",
+      "month": 11
+    },
+    {
+      "name": "Christmas",
+      "month": 12
+    }
+  ],
+  "circle_names": [],
+  "payment_apps": [
+    {
+      "name": "Revolut",
+      "package": "com.revolut.revolut",
+      "parser_id": "eu_revolut_received"
+    },
+    {
+      "name": "PayPal",
+      "package": "com.paypal.android.p2pmobile",
+      "parser_id": "ie_paypal_received"
+    },
+    {
+      "name": "Wise",
+      "package": "com.transferwise.android",
+      "parser_id": null
+    },
+    {
+      "name": "N26",
+      "package": "de.number26.android",
+      "parser_id": null
+    },
+    {
+      "name": "bunq",
+      "package": "com.bunq.android",
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "AIB",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Bank of Ireland",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "PTSB",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": "truelayer",
+  "settlement_schemes": [
+    "revolut",
+    "paypal",
+    "SEPA"
+  ],
+  "typical_amount_chips": [
+    2,
+    5,
+    10,
+    20,
+    50
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Amazon Prime|https://www.amazon.co.uk/gp/primecentral",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 349,
+    "plus_yearly": 2499,
+    "plus_lifetime": 6999
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "eu_revolut_received",
+      "packages": [
+        "com.revolut.revolut"
+      ],
+      "regex": "(?:You(?:\\'ve| have)? received|Received)\\s+€\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+from\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "income",
+      "currency": "EUR",
+      "numberLocale": "en",
+      "confidence": 85
+    },
+    {
+      "id": "eu_revolut_sent_you",
+      "packages": [
+        "com.revolut.revolut"
+      ],
+      "regex": "(?<payee>[^\\n€]+?)\\s+sent you\\s+€\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)",
+      "type": "income",
+      "currency": "EUR",
+      "numberLocale": "en",
+      "confidence": 85
+    },
+    {
+      "id": "eu_revolut_spent",
+      "packages": [
+        "com.revolut.revolut"
+      ],
+      "regex": "(?:You(?:\\'ve)? (?:spent|paid)|Spent|Paid)?\\s*€\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+(?:at|to)\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "EUR",
+      "numberLocale": "en",
+      "confidence": 85
+    },
+    {
+      "id": "ie_paypal_received",
+      "packages": [
+        "com.paypal.android.p2pmobile"
+      ],
+      "regex": "You(?:\\'ve)? received\\s+(?:€)?\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)(?:\\s+EUR)?\\s+from\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "income",
+      "currency": "EUR",
+      "numberLocale": "en",
+      "confidence": 88
+    },
+    {
+      "id": "ie_paypal_sent_you",
+      "packages": [
+        "com.paypal.android.p2pmobile"
+      ],
+      "regex": "(?<payee>[^\\n]+?)\\s+sent you\\s+(?:€)?\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)",
+      "type": "income",
+      "currency": "EUR",
+      "numberLocale": "en",
+      "confidence": 88
+    },
+    {
+      "id": "ie_paypal_sent",
+      "packages": [
+        "com.paypal.android.p2pmobile"
+      ],
+      "regex": "You (?:sent|paid)\\s+(?:€)?\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)(?:\\s+EUR)?\\s+to\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "EUR",
+      "numberLocale": "en",
+      "confidence": 88
+    }
+  ],
+  "gold_price_per_gram": null,
+  "connectors": [
+    "truelayer",
+    "gocardless",
+    "plaid",
+    "tink",
+    "saltedge"
+  ],
+  "tax_year_label": "tax year"
+}

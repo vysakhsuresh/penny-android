@@ -6,13 +6,16 @@
     "en-NG"
   ],
   "languages": [
-    "en"
+    "en",
+    "ha",
+    "yo",
+    "ig"
   ],
   "currency": "NGN",
   "number_grouping": "standard",
   "pay_cycle_default": {
     "type": "monthly",
-    "startDay": 25
+    "startDay": 1
   },
   "first_day_of_week": "MONDAY",
   "fiscal_year_start": "01-01",
@@ -20,16 +23,24 @@
   "holidays": [],
   "festival_windows": [
     {
-      "name": "Christmas",
-      "month": 12
+      "name": "Sallah (Eid)",
+      "month": 3
     },
     {
-      "name": "Sallah",
-      "month": 4
+      "name": "Easter",
+      "month": 3
     },
     {
       "name": "School fees",
       "month": 9
+    },
+    {
+      "name": "Black Friday",
+      "month": 11
+    },
+    {
+      "name": "Christmas",
+      "month": 12
     },
     {
       "name": "Detty December",
@@ -38,28 +49,19 @@
   ],
   "circle_names": [
     "Ajo",
-    "Esusu"
+    "Esusu",
+    "Adashi"
   ],
   "payment_apps": [
     {
       "name": "OPay",
-      "package": null,
-      "parser_id": null
+      "package": "team.opay.pay",
+      "parser_id": "ng_alert_credit"
     },
     {
       "name": "PalmPay",
-      "package": null,
-      "parser_id": null
-    },
-    {
-      "name": "Kuda",
-      "package": null,
-      "parser_id": null
-    },
-    {
-      "name": "GTBank",
-      "package": null,
-      "parser_id": null
+      "package": "com.transsnet.palmpay",
+      "parser_id": "ng_alert_credit"
     },
     {
       "name": "Moniepoint",
@@ -67,24 +69,119 @@
       "parser_id": null
     }
   ],
-  "bank_apps": [],
-  "aggregator_provider": null,
+  "bank_apps": [
+    {
+      "name": "Kuda",
+      "package": "com.kudabank.app",
+      "parser_id": "ng_alert_credit"
+    },
+    {
+      "name": "GTWorld (GTBank)",
+      "package": "com.gtbank.gtworldv1",
+      "parser_id": "ng_alert_credit"
+    },
+    {
+      "name": "Access Bank",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Zenith Bank",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "First Bank",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": "mono",
   "settlement_schemes": [
-    "Bank transfer",
-    "OPay"
+    "NIP transfer",
+    "OPay",
+    "PalmPay"
   ],
   "typical_amount_chips": [
-    200,
     500,
     1000,
     2000,
-    5000
+    5000,
+    10000
   ],
-  "cancellation_guides": [],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
   "price_points": {
-    "plus_monthly": 1500,
-    "plus_yearly": 9900,
-    "plus_lifetime": 29900
+    "plus_monthly": 150000,
+    "plus_yearly": 1050000,
+    "plus_lifetime": 2990000
   },
-  "privacy_text_ref": null
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "ng_alert_credit",
+      "packages": [
+        "team.opay.pay",
+        "com.transsnet.palmpay",
+        "com.kudabank.app",
+        "com.gtbank.gtworldv1"
+      ],
+      "regex": "Amt:?\\s*(?:NGN|₦)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s*(?:CR|Credit)\\b",
+      "type": "income",
+      "currency": "NGN",
+      "numberLocale": "en-NG",
+      "confidence": 88
+    },
+    {
+      "id": "ng_alert_debit",
+      "packages": [
+        "team.opay.pay",
+        "com.transsnet.palmpay",
+        "com.kudabank.app",
+        "com.gtbank.gtworldv1"
+      ],
+      "regex": "Amt:?\\s*(?:NGN|₦)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s*(?:DR|Debit)\\b",
+      "type": "expense",
+      "currency": "NGN",
+      "numberLocale": "en-NG",
+      "confidence": 88
+    },
+    {
+      "id": "ng_received",
+      "packages": [
+        "team.opay.pay",
+        "com.transsnet.palmpay",
+        "com.kudabank.app",
+        "com.gtbank.gtworldv1"
+      ],
+      "regex": "(?:You(?:\\'ve| have)? received|Received)\\s+(?:NGN|₦)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+from\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi|was|is|has|successful)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "income",
+      "currency": "NGN",
+      "numberLocale": "en-NG",
+      "confidence": 85
+    },
+    {
+      "id": "ng_sent",
+      "packages": [
+        "team.opay.pay",
+        "com.transsnet.palmpay",
+        "com.kudabank.app",
+        "com.gtbank.gtworldv1"
+      ],
+      "regex": "(?:You(?:\\'ve| have)? (?:sent|transferred|paid)|Transfer of|Sent|Paid)\\s+(?:NGN|₦)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+to\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi|was|is|has|successful)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "NGN",
+      "numberLocale": "en-NG",
+      "confidence": 85
+    }
+  ],
+  "gold_price_per_gram": null,
+  "connectors": [
+    "mono"
+  ],
+  "tax_year_label": null
 }

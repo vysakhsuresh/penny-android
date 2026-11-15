@@ -1,0 +1,141 @@
+{
+  "schema": 1,
+  "id": "RU",
+  "name": "Россия / Russia",
+  "locales": [
+    "ru-RU"
+  ],
+  "languages": [
+    "ru"
+  ],
+  "currency": "RUB",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "semimonthly",
+    "firstDay": 10,
+    "secondDay": 25
+  },
+  "first_day_of_week": "MONDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "Europe/Moscow",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "23 февраля",
+      "month": 2
+    },
+    {
+      "name": "8 марта",
+      "month": 3
+    },
+    {
+      "name": "Майские праздники",
+      "month": 5
+    },
+    {
+      "name": "1 сентября",
+      "month": 9
+    },
+    {
+      "name": "Чёрная пятница",
+      "month": 11
+    },
+    {
+      "name": "Новый год",
+      "month": 12
+    }
+  ],
+  "circle_names": [],
+  "payment_apps": [
+    {
+      "name": "СБП",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "ЮMoney",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "СберБанк",
+      "package": "ru.sberbankmobile",
+      "parser_id": "ru_income"
+    },
+    {
+      "name": "Т-Банк",
+      "package": "com.idamob.tinkoff.android",
+      "parser_id": "ru_income"
+    },
+    {
+      "name": "ВТБ",
+      "package": "ru.vtb24.mobilebanking.android",
+      "parser_id": "ru_income"
+    },
+    {
+      "name": "Альфа-Банк",
+      "package": "ru.alfabank.mobile.android",
+      "parser_id": "ru_income"
+    },
+    {
+      "name": "Озон Банк",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": null,
+  "settlement_schemes": [
+    "СБП"
+  ],
+  "typical_amount_chips": [
+    100,
+    300,
+    500,
+    1000,
+    2000
+  ],
+  "cancellation_guides": [
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 19900,
+    "plus_yearly": 149000,
+    "plus_lifetime": 399000
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "ru_income",
+      "packages": [
+        "ru.sberbankmobile",
+        "com.idamob.tinkoff.android",
+        "ru.vtb24.mobilebanking.android",
+        "ru.alfabank.mobile.android"
+      ],
+      "regex": "(?:Зачисление|Поступление|Пополнение)\\s+(?:на\\s+)?(?<amount>[0-9]+(?:[  ][0-9]{3})*(?:[.,][0-9]{1,2})?)\\s?(?:р|₽|руб)\\.?",
+      "type": "income",
+      "currency": "RUB",
+      "numberLocale": "ru-RU",
+      "confidence": 85
+    },
+    {
+      "id": "ru_purchase",
+      "packages": [
+        "ru.sberbankmobile",
+        "com.idamob.tinkoff.android",
+        "ru.vtb24.mobilebanking.android",
+        "ru.alfabank.mobile.android"
+      ],
+      "regex": "(?:Покупка|Оплата)\\s+(?:на\\s+)?(?<amount>[0-9]+(?:[  ][0-9]{3})*(?:[.,][0-9]{1,2})?)\\s?(?:р|₽|руб)\\.?,?\\s+(?<payee>[^\\n]+?)(?=\\s+Баланс|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "RUB",
+      "numberLocale": "ru-RU",
+      "confidence": 85
+    }
+  ],
+  "gold_price_per_gram": null,
+  "connectors": [],
+  "tax_year_label": null
+}

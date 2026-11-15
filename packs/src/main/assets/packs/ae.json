@@ -3,13 +3,16 @@
   "id": "AE",
   "name": "الإمارات / UAE",
   "locales": [
-    "ar-AE"
+    "ar-AE",
+    "en-AE"
   ],
   "languages": [
     "ar",
     "en",
     "hi",
-    "fil"
+    "ur",
+    "ml",
+    "tl"
   ],
   "currency": "AED",
   "number_grouping": "standard",
@@ -24,25 +27,56 @@
   "festival_windows": [
     {
       "name": "Ramadan",
-      "month": 3
+      "month": 2
     },
     {
       "name": "Eid al-Fitr",
-      "month": 4
+      "month": 3
     },
     {
       "name": "Eid al-Adha",
-      "month": 6
+      "month": 5
     },
     {
       "name": "Back to school",
       "month": 8
+    },
+    {
+      "name": "White Friday",
+      "month": 11
+    },
+    {
+      "name": "Dubai Shopping Festival",
+      "month": 12
     }
   ],
   "circle_names": [
-    "Jam'iya"
+    "Jam'iya (جمعية)",
+    "Committee"
   ],
   "payment_apps": [
+    {
+      "name": "Careem Pay",
+      "package": "com.careem.acma",
+      "parser_id": null
+    },
+    {
+      "name": "Botim",
+      "package": "im.thebot.messenger",
+      "parser_id": null
+    },
+    {
+      "name": "Aani",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "PayBy",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
     {
       "name": "Emirates NBD",
       "package": null,
@@ -54,39 +88,49 @@
       "parser_id": null
     },
     {
-      "name": "Careem Pay",
-      "package": null,
-      "parser_id": null
-    },
-    {
-      "name": "Botim",
-      "package": null,
-      "parser_id": null
-    },
-    {
       "name": "FAB",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Mashreq",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Wio",
       "package": null,
       "parser_id": null
     }
   ],
-  "bank_apps": [],
   "aggregator_provider": null,
   "settlement_schemes": [
     "Aani",
+    "paypal",
     "Bank transfer"
   ],
   "typical_amount_chips": [
+    5,
     10,
     20,
     50,
-    100,
-    200
+    100
   ],
-  "cancellation_guides": [],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Amazon Prime|https://www.amazon.ae/gp/primecentral",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
   "price_points": {
     "plus_monthly": 1499,
     "plus_yearly": 9900,
     "plus_lifetime": 29900
   },
-  "privacy_text_ref": null
+  "privacy_text_ref": null,
+  "notification_templates": [],
+  "gold_price_per_gram": 49600,
+  "connectors": [],
+  "tax_year_label": null
 }

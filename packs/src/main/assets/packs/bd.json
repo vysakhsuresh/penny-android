@@ -1,0 +1,149 @@
+{
+  "schema": 1,
+  "id": "BD",
+  "name": "বাংলাদেশ / Bangladesh",
+  "locales": [
+    "bn-BD",
+    "en-BD"
+  ],
+  "languages": [
+    "bn",
+    "en"
+  ],
+  "currency": "BDT",
+  "number_grouping": "indian",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 1
+  },
+  "first_day_of_week": "SUNDAY",
+  "fiscal_year_start": "07-01",
+  "timezone": "Asia/Dhaka",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Ramadan",
+      "month": 2
+    },
+    {
+      "name": "Eid ul-Fitr",
+      "month": 3
+    },
+    {
+      "name": "Pohela Boishakh",
+      "month": 4
+    },
+    {
+      "name": "Eid ul-Adha",
+      "month": 5
+    },
+    {
+      "name": "Durga Puja",
+      "month": 10
+    },
+    {
+      "name": "Wedding season",
+      "month": 12
+    }
+  ],
+  "circle_names": [
+    "Samity",
+    "DPS"
+  ],
+  "payment_apps": [
+    {
+      "name": "bKash",
+      "package": "com.bKash.customerapp",
+      "parser_id": "bd_bkash_received"
+    },
+    {
+      "name": "Nagad",
+      "package": "com.konasl.nagad",
+      "parser_id": null
+    },
+    {
+      "name": "Rocket",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Upay",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "DBBL NexusPay",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "City Bank Citytouch",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "BRAC Bank Astha",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Islami Bank",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": null,
+  "settlement_schemes": [
+    "bKash",
+    "Nagad",
+    "NPSB"
+  ],
+  "typical_amount_chips": [
+    20,
+    50,
+    100,
+    200,
+    500
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 14900,
+    "plus_yearly": 104900,
+    "plus_lifetime": 299900
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "bd_bkash_received",
+      "packages": [
+        "com.bKash.customerapp"
+      ],
+      "regex": "(?:You have received|Received)\\s+(?:money\\s+)?Tk\\.?\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+from\\s+(?<payee>[^\\n]+?)(?=\\.\\s|\\.$|\\s+Ref|\\s+Fee|\\s+Balance|\\n|$)",
+      "type": "income",
+      "currency": "BDT",
+      "numberLocale": "en-BD",
+      "confidence": 90
+    },
+    {
+      "id": "bd_bkash_sent",
+      "packages": [
+        "com.bKash.customerapp"
+      ],
+      "regex": "(?:Send Money|Make Payment|Payment|Cash Out)\\s+Tk\\.?\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+to\\s+(?<payee>[^\\n]+?)\\s+(?:is\\s+)?successful",
+      "type": "expense",
+      "currency": "BDT",
+      "numberLocale": "en-BD",
+      "confidence": 90
+    }
+  ],
+  "gold_price_per_gram": 1650000,
+  "connectors": [],
+  "tax_year_label": "income year"
+}

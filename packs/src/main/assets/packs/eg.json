@@ -1,0 +1,125 @@
+{
+  "schema": 1,
+  "id": "EG",
+  "name": "مصر / Egypt",
+  "locales": [
+    "ar-EG",
+    "en-EG"
+  ],
+  "languages": [
+    "ar",
+    "en"
+  ],
+  "currency": "EGP",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 1
+  },
+  "first_day_of_week": "SATURDAY",
+  "fiscal_year_start": "07-01",
+  "timezone": "Africa/Cairo",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Coptic Christmas",
+      "month": 1
+    },
+    {
+      "name": "Ramadan",
+      "month": 2
+    },
+    {
+      "name": "Eid al-Fitr",
+      "month": 3
+    },
+    {
+      "name": "Eid al-Adha",
+      "month": 5
+    },
+    {
+      "name": "Sham el-Nessim",
+      "month": 5
+    },
+    {
+      "name": "Back to school",
+      "month": 9
+    }
+  ],
+  "circle_names": [
+    "Gam'eya (جمعية)"
+  ],
+  "payment_apps": [
+    {
+      "name": "InstaPay",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Vodafone Cash",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Fawry",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "ValU",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "CIB",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "National Bank of Egypt",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Banque Misr",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "QNB",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": null,
+  "settlement_schemes": [
+    "InstaPay",
+    "Vodafone Cash"
+  ],
+  "typical_amount_chips": [
+    20,
+    50,
+    100,
+    200,
+    500
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Amazon Prime|https://www.amazon.eg/gp/primecentral",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 4900,
+    "plus_yearly": 34900,
+    "plus_lifetime": 99900
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [],
+  "gold_price_per_gram": 650000,
+  "connectors": [],
+  "tax_year_label": "FY"
+}

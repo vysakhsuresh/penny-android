@@ -1,0 +1,122 @@
+{
+  "schema": 1,
+  "id": "GH",
+  "name": "Ghana",
+  "locales": [
+    "en-GH"
+  ],
+  "languages": [
+    "en",
+    "ak",
+    "ee"
+  ],
+  "currency": "GHS",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 1
+  },
+  "first_day_of_week": "MONDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "Africa/Accra",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Easter",
+      "month": 3
+    },
+    {
+      "name": "Eid al-Fitr",
+      "month": 3
+    },
+    {
+      "name": "Back to school",
+      "month": 9
+    },
+    {
+      "name": "Black Friday",
+      "month": 11
+    },
+    {
+      "name": "Christmas",
+      "month": 12
+    },
+    {
+      "name": "Detty December",
+      "month": 12
+    }
+  ],
+  "circle_names": [
+    "Susu"
+  ],
+  "payment_apps": [
+    {
+      "name": "MTN MoMo",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Telecel Cash",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "AirtelTigo Money",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "GCB Bank",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Ecobank",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Stanbic",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Absa Ghana",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": "mono",
+  "settlement_schemes": [
+    "MTN MoMo",
+    "Telecel Cash",
+    "GhIPSS"
+  ],
+  "typical_amount_chips": [
+    5,
+    10,
+    20,
+    50,
+    100
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 1999,
+    "plus_yearly": 13900,
+    "plus_lifetime": 39900
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [],
+  "gold_price_per_gram": null,
+  "connectors": [
+    "mono"
+  ],
+  "tax_year_label": null
+}

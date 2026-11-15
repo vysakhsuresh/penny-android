@@ -1,0 +1,167 @@
+{
+  "schema": 1,
+  "id": "MY",
+  "name": "Malaysia",
+  "locales": [
+    "ms-MY",
+    "en-MY"
+  ],
+  "languages": [
+    "ms",
+    "en",
+    "zh",
+    "ta"
+  ],
+  "currency": "MYR",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 1
+  },
+  "first_day_of_week": "MONDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "Asia/Kuala_Lumpur",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Chinese New Year",
+      "month": 2
+    },
+    {
+      "name": "Ramadan",
+      "month": 2
+    },
+    {
+      "name": "Hari Raya Aidilfitri",
+      "month": 3
+    },
+    {
+      "name": "Deepavali",
+      "month": 10
+    },
+    {
+      "name": "11.11 sale",
+      "month": 11
+    },
+    {
+      "name": "Christmas",
+      "month": 12
+    }
+  ],
+  "circle_names": [
+    "Kutu"
+  ],
+  "payment_apps": [
+    {
+      "name": "Touch 'n Go eWallet",
+      "package": "my.com.tngdigital.ewallet",
+      "parser_id": "my_received"
+    },
+    {
+      "name": "GrabPay",
+      "package": "com.grabtaxi.passenger",
+      "parser_id": "my_received"
+    },
+    {
+      "name": "Boost",
+      "package": "my.com.myboost",
+      "parser_id": "my_received"
+    },
+    {
+      "name": "ShopeePay",
+      "package": "com.shopee.my",
+      "parser_id": null
+    },
+    {
+      "name": "DuitNow",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "MAE by Maybank",
+      "package": "com.maybank2u.life",
+      "parser_id": "my_received"
+    },
+    {
+      "name": "CIMB OCTO",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Public Bank",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "RHB",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Hong Leong",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": "finverse",
+  "settlement_schemes": [
+    "DuitNow",
+    "Touch 'n Go"
+  ],
+  "typical_amount_chips": [
+    5,
+    10,
+    20,
+    50,
+    100
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 990,
+    "plus_yearly": 6990,
+    "plus_lifetime": 19900
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "my_received",
+      "packages": [
+        "my.com.tngdigital.ewallet",
+        "my.com.myboost",
+        "com.maybank2u.life",
+        "com.grabtaxi.passenger"
+      ],
+      "regex": "(?:You(?:\\'ve| have)? received|Received)\\s+RM\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+from\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "income",
+      "currency": "MYR",
+      "numberLocale": "en-MY",
+      "confidence": 85
+    },
+    {
+      "id": "my_paid",
+      "packages": [
+        "my.com.tngdigital.ewallet",
+        "my.com.myboost",
+        "com.maybank2u.life",
+        "com.grabtaxi.passenger"
+      ],
+      "regex": "(?:You(?:\\'ve| have)? (?:paid|spent|sent|transferred)|Payment of|Paid|Spent|Sent)\\s+RM\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+(?:to|at)\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "MYR",
+      "numberLocale": "en-MY",
+      "confidence": 85
+    }
+  ],
+  "gold_price_per_gram": 57000,
+  "connectors": [
+    "finverse"
+  ],
+  "tax_year_label": null
+}

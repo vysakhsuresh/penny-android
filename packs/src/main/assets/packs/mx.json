@@ -6,8 +6,7 @@
     "es-MX"
   ],
   "languages": [
-    "es",
-    "en"
+    "es"
   ],
   "currency": "MXN",
   "number_grouping": "standard",
@@ -16,45 +15,70 @@
     "firstDay": 15,
     "secondDay": 31
   },
-  "first_day_of_week": "MONDAY",
+  "first_day_of_week": "SUNDAY",
   "fiscal_year_start": "01-01",
   "timezone": "America/Mexico_City",
   "holidays": [],
   "festival_windows": [
     {
-      "name": "Navidad",
-      "month": 12
+      "name": "Cuesta de enero",
+      "month": 1
     },
     {
-      "name": "Aguinaldo",
-      "month": 12
+      "name": "Día de las Madres",
+      "month": 5
+    },
+    {
+      "name": "Regreso a clases",
+      "month": 8
     },
     {
       "name": "Día de Muertos",
       "month": 11
     },
     {
-      "name": "Regreso a clases",
-      "month": 8
+      "name": "El Buen Fin",
+      "month": 11
+    },
+    {
+      "name": "Aguinaldo",
+      "month": 12
+    },
+    {
+      "name": "Navidad",
+      "month": 12
     }
   ],
   "circle_names": [
-    "Tanda"
+    "Tanda",
+    "Cundina"
   ],
   "payment_apps": [
     {
-      "name": "BBVA",
-      "package": null,
-      "parser_id": null
-    },
-    {
       "name": "Mercado Pago",
-      "package": null,
+      "package": "com.mercadopago.wallet",
       "parser_id": null
     },
     {
       "name": "Nu",
+      "package": "com.nu.production",
+      "parser_id": null
+    },
+    {
+      "name": "Spin by OXXO",
       "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "CoDi",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "BBVA México",
+      "package": "com.bancomer.mbanking",
       "parser_id": null
     },
     {
@@ -63,16 +87,21 @@
       "parser_id": null
     },
     {
-      "name": "OXXO Pay",
+      "name": "Santander",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Banamex",
       "package": null,
       "parser_id": null
     }
   ],
-  "bank_apps": [],
-  "aggregator_provider": null,
+  "aggregator_provider": "belvo",
   "settlement_schemes": [
     "SPEI",
-    "CoDi"
+    "CoDi",
+    "Mercado Pago"
   ],
   "typical_amount_chips": [
     20,
@@ -81,11 +110,23 @@
     200,
     500
   ],
-  "cancellation_guides": [],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Amazon Prime|https://www.amazon.com.mx/gp/primecentral",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
   "price_points": {
     "plus_monthly": 4900,
     "plus_yearly": 34900,
     "plus_lifetime": 99900
   },
-  "privacy_text_ref": null
+  "privacy_text_ref": null,
+  "notification_templates": [],
+  "gold_price_per_gram": null,
+  "connectors": [
+    "belvo"
+  ],
+  "tax_year_label": null
 }

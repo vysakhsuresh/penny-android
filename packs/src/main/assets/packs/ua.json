@@ -1,0 +1,103 @@
+{
+  "schema": 1,
+  "id": "UA",
+  "name": "Україна / Ukraine",
+  "locales": [
+    "uk-UA"
+  ],
+  "languages": [
+    "uk",
+    "ru"
+  ],
+  "currency": "UAH",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 1
+  },
+  "first_day_of_week": "MONDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "Europe/Kiev",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Великдень",
+      "month": 5
+    },
+    {
+      "name": "1 вересня",
+      "month": 9
+    },
+    {
+      "name": "Чорна п'ятниця",
+      "month": 11
+    },
+    {
+      "name": "Різдво",
+      "month": 12
+    },
+    {
+      "name": "Новий рік",
+      "month": 12
+    }
+  ],
+  "circle_names": [],
+  "payment_apps": [],
+  "bank_apps": [
+    {
+      "name": "monobank",
+      "package": "com.ftband.mono",
+      "parser_id": null
+    },
+    {
+      "name": "Privat24",
+      "package": "ua.privatbank.ap24",
+      "parser_id": null
+    },
+    {
+      "name": "ПУМБ",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Ощадбанк",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "A-Bank",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": "saltedge",
+  "settlement_schemes": [
+    "IBAN",
+    "monobank"
+  ],
+  "typical_amount_chips": [
+    20,
+    50,
+    100,
+    200,
+    500
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 7900,
+    "plus_yearly": 54900,
+    "plus_lifetime": 149900
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [],
+  "gold_price_per_gram": null,
+  "connectors": [
+    "saltedge"
+  ],
+  "tax_year_label": null
+}

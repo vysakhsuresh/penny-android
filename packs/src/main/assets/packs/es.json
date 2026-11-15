@@ -1,0 +1,175 @@
+{
+  "schema": 1,
+  "id": "ES",
+  "name": "España",
+  "locales": [
+    "es-ES",
+    "ca-ES"
+  ],
+  "languages": [
+    "es",
+    "ca",
+    "eu",
+    "gl"
+  ],
+  "currency": "EUR",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 1
+  },
+  "first_day_of_week": "MONDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "Europe/Madrid",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Reyes",
+      "month": 1
+    },
+    {
+      "name": "Rebajas de invierno",
+      "month": 1
+    },
+    {
+      "name": "Semana Santa",
+      "month": 3
+    },
+    {
+      "name": "Rebajas de verano",
+      "month": 7
+    },
+    {
+      "name": "Vacaciones",
+      "month": 8
+    },
+    {
+      "name": "Vuelta al cole",
+      "month": 9
+    },
+    {
+      "name": "Black Friday",
+      "month": 11
+    },
+    {
+      "name": "Navidad",
+      "month": 12
+    }
+  ],
+  "circle_names": [],
+  "payment_apps": [
+    {
+      "name": "Bizum",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Revolut",
+      "package": "com.revolut.revolut",
+      "parser_id": "eu_revolut_received"
+    },
+    {
+      "name": "PayPal",
+      "package": "com.paypal.android.p2pmobile",
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "BBVA",
+      "package": "com.bbva.bbvacontigo",
+      "parser_id": null
+    },
+    {
+      "name": "Santander",
+      "package": "es.bancosantander.apps",
+      "parser_id": null
+    },
+    {
+      "name": "CaixaBank",
+      "package": "es.lacaixa.mobile.android.newwapicon",
+      "parser_id": null
+    },
+    {
+      "name": "Banco Sabadell",
+      "package": "net.inverline.bancosabadell.officelocator.android",
+      "parser_id": null
+    },
+    {
+      "name": "ING",
+      "package": "www.ingdirect.nativeframe",
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": "tink",
+  "settlement_schemes": [
+    "Bizum",
+    "revolut",
+    "paypal",
+    "SEPA"
+  ],
+  "typical_amount_chips": [
+    2,
+    5,
+    10,
+    20,
+    50
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Amazon Prime|https://www.amazon.es/gp/primecentral",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 299,
+    "plus_yearly": 2199,
+    "plus_lifetime": 5999
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "eu_revolut_received",
+      "packages": [
+        "com.revolut.revolut"
+      ],
+      "regex": "(?:You(?:\\'ve| have)? received|Received)\\s+€\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+from\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "income",
+      "currency": "EUR",
+      "numberLocale": "en",
+      "confidence": 85
+    },
+    {
+      "id": "eu_revolut_sent_you",
+      "packages": [
+        "com.revolut.revolut"
+      ],
+      "regex": "(?<payee>[^\\n€]+?)\\s+sent you\\s+€\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)",
+      "type": "income",
+      "currency": "EUR",
+      "numberLocale": "en",
+      "confidence": 85
+    },
+    {
+      "id": "eu_revolut_spent",
+      "packages": [
+        "com.revolut.revolut"
+      ],
+      "regex": "(?:You(?:\\'ve)? (?:spent|paid)|Spent|Paid)?\\s*€\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+(?:at|to)\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "EUR",
+      "numberLocale": "en",
+      "confidence": 85
+    }
+  ],
+  "gold_price_per_gram": null,
+  "connectors": [
+    "tink",
+    "gocardless",
+    "truelayer",
+    "plaid",
+    "saltedge"
+  ],
+  "tax_year_label": null
+}

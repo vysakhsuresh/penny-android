@@ -3,7 +3,10 @@
   "id": "SG",
   "name": "Singapore",
   "locales": [
-    "en-SG"
+    "en-SG",
+    "zh-SG",
+    "ms-SG",
+    "ta-SG"
   ],
   "languages": [
     "en",
@@ -27,21 +30,27 @@
       "month": 2
     },
     {
-      "name": "Hari Raya",
-      "month": 4
+      "name": "Hari Raya Puasa",
+      "month": 3
+    },
+    {
+      "name": "Great Singapore Sale",
+      "month": 6
     },
     {
       "name": "Deepavali",
       "month": 10
     },
     {
+      "name": "11.11 sale",
+      "month": 11
+    },
+    {
       "name": "Christmas",
       "month": 12
     }
   ],
-  "circle_names": [
-    "Tontine"
-  ],
+  "circle_names": [],
   "payment_apps": [
     {
       "name": "PayNow",
@@ -50,29 +59,41 @@
     },
     {
       "name": "DBS PayLah!",
-      "package": null,
-      "parser_id": null
+      "package": "com.dbs.dbspaylah",
+      "parser_id": "sg_received"
     },
     {
       "name": "GrabPay",
-      "package": null,
-      "parser_id": null
+      "package": "com.grabtaxi.passenger",
+      "parser_id": "sg_received"
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "DBS digibank",
+      "package": "com.dbs.sg.dbsmbanking",
+      "parser_id": "sg_received"
     },
     {
       "name": "OCBC",
-      "package": null,
-      "parser_id": null
+      "package": "com.ocbc.mobile",
+      "parser_id": "sg_received"
     },
     {
       "name": "UOB TMRW",
+      "package": "com.uob.mighty.app",
+      "parser_id": "sg_received"
+    },
+    {
+      "name": "Trust Bank",
       "package": null,
       "parser_id": null
     }
   ],
-  "bank_apps": [],
-  "aggregator_provider": null,
+  "aggregator_provider": "sgfindex",
   "settlement_schemes": [
-    "PayNow"
+    "PayNow",
+    "PayLah!"
   ],
   "typical_amount_chips": [
     5,
@@ -81,11 +102,70 @@
     50,
     100
   ],
-  "cancellation_guides": [],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Amazon Prime|https://www.amazon.sg/gp/primecentral",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
   "price_points": {
     "plus_monthly": 399,
-    "plus_yearly": 2999,
+    "plus_yearly": 2899,
     "plus_lifetime": 7999
   },
-  "privacy_text_ref": null
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "sg_received",
+      "packages": [
+        "com.dbs.sg.dbsmbanking",
+        "com.dbs.dbspaylah",
+        "com.ocbc.mobile",
+        "com.uob.mighty.app",
+        "com.grabtaxi.passenger"
+      ],
+      "regex": "(?:You(?:\\'ve| have)? received|Received)\\s+(?:S\\$|SGD)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+(?:via PayNow\\s+)?from\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "income",
+      "currency": "SGD",
+      "numberLocale": "en-SG",
+      "confidence": 85
+    },
+    {
+      "id": "sg_sent",
+      "packages": [
+        "com.dbs.sg.dbsmbanking",
+        "com.dbs.dbspaylah",
+        "com.ocbc.mobile",
+        "com.uob.mighty.app",
+        "com.grabtaxi.passenger"
+      ],
+      "regex": "(?:You(?:\\'ve| have)? (?:sent|paid|transferred)|Sent|Paid)\\s+(?:S\\$|SGD)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+(?:via PayNow\\s+)?(?:to|at)\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "SGD",
+      "numberLocale": "en-SG",
+      "confidence": 85
+    },
+    {
+      "id": "sg_card",
+      "packages": [
+        "com.dbs.sg.dbsmbanking",
+        "com.dbs.dbspaylah",
+        "com.ocbc.mobile",
+        "com.uob.mighty.app",
+        "com.grabtaxi.passenger"
+      ],
+      "regex": "transaction of\\s+(?:S\\$|SGD)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)[^\\n]*?\\bat\\s+(?<payee>[^\\n]+?)(?=\\s+on\\s|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "SGD",
+      "numberLocale": "en-SG",
+      "confidence": 85
+    }
+  ],
+  "gold_price_per_gram": null,
+  "connectors": [
+    "sgfindex",
+    "finverse"
+  ],
+  "tax_year_label": null
 }

@@ -3,7 +3,8 @@
   "id": "PH",
   "name": "Philippines",
   "locales": [
-    "en-PH"
+    "en-PH",
+    "fil-PH"
   ],
   "languages": [
     "en",
@@ -23,8 +24,12 @@
   "holidays": [],
   "festival_windows": [
     {
-      "name": "Pasko",
-      "month": 12
+      "name": "Holy Week",
+      "month": 3
+    },
+    {
+      "name": "Fiesta",
+      "month": 5
     },
     {
       "name": "School opening",
@@ -35,8 +40,12 @@
       "month": 11
     },
     {
-      "name": "Fiesta",
-      "month": 5
+      "name": "13th month pay",
+      "month": 12
+    },
+    {
+      "name": "Pasko",
+      "month": 12
     }
   ],
   "circle_names": [
@@ -45,16 +54,38 @@
   "payment_apps": [
     {
       "name": "GCash",
-      "package": null,
-      "parser_id": null
+      "package": "com.globe.gcash.android",
+      "parser_id": "ph_gcash_received"
     },
     {
       "name": "Maya",
+      "package": "com.paymaya",
+      "parser_id": "ph_maya_received"
+    },
+    {
+      "name": "ShopeePay",
+      "package": "com.shopee.ph",
+      "parser_id": null
+    },
+    {
+      "name": "GrabPay",
+      "package": "com.grabtaxi.passenger",
+      "parser_id": "ph_maya_received"
+    },
+    {
+      "name": "GoTyme",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "BPI",
       "package": null,
       "parser_id": null
     },
     {
-      "name": "BPI",
+      "name": "BDO",
       "package": null,
       "parser_id": null
     },
@@ -64,17 +95,22 @@
       "parser_id": null
     },
     {
-      "name": "BDO",
+      "name": "Metrobank",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Security Bank",
       "package": null,
       "parser_id": null
     }
   ],
-  "bank_apps": [],
-  "aggregator_provider": null,
+  "aggregator_provider": "brankas",
   "settlement_schemes": [
     "GCash",
     "Maya",
-    "InstaPay"
+    "InstaPay",
+    "PESONet"
   ],
   "typical_amount_chips": [
     20,
@@ -83,11 +119,70 @@
     200,
     500
   ],
-  "cancellation_guides": [],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
   "price_points": {
     "plus_monthly": 7900,
     "plus_yearly": 54900,
     "plus_lifetime": 199900
   },
-  "privacy_text_ref": null
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "ph_gcash_received",
+      "packages": [
+        "com.globe.gcash.android"
+      ],
+      "regex": "You have received\\s+(?:PHP|₱|P)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+(?:of GCash\\s+)?from\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "income",
+      "currency": "PHP",
+      "numberLocale": "en-PH",
+      "confidence": 92
+    },
+    {
+      "id": "ph_gcash_sent",
+      "packages": [
+        "com.globe.gcash.android"
+      ],
+      "regex": "You have (?:sent|paid)\\s+(?:PHP|₱|P)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+(?:of GCash\\s+|via GCash\\s+)?to\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "PHP",
+      "numberLocale": "en-PH",
+      "confidence": 92
+    },
+    {
+      "id": "ph_maya_received",
+      "packages": [
+        "com.paymaya",
+        "com.grabtaxi.passenger"
+      ],
+      "regex": "(?:You(?:\\'ve| have)? received|Received)\\s+(?:PHP|₱|P)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+from\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "income",
+      "currency": "PHP",
+      "numberLocale": "en-PH",
+      "confidence": 85
+    },
+    {
+      "id": "ph_maya_sent",
+      "packages": [
+        "com.paymaya",
+        "com.grabtaxi.passenger"
+      ],
+      "regex": "(?:You(?:\\'ve| have)? (?:sent|paid)|Sent|Paid)\\s+(?:PHP|₱|P)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+(?:to|at)\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "PHP",
+      "numberLocale": "en-PH",
+      "confidence": 85
+    }
+  ],
+  "gold_price_per_gram": null,
+  "connectors": [
+    "brankas",
+    "finverse"
+  ],
+  "tax_year_label": null
 }

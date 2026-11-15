@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exchange_rates">Exchange rates</string>
+    <string name="rates_body">Penny converts with the rate on each transaction’s date. Reference rates are downloaded on Wi-Fi and kept on the phone; your own rates always take priority.</string>
+    <string name="rates_updated">Reference rates up to %1$s</string>
+    <string name="rates_never">No reference rates downloaded yet</string>
+    <string name="rates_refreshed">Rates updated</string>
+    <string name="rates_offline">Couldn’t reach the rates source. Try again on Wi-Fi.</string>
+    <string name="refresh_now">Refresh now</string>
+    <string name="add_manual_rate">Add my own rate</string>
+    <string name="your_currencies">Your currencies today</string>
+    <string name="no_rate">No rate</string>
+    <string name="manual_rates">Your rates</string>
+    <string name="no_manual_rates">None yet. Add one if your bank or exchange gave you a different rate.</string>
+    <string name="rate_in_x">Value of one unit in %1$s</string>
+    <string name="record_value">Record value</string>
+    <string name="record_value_body">What is this worth today? The history of values feeds net worth.</string>
+    <string name="value_recorded">Value recorded</string>
+    <string name="valuations">Valuations</string>
+</resources>

@@ -3,7 +3,8 @@
   "id": "US",
   "name": "United States",
   "locales": [
-    "en-US"
+    "en-US",
+    "es-US"
   ],
   "languages": [
     "en",
@@ -21,20 +22,24 @@
   "holidays": [],
   "festival_windows": [
     {
-      "name": "Thanksgiving",
-      "month": 11
-    },
-    {
-      "name": "Holidays",
-      "month": 12
+      "name": "Tax season",
+      "month": 4
     },
     {
       "name": "Back to school",
       "month": 8
     },
     {
-      "name": "Tax season",
-      "month": 4
+      "name": "Thanksgiving",
+      "month": 11
+    },
+    {
+      "name": "Black Friday",
+      "month": 11
+    },
+    {
+      "name": "Holidays",
+      "month": 12
     }
   ],
   "circle_names": [
@@ -44,13 +49,18 @@
   "payment_apps": [
     {
       "name": "Venmo",
-      "package": null,
-      "parser_id": null
+      "package": "com.venmo",
+      "parser_id": "us_sent_you"
     },
     {
       "name": "Cash App",
-      "package": null,
-      "parser_id": null
+      "package": "com.squareup.cash",
+      "parser_id": "us_sent_you"
+    },
+    {
+      "name": "PayPal",
+      "package": "com.paypal.android.p2pmobile",
+      "parser_id": "us_sent_you"
     },
     {
       "name": "Zelle",
@@ -58,22 +68,49 @@
       "parser_id": null
     },
     {
-      "name": "Chase",
-      "package": null,
-      "parser_id": null
-    },
-    {
-      "name": "Apple Pay",
-      "package": null,
+      "name": "Google Wallet",
+      "package": "com.google.android.apps.walletnfcrel",
       "parser_id": null
     }
   ],
-  "bank_apps": [],
-  "aggregator_provider": null,
+  "bank_apps": [
+    {
+      "name": "Chase",
+      "package": "com.chase.sig.android",
+      "parser_id": "us_sent_you"
+    },
+    {
+      "name": "Bank of America",
+      "package": "com.infonow.bofa",
+      "parser_id": null
+    },
+    {
+      "name": "Wells Fargo",
+      "package": "com.wf.wellsfargomobile",
+      "parser_id": null
+    },
+    {
+      "name": "Capital One",
+      "package": "com.konylabs.capitalone",
+      "parser_id": null
+    },
+    {
+      "name": "Citi",
+      "package": "com.citi.citimobile",
+      "parser_id": null
+    },
+    {
+      "name": "American Express",
+      "package": "com.americanexpress.android.acctsvcs.us",
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": "plaid",
   "settlement_schemes": [
-    "Venmo",
-    "Zelle",
-    "PayPal"
+    "venmo",
+    "cashapp",
+    "paypal",
+    "Zelle"
   ],
   "typical_amount_chips": [
     5,
@@ -82,11 +119,88 @@
     50,
     100
   ],
-  "cancellation_guides": [],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Amazon Prime|https://www.amazon.com/gp/primecentral",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
   "price_points": {
     "plus_monthly": 399,
-    "plus_yearly": 2999,
+    "plus_yearly": 2899,
     "plus_lifetime": 7999
   },
-  "privacy_text_ref": null
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "us_sent_you",
+      "packages": [
+        "com.venmo",
+        "com.squareup.cash",
+        "com.paypal.android.p2pmobile",
+        "com.chase.sig.android"
+      ],
+      "regex": "(?<payee>[^\\n$]+?)\\s+(?:sent|paid)\\s+you\\s+\\$(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)",
+      "type": "income",
+      "currency": "USD",
+      "numberLocale": "en",
+      "confidence": 90
+    },
+    {
+      "id": "us_received_from",
+      "packages": [
+        "com.squareup.cash",
+        "com.paypal.android.p2pmobile",
+        "com.chase.sig.android"
+      ],
+      "regex": "You(?:\\'ve)? received\\s+\\$(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)(?:\\s+USD)?\\s+from\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "income",
+      "currency": "USD",
+      "numberLocale": "en",
+      "confidence": 90
+    },
+    {
+      "id": "us_venmo_paid",
+      "packages": [
+        "com.venmo"
+      ],
+      "regex": "You paid\\s+(?<payee>[^\\n$]+?)\\s+\\$(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)",
+      "type": "expense",
+      "currency": "USD",
+      "numberLocale": "en",
+      "confidence": 90
+    },
+    {
+      "id": "us_sent_to",
+      "packages": [
+        "com.squareup.cash",
+        "com.paypal.android.p2pmobile",
+        "com.chase.sig.android"
+      ],
+      "regex": "You (?:sent|paid)\\s+\\$(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)(?:\\s+USD)?\\s+to\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "USD",
+      "numberLocale": "en",
+      "confidence": 90
+    },
+    {
+      "id": "us_chase_card",
+      "packages": [
+        "com.chase.sig.android"
+      ],
+      "regex": "(?:You made an?|An?)\\s+\\$(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+[a-z ,]*?transaction\\s+with\\s+(?<payee>[^\\n]+?)(?=\\s+on\\s|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "USD",
+      "numberLocale": "en",
+      "confidence": 88
+    }
+  ],
+  "gold_price_per_gram": null,
+  "connectors": [
+    "plaid",
+    "mx",
+    "simplefin"
+  ],
+  "tax_year_label": "tax year"
 }

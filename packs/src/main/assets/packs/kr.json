@@ -1,0 +1,189 @@
+{
+  "schema": 1,
+  "id": "KR",
+  "name": "대한민국 / South Korea",
+  "locales": [
+    "ko-KR"
+  ],
+  "languages": [
+    "ko"
+  ],
+  "currency": "KRW",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 25
+  },
+  "first_day_of_week": "SUNDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "Asia/Seoul",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "설날",
+      "month": 2
+    },
+    {
+      "name": "가정의 달",
+      "month": 5
+    },
+    {
+      "name": "추석",
+      "month": 9
+    },
+    {
+      "name": "블랙프라이데이",
+      "month": 11
+    },
+    {
+      "name": "연말",
+      "month": 12
+    }
+  ],
+  "circle_names": [
+    "계 (Kye)"
+  ],
+  "payment_apps": [
+    {
+      "name": "Toss",
+      "package": "viva.republica.toss",
+      "parser_id": "kr_credit"
+    },
+    {
+      "name": "KakaoPay",
+      "package": "com.kakaopay.app",
+      "parser_id": "kr_credit"
+    },
+    {
+      "name": "KakaoTalk",
+      "package": "com.kakao.talk",
+      "parser_id": null
+    },
+    {
+      "name": "Naver Pay",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Samsung Wallet",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "KB스타뱅킹",
+      "package": "com.kbstar.kbbank",
+      "parser_id": "kr_credit"
+    },
+    {
+      "name": "신한 SOL뱅크",
+      "package": "com.shinhan.sbanking",
+      "parser_id": "kr_credit"
+    },
+    {
+      "name": "카카오뱅크",
+      "package": "com.kakaobank.channel",
+      "parser_id": "kr_credit"
+    },
+    {
+      "name": "우리WON뱅킹",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "하나원큐",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": null,
+  "settlement_schemes": [
+    "Toss",
+    "KakaoPay"
+  ],
+  "typical_amount_chips": [
+    1000,
+    5000,
+    10000,
+    30000,
+    50000
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 3900,
+    "plus_yearly": 27000,
+    "plus_lifetime": 79000
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "kr_credit",
+      "packages": [
+        "viva.republica.toss",
+        "com.kakaopay.app",
+        "com.kbstar.kbbank",
+        "com.shinhan.sbanking",
+        "com.kakaobank.channel"
+      ],
+      "regex": "입금\\s*:?\\s*(?<amount>[0-9][0-9,]*)\\s?원",
+      "type": "income",
+      "currency": "KRW",
+      "numberLocale": "ko-KR",
+      "confidence": 85
+    },
+    {
+      "id": "kr_debit",
+      "packages": [
+        "viva.republica.toss",
+        "com.kakaopay.app",
+        "com.kbstar.kbbank",
+        "com.shinhan.sbanking",
+        "com.kakaobank.channel"
+      ],
+      "regex": "(?:출금|결제|승인|이체|송금)\\s*:?\\s*(?<amount>[0-9][0-9,]*)\\s?원",
+      "type": "expense",
+      "currency": "KRW",
+      "numberLocale": "ko-KR",
+      "confidence": 85
+    },
+    {
+      "id": "kr_credit_after",
+      "packages": [
+        "viva.republica.toss",
+        "com.kakaopay.app",
+        "com.kbstar.kbbank",
+        "com.shinhan.sbanking",
+        "com.kakaobank.channel"
+      ],
+      "regex": "(?<amount>[0-9][0-9,]*)\\s?원\\s*(?:입금|을 받았|를 받았|받았)",
+      "type": "income",
+      "currency": "KRW",
+      "numberLocale": "ko-KR",
+      "confidence": 85
+    },
+    {
+      "id": "kr_debit_after",
+      "packages": [
+        "viva.republica.toss",
+        "com.kakaopay.app",
+        "com.kbstar.kbbank",
+        "com.shinhan.sbanking",
+        "com.kakaobank.channel"
+      ],
+      "regex": "(?<amount>[0-9][0-9,]*)\\s?원\\s*(?:출금|결제|승인|송금|을 보냈|를 보냈|보냈)",
+      "type": "expense",
+      "currency": "KRW",
+      "numberLocale": "ko-KR",
+      "confidence": 85
+    }
+  ],
+  "gold_price_per_gram": null,
+  "connectors": [],
+  "tax_year_label": null
+}

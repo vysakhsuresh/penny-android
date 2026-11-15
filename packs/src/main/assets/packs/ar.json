@@ -1,0 +1,129 @@
+{
+  "schema": 1,
+  "id": "AR",
+  "name": "Argentina",
+  "locales": [
+    "es-AR"
+  ],
+  "languages": [
+    "es"
+  ],
+  "currency": "ARS",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 1
+  },
+  "first_day_of_week": "MONDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "America/Argentina/Buenos_Aires",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Vuelta a clases",
+      "month": 2
+    },
+    {
+      "name": "Hot Sale",
+      "month": 5
+    },
+    {
+      "name": "Aguinaldo (SAC)",
+      "month": 6
+    },
+    {
+      "name": "Vacaciones de invierno",
+      "month": 7
+    },
+    {
+      "name": "Día de la Madre",
+      "month": 10
+    },
+    {
+      "name": "CyberMonday",
+      "month": 11
+    },
+    {
+      "name": "Aguinaldo (SAC)",
+      "month": 12
+    },
+    {
+      "name": "Navidad",
+      "month": 12
+    }
+  ],
+  "circle_names": [],
+  "payment_apps": [
+    {
+      "name": "Mercado Pago",
+      "package": "com.mercadopago.wallet",
+      "parser_id": null
+    },
+    {
+      "name": "Ualá",
+      "package": "ar.com.bancar.uala",
+      "parser_id": null
+    },
+    {
+      "name": "MODO",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Brubank",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "Banco Galicia",
+      "package": "com.mosync.app_Banco_Galicia",
+      "parser_id": null
+    },
+    {
+      "name": "Banco Nación",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Santander",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "BBVA",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": null,
+  "settlement_schemes": [
+    "Transferencias 3.0",
+    "Mercado Pago",
+    "MODO"
+  ],
+  "typical_amount_chips": [
+    1000,
+    2000,
+    5000,
+    10000,
+    20000
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 299900,
+    "plus_yearly": 2099900,
+    "plus_lifetime": 5999900
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [],
+  "gold_price_per_gram": null,
+  "connectors": [],
+  "tax_year_label": null
+}

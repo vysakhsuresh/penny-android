@@ -6,7 +6,8 @@
     "en-GB"
   ],
   "languages": [
-    "en"
+    "en",
+    "cy"
   ],
   "currency": "GBP",
   "number_grouping": "standard",
@@ -20,67 +21,197 @@
   "holidays": [],
   "festival_windows": [
     {
-      "name": "Christmas",
-      "month": 12
+      "name": "January sales",
+      "month": 1
     },
     {
       "name": "Summer holiday",
-      "month": 7
+      "month": 8
     },
     {
       "name": "Back to school",
       "month": 9
+    },
+    {
+      "name": "Black Friday",
+      "month": 11
+    },
+    {
+      "name": "Christmas",
+      "month": 12
     }
   ],
-  "circle_names": [
-    "Pardner",
-    "Savings club"
-  ],
+  "circle_names": [],
   "payment_apps": [
     {
       "name": "Monzo",
-      "package": null,
-      "parser_id": null
+      "package": "co.uk.getmondo",
+      "parser_id": "gb_received"
     },
     {
       "name": "Starling",
-      "package": null,
-      "parser_id": null
+      "package": "com.starlingbank.android",
+      "parser_id": "gb_received"
     },
     {
       "name": "Revolut",
-      "package": null,
-      "parser_id": null
+      "package": "com.revolut.revolut",
+      "parser_id": "gb_received"
     },
     {
+      "name": "PayPal",
+      "package": "com.paypal.android.p2pmobile",
+      "parser_id": "gb_paypal_received"
+    },
+    {
+      "name": "Wise",
+      "package": "com.transferwise.android",
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
       "name": "Barclays",
-      "package": null,
+      "package": "com.barclays.android.barclaysmobilebanking",
       "parser_id": null
     },
     {
       "name": "Lloyds",
+      "package": "com.grppl.android.shell.CMBlloydsTSB73",
+      "parser_id": null
+    },
+    {
+      "name": "Halifax",
+      "package": "com.grppl.android.shell.halifax",
+      "parser_id": null
+    },
+    {
+      "name": "HSBC UK",
+      "package": "uk.co.hsbc.hsbcukmobilebanking",
+      "parser_id": null
+    },
+    {
+      "name": "NatWest",
+      "package": "com.rbs.mobile.android.natwest",
+      "parser_id": null
+    },
+    {
+      "name": "Santander UK",
+      "package": "uk.co.santander.santanderUK",
+      "parser_id": null
+    },
+    {
+      "name": "Nationwide",
       "package": null,
       "parser_id": null
     }
   ],
-  "bank_apps": [],
-  "aggregator_provider": null,
+  "aggregator_provider": "truelayer",
   "settlement_schemes": [
-    "Faster Payments",
-    "PayPal"
+    "monzo",
+    "revolut",
+    "paypal",
+    "Faster Payments"
   ],
   "typical_amount_chips": [
+    3,
     5,
     10,
     20,
-    50,
-    100
+    50
   ],
-  "cancellation_guides": [],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Amazon Prime|https://www.amazon.co.uk/gp/primecentral",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
   "price_points": {
     "plus_monthly": 299,
-    "plus_yearly": 2499,
+    "plus_yearly": 2199,
     "plus_lifetime": 6999
   },
-  "privacy_text_ref": null
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "gb_received",
+      "packages": [
+        "co.uk.getmondo",
+        "com.starlingbank.android",
+        "com.revolut.revolut"
+      ],
+      "regex": "(?:You(?:\\'ve| have)? received|Received)\\s+£(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+from\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "income",
+      "currency": "GBP",
+      "numberLocale": "en-GB",
+      "confidence": 88
+    },
+    {
+      "id": "gb_sent_you",
+      "packages": [
+        "co.uk.getmondo",
+        "com.starlingbank.android",
+        "com.revolut.revolut"
+      ],
+      "regex": "(?<payee>[^\\n£]+?)\\s+sent you\\s+£(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)",
+      "type": "income",
+      "currency": "GBP",
+      "numberLocale": "en-GB",
+      "confidence": 88
+    },
+    {
+      "id": "gb_spent_at",
+      "packages": [
+        "co.uk.getmondo",
+        "com.starlingbank.android",
+        "com.revolut.revolut"
+      ],
+      "regex": "(?:You(?:\\'ve)? (?:spent|paid)|Spent|Paid)?\\s*£(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+(?:at|to)\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "GBP",
+      "numberLocale": "en-GB",
+      "confidence": 88
+    },
+    {
+      "id": "gb_paypal_received",
+      "packages": [
+        "com.paypal.android.p2pmobile"
+      ],
+      "regex": "You(?:\\'ve)? received\\s+(?:£)?\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)(?:\\s+GBP)?\\s+from\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "income",
+      "currency": "GBP",
+      "numberLocale": "en",
+      "confidence": 88
+    },
+    {
+      "id": "gb_paypal_sent_you",
+      "packages": [
+        "com.paypal.android.p2pmobile"
+      ],
+      "regex": "(?<payee>[^\\n]+?)\\s+sent you\\s+(?:£)?\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)",
+      "type": "income",
+      "currency": "GBP",
+      "numberLocale": "en",
+      "confidence": 88
+    },
+    {
+      "id": "gb_paypal_sent",
+      "packages": [
+        "com.paypal.android.p2pmobile"
+      ],
+      "regex": "You (?:sent|paid)\\s+(?:£)?\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)(?:\\s+GBP)?\\s+to\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "GBP",
+      "numberLocale": "en",
+      "confidence": 88
+    }
+  ],
+  "gold_price_per_gram": null,
+  "connectors": [
+    "truelayer",
+    "plaid",
+    "gocardless"
+  ],
+  "tax_year_label": "tax year"
 }

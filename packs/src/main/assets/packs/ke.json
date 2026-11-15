@@ -1,0 +1,151 @@
+{
+  "schema": 1,
+  "id": "KE",
+  "name": "Kenya",
+  "locales": [
+    "en-KE",
+    "sw-KE"
+  ],
+  "languages": [
+    "en",
+    "sw"
+  ],
+  "currency": "KES",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 1
+  },
+  "first_day_of_week": "SUNDAY",
+  "fiscal_year_start": "07-01",
+  "timezone": "Africa/Nairobi",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "School fees",
+      "month": 1
+    },
+    {
+      "name": "Easter",
+      "month": 3
+    },
+    {
+      "name": "Eid al-Fitr",
+      "month": 3
+    },
+    {
+      "name": "Black Friday",
+      "month": 11
+    },
+    {
+      "name": "Christmas",
+      "month": 12
+    }
+  ],
+  "circle_names": [
+    "Chama",
+    "Merry-go-round"
+  ],
+  "payment_apps": [
+    {
+      "name": "M-PESA",
+      "package": "com.safaricom.mpesa.lifestyle",
+      "parser_id": "ke_mpesa_received"
+    },
+    {
+      "name": "Airtel Money",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "Equity",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "KCB",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Co-op Bank",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "NCBA",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Absa Kenya",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": null,
+  "settlement_schemes": [
+    "M-PESA",
+    "PesaLink",
+    "Airtel Money"
+  ],
+  "typical_amount_chips": [
+    50,
+    100,
+    200,
+    500,
+    1000
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 19900,
+    "plus_yearly": 139900,
+    "plus_lifetime": 399900
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "ke_mpesa_received",
+      "packages": [
+        "com.safaricom.mpesa.lifestyle"
+      ],
+      "regex": "received\\s+(?:Ksh|KES)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+from\\s+(?<payee>[^\\n]+?)(?=\\s+\\d{6,}|\\s+on\\s|\\s+for account|\\s+New\\s+M-PESA|\\.|\\n|$)",
+      "type": "income",
+      "currency": "KES",
+      "numberLocale": "en-KE",
+      "confidence": 92
+    },
+    {
+      "id": "ke_mpesa_sent",
+      "packages": [
+        "com.safaricom.mpesa.lifestyle"
+      ],
+      "regex": "(?:Ksh|KES)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+(?:sent|paid)\\s+to\\s+(?<payee>[^\\n]+?)(?=\\s+\\d{6,}|\\s+on\\s|\\s+for account|\\s+New\\s+M-PESA|\\.|\\n|$)",
+      "type": "expense",
+      "currency": "KES",
+      "numberLocale": "en-KE",
+      "confidence": 92
+    },
+    {
+      "id": "ke_mpesa_withdraw",
+      "packages": [
+        "com.safaricom.mpesa.lifestyle"
+      ],
+      "regex": "Withdraw\\s+(?:Ksh|KES)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+from\\s+(?<payee>[^\\n]+?)(?=\\s+\\d{6,}|\\s+on\\s|\\s+for account|\\s+New\\s+M-PESA|\\.|\\n|$)",
+      "type": "expense",
+      "currency": "KES",
+      "numberLocale": "en-KE",
+      "confidence": 90
+    }
+  ],
+  "gold_price_per_gram": null,
+  "connectors": [],
+  "tax_year_label": "FY"
+}

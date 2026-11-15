@@ -32,11 +32,22 @@
       "name": "Bank app",
       "package": null,
       "parser_id": null
+    },
+    {
+      "name": "PayPal",
+      "package": "com.paypal.android.p2pmobile",
+      "parser_id": null
+    },
+    {
+      "name": "Wise",
+      "package": "com.transferwise.android",
+      "parser_id": null
     }
   ],
   "bank_apps": [],
   "aggregator_provider": null,
   "settlement_schemes": [
+    "paypal",
     "Bank transfer"
   ],
   "typical_amount_chips": [
@@ -46,11 +57,20 @@
     50,
     100
   ],
-  "cancellation_guides": [],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
   "price_points": {
     "plus_monthly": 399,
-    "plus_yearly": 2999,
+    "plus_yearly": 2899,
     "plus_lifetime": 7999
   },
-  "privacy_text_ref": null
+  "privacy_text_ref": null,
+  "notification_templates": [],
+  "gold_price_per_gram": null,
+  "connectors": [],
+  "tax_year_label": null
 }

@@ -1,0 +1,181 @@
+{
+  "schema": 1,
+  "id": "VN",
+  "name": "Việt Nam",
+  "locales": [
+    "vi-VN"
+  ],
+  "languages": [
+    "vi",
+    "en"
+  ],
+  "currency": "VND",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 1
+  },
+  "first_day_of_week": "MONDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Tết Nguyên Đán",
+      "month": 2
+    },
+    {
+      "name": "Tựu trường",
+      "month": 8
+    },
+    {
+      "name": "Trung Thu",
+      "month": 9
+    },
+    {
+      "name": "Black Friday",
+      "month": 11
+    },
+    {
+      "name": "Giáng sinh",
+      "month": 12
+    }
+  ],
+  "circle_names": [
+    "Hụi",
+    "Họ"
+  ],
+  "payment_apps": [
+    {
+      "name": "MoMo",
+      "package": "com.mservice.momotransfer",
+      "parser_id": "vn_momo_received"
+    },
+    {
+      "name": "ZaloPay",
+      "package": "vn.com.vng.zalopay",
+      "parser_id": "vn_momo_received"
+    },
+    {
+      "name": "VietQR",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "ShopeePay",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "Vietcombank",
+      "package": "com.VCB",
+      "parser_id": "vn_bank_debit"
+    },
+    {
+      "name": "MB Bank",
+      "package": "com.mbmobile",
+      "parser_id": "vn_bank_debit"
+    },
+    {
+      "name": "VietinBank iPay",
+      "package": "com.vietinbank.ipay",
+      "parser_id": "vn_bank_debit"
+    },
+    {
+      "name": "BIDV SmartBanking",
+      "package": "com.vnpay.bidv",
+      "parser_id": "vn_bank_debit"
+    },
+    {
+      "name": "Techcombank",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": "brankas",
+  "settlement_schemes": [
+    "VietQR",
+    "MoMo",
+    "ZaloPay"
+  ],
+  "typical_amount_chips": [
+    10000,
+    20000,
+    50000,
+    100000,
+    200000
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 49000,
+    "plus_yearly": 349000,
+    "plus_lifetime": 999000
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "vn_momo_received",
+      "packages": [
+        "com.mservice.momotransfer",
+        "vn.com.vng.zalopay"
+      ],
+      "regex": "nhận\\s+(?:được\\s+)?(?:tiền\\s+)?(?<amount>[0-9][0-9.,]*[0-9]|[0-9])\\s?(?:VND|đ|₫)\\s+từ\\s+(?<payee>[^\\n]+?)(?=[.!,]?\\s*(?:\\n|$))",
+      "type": "income",
+      "currency": "VND",
+      "numberLocale": "vi-VN",
+      "confidence": 85
+    },
+    {
+      "id": "vn_momo_sent",
+      "packages": [
+        "com.mservice.momotransfer",
+        "vn.com.vng.zalopay"
+      ],
+      "regex": "(?:chuyển|thanh toán)\\s+(?:tiền\\s+)?(?:thành công\\s+)?(?<amount>[0-9][0-9.,]*[0-9]|[0-9])\\s?(?:VND|đ|₫)(?:\\s+(?:đến|cho|tới)\\s+(?<payee>[^\\n]+?)(?=[.!,]?\\s*(?:\\n|$)))?",
+      "type": "expense",
+      "currency": "VND",
+      "numberLocale": "vi-VN",
+      "confidence": 85
+    },
+    {
+      "id": "vn_bank_debit",
+      "packages": [
+        "com.VCB",
+        "com.mbmobile",
+        "com.vietinbank.ipay",
+        "com.vnpay.bidv"
+      ],
+      "regex": "-\\s?(?<amount>[0-9][0-9.,]*[0-9]|[0-9])\\s?(?:VND|đ|₫)",
+      "type": "expense",
+      "currency": "VND",
+      "numberLocale": "vi-VN",
+      "confidence": 85
+    },
+    {
+      "id": "vn_bank_credit",
+      "packages": [
+        "com.VCB",
+        "com.mbmobile",
+        "com.vietinbank.ipay",
+        "com.vnpay.bidv"
+      ],
+      "regex": "\\+\\s?(?<amount>[0-9][0-9.,]*[0-9]|[0-9])\\s?(?:VND|đ|₫)",
+      "type": "income",
+      "currency": "VND",
+      "numberLocale": "vi-VN",
+      "confidence": 85
+    }
+  ],
+  "gold_price_per_gram": 3550000,
+  "connectors": [
+    "brankas"
+  ],
+  "tax_year_label": null
+}

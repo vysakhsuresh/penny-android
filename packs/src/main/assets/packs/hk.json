@@ -1,0 +1,130 @@
+{
+  "schema": 1,
+  "id": "HK",
+  "name": "香港 / Hong Kong",
+  "locales": [
+    "zh-HK",
+    "en-HK"
+  ],
+  "languages": [
+    "zh",
+    "en"
+  ],
+  "currency": "HKD",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 1
+  },
+  "first_day_of_week": "SUNDAY",
+  "fiscal_year_start": "04-01",
+  "timezone": "Asia/Hong_Kong",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Lunar New Year",
+      "month": 2
+    },
+    {
+      "name": "Easter",
+      "month": 3
+    },
+    {
+      "name": "Mid-Autumn",
+      "month": 9
+    },
+    {
+      "name": "Double 11",
+      "month": 11
+    },
+    {
+      "name": "Christmas",
+      "month": 12
+    }
+  ],
+  "circle_names": [],
+  "payment_apps": [
+    {
+      "name": "PayMe",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "AlipayHK",
+      "package": "hk.alipay.wallet",
+      "parser_id": null
+    },
+    {
+      "name": "WeChat Pay HK",
+      "package": "com.tencent.mm",
+      "parser_id": null
+    },
+    {
+      "name": "Octopus",
+      "package": "com.octopuscards.nfc_reader",
+      "parser_id": null
+    },
+    {
+      "name": "FPS",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "HSBC HK",
+      "package": "hk.com.hsbc.hsbchkmobilebanking",
+      "parser_id": null
+    },
+    {
+      "name": "Hang Seng",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "BOCHK",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Standard Chartered",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "ZA Bank",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": "finverse",
+  "settlement_schemes": [
+    "FPS",
+    "PayMe"
+  ],
+  "typical_amount_chips": [
+    20,
+    50,
+    100,
+    200,
+    500
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 2900,
+    "plus_yearly": 20900,
+    "plus_lifetime": 59900
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [],
+  "gold_price_per_gram": null,
+  "connectors": [
+    "finverse"
+  ],
+  "tax_year_label": "year of assessment"
+}

@@ -1,0 +1,123 @@
+{
+  "schema": 1,
+  "id": "TW",
+  "name": "台灣 / Taiwan",
+  "locales": [
+    "zh-TW"
+  ],
+  "languages": [
+    "zh"
+  ],
+  "currency": "TWD",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 1
+  },
+  "first_day_of_week": "SUNDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "Asia/Taipei",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "年終獎金",
+      "month": 1
+    },
+    {
+      "name": "春節",
+      "month": 2
+    },
+    {
+      "name": "母親節",
+      "month": 5
+    },
+    {
+      "name": "中秋節",
+      "month": 9
+    },
+    {
+      "name": "週年慶",
+      "month": 10
+    },
+    {
+      "name": "雙11",
+      "month": 11
+    }
+  ],
+  "circle_names": [
+    "互助會 (標會)"
+  ],
+  "payment_apps": [
+    {
+      "name": "LINE Pay",
+      "package": "jp.naver.line.android",
+      "parser_id": null
+    },
+    {
+      "name": "街口支付",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "全支付",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "台灣Pay",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "國泰世華",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "中國信託",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "玉山銀行",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "台新銀行",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": null,
+  "settlement_schemes": [
+    "LINE Pay",
+    "街口支付",
+    "轉帳"
+  ],
+  "typical_amount_chips": [
+    50,
+    100,
+    200,
+    500,
+    1000
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 9000,
+    "plus_yearly": 65000,
+    "plus_lifetime": 179000
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [],
+  "gold_price_per_gram": null,
+  "connectors": [],
+  "tax_year_label": null
+}

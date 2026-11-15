@@ -1,0 +1,149 @@
+{
+  "schema": 1,
+  "id": "NZ",
+  "name": "New Zealand",
+  "locales": [
+    "en-NZ",
+    "mi-NZ"
+  ],
+  "languages": [
+    "en",
+    "mi"
+  ],
+  "currency": "NZD",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "biweekly",
+    "anchor": "2026-01-07"
+  },
+  "first_day_of_week": "MONDAY",
+  "fiscal_year_start": "04-01",
+  "timezone": "Pacific/Auckland",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Back to school",
+      "month": 1
+    },
+    {
+      "name": "Matariki",
+      "month": 6
+    },
+    {
+      "name": "Black Friday",
+      "month": 11
+    },
+    {
+      "name": "Christmas",
+      "month": 12
+    },
+    {
+      "name": "Boxing Day",
+      "month": 12
+    }
+  ],
+  "circle_names": [],
+  "payment_apps": [
+    {
+      "name": "PayPal",
+      "package": "com.paypal.android.p2pmobile",
+      "parser_id": "nz_paypal_received"
+    },
+    {
+      "name": "Wise",
+      "package": "com.transferwise.android",
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "ANZ",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "ASB",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "BNZ",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Westpac",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Kiwibank",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": "akahu",
+  "settlement_schemes": [
+    "Bank transfer",
+    "paypal"
+  ],
+  "typical_amount_chips": [
+    5,
+    10,
+    20,
+    50,
+    100
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 499,
+    "plus_yearly": 3599,
+    "plus_lifetime": 9999
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "nz_paypal_received",
+      "packages": [
+        "com.paypal.android.p2pmobile"
+      ],
+      "regex": "You(?:\\'ve)? received\\s+(?:\\$|NZ\\$)?\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)(?:\\s+NZD)?\\s+from\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "income",
+      "currency": "NZD",
+      "numberLocale": "en",
+      "confidence": 88
+    },
+    {
+      "id": "nz_paypal_sent_you",
+      "packages": [
+        "com.paypal.android.p2pmobile"
+      ],
+      "regex": "(?<payee>[^\\n]+?)\\s+sent you\\s+(?:\\$|NZ\\$)?\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)",
+      "type": "income",
+      "currency": "NZD",
+      "numberLocale": "en",
+      "confidence": 88
+    },
+    {
+      "id": "nz_paypal_sent",
+      "packages": [
+        "com.paypal.android.p2pmobile"
+      ],
+      "regex": "You (?:sent|paid)\\s+(?:\\$|NZ\\$)?\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)(?:\\s+NZD)?\\s+to\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "NZD",
+      "numberLocale": "en",
+      "confidence": 88
+    }
+  ],
+  "gold_price_per_gram": null,
+  "connectors": [
+    "akahu"
+  ],
+  "tax_year_label": "tax year"
+}

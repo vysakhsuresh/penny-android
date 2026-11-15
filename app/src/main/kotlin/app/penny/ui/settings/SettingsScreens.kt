@@ -168,7 +168,7 @@ fun SettingsScreen(onBack: () -> Unit, go: (String) -> Unit) {
 
 /** ST-01 + OB-02 + US-04: every profile setting, reversible; region switch keeps data. Delete profile (typed). */
 @Composable
-fun ProfileSettingsScreen(onBack: () -> Unit, onDeleted: () -> Unit) {
+fun ProfileSettingsScreen(onBack: () -> Unit, onDeleted: () -> Unit, onRates: () -> Unit = {}) {
     WithBook { ctx, vm ->
         val b = ctx.book
         val p = b.profile
@@ -185,6 +185,7 @@ fun ProfileSettingsScreen(onBack: () -> Unit, onDeleted: () -> Unit) {
                 })
                 Text(stringResource(R.string.settings_region_body), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))
                 SelectField(stringResource(R.string.base_currency), p.baseCurrency, currencyChoices(listOf(ctx.pack.currency)), { it?.let { c -> save(p.copy(baseCurrency = c)) } })
+                ListRow(stringResource(R.string.exchange_rates), subtitle = stringResource(R.string.rates_body).take(80) + "…", onClick = onRates, divider = true)
                 SelectField(stringResource(R.string.timezone), p.timezone, ZoneId.getAvailableZoneIds().sorted().map { Choice(it, it.replace('_', ' ')) }, { it?.let { z -> save(p.copy(timezone = z)) } })
                 SectionHeader(stringResource(R.string.settings_cycle))
                 CycleEditor(p.cycle, b.today()) { c -> save(p.copy(cycle = c), R.string.cycle_changed) }

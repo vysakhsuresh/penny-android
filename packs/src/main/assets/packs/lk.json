@@ -1,0 +1,131 @@
+{
+  "schema": 1,
+  "id": "LK",
+  "name": "Sri Lanka",
+  "locales": [
+    "si-LK",
+    "ta-LK",
+    "en-LK"
+  ],
+  "languages": [
+    "si",
+    "ta",
+    "en"
+  ],
+  "currency": "LKR",
+  "number_grouping": "indian",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 1
+  },
+  "first_day_of_week": "MONDAY",
+  "fiscal_year_start": "04-01",
+  "timezone": "Asia/Colombo",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Thai Pongal",
+      "month": 1
+    },
+    {
+      "name": "Ramadan / Eid",
+      "month": 3
+    },
+    {
+      "name": "Sinhala & Tamil New Year",
+      "month": 4
+    },
+    {
+      "name": "Vesak",
+      "month": 5
+    },
+    {
+      "name": "Deepavali",
+      "month": 10
+    },
+    {
+      "name": "Christmas",
+      "month": 12
+    }
+  ],
+  "circle_names": [
+    "Seettu"
+  ],
+  "payment_apps": [
+    {
+      "name": "LANKAQR",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "FriMi",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "eZ Cash",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Genie",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "Commercial Bank",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Sampath Bank",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Bank of Ceylon",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "HNB",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "People's Bank",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": null,
+  "settlement_schemes": [
+    "LankaPay",
+    "LANKAQR"
+  ],
+  "typical_amount_chips": [
+    100,
+    200,
+    500,
+    1000,
+    2000
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 49900,
+    "plus_yearly": 349900,
+    "plus_lifetime": 999900
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [],
+  "gold_price_per_gram": null,
+  "connectors": [],
+  "tax_year_label": "year of assessment"
+}

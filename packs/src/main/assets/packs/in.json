@@ -3,16 +3,21 @@
   "id": "IN",
   "name": "India",
   "locales": [
-    "en-IN"
+    "en-IN",
+    "hi-IN"
   ],
   "languages": [
     "en",
     "hi",
-    "ta",
-    "te",
-    "ml",
     "bn",
-    "mr"
+    "te",
+    "mr",
+    "ta",
+    "ur",
+    "gu",
+    "kn",
+    "ml",
+    "pa"
   ],
   "currency": "INR",
   "number_grouping": "indian",
@@ -26,23 +31,35 @@
   "holidays": [],
   "festival_windows": [
     {
-      "name": "Diwali",
-      "month": 10
+      "name": "Pongal / Sankranti",
+      "month": 1
     },
     {
-      "name": "Eid",
-      "month": 4
+      "name": "Holi",
+      "month": 3
+    },
+    {
+      "name": "Eid al-Fitr",
+      "month": 3
+    },
+    {
+      "name": "Akshaya Tritiya",
+      "month": 5
+    },
+    {
+      "name": "Raksha Bandhan",
+      "month": 8
     },
     {
       "name": "Onam",
       "month": 9
     },
     {
-      "name": "Pongal",
-      "month": 1
+      "name": "Durga Puja",
+      "month": 10
     },
     {
-      "name": "Durga Puja",
+      "name": "Diwali",
       "month": 10
     },
     {
@@ -52,44 +69,71 @@
   ],
   "circle_names": [
     "Chit fund",
-    "Committee (kameti)"
+    "Committee (kameti)",
+    "Kitty"
   ],
   "payment_apps": [
     {
       "name": "Google Pay",
-      "package": null,
-      "parser_id": null
+      "package": "com.google.android.apps.nbu.paisa.user",
+      "parser_id": "in_upi_paid_you"
     },
     {
       "name": "PhonePe",
-      "package": null,
-      "parser_id": null
+      "package": "com.phonepe.app",
+      "parser_id": "in_upi_paid_you"
     },
     {
       "name": "Paytm",
-      "package": null,
+      "package": "net.one97.paytm",
+      "parser_id": "in_upi_paid_you"
+    },
+    {
+      "name": "BHIM",
+      "package": "in.org.npci.upiapp",
+      "parser_id": "in_upi_paid_you"
+    },
+    {
+      "name": "Amazon Pay",
+      "package": "in.amazon.mShop.android.shopping",
       "parser_id": null
     },
     {
-      "name": "HDFC Bank",
-      "package": null,
-      "parser_id": null
-    },
-    {
-      "name": "SBI YONO",
-      "package": null,
-      "parser_id": null
-    },
-    {
-      "name": "ICICI iMobile",
-      "package": null,
+      "name": "CRED",
+      "package": "com.dreamplug.androidapp",
       "parser_id": null
     }
   ],
-  "bank_apps": [],
-  "aggregator_provider": null,
+  "bank_apps": [
+    {
+      "name": "HDFC Bank",
+      "package": "com.snapwork.hdfc",
+      "parser_id": "in_bank_debit"
+    },
+    {
+      "name": "SBI YONO",
+      "package": "com.sbi.lotusintouch",
+      "parser_id": "in_bank_debit"
+    },
+    {
+      "name": "ICICI iMobile",
+      "package": "com.csam.icici.bank.imobile",
+      "parser_id": "in_bank_debit"
+    },
+    {
+      "name": "Axis Mobile",
+      "package": "com.axis.mobile",
+      "parser_id": "in_bank_debit"
+    },
+    {
+      "name": "Kotak",
+      "package": "com.msf.kbank.mobile",
+      "parser_id": "in_bank_debit"
+    }
+  ],
+  "aggregator_provider": "aa_setu",
   "settlement_schemes": [
-    "UPI"
+    "upi"
   ],
   "typical_amount_chips": [
     20,
@@ -98,11 +142,169 @@
     200,
     500
   ],
-  "cancellation_guides": [],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Amazon Prime|https://www.amazon.in/gp/primecentral",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
   "price_points": {
     "plus_monthly": 9900,
     "plus_yearly": 69900,
     "plus_lifetime": 249900
   },
-  "privacy_text_ref": null
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "in_upi_paid_you",
+      "packages": [
+        "com.google.android.apps.nbu.paisa.user",
+        "com.phonepe.app",
+        "net.one97.paytm",
+        "in.org.npci.upiapp"
+      ],
+      "regex": "(?<payee>[^\\n₹]+?)\\s+(?:paid|sent)\\s+you\\s+(?:₹|Rs\\.?|INR)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)",
+      "type": "income",
+      "currency": "INR",
+      "numberLocale": "en-IN",
+      "confidence": 90
+    },
+    {
+      "id": "in_upi_received",
+      "packages": [
+        "com.google.android.apps.nbu.paisa.user",
+        "com.phonepe.app",
+        "net.one97.paytm",
+        "in.org.npci.upiapp"
+      ],
+      "regex": "(?:You(?:\\'ve| have)? received|Received)\\s+(?:₹|Rs\\.?|INR)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+from\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "income",
+      "currency": "INR",
+      "numberLocale": "en-IN",
+      "confidence": 90
+    },
+    {
+      "id": "in_upi_received_alt",
+      "packages": [
+        "com.google.android.apps.nbu.paisa.user",
+        "com.phonepe.app",
+        "net.one97.paytm",
+        "in.org.npci.upiapp"
+      ],
+      "regex": "(?:₹|Rs\\.?|INR)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+received\\s+from\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "income",
+      "currency": "INR",
+      "numberLocale": "en-IN",
+      "confidence": 90
+    },
+    {
+      "id": "in_upi_paid",
+      "packages": [
+        "com.google.android.apps.nbu.paisa.user",
+        "com.phonepe.app",
+        "net.one97.paytm",
+        "in.org.npci.upiapp"
+      ],
+      "regex": "(?:You paid|Paid|You sent|Sent)\\s+(?:₹|Rs\\.?|INR)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+to\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "INR",
+      "numberLocale": "en-IN",
+      "confidence": 90
+    },
+    {
+      "id": "in_upi_paid_alt",
+      "packages": [
+        "com.google.android.apps.nbu.paisa.user",
+        "com.phonepe.app",
+        "net.one97.paytm",
+        "in.org.npci.upiapp"
+      ],
+      "regex": "(?:₹|Rs\\.?|INR)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+(?:paid|sent)\\s+(?:successfully\\s+)?to\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "INR",
+      "numberLocale": "en-IN",
+      "confidence": 90
+    },
+    {
+      "id": "in_bank_debit",
+      "packages": [
+        "com.snapwork.hdfc",
+        "com.sbi.lotusintouch",
+        "com.csam.icici.bank.imobile",
+        "com.axis.mobile",
+        "com.msf.kbank.mobile"
+      ],
+      "regex": "(?:₹|Rs\\.?|INR)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+(?:has been\\s+|is\\s+|was\\s+)?debited\\s+from\\s+(?:your\\s+)?(?:a/c|ac|account|acct)\\.?\\s*(?:no\\.?\\s*)?(?<account>[xX*0-9]{3,})",
+      "type": "expense",
+      "currency": "INR",
+      "numberLocale": "en-IN",
+      "confidence": 88
+    },
+    {
+      "id": "in_bank_debit_by",
+      "packages": [
+        "com.snapwork.hdfc",
+        "com.sbi.lotusintouch",
+        "com.csam.icici.bank.imobile",
+        "com.axis.mobile",
+        "com.msf.kbank.mobile"
+      ],
+      "regex": "(?:a/c|ac|account|acct)\\.?\\s*(?:no\\.?\\s*)?(?<account>[xX*0-9]{3,})\\s+(?:is\\s+|has been\\s+)?debited\\s+(?:by|for|with)\\s+(?:₹|Rs\\.?|INR)?\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)",
+      "type": "expense",
+      "currency": "INR",
+      "numberLocale": "en-IN",
+      "confidence": 88
+    },
+    {
+      "id": "in_bank_credit",
+      "packages": [
+        "com.snapwork.hdfc",
+        "com.sbi.lotusintouch",
+        "com.csam.icici.bank.imobile",
+        "com.axis.mobile",
+        "com.msf.kbank.mobile"
+      ],
+      "regex": "(?:₹|Rs\\.?|INR)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+(?:has been\\s+|is\\s+|was\\s+)?credited\\s+to\\s+(?:your\\s+)?(?:a/c|ac|account|acct)\\.?\\s*(?:no\\.?\\s*)?(?<account>[xX*0-9]{3,})",
+      "type": "income",
+      "currency": "INR",
+      "numberLocale": "en-IN",
+      "confidence": 88
+    },
+    {
+      "id": "in_bank_credit_by",
+      "packages": [
+        "com.snapwork.hdfc",
+        "com.sbi.lotusintouch",
+        "com.csam.icici.bank.imobile",
+        "com.axis.mobile",
+        "com.msf.kbank.mobile"
+      ],
+      "regex": "(?:a/c|ac|account|acct)\\.?\\s*(?:no\\.?\\s*)?(?<account>[xX*0-9]{3,})\\s+(?:is\\s+|has been\\s+)?credited\\s+(?:by|for|with)\\s+(?:₹|Rs\\.?|INR)?\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)",
+      "type": "income",
+      "currency": "INR",
+      "numberLocale": "en-IN",
+      "confidence": 88
+    },
+    {
+      "id": "in_card_spent",
+      "packages": [
+        "com.snapwork.hdfc",
+        "com.sbi.lotusintouch",
+        "com.csam.icici.bank.imobile",
+        "com.axis.mobile",
+        "com.msf.kbank.mobile"
+      ],
+      "regex": "(?:₹|Rs\\.?|INR)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+(?:spent|used)\\s+(?:on|using)\\s+[^\\n]*?card[^\\n]*?\\bat\\s+(?<payee>[^\\n]+?)(?=\\s+on\\s|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "INR",
+      "numberLocale": "en-IN",
+      "confidence": 85
+    }
+  ],
+  "gold_price_per_gram": 1190000,
+  "connectors": [
+    "aa_setu"
+  ],
+  "tax_year_label": "FY"
 }

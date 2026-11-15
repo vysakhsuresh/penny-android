@@ -1,0 +1,176 @@
+{
+  "schema": 1,
+  "id": "PK",
+  "name": "Pakistan",
+  "locales": [
+    "en-PK",
+    "ur-PK"
+  ],
+  "languages": [
+    "ur",
+    "en",
+    "pa",
+    "sd",
+    "ps"
+  ],
+  "currency": "PKR",
+  "number_grouping": "indian",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 1
+  },
+  "first_day_of_week": "SUNDAY",
+  "fiscal_year_start": "07-01",
+  "timezone": "Asia/Karachi",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Ramadan",
+      "month": 2
+    },
+    {
+      "name": "Eid ul-Fitr",
+      "month": 3
+    },
+    {
+      "name": "Eid ul-Adha",
+      "month": 5
+    },
+    {
+      "name": "Back to school",
+      "month": 8
+    },
+    {
+      "name": "Independence Day",
+      "month": 8
+    },
+    {
+      "name": "Wedding season",
+      "month": 12
+    }
+  ],
+  "circle_names": [
+    "Committee",
+    "BC (bisi)"
+  ],
+  "payment_apps": [
+    {
+      "name": "JazzCash",
+      "package": "com.techlogix.mobilinkcustomer",
+      "parser_id": "pk_received"
+    },
+    {
+      "name": "Easypaisa",
+      "package": "pk.com.telenor.phoenix",
+      "parser_id": "pk_received"
+    },
+    {
+      "name": "SadaPay",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "NayaPay",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Raast",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "UBL Digital",
+      "package": "app.com.brd",
+      "parser_id": null
+    },
+    {
+      "name": "Meezan Bank",
+      "package": "invo8.meezan.mb",
+      "parser_id": null
+    },
+    {
+      "name": "HBL Mobile",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "MCB Live",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Allied Bank",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": null,
+  "settlement_schemes": [
+    "Raast",
+    "JazzCash",
+    "Easypaisa"
+  ],
+  "typical_amount_chips": [
+    50,
+    100,
+    200,
+    500,
+    1000
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 29900,
+    "plus_yearly": 209900,
+    "plus_lifetime": 599900
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "pk_received",
+      "packages": [
+        "com.techlogix.mobilinkcustomer",
+        "pk.com.telenor.phoenix"
+      ],
+      "regex": "(?:You(?:\\'ve| have)? received|Received)\\s+(?:Rs\\.?|PKR)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+from\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "income",
+      "currency": "PKR",
+      "numberLocale": "en-PK",
+      "confidence": 85
+    },
+    {
+      "id": "pk_sent",
+      "packages": [
+        "com.techlogix.mobilinkcustomer",
+        "pk.com.telenor.phoenix"
+      ],
+      "regex": "(?:Rs\\.?|PKR)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+(?:has been\\s+)?(?:sent|transferred|paid)\\s+(?:successfully\\s+)?to\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "PKR",
+      "numberLocale": "en-PK",
+      "confidence": 85
+    },
+    {
+      "id": "pk_sent_alt",
+      "packages": [
+        "com.techlogix.mobilinkcustomer",
+        "pk.com.telenor.phoenix"
+      ],
+      "regex": "(?:You(?:\\'ve| have)? (?:sent|transferred|paid)|Sent|Paid)\\s+(?:Rs\\.?|PKR)\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+to\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "PKR",
+      "numberLocale": "en-PK",
+      "confidence": 85
+    }
+  ],
+  "gold_price_per_gram": 3800000,
+  "connectors": [],
+  "tax_year_label": "tax year"
+}

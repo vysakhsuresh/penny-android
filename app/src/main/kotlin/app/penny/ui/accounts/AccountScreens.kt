@@ -161,7 +161,8 @@ fun AccountDetailScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit
         }
         val a = acct.value
         var dialog by rememberSaveable { mutableStateOf<String?>(null) }
-        val bal = b.balance(id)
+        // Assets show their latest valuation plus later movements; other accounts show the ledger balance.
+        val bal = if (a.type in listOf(AccountType.ASSET, AccountType.INVESTMENT)) NetWorth.value(id, a, b.txList, b.today(), b.valuations.map { it.value }, ctx.pack.goldPricePerGram) else b.balance(id)
         val txs = b.transactions.filter { it.value.accountId == id || it.value.toAccountId == id }.sortedByDescending { it.value.date }
         PennyScreen(
             a.name, onBack,
@@ -195,6 +196,10 @@ fun AccountDetailScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit
                         if (a.type == AccountType.CASH) OutlinedButton(onClick = { dialog = "count" }, modifier = Modifier.weight(1f).padding(start = 4.dp)) { Text(stringResource(R.string.count_cash)) }
                         else OutlinedButton(onClick = { dialog = "reconcile" }, modifier = Modifier.weight(1f).padding(start = 4.dp)) { Text(stringResource(R.string.reconcile)) }
                     }
+                    // IN-05: assets and investments keep a history of manual valuations.
+                    if (a.type in listOf(AccountType.ASSET, AccountType.INVESTMENT, AccountType.RECEIVABLE)) {
+                        OutlinedButton(onClick = { dialog = "value" }, modifier = Modifier.padding(horizontal = 16.dp)) { Text(stringResource(R.string.record_value)) }
+                    }
                     Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
                         TextButton(onClick = { vm.act(if (a.archived) R.string.unarchived else R.string.archived_done) { saveAccount(it, id, a.copy(archived = !a.archived)) } }) {
                             Text(stringResource(if (a.archived) R.string.unarchive else R.string.archive))
@@ -224,6 +229,10 @@ fun AccountDetailScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit
                 confirmButton = { TextButton(onClick = { vm.act(R.string.reconciled_done) { reconcile(it, id, it.today()) }; dialog = null }) { Text(stringResource(R.string.reconcile)) } },
                 dismissButton = { TextButton(onClick = { dialog = "set" }) { Text(stringResource(R.string.set_balance)) } },
             )
+            "value" -> AmountDialog(ctx, stringResource(R.string.record_value), stringResource(R.string.record_value_body), a.currency, ctx.fmt.editable(bal, a.currency), onDismiss = { dialog = null }) { v ->
+                vm.act(R.string.value_recorded) { valuations.create(newId(), it.profileId, app.penny.core.model.Valuation(id, it.today(), v)) }
+                dialog = null
+            }
             "delete" -> DeleteAccountDialog(ctx, id, a, txs.size, onDismiss = { dialog = null }) { moveTo ->
                 vm.act(R.string.account_deleted, after = onBack) { deleteAccount(it, id, moveTo) }
                 dialog = null

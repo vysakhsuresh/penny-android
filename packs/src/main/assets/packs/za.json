@@ -1,0 +1,131 @@
+{
+  "schema": 1,
+  "id": "ZA",
+  "name": "South Africa",
+  "locales": [
+    "en-ZA",
+    "af-ZA",
+    "zu-ZA"
+  ],
+  "languages": [
+    "en",
+    "af",
+    "zu",
+    "xh",
+    "st"
+  ],
+  "currency": "ZAR",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 25
+  },
+  "first_day_of_week": "SUNDAY",
+  "fiscal_year_start": "03-01",
+  "timezone": "Africa/Johannesburg",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Back to school",
+      "month": 1
+    },
+    {
+      "name": "Easter",
+      "month": 3
+    },
+    {
+      "name": "Heritage Day",
+      "month": 9
+    },
+    {
+      "name": "Black Friday",
+      "month": 11
+    },
+    {
+      "name": "Festive season",
+      "month": 12
+    }
+  ],
+  "circle_names": [
+    "Stokvel"
+  ],
+  "payment_apps": [
+    {
+      "name": "PayShap",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "SnapScan",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Zapper",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "FNB",
+      "package": "za.co.fnb.connect.itt",
+      "parser_id": null
+    },
+    {
+      "name": "Standard Bank",
+      "package": "com.sbg.mobile.phone",
+      "parser_id": null
+    },
+    {
+      "name": "Capitec",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Absa",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Nedbank",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "TymeBank",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": "stitch",
+  "settlement_schemes": [
+    "PayShap",
+    "SnapScan"
+  ],
+  "typical_amount_chips": [
+    20,
+    50,
+    100,
+    200,
+    500
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 3999,
+    "plus_yearly": 27900,
+    "plus_lifetime": 79900
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [],
+  "gold_price_per_gram": null,
+  "connectors": [
+    "stitch"
+  ],
+  "tax_year_label": "tax year"
+}

@@ -7,34 +7,47 @@
   ],
   "languages": [
     "id",
-    "en"
+    "en",
+    "jv"
   ],
   "currency": "IDR",
   "number_grouping": "standard",
   "pay_cycle_default": {
     "type": "monthly",
-    "startDay": 25
+    "startDay": 1
   },
-  "first_day_of_week": "MONDAY",
+  "first_day_of_week": "SUNDAY",
   "fiscal_year_start": "01-01",
   "timezone": "Asia/Jakarta",
   "holidays": [],
   "festival_windows": [
     {
-      "name": "Lebaran",
-      "month": 3
+      "name": "Ramadan",
+      "month": 2
     },
     {
       "name": "THR",
       "month": 3
     },
     {
-      "name": "Natal",
-      "month": 12
+      "name": "Lebaran",
+      "month": 3
+    },
+    {
+      "name": "Idul Adha",
+      "month": 5
     },
     {
       "name": "Tahun ajaran baru",
       "month": 7
+    },
+    {
+      "name": "Harbolnas 12.12",
+      "month": 12
+    },
+    {
+      "name": "Natal",
+      "month": 12
     }
   ],
   "circle_names": [
@@ -43,48 +56,116 @@
   "payment_apps": [
     {
       "name": "GoPay",
-      "package": null,
-      "parser_id": null
+      "package": "com.gojek.app",
+      "parser_id": "id_received"
     },
     {
       "name": "OVO",
-      "package": null,
-      "parser_id": null
+      "package": "ovo.id",
+      "parser_id": "id_received"
     },
     {
       "name": "DANA",
-      "package": null,
-      "parser_id": null
-    },
-    {
-      "name": "BCA mobile",
-      "package": null,
-      "parser_id": null
+      "package": "id.dana",
+      "parser_id": "id_received"
     },
     {
       "name": "ShopeePay",
+      "package": "com.shopee.id",
+      "parser_id": null
+    },
+    {
+      "name": "QRIS",
       "package": null,
       "parser_id": null
     }
   ],
-  "bank_apps": [],
-  "aggregator_provider": null,
+  "bank_apps": [
+    {
+      "name": "BCA mobile",
+      "package": "com.bca",
+      "parser_id": null
+    },
+    {
+      "name": "BRImo",
+      "package": "id.co.bri.brimo",
+      "parser_id": null
+    },
+    {
+      "name": "Livin' by Mandiri",
+      "package": "id.bmri.livin",
+      "parser_id": null
+    },
+    {
+      "name": "BNI",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Jago",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": "brankas",
   "settlement_schemes": [
     "QRIS",
-    "Transfer"
+    "BI-FAST",
+    "GoPay",
+    "OVO",
+    "DANA"
   ],
   "typical_amount_chips": [
+    5000,
     10000,
     20000,
     50000,
-    100000,
-    200000
+    100000
   ],
-  "cancellation_guides": [],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
   "price_points": {
-    "plus_monthly": 29000,
-    "plus_yearly": 199000,
-    "plus_lifetime": 599000
+    "plus_monthly": 2900000,
+    "plus_yearly": 19900000,
+    "plus_lifetime": 59900000
   },
-  "privacy_text_ref": null
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "id_received",
+      "packages": [
+        "com.gojek.app",
+        "ovo.id",
+        "id.dana"
+      ],
+      "regex": "(?:menerima|terima|diterima)\\s+(?:uang\\s+|saldo\\s+|transfer\\s+)?(?:sebesar\\s+)?Rp\\.?\\s?(?<amount>[0-9][0-9.]*(?:,[0-9]{1,2})?)\\s+dari\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi|berhasil|sukses|pada)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "income",
+      "currency": "IDR",
+      "numberLocale": "id-ID",
+      "confidence": 85
+    },
+    {
+      "id": "id_paid",
+      "packages": [
+        "com.gojek.app",
+        "ovo.id",
+        "id.dana"
+      ],
+      "regex": "(?:Pembayaran|Bayar|Transfer|Kirim uang|Kirim)\\s+(?:sebesar\\s+)?Rp\\.?\\s?(?<amount>[0-9][0-9.]*(?:,[0-9]{1,2})?)\\s+(?:ke|kepada|di)\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi|berhasil|sukses|pada)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "IDR",
+      "numberLocale": "id-ID",
+      "confidence": 85
+    }
+  ],
+  "gold_price_per_gram": 223000000,
+  "connectors": [
+    "brankas",
+    "finverse"
+  ],
+  "tax_year_label": null
 }

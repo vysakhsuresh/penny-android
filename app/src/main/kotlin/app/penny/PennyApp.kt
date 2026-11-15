@@ -49,6 +49,7 @@ class PennyApp : Application(), Configuration.Provider {
         CaptureRegistry.sink = capture
         DailyWorker.schedule(this)
         SyncWorker.schedulePeriodic(this)
+        app.penny.domain.RatesWorker.schedule(this)
         alerts.ensureChannel()
         shortcuts()
         // SY-04 sync shortly after local changes (debounced); widgets follow the same signal.

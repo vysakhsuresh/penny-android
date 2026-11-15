@@ -76,6 +76,7 @@ class PennyRepository @Inject constructor(
     val dao: PennyDao,
     val packs: PackRepository,
     val prefs: AppPrefs,
+    val rates: RatesCache,
 ) {
     private fun <T> repo(entity: String, s: KSerializer<T>) = EventSourcedRepository(entity, s, store, prefs::actor)
 
@@ -148,10 +149,10 @@ class PennyRepository @Inject constructor(
         if (pid == null) flowOf(null) else observeBook(pid)
     }
 
-    fun observeBook(pid: String): Flow<Book?> = dao.observeProfileEntities(pid).map { rows ->
-        val profileRow = rows.firstOrNull { it.entity == Entities.PROFILE && it.id == pid && it.deletedAt == null } ?: return@map null
-        val profile = runCatching { PennyJson.decodeFromString(Profile.serializer(), profileRow.json) }.getOrNull() ?: return@map null
-        Book(pid, profile, rows, cache)
+    fun observeBook(pid: String): Flow<Book?> = kotlinx.coroutines.flow.combine(dao.observeProfileEntities(pid), rates.rates) { rows, cached ->
+        val profileRow = rows.firstOrNull { it.entity == Entities.PROFILE && it.id == pid && it.deletedAt == null } ?: return@combine null
+        val profile = runCatching { PennyJson.decodeFromString(Profile.serializer(), profileRow.json) }.getOrNull() ?: return@combine null
+        Book(pid, profile, rows, cache, cached)
     }
 
     /** All profiles on this device (US-02 switcher); decoys are hidden unless [includeDecoy]. */

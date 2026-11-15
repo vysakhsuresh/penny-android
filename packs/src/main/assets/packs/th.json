@@ -1,0 +1,154 @@
+{
+  "schema": 1,
+  "id": "TH",
+  "name": "ประเทศไทย / Thailand",
+  "locales": [
+    "th-TH"
+  ],
+  "languages": [
+    "th",
+    "en"
+  ],
+  "currency": "THB",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 1
+  },
+  "first_day_of_week": "SUNDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "Asia/Bangkok",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "ตรุษจีน (Chinese New Year)",
+      "month": 2
+    },
+    {
+      "name": "สงกรานต์ (Songkran)",
+      "month": 4
+    },
+    {
+      "name": "เปิดเทอม (Back to school)",
+      "month": 5
+    },
+    {
+      "name": "ลอยกระทง (Loy Krathong)",
+      "month": 11
+    },
+    {
+      "name": "ปีใหม่ (New Year)",
+      "month": 12
+    }
+  ],
+  "circle_names": [
+    "แชร์ (Chaer)"
+  ],
+  "payment_apps": [
+    {
+      "name": "PromptPay",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "TrueMoney",
+      "package": "th.co.truemoney.wallet",
+      "parser_id": "th_in"
+    },
+    {
+      "name": "ShopeePay",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Rabbit LINE Pay",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "K PLUS",
+      "package": "com.kasikorn.retail.mbanking.wap",
+      "parser_id": "th_in"
+    },
+    {
+      "name": "SCB EASY",
+      "package": "com.scb.phone",
+      "parser_id": "th_in"
+    },
+    {
+      "name": "Krungthai NEXT",
+      "package": "ktbcs.netbank",
+      "parser_id": "th_in"
+    },
+    {
+      "name": "Bangkok Bank",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Krungsri",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": "brankas",
+  "settlement_schemes": [
+    "PromptPay"
+  ],
+  "typical_amount_chips": [
+    20,
+    50,
+    100,
+    200,
+    500
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 5900,
+    "plus_yearly": 39900,
+    "plus_lifetime": 119000
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "th_in",
+      "packages": [
+        "com.kasikorn.retail.mbanking.wap",
+        "com.scb.phone",
+        "ktbcs.netbank",
+        "th.co.truemoney.wallet"
+      ],
+      "regex": "(?:เงินเข้า|รับเงิน)\\s*:?\\s*(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s*(?:บาท|฿|THB)",
+      "type": "income",
+      "currency": "THB",
+      "numberLocale": "th-TH",
+      "confidence": 85
+    },
+    {
+      "id": "th_out",
+      "packages": [
+        "com.kasikorn.retail.mbanking.wap",
+        "com.scb.phone",
+        "ktbcs.netbank",
+        "th.co.truemoney.wallet"
+      ],
+      "regex": "(?:เงินออก|โอนเงิน|ชำระเงิน|จ่าย)\\s*:?\\s*(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s*(?:บาท|฿|THB)",
+      "type": "expense",
+      "currency": "THB",
+      "numberLocale": "th-TH",
+      "confidence": 85
+    }
+  ],
+  "gold_price_per_gram": 439000,
+  "connectors": [
+    "brankas"
+  ],
+  "tax_year_label": null
+}

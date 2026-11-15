@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "id": "TR",
+  "name": "Türkiye",
+  "locales": [
+    "tr-TR"
+  ],
+  "languages": [
+    "tr",
+    "ku"
+  ],
+  "currency": "TRY",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 1
+  },
+  "first_day_of_week": "MONDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "Europe/Istanbul",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Ramazan Bayramı",
+      "month": 3
+    },
+    {
+      "name": "Kurban Bayramı",
+      "month": 5
+    },
+    {
+      "name": "Yaz tatili",
+      "month": 7
+    },
+    {
+      "name": "Okula dönüş",
+      "month": 9
+    },
+    {
+      "name": "Efsane Cuma",
+      "month": 11
+    },
+    {
+      "name": "Yılbaşı",
+      "month": 12
+    }
+  ],
+  "circle_names": [
+    "Altın günü"
+  ],
+  "payment_apps": [
+    {
+      "name": "Papara",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "BKM Express",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "Garanti BBVA",
+      "package": "com.garanti.cepsubesi",
+      "parser_id": null
+    },
+    {
+      "name": "İşCep",
+      "package": "com.pozitron.iscep",
+      "parser_id": null
+    },
+    {
+      "name": "Ziraat Mobil",
+      "package": "com.ziraat.ziraatmobil",
+      "parser_id": null
+    },
+    {
+      "name": "Akbank",
+      "package": "com.akbank.android.apps.akbank_direkt",
+      "parser_id": null
+    },
+    {
+      "name": "Yapı Kredi",
+      "package": "com.ykb.android",
+      "parser_id": null
+    },
+    {
+      "name": "Enpara",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": "saltedge",
+  "settlement_schemes": [
+    "FAST",
+    "IBAN"
+  ],
+  "typical_amount_chips": [
+    20,
+    50,
+    100,
+    250,
+    500
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Amazon Prime|https://www.amazon.com.tr/gp/primecentral",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 9999,
+    "plus_yearly": 69999,
+    "plus_lifetime": 199999
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [],
+  "gold_price_per_gram": 580000,
+  "connectors": [
+    "saltedge"
+  ],
+  "tax_year_label": null
+}

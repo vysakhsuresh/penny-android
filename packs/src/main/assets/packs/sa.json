@@ -1,0 +1,129 @@
+{
+  "schema": 1,
+  "id": "SA",
+  "name": "السعودية / Saudi Arabia",
+  "locales": [
+    "ar-SA",
+    "en-SA"
+  ],
+  "languages": [
+    "ar",
+    "en"
+  ],
+  "currency": "SAR",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 27
+  },
+  "first_day_of_week": "SUNDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "Asia/Riyadh",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Ramadan",
+      "month": 2
+    },
+    {
+      "name": "Eid al-Fitr",
+      "month": 3
+    },
+    {
+      "name": "Eid al-Adha",
+      "month": 5
+    },
+    {
+      "name": "Back to school",
+      "month": 8
+    },
+    {
+      "name": "Saudi National Day",
+      "month": 9
+    },
+    {
+      "name": "Riyadh Season",
+      "month": 10
+    },
+    {
+      "name": "White Friday",
+      "month": 11
+    }
+  ],
+  "circle_names": [
+    "Jam'iya (جمعية)"
+  ],
+  "payment_apps": [
+    {
+      "name": "STC Bank",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "urpay",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "mada Pay",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "Al Rajhi Bank",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "SNB AlAhli",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Riyad Bank",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Alinma",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "SAB",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": null,
+  "settlement_schemes": [
+    "SARIE",
+    "STC Bank"
+  ],
+  "typical_amount_chips": [
+    5,
+    10,
+    20,
+    50,
+    100
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Amazon Prime|https://www.amazon.sa/gp/primecentral",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 1499,
+    "plus_yearly": 10499,
+    "plus_lifetime": 29900
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [],
+  "gold_price_per_gram": 50600,
+  "connectors": [],
+  "tax_year_label": null
+}

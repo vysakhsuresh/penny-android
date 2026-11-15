@@ -79,6 +79,8 @@ class Book(
     val profile: Profile,
     rows: List<EntityRow>,
     private val cache: DecodeCache,
+    /** Device-local reference rates (ECB); manual rates in [fxRates] override them for the same date. */
+    val cachedRates: List<FxRate> = emptyList(),
 ) {
     private val live: Map<String, List<EntityState>>
     val deleted: List<EntityState>
@@ -141,7 +143,7 @@ class Book(
     val zone: ZoneId by lazy { runCatching { ZoneId.of(profile.timezone) }.getOrDefault(ZoneId.systemDefault()) }
     fun today(): LocalDate = LocalDate.now(zone)
 
-    val fx: FxConverter by lazy { FxTable(fxRates.map { it.value }) }
+    val fx: FxConverter by lazy { FxTable(cachedRates + fxRates.map { it.value }) }
 
     /** Category ids excluded from spend, including children of excluded parents (CAT-04). */
     val excludedCategoryIds: Set<String> by lazy {

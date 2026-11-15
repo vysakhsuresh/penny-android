@@ -25,66 +25,115 @@
       "month": 1
     },
     {
+      "name": "新生活",
+      "month": 4
+    },
+    {
       "name": "ゴールデンウィーク",
       "month": 5
+    },
+    {
+      "name": "夏のボーナス",
+      "month": 7
     },
     {
       "name": "お盆",
       "month": 8
     },
     {
-      "name": "ボーナス",
-      "month": 6
+      "name": "冬のボーナス",
+      "month": 12
+    },
+    {
+      "name": "年末",
+      "month": 12
     }
   ],
   "circle_names": [
-    "Tanomoshi"
+    "頼母子講 (Tanomoshi)",
+    "無尽 (Mujin)"
   ],
   "payment_apps": [
     {
       "name": "PayPay",
+      "package": "jp.ne.paypay.android.app",
+      "parser_id": null
+    },
+    {
+      "name": "楽天ペイ",
       "package": null,
       "parser_id": null
     },
     {
-      "name": "LINE Pay",
+      "name": "d払い",
       "package": null,
       "parser_id": null
     },
     {
-      "name": "Rakuten Pay",
+      "name": "au PAY",
       "package": null,
       "parser_id": null
     },
     {
-      "name": "Suica",
-      "package": null,
-      "parser_id": null
-    },
-    {
-      "name": "MUFG",
+      "name": "モバイルSuica",
       "package": null,
       "parser_id": null
     }
   ],
-  "bank_apps": [],
+  "bank_apps": [
+    {
+      "name": "三菱UFJ銀行",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "三井住友銀行",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "みずほ銀行",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "ゆうちょ銀行",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "楽天銀行",
+      "package": null,
+      "parser_id": null
+    }
+  ],
   "aggregator_provider": null,
   "settlement_schemes": [
     "PayPay",
-    "Bank transfer"
+    "銀行振込"
   ],
   "typical_amount_chips": [
     100,
+    300,
     500,
     1000,
-    3000,
-    5000
+    3000
   ],
-  "cancellation_guides": [],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Amazon Prime|https://www.amazon.co.jp/gp/primecentral",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
   "price_points": {
     "plus_monthly": 480,
     "plus_yearly": 3600,
     "plus_lifetime": 9800
   },
-  "privacy_text_ref": null
+  "privacy_text_ref": null,
+  "notification_templates": [],
+  "gold_price_per_gram": null,
+  "connectors": [],
+  "tax_year_label": "年度"
 }

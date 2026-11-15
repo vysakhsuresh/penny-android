@@ -1,0 +1,121 @@
+{
+  "schema": 1,
+  "id": "NP",
+  "name": "नेपाल / Nepal",
+  "locales": [
+    "ne-NP",
+    "en-NP"
+  ],
+  "languages": [
+    "ne",
+    "en"
+  ],
+  "currency": "NPR",
+  "number_grouping": "indian",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 1
+  },
+  "first_day_of_week": "SUNDAY",
+  "fiscal_year_start": "07-16",
+  "timezone": "Asia/Kathmandu",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Nepali New Year",
+      "month": 4
+    },
+    {
+      "name": "Teej",
+      "month": 9
+    },
+    {
+      "name": "Dashain",
+      "month": 10
+    },
+    {
+      "name": "Tihar",
+      "month": 10
+    },
+    {
+      "name": "Chhath",
+      "month": 11
+    }
+  ],
+  "circle_names": [
+    "Dhikuti"
+  ],
+  "payment_apps": [
+    {
+      "name": "eSewa",
+      "package": "com.f1soft.esewa",
+      "parser_id": null
+    },
+    {
+      "name": "Khalti",
+      "package": "com.khalti",
+      "parser_id": null
+    },
+    {
+      "name": "Fonepay",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "IME Pay",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "NIC Asia",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Global IME",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Nabil Bank",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "NMB Bank",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": null,
+  "settlement_schemes": [
+    "Fonepay",
+    "eSewa",
+    "Khalti",
+    "ConnectIPS"
+  ],
+  "typical_amount_chips": [
+    50,
+    100,
+    200,
+    500,
+    1000
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 19900,
+    "plus_yearly": 139900,
+    "plus_lifetime": 399900
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [],
+  "gold_price_per_gram": null,
+  "connectors": [],
+  "tax_year_label": "FY"
+}

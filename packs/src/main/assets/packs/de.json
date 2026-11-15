@@ -1,13 +1,14 @@
 {
   "schema": 1,
   "id": "DE",
-  "name": "Germany",
+  "name": "Deutschland",
   "locales": [
     "de-DE"
   ],
   "languages": [
     "de",
-    "en"
+    "en",
+    "tr"
   ],
   "currency": "EUR",
   "number_grouping": "standard",
@@ -21,66 +22,155 @@
   "holidays": [],
   "festival_windows": [
     {
-      "name": "Weihnachten",
-      "month": 12
+      "name": "Ostern",
+      "month": 3
     },
     {
-      "name": "Urlaub",
+      "name": "Sommerurlaub",
       "month": 7
     },
     {
       "name": "Oktoberfest",
       "month": 9
+    },
+    {
+      "name": "Black Friday",
+      "month": 11
+    },
+    {
+      "name": "Weihnachten",
+      "month": 12
     }
   ],
-  "circle_names": [
-    "Sparclub"
-  ],
+  "circle_names": [],
   "payment_apps": [
     {
       "name": "PayPal",
-      "package": null,
+      "package": "com.paypal.android.p2pmobile",
       "parser_id": null
     },
     {
       "name": "N26",
-      "package": null,
+      "package": "de.number26.android",
       "parser_id": null
     },
     {
-      "name": "Sparkasse",
-      "package": null,
-      "parser_id": null
-    },
-    {
-      "name": "DKB",
-      "package": null,
-      "parser_id": null
+      "name": "Revolut",
+      "package": "com.revolut.revolut",
+      "parser_id": "eu_revolut_received"
     },
     {
       "name": "Trade Republic",
+      "package": "de.traderepublic.app",
+      "parser_id": null
+    },
+    {
+      "name": "Wero",
       "package": null,
       "parser_id": null
     }
   ],
-  "bank_apps": [],
-  "aggregator_provider": null,
+  "bank_apps": [
+    {
+      "name": "Sparkasse",
+      "package": "com.starfinanz.smob.android.sfinanzstatus",
+      "parser_id": null
+    },
+    {
+      "name": "DKB",
+      "package": "com.dkbcodefactory.banking",
+      "parser_id": null
+    },
+    {
+      "name": "Commerzbank",
+      "package": "de.commerzbanking.mobil",
+      "parser_id": null
+    },
+    {
+      "name": "ING",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Volksbank / VR Banking",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "comdirect",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": "tink",
   "settlement_schemes": [
-    "SEPA",
-    "PayPal"
+    "paypal",
+    "revolut",
+    "Wero",
+    "SEPA"
   ],
   "typical_amount_chips": [
+    2,
     5,
     10,
     20,
-    50,
-    100
+    50
   ],
-  "cancellation_guides": [],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Amazon Prime|https://www.amazon.de/gp/primecentral",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
   "price_points": {
     "plus_monthly": 349,
-    "plus_yearly": 2799,
+    "plus_yearly": 2499,
     "plus_lifetime": 7499
   },
-  "privacy_text_ref": null
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "eu_revolut_received",
+      "packages": [
+        "com.revolut.revolut"
+      ],
+      "regex": "(?:You(?:\\'ve| have)? received|Received)\\s+€\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+from\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "income",
+      "currency": "EUR",
+      "numberLocale": "en",
+      "confidence": 85
+    },
+    {
+      "id": "eu_revolut_sent_you",
+      "packages": [
+        "com.revolut.revolut"
+      ],
+      "regex": "(?<payee>[^\\n€]+?)\\s+sent you\\s+€\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)",
+      "type": "income",
+      "currency": "EUR",
+      "numberLocale": "en",
+      "confidence": 85
+    },
+    {
+      "id": "eu_revolut_spent",
+      "packages": [
+        "com.revolut.revolut"
+      ],
+      "regex": "(?:You(?:\\'ve)? (?:spent|paid)|Spent|Paid)?\\s*€\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+(?:at|to)\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "EUR",
+      "numberLocale": "en",
+      "confidence": 85
+    }
+  ],
+  "gold_price_per_gram": null,
+  "connectors": [
+    "tink",
+    "gocardless",
+    "truelayer",
+    "plaid",
+    "saltedge"
+  ],
+  "tax_year_label": "Steuerjahr"
 }

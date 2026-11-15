@@ -1,0 +1,122 @@
+{
+  "schema": 1,
+  "id": "CO",
+  "name": "Colombia",
+  "locales": [
+    "es-CO"
+  ],
+  "languages": [
+    "es"
+  ],
+  "currency": "COP",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "semimonthly",
+    "firstDay": 15,
+    "secondDay": 31
+  },
+  "first_day_of_week": "SUNDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "America/Bogota",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Regreso a clases",
+      "month": 1
+    },
+    {
+      "name": "Día de la Madre",
+      "month": 5
+    },
+    {
+      "name": "Prima de mitad de año",
+      "month": 6
+    },
+    {
+      "name": "Amor y Amistad",
+      "month": 9
+    },
+    {
+      "name": "Black Friday",
+      "month": 11
+    },
+    {
+      "name": "Prima de diciembre",
+      "month": 12
+    },
+    {
+      "name": "Navidad",
+      "month": 12
+    }
+  ],
+  "circle_names": [
+    "Natillera",
+    "Cadena"
+  ],
+  "payment_apps": [
+    {
+      "name": "Nequi",
+      "package": "com.nequi.MobileApp",
+      "parser_id": null
+    },
+    {
+      "name": "Daviplata",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "Bancolombia",
+      "package": "com.todo1.mobile",
+      "parser_id": null
+    },
+    {
+      "name": "Davivienda",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Banco de Bogotá",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "BBVA",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": "belvo",
+  "settlement_schemes": [
+    "Bre-B",
+    "Nequi",
+    "PSE",
+    "Transfiya"
+  ],
+  "typical_amount_chips": [
+    2000,
+    5000,
+    10000,
+    20000,
+    50000
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 990000,
+    "plus_yearly": 6990000,
+    "plus_lifetime": 19990000
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [],
+  "gold_price_per_gram": null,
+  "connectors": [
+    "belvo"
+  ],
+  "tax_year_label": null
+}

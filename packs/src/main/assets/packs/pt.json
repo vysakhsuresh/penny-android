@@ -1,0 +1,162 @@
+{
+  "schema": 1,
+  "id": "PT",
+  "name": "Portugal",
+  "locales": [
+    "pt-PT"
+  ],
+  "languages": [
+    "pt"
+  ],
+  "currency": "EUR",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 1
+  },
+  "first_day_of_week": "MONDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "Europe/Lisbon",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Saldos",
+      "month": 1
+    },
+    {
+      "name": "Santos Populares",
+      "month": 6
+    },
+    {
+      "name": "Subsídio de férias",
+      "month": 6
+    },
+    {
+      "name": "Regresso às aulas",
+      "month": 9
+    },
+    {
+      "name": "Black Friday",
+      "month": 11
+    },
+    {
+      "name": "Natal",
+      "month": 12
+    }
+  ],
+  "circle_names": [],
+  "payment_apps": [
+    {
+      "name": "MB WAY",
+      "package": "pt.sibs.android.mbway",
+      "parser_id": null
+    },
+    {
+      "name": "Revolut",
+      "package": "com.revolut.revolut",
+      "parser_id": "eu_revolut_received"
+    },
+    {
+      "name": "PayPal",
+      "package": "com.paypal.android.p2pmobile",
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [
+    {
+      "name": "Caixa Geral de Depósitos",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Millennium bcp",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Novo Banco",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Santander",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "ActivoBank",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "aggregator_provider": "tink",
+  "settlement_schemes": [
+    "MB WAY",
+    "revolut",
+    "paypal",
+    "SEPA"
+  ],
+  "typical_amount_chips": [
+    2,
+    5,
+    10,
+    20,
+    50
+  ],
+  "cancellation_guides": [
+    "Netflix|https://help.netflix.com/node/407",
+    "Spotify Premium|https://support.spotify.com/article/cancel-premium/",
+    "YouTube Premium|https://support.google.com/youtube/answer/6308278",
+    "Google Play subscriptions|https://support.google.com/googleplay/answer/7018481"
+  ],
+  "price_points": {
+    "plus_monthly": 299,
+    "plus_yearly": 2199,
+    "plus_lifetime": 5999
+  },
+  "privacy_text_ref": null,
+  "notification_templates": [
+    {
+      "id": "eu_revolut_received",
+      "packages": [
+        "com.revolut.revolut"
+      ],
+      "regex": "(?:You(?:\\'ve| have)? received|Received)\\s+€\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+from\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "income",
+      "currency": "EUR",
+      "numberLocale": "en",
+      "confidence": 85
+    },
+    {
+      "id": "eu_revolut_sent_you",
+      "packages": [
+        "com.revolut.revolut"
+      ],
+      "regex": "(?<payee>[^\\n€]+?)\\s+sent you\\s+€\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)",
+      "type": "income",
+      "currency": "EUR",
+      "numberLocale": "en",
+      "confidence": 85
+    },
+    {
+      "id": "eu_revolut_spent",
+      "packages": [
+        "com.revolut.revolut"
+      ],
+      "regex": "(?:You(?:\\'ve)? (?:spent|paid)|Spent|Paid)?\\s*€\\s?(?<amount>[0-9][0-9,]*(?:\\.[0-9]{1,2})?)\\s+(?:at|to)\\s+(?<payee>[^\\n]+?)(?=\\s+(?:on|via|using|with|for|ref|upi)\\b|[.!,]?\\s*(?:\\n|$))",
+      "type": "expense",
+      "currency": "EUR",
+      "numberLocale": "en",
+      "confidence": 85
+    }
+  ],
+  "gold_price_per_gram": null,
+  "connectors": [
+    "tink",
+    "gocardless",
+    "truelayer",
+    "plaid",
+    "saltedge"
+  ],
+  "tax_year_label": null
+}

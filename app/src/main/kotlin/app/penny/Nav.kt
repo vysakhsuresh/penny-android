@@ -167,6 +167,7 @@ object Routes {
     const val SPACES = "settings/spaces?token={token}"
     const val SYNC = "settings/sync"
     const val PLUS = "settings/plus"
+    const val RATES = "settings/rates"
     const val ABOUT = "settings/about"
     const val HELP = "help"
     const val GUIDES = "guides?topic={topic}"
@@ -275,7 +276,7 @@ fun PennyNavHost(nav: NavHostController, start: String, reduceMotion: Boolean) {
         composable(Routes.TRASH) { TrashScreen(back) }
         composable(Routes.GLOBAL_HISTORY) { GlobalHistoryScreen(back, onOpen = { entity, id -> nav.navigate(Routes.history(entity, id)) }) }
         composable(Routes.SETTINGS) { SettingsScreen(back, go = { nav.navigate(it) }) }
-        composable(Routes.PROFILE_SETTINGS) { ProfileSettingsScreen(back, onDeleted = { nav.navigate(Routes.PROFILES) { popUpTo(0) } }) }
+        composable(Routes.PROFILE_SETTINGS) { ProfileSettingsScreen(back, onDeleted = { nav.navigate(Routes.PROFILES) { popUpTo(0) } }, onRates = { nav.navigate(Routes.RATES) }) }
         composable(Routes.PROFILES) { ProfilesScreen(back, onSwitched = { nav.navigate(Routes.main()) { popUpTo(0) } }, onNone = { nav.navigate(Routes.ONBOARDING) { popUpTo(0) } }) }
         composable(Routes.APPEARANCE) { AppearanceScreen(back) }
         composable(Routes.ALERT_SETTINGS) { AlertSettingsScreen(back) }
@@ -289,6 +290,7 @@ fun PennyNavHost(nav: NavHostController, start: String, reduceMotion: Boolean) {
         ) { e -> SpacesScreen(back, initialToken = e.arg("token")) }
         composable(Routes.SYNC) { SyncScreen(back) }
         composable(Routes.PLUS) { PlusScreen(back) }
+        composable(Routes.RATES) { app.penny.ui.settings.RatesScreen(back) }
         composable(Routes.ABOUT) { AboutScreen(back, go = { nav.navigate(it) }) }
         composable(Routes.HELP) { HelpScreen(back, go = { nav.navigate(it) }) }
         composable(Routes.GUIDES, arguments = listOf(str("topic"))) { e -> GuidesScreen(e.arg("topic"), back) }

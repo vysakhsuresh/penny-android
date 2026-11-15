@@ -35,4 +35,21 @@
     <string name="bank_connected">Bank connected. Transactions arrive on the next sync.</string>
     <string name="bank_cancelled">Connection cancelled. Nothing was linked.</string>
     <plurals name="bank_synced"><item quantity="one">%d transaction added or updated</item><item quantity="other">%d transactions added or updated</item></plurals>
+    <string name="automation">Automation</string>
+    <string name="automation_sub">Tasker, shortcuts and webhooks</string>
+    <string name="automation_body">Connect Penny to automation apps and your own services. Everything stays on this phone unless you set a webhook address.</string>
+    <string name="automation_apps">Automation apps</string>
+    <string name="allow_automation_apps">Let automation apps add transactions</string>
+    <string name="allow_automation_hint">Tasker, Automate and similar apps can add transactions with an intent. They can never read your data.</string>
+    <string name="deep_link_example">Or open penny://add?amount=1250&amp;category=Groceries from any app or shortcut (amount in minor units).</string>
+    <string name="webhooks">Webhooks</string>
+    <string name="webhooks_body">Send each new transaction to your own server as signed JSON. Use only an address you control.</string>
+    <string name="webhook_url">Webhook address (https)</string>
+    <string name="https_only">Only https addresses are allowed</string>
+    <string name="signing_secret">Signing secret (verify the X-Penny-Signature header):</string>
+    <string name="create_secret">Create secret</string>
+    <string name="new_secret">New secret</string>
+    <string name="copy">Copy</string>
+    <string name="send_now">Send now</string>
+    <plurals name="webhook_sent"><item quantity="one">%d transaction sent</item><item quantity="other">%d transactions sent</item></plurals>
 </resources>

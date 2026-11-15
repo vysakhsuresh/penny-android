@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Help
 import androidx.compose.material.icons.automirrored.outlined.LibraryBooks
 import androidx.compose.material.icons.outlined.AccountBalance
+import androidx.compose.material.icons.outlined.Bolt
 import androidx.compose.material.icons.outlined.Category
 import androidx.compose.material.icons.outlined.CloudSync
 import androidx.compose.material.icons.outlined.Coffee
@@ -134,6 +135,7 @@ fun SettingsScreen(onBack: () -> Unit, go: (String) -> Unit) {
                         Entry(stringResource(R.string.capture), Icons.Outlined.TouchApp, stringResource(R.string.capture_sub)) { go(Routes.CAPTURE_SETTINGS) }
                         Entry(stringResource(R.string.security), Icons.Outlined.Lock, stringResource(R.string.security_sub)) { go(Routes.SECURITY) }
                         Entry(stringResource(R.string.language), Icons.Outlined.Language, stringResource(R.string.language_sub)) { go(Routes.PROFILE_SETTINGS) }
+                        Entry(stringResource(R.string.automation), Icons.Outlined.Bolt, stringResource(R.string.automation_sub)) { go(Routes.AUTOMATION) }
                     }
                 }
                 item { SectionHeader(stringResource(R.string.sharing_and_sync)) }

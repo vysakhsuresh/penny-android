@@ -168,6 +168,7 @@ object Routes {
     const val SYNC = "settings/sync"
     const val PLUS = "settings/plus"
     const val RATES = "settings/rates"
+    const val AUTOMATION = "settings/automation"
     const val ABOUT = "settings/about"
     const val HELP = "help"
     const val GUIDES = "guides?topic={topic}"
@@ -291,6 +292,7 @@ fun PennyNavHost(nav: NavHostController, start: String, reduceMotion: Boolean) {
         composable(Routes.SYNC) { SyncScreen(back) }
         composable(Routes.PLUS) { PlusScreen(back) }
         composable(Routes.RATES) { app.penny.ui.settings.RatesScreen(back) }
+        composable(Routes.AUTOMATION) { app.penny.ui.settings.AutomationScreen(back) }
         composable(
             "bank/callback?state={state}&code={code}&error={error}", arguments = listOf(str("state"), str("code"), str("error")),
             deepLinks = listOf(navDeepLink { uriPattern = "${Brand.DEEP_LINK_SCHEME}://bank/callback?state={state}&code={code}&error={error}" }),

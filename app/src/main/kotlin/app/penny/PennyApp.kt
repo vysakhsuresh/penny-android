@@ -57,6 +57,8 @@ class PennyApp : Application(), Configuration.Provider {
             repo.store.changes.drop(1).debounce(1_500).collect {
                 if (sync.signedIn) SyncWorker.soon(this@PennyApp)
                 Widgets.refresh(this@PennyApp)
+                // M6 webhooks: only to the user's own https endpoint, only when they set one.
+                repo.currentProfileId.value?.let { pid -> runCatching { app.penny.automation.Webhooks.deliver(repo, repo.prefs, pid) } }
             }
         }
         if (sync.signedIn) SyncWorker.soon(this, 1)

@@ -75,6 +75,9 @@ interface PennyDao {
     @Query("SELECT COALESCE(MAX(lamport), 0) FROM events")
     suspend fun maxLamport(): Long
 
+    @Query("SELECT COALESCE(MAX(seq), 0) FROM events")
+    suspend fun maxSeq(): Long
+
     @Query("SELECT eventId FROM events WHERE eventId IN (:ids)")
     suspend fun knownIds(ids: List<String>): List<String>
 

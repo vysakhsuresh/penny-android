@@ -109,6 +109,13 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_envelopes" />
         </receiver>
 
+
+        <!-- M6 automation: add-only intents for Tasker and similar apps; ignored unless the user allows them. -->
+        <receiver android:name=".automation.AutomationReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="app.penny.action.ADD_TRANSACTION" />
+            </intent-filter>
+        </receiver>
         <!-- WG-03 Quick Settings tile -->
         <service
             android:name=".QuickAddTile"

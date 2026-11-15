@@ -95,7 +95,7 @@ open class EventSourcedRepository<T>(
                 Op.DELETE -> event(e.entityId, e.profileId, Op.RESTORE, JsonObject(emptyMap()), null, g, Reasons.UNDO)
                 Op.RESTORE -> event(e.entityId, e.profileId, Op.DELETE, JsonObject(emptyMap()), null, g, Reasons.UNDO)
                 Op.PURGE -> null
-            }
+            }?.copy(entity = e.entity)
         }
         store.append(compensating)
         return g

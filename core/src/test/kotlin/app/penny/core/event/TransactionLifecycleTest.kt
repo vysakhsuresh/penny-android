@@ -76,6 +76,19 @@ class TransactionLifecycleTest : FunSpec({
         store.allEvents() shouldHaveSize 6
     }
 
+    test("undo from any repository compensates the original entity type") {
+        val store = InMemoryEventStore()
+        val tx = repo(store)
+        val other = EventSourcedRepository(
+            Entities.ACCOUNT, Transaction.serializer(), store, actor = { Actor("me", "phone") }, clock = { 5L }, ids = { "x${System.nanoTime()}" },
+        )
+        tx.create("t1", "p1", base)
+        val g = tx.delete("t1")
+        other.undo(g)
+        tx.get("t1")!!.state.deletedAt.shouldBeNull()
+        store.current(Entities.ACCOUNT, "t1").shouldBeNull()
+    }
+
     test("history lists versions with actor and diffs, and revert creates a new version") {
         val store = InMemoryEventStore()
         val r = repo(store)

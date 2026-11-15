@@ -17,6 +17,12 @@ tags:
   - name: spaces
   - name: devices
   - name: advisor
+  - name: connectors
+    description: |
+      Bank connectors (Plus). Provider credentials stay on the server, sealed with AES-256-GCM;
+      transactions pass through in the sync response and are not stored. Money is signed integer
+      minor units (negative = money out).
+  - name: entitlements
 
 paths:
   /healthz:
@@ -302,6 +308,144 @@ paths:
           description: HTML page
           content: { text/html: { schema: { type: string } } }
 
+  /v1/connectors:
+    get:
+      tags: [connectors]
+      summary: Every known connector, enabled ones first
+      responses:
+        "200":
+          description: Connectors
+          content: { application/json: { schema: { type: array, items: { $ref: "#/components/schemas/ConnectorInfo" } } } }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/connections:
+    get:
+      tags: [connectors]
+      summary: The caller's bank connections (without accounts)
+      responses:
+        "200":
+          description: Connections ordered by createdAt
+          content: { application/json: { schema: { type: array, items: { $ref: "#/components/schemas/Connection" } } } }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    post:
+      tags: [connectors]
+      summary: Start a connection
+      description: |
+        Token providers (SimpleFIN) complete immediately and answer 201 with the Connection and its
+        accounts. Redirect providers answer 200 with a consent URL and state; post the callback
+        parameters to /v1/connections/complete. Requires Plus except in dev mode and for `sandbox`.
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/ConnectRequest" } } }
+      responses:
+        "200":
+          description: Redirect provider; open redirectUrl
+          content: { application/json: { schema: { $ref: "#/components/schemas/ConnectRedirect" } } }
+        "201":
+          description: Token provider; connected
+          content: { application/json: { schema: { $ref: "#/components/schemas/Connection" } } }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "402": { $ref: "#/components/responses/PlusRequired" }
+        "409": { description: Consent required or access revoked at the provider, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
+        "501": { description: Provider not configured, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
+        "502": { description: Provider error, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
+        "504": { description: Provider timed out, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
+
+  /v1/connections/complete:
+    post:
+      tags: [connectors]
+      summary: Finish a redirect consent (new connection or re-consent)
+      description: The state is single use and valid for 30 minutes. A re-consent keeps the connection id and answers 200.
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/CompleteRequest" } } }
+      responses:
+        "200":
+          description: Consent renewed
+          content: { application/json: { schema: { $ref: "#/components/schemas/Connection" } } }
+        "201":
+          description: Connected
+          content: { application/json: { schema: { $ref: "#/components/schemas/Connection" } } }
+        "400": { $ref: "#/components/responses/Error" }
+        "402": { $ref: "#/components/responses/PlusRequired" }
+        "404": { description: Unknown or already used state, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
+        "410": { description: Consent session expired, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
+        "502": { $ref: "#/components/responses/Error" }
+
+  /v1/connections/{id}:
+    parameters: [ { $ref: "#/components/parameters/connectionId" } ]
+    delete:
+      tags: [connectors]
+      summary: Disconnect
+      description: Revokes access at the provider (best-effort), then deletes the sealed credentials, sync cursor and pending consents. Never requires Plus.
+      responses:
+        "204": { description: Deleted }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/connections/{id}/sync:
+    parameters: [ { $ref: "#/components/parameters/connectionId" } ]
+    post:
+      tags: [connectors]
+      summary: Fetch transactions not delivered before
+      description: |
+        Per remote account, the window starts 7 days before its last fetch (90 days back the first
+        time, or `since`), and transactions already delivered are skipped by id hash. A pending
+        transaction that posts under the same id is delivered again with pending=false: upsert by
+        (connection id, transaction id). Provider problems answer 200 with a non-active status,
+        empty lists and a message. The body may be empty (all accounts).
+      requestBody:
+        content: { application/json: { schema: { $ref: "#/components/schemas/SyncRequest" } } }
+      responses:
+        "200":
+          description: New transactions and current balances
+          content: { application/json: { schema: { $ref: "#/components/schemas/SyncResult" } } }
+        "400": { $ref: "#/components/responses/Error" }
+        "402": { $ref: "#/components/responses/PlusRequired" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/connections/{id}/reconsent:
+    parameters: [ { $ref: "#/components/parameters/connectionId" } ]
+    post:
+      tags: [connectors]
+      summary: Renew consent for an existing connection
+      description: Same body and answers as POST /v1/connections; provider comes from the connection. Token providers answer 200 with the renewed Connection.
+      requestBody:
+        content: { application/json: { schema: { $ref: "#/components/schemas/ConnectRequest" } } }
+      responses:
+        "200":
+          description: Redirect (ConnectRedirect) or renewed connection (Connection)
+          content:
+            application/json:
+              schema: { oneOf: [ { $ref: "#/components/schemas/ConnectRedirect" }, { $ref: "#/components/schemas/Connection" } ] }
+        "400": { $ref: "#/components/responses/Error" }
+        "402": { $ref: "#/components/responses/PlusRequired" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/entitlements/plus:
+    get:
+      tags: [entitlements]
+      summary: The caller's Plus entitlement
+      responses:
+        "200":
+          description: Entitlement (plusUntil null when none)
+          content: { application/json: { schema: { $ref: "#/components/schemas/Entitlement" } } }
+    put:
+      tags: [entitlements]
+      summary: Record a store purchase
+      description: |
+        Sets plusUntil to now + 32 days for subscriptions, 9999-12-31 for product ids containing
+        "lifetime"; never shortens an existing grant. NOT YET VERIFIED with the Google Play
+        Developer API; that must be added before launch.
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/EntitlementRequest" } } }
+      responses:
+        "200":
+          description: Recorded
+          content: { application/json: { schema: { $ref: "#/components/schemas/Entitlement" } } }
+        "400": { $ref: "#/components/responses/Error" }
+
 components:
   securitySchemes:
     bearer: { type: http, scheme: bearer }
@@ -310,12 +454,14 @@ components:
     space: { name: space, in: path, required: true, schema: { type: string, pattern: "^[A-Za-z0-9._:-]{1,128}$" } }
     token: { name: token, in: path, required: true, schema: { type: string } }
     advisorId: { name: id, in: path, required: true, schema: { type: string, pattern: "^[A-Za-z0-9._:-]{1,128}$" } }
+    connectionId: { name: id, in: path, required: true, schema: { type: string, pattern: "^[A-Za-z0-9._:-]{1,128}$" } }
   responses:
     Error: { description: Error, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
     Unauthorized: { description: "Missing, invalid or revoked token", content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
     Forbidden: { description: Not allowed, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
     NotFound: { description: Not found, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
     Gone: { description: "Expired, revoked or used", content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
+    PlusRequired: { description: 'No active Plus entitlement; body is {"error":"plus_required"}', content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
     RateLimited:
       description: Too many requests
       headers: { Retry-After: { schema: { type: integer } } }
@@ -406,3 +552,92 @@ components:
       properties:
         blob: { type: string, description: "base64url(12-byte IV || ciphertext+tag), max 256 KiB" }
         expiresAt: { type: integer, format: int64, description: "Epoch ms, in the future and at most 90 days ahead" }
+    ConnectorInfo:
+      type: object
+      required: [id, name, kind, regions, enabled]
+      properties:
+        id: { type: string, examples: [simplefin] }
+        name: { type: string }
+        kind: { type: string, enum: [redirect, token] }
+        regions: { type: array, items: { type: string }, description: 'ISO 3166-1 alpha-2, "EU" for the EEA, "*" for anywhere' }
+        enabled: { type: boolean }
+    ConnectRequest:
+      type: object
+      properties:
+        provider: { type: string, description: "Required on POST /v1/connections; optional (must match) on reconsent" }
+        redirectUri: { type: string, maxLength: 2048, description: "Required for redirect providers, e.g. an app link" }
+        token: { type: string, maxLength: 4096, description: "Required for token providers (SimpleFIN Setup Token)" }
+    ConnectRedirect:
+      type: object
+      required: [redirectUrl, state]
+      properties:
+        redirectUrl: { type: string }
+        state: { type: string }
+    CompleteRequest:
+      type: object
+      required: [state]
+      properties:
+        state: { type: string, maxLength: 512 }
+        params: { type: object, additionalProperties: { type: string }, maxProperties: 32, description: "Callback query parameters" }
+    ConnectionStatus: { type: string, enum: [active, needs_consent, broken, disconnected] }
+    Connection:
+      type: object
+      required: [id, provider, institution, status, consentExpiry, lastSyncedAt, createdAt]
+      properties:
+        id: { type: string }
+        provider: { type: string }
+        institution: { type: string }
+        status: { $ref: "#/components/schemas/ConnectionStatus" }
+        consentExpiry: { type: [integer, "null"], format: int64 }
+        lastSyncedAt: { type: [integer, "null"], format: int64 }
+        createdAt: { type: integer, format: int64 }
+        accounts: { type: array, items: { $ref: "#/components/schemas/RemoteAccount" }, description: "Only on connect, complete and token re-consent" }
+    RemoteAccount:
+      type: object
+      required: [id, name, currency, type, balanceMinor]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        currency: { type: string, description: "ISO 4217 code (or a provider currency identifier)" }
+        type: { type: string, description: 'checking, savings, credit, loan, investment, or "" when unknown' }
+        balanceMinor: { type: integer, format: int64 }
+    RemoteTx:
+      type: object
+      required: [id, accountId, date, amountMinor, currency, description, pending]
+      properties:
+        id: { type: string }
+        accountId: { type: string }
+        date: { type: integer, format: int64, description: "Epoch ms (UTC)" }
+        amountMinor: { type: integer, format: int64, description: "Signed minor units; negative = money out" }
+        currency: { type: string }
+        description: { type: string }
+        pending: { type: boolean }
+    SyncRequest:
+      type: object
+      properties:
+        accounts: { type: array, maxItems: 100, items: { type: string }, description: "Remote account ids; empty = all" }
+        since: { type: integer, format: int64, description: "Epoch ms; overrides the cursor window (clamped to 2 years)" }
+        full: { type: boolean, description: "Re-deliver transactions already delivered in the window" }
+    SyncResult:
+      type: object
+      required: [transactions, accounts, status]
+      properties:
+        transactions: { type: array, items: { $ref: "#/components/schemas/RemoteTx" } }
+        accounts: { type: array, items: { $ref: "#/components/schemas/RemoteAccount" } }
+        status: { $ref: "#/components/schemas/ConnectionStatus" }
+        message: { type: string }
+    EntitlementRequest:
+      type: object
+      required: [store, purchaseToken, productId]
+      properties:
+        store: { type: string, enum: [play] }
+        purchaseToken: { type: string, maxLength: 4096 }
+        productId: { type: string, pattern: "^[A-Za-z0-9._:-]{1,128}$" }
+    Entitlement:
+      type: object
+      required: [plus, plusUntil]
+      properties:
+        plus: { type: boolean, description: "Active now (always true in dev mode)" }
+        plusUntil: { type: [integer, "null"], format: int64 }
+        productId: { type: string }
+        store: { type: string }

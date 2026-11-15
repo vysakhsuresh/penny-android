@@ -35,6 +35,9 @@ object Billing {
     private var pending: ((Boolean) -> Unit)? = null
     private val _plus = MutableStateFlow(false)
     val plus: StateFlow<Boolean> = _plus
+    /** Latest Plus purchase (token, product id) so the relay can grant bank sync on every device (MO-03). */
+    private val _lastPurchase = MutableStateFlow<Pair<String, String>?>(null)
+    val lastPurchase: StateFlow<Pair<String, String>?> = _lastPurchase
     private val _status = MutableStateFlow<String?>(null)
     /** Last user-visible billing problem (store not available, cancelled…), for the UI to show plainly. */
     val status: StateFlow<String?> = _status
@@ -78,6 +81,7 @@ object Billing {
                 c.queryPurchasesAsync(QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.INAPP).build()) { _, inapp ->
                     val owned = (subs + inapp).filter { it.purchaseState == Purchase.PurchaseState.PURCHASED && it.products.any { p -> p in SUBS || p == PLUS_LIFETIME } }
                     _plus.value = owned.isNotEmpty()
+                    owned.firstOrNull()?.let { _lastPurchase.value = it.purchaseToken to it.products.first() }
                     done(owned.isNotEmpty())
                 }
             }
@@ -92,10 +96,11 @@ object Billing {
             val c = client(context)
             if (p.products.any { it in TIPS }) {
                 c.consumeAsync(ConsumeParams.newBuilder().setPurchaseToken(p.purchaseToken).build()) { _, _ -> }
-            } else if (!p.isAcknowledged) {
-                c.acknowledgePurchase(AcknowledgePurchaseParams.newBuilder().setPurchaseToken(p.purchaseToken).build()) { }
+            } else {
+                if (!p.isAcknowledged) c.acknowledgePurchase(AcknowledgePurchaseParams.newBuilder().setPurchaseToken(p.purchaseToken).build()) { }
                 _plus.value = true
-            } else _plus.value = true
+                _lastPurchase.value = p.purchaseToken to p.products.first()
+            }
         }
         pending?.invoke(true); pending = null
     }

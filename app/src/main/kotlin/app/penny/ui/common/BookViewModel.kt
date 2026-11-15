@@ -42,6 +42,7 @@ class BookViewModel @Inject constructor(
     val store: BookStore,
     val undo: UndoController,
     val prefs: AppPrefs,
+    val telemetry: app.penny.domain.Telemetry,
     val handle: SavedStateHandle,
     @ApplicationContext val context: Context,
 ) : ViewModel() {

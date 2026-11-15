@@ -30,6 +30,22 @@ import java.util.concurrent.TimeUnit
 @Serializable data class AdvisorPut(val blob: String, val expiresAt: Long)
 @Serializable data class ErrorBody(val error: String = "")
 
+// ---- CP-10 bank connectors (tokens stay on the server, SE-08)
+@Serializable data class ConnectorInfo(val id: String, val name: String, val kind: String, val regions: List<String> = emptyList(), val enabled: Boolean = true)
+@Serializable data class ConnectBody(val provider: String? = null, val redirectUri: String? = null, val token: String? = null)
+@Serializable data class RemoteAccount(val id: String, val name: String, val currency: String, val type: String = "", val balanceMinor: Long = 0)
+@Serializable data class RemoteTx(val id: String, val accountId: String, val date: Long, val amountMinor: Long, val currency: String, val description: String = "", val pending: Boolean = false)
+@Serializable data class Connection(
+    val id: String = "", val provider: String = "", val institution: String = "", val status: String = "active",
+    val consentExpiry: Long? = null, val lastSyncedAt: Long? = null, val createdAt: Long = 0, val accounts: List<RemoteAccount>? = null,
+    val redirectUrl: String? = null, val state: String? = null,
+)
+@Serializable data class CompleteBody(val state: String, val params: Map<String, String>)
+@Serializable data class SyncBody(val accounts: List<String>? = null, val since: Long? = null, val full: Boolean = false)
+@Serializable data class SyncOut(val transactions: List<RemoteTx> = emptyList(), val accounts: List<RemoteAccount> = emptyList(), val status: String = "active", val message: String? = null)
+@Serializable data class EntitlementBody(val store: String, val purchaseToken: String, val productId: String)
+@Serializable data class Entitlement(val plus: Boolean = false, val plusUntil: Long? = null, val productId: String? = null, val store: String? = null)
+
 class RelayException(val code: Int, message: String) : IOException(message)
 
 /**
@@ -84,4 +100,15 @@ class RelayClient(
     /** US-14: an encrypted report blob; the key travels only in the link's #fragment, never to the server. */
     suspend fun putAdvisor(id: String, blob: String, expiresAt: Long) { call<Unit>("PUT", "/v1/advisor/$id", enc(AdvisorPut.serializer(), AdvisorPut(blob, expiresAt)), null) }
     suspend fun deleteAdvisor(id: String) { call<Unit>("DELETE", "/v1/advisor/$id", null, null) }
+
+    suspend fun connectors(): List<ConnectorInfo> = call("GET", "/v1/connectors", null, ListSerializer(ConnectorInfo.serializer())).orEmpty()
+    /** Token providers return a Connection with accounts; redirect providers return redirectUrl and state. */
+    suspend fun connect(b: ConnectBody): Connection = call("POST", "/v1/connections", enc(ConnectBody.serializer(), b), Connection.serializer())!!
+    suspend fun complete(state: String, params: Map<String, String>): Connection = call("POST", "/v1/connections/complete", enc(CompleteBody.serializer(), CompleteBody(state, params)), Connection.serializer())!!
+    suspend fun connections(): List<Connection> = call("GET", "/v1/connections", null, ListSerializer(Connection.serializer())).orEmpty()
+    suspend fun syncConnection(id: String, b: SyncBody): SyncOut = call("POST", "/v1/connections/$id/sync", enc(SyncBody.serializer(), b), SyncOut.serializer())!!
+    suspend fun reconsent(id: String, b: ConnectBody): Connection = call("POST", "/v1/connections/$id/reconsent", enc(ConnectBody.serializer(), b), Connection.serializer())!!
+    suspend fun disconnect(id: String) { call<Unit>("DELETE", "/v1/connections/$id", null, null) }
+    suspend fun putEntitlement(b: EntitlementBody): Entitlement = call("PUT", "/v1/entitlements/plus", enc(EntitlementBody.serializer(), b), Entitlement.serializer())!!
+    suspend fun entitlement(): Entitlement = call("GET", "/v1/entitlements/plus", null, Entitlement.serializer()) ?: Entitlement()
 }

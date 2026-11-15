@@ -60,6 +60,9 @@ class PennyApp : Application(), Configuration.Provider {
             }
         }
         if (sync.signedIn) SyncWorker.soon(this, 1)
+        scope.launch {
+            app.penny.billing.Billing.lastPurchase.collect { p -> if (p != null && sync.signedIn) sync.reportPurchase(p.first, p.second) }
+        }
     }
 
     /** WG-03 launcher shortcuts, built in code so they follow the build's application id. */

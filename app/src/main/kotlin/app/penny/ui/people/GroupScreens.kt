@@ -92,13 +92,15 @@ import app.penny.ui.kit.SwitchRow
 import app.penny.ui.kit.TextInput
 import app.penny.ui.kit.parseAmount
 import app.penny.ui.theme.Penny
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.launch
 import java.math.BigDecimal
 
 private fun memberName(ctx: Ctx, id: String, me: String) = if (id == Group.ME) me else ctx.book.personName(id).ifEmpty { "?" }
 
 /** PE-03 group: balances, simplified debts with settle-up links, expenses, export, archive. */
 @Composable
-fun GroupScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onExpense: (String, String) -> Unit) {
+fun GroupScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onExpense: (String, String) -> Unit, svm: app.penny.ui.settings.SyncViewModel = androidx.hilt.navigation.compose.hiltViewModel()) {
     WithBook { ctx, vm ->
         val b = ctx.book
         val g = b.groups.firstOrNull { it.state.id == id }
@@ -152,6 +154,24 @@ fun GroupScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onExpe
                     )
                 }
                 item {
+                    // US-10: a read-only web view for members without the app (end-to-end encrypted link).
+                    val syncState by svm.sync.state.collectAsStateWithLifecycle()
+                    val scope = androidx.compose.runtime.rememberCoroutineScope()
+                    if (syncState.phase == app.penny.domain.SyncPhase.READY) TextButton(onClick = {
+                        scope.launch {
+                            val rows = (listOf(Group.ME) + g.value.memberIds.filter { it != Group.ME }).map { m -> memberName(ctx, m, me) to (bal[m] ?: 0) }
+                            val json = kotlinx.serialization.json.buildJsonObject {
+                                put("title", kotlinx.serialization.json.JsonPrimitive(g.value.name))
+                                put("generatedAt", kotlinx.serialization.json.JsonPrimitive(java.time.Instant.now().toString()))
+                                put("currency", kotlinx.serialization.json.JsonPrimitive(g.value.baseCurrency))
+                                put("note", kotlinx.serialization.json.JsonPrimitive(plan.joinToString("; ") { d -> context.getString(R.string.x_pays_y, memberName(ctx, d.from, me), memberName(ctx, d.to, me)) + " " + ctx.money(d.amountMinor, g.value.baseCurrency) }))
+                                put("rows", kotlinx.serialization.json.JsonArray(rows.map { (n, v) -> kotlinx.serialization.json.buildJsonObject { put("label", kotlinx.serialization.json.JsonPrimitive(n)); put("value", kotlinx.serialization.json.JsonPrimitive(ctx.money(v, g.value.baseCurrency, signed = v > 0))) } }))
+                            }.toString()
+                            runCatching { svm.sync.advisorLink(json, 30) }.onSuccess { link ->
+                                context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, context.getString(R.string.group_link_text, g.value.name, link)), null))
+                            }
+                        }
+                    }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.share_group_link)) }
                     Row(Modifier.padding(horizontal = 8.dp)) {
                         TextButton(onClick = { vm.act(R.string.updated) { saveGroup(it, id, g.value.copy(simplify = !g.value.simplify)) } }) { Text(stringResource(if (g.value.simplify) R.string.show_pairwise else R.string.simplify_debts)) }
                         TextButton(onClick = { vm.act(if (g.value.archived) R.string.unarchived else R.string.archived_done) { saveGroup(it, id, g.value.copy(archived = !g.value.archived)) } }) { Text(stringResource(if (g.value.archived) R.string.unarchive else R.string.archive)) }

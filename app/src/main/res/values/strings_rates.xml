@@ -17,4 +17,22 @@
     <string name="record_value_body">What is this worth today? The history of values feeds net worth.</string>
     <string name="value_recorded">Value recorded</string>
     <string name="valuations">Valuations</string>
+    <string name="share_group_link">Share a view for people without the app</string>
+    <string name="group_link_text">Balances for “%1$s” (read-only, expires in 30 days): %2$s</string>
+    <string name="usage_counts">Share anonymous usage counts</string>
+    <string name="usage_counts_hint">Only how often features are used, never amounts, payees, notes or anything you typed. Off by default.</string>
+    <string name="usage_counts_none">Nothing counted yet.</string>
+    <string name="consent_until">consent until %1$s</string>
+    <string name="reconsent">Renew consent</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="disconnected">Disconnected. The bank link and its stored access were deleted; the accounts are now manual.</string>
+    <string name="bank_needs_sync">Turn on sync above to connect a bank.</string>
+    <string name="connect_with_token">Connect with a setup token</string>
+    <string name="connect_in_browser">Connect on the provider’s secure page</string>
+    <string name="simplefin_help">Create a setup token at your SimpleFIN Bridge account and paste it here. Penny’s server exchanges it for access; the token is never stored on this phone.</string>
+    <string name="setup_token">Setup token</string>
+    <string name="connect">Connect</string>
+    <string name="bank_connected">Bank connected. Transactions arrive on the next sync.</string>
+    <string name="bank_cancelled">Connection cancelled. Nothing was linked.</string>
+    <plurals name="bank_synced"><item quantity="one">%d transaction added or updated</item><item quantity="other">%d transactions added or updated</item></plurals>
 </resources>

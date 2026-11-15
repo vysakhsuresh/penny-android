@@ -191,17 +191,96 @@ fun SyncScreen(onBack: () -> Unit, svm: SyncViewModel = hiltViewModel()) {
     }
 }
 
-/** CP-10 / AC-09: providers from the region pack; Plus only because each connection has a real per-user cost (NN-1). */
+@HiltViewModel
+class BankViewModel @Inject constructor(val bank: app.penny.domain.BankSync) : ViewModel()
+
+/**
+ * CP-10 / AC-09: connections with provider, status, last fetch and consent expiry; sync now, re-consent and
+ * disconnect (which deletes credentials at the connector service). Plus pays the provider fees (NN-1).
+ */
 @Composable
-private fun BankSection(ctx: app.penny.ui.common.Ctx) {
+private fun BankSection(ctx: app.penny.ui.common.Ctx, bvm: BankViewModel = hiltViewModel(), svm: SyncViewModel = hiltViewModel()) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     val plus by Billing.plus.collectAsStateWithLifecycle()
-    val providers = ctx.pack.connectors.ifEmpty { listOfNotNull(ctx.pack.aggregatorProvider) }
+    val st by svm.sync.state.collectAsStateWithLifecycle()
+    var providers by remember { mutableStateOf<List<app.penny.sync.ConnectorInfo>?>(null) }
+    var tokenFor by rememberSaveable { mutableStateOf<String?>(null) }
+    var message by rememberSaveable { mutableStateOf<String?>(null) }
+    val regional = ctx.pack.connectors.ifEmpty { listOfNotNull(ctx.pack.aggregatorProvider) }
+    LaunchedEffect(st.phase) { if (st.phase == SyncPhase.READY) providers = runCatching { bvm.bank.providers(regional) }.getOrNull() }
     Text(stringResource(R.string.bank_sync_body), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(horizontal = 20.dp))
-    if (providers.isNotEmpty()) Text(stringResource(R.string.providers_here, providers.joinToString()), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp))
-    ctx.book.syncLinks.forEach { l ->
-        ListRow(l.value.institution, subtitle = l.value.provider + " · " + l.value.status.name.lowercase() + (l.value.consentExpiry?.let { " · " + app.penny.ui.common.shortDate(it) } ?: ""), divider = true)
+    if (regional.isNotEmpty()) Text(stringResource(R.string.providers_here, regional.joinToString()), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp))
+    message?.let { Text(it, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 20.dp)) }
+    ctx.book.syncLinks.filter { it.value.status != app.penny.core.model.SyncStatus.DISCONNECTED }.forEach { l ->
+        PennyCard {
+            ListRow(
+                l.value.institution.ifBlank { l.value.provider },
+                subtitle = listOfNotNull(
+                    l.value.provider, l.value.status.name.lowercase().replace('_', ' '),
+                    l.value.lastFetchMillis?.let { stringResource(R.string.last_synced, DateFormat.getDateTimeInstance().format(Date(it))) },
+                    l.value.consentExpiry?.let { stringResource(R.string.consent_until, app.penny.ui.common.shortDate(it)) },
+                ).joinToString(" · "),
+            )
+            Row(Modifier.padding(horizontal = 8.dp)) {
+                TextButton(onClick = { scope.launch { message = runCatching { bvm.bank.syncOne(ctx.book, l.state.id) }.fold({ context.resources.getQuantityString(R.plurals.bank_synced, it, it) }, { it.message }) } }) { Text(stringResource(R.string.sync_now)) }
+                TextButton(onClick = {
+                    scope.launch {
+                        runCatching { bvm.bank.reconsent(ctx.book, l.state.id, null) }.onSuccess { c -> c?.redirectUrl?.let { u -> context.startActivity(Intent(Intent.ACTION_VIEW, android.net.Uri.parse(u))) } }.onFailure { message = it.message }
+                    }
+                }) { Text(stringResource(R.string.reconsent)) }
+                TextButton(onClick = { scope.launch { runCatching { bvm.bank.disconnect(ctx.book, l.state.id) }; message = context.getString(R.string.disconnected) } }) { Text(stringResource(R.string.disconnect)) }
+            }
+        }
+    }
+    if (st.phase != SyncPhase.READY) Text(stringResource(R.string.bank_needs_sync), style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 20.dp))
+    providers?.forEach { p ->
+        ListRow(p.name, subtitle = stringResource(if (p.kind == "token") R.string.connect_with_token else R.string.connect_in_browser), onClick = {
+            if (p.kind == "token") tokenFor = p.id
+            else scope.launch {
+                runCatching { bvm.bank.connect(ctx.book, p.id, null) }.onSuccess { c -> c.redirectUrl?.let { u -> context.startActivity(Intent(Intent.ACTION_VIEW, android.net.Uri.parse(u))) } }
+                    .onFailure { message = if (it.message?.contains("plus_required") == true) context.getString(R.string.bank_sync_needs_plus) else it.message }
+            }
+        }, divider = true)
     }
     if (!plus) Pill(stringResource(R.string.bank_sync_needs_plus), Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
+    tokenFor?.let { provider ->
+        var token by rememberSaveable { mutableStateOf("") }
+        AlertDialog(
+            onDismissRequest = { tokenFor = null }, title = { Text(stringResource(R.string.connect_with_token)) },
+            text = { Column { Text(stringResource(R.string.simplefin_help)); OutlinedTextField(token, { token = it.trim() }, label = { Text(stringResource(R.string.setup_token)) }, minLines = 2) } },
+            confirmButton = {
+                TextButton(enabled = token.length > 20, onClick = {
+                    scope.launch {
+                        runCatching { bvm.bank.connect(ctx.book, provider, token) }
+                            .onSuccess { message = context.getString(R.string.bank_connected) }
+                            .onFailure { message = if (it.message?.contains("plus_required") == true) context.getString(R.string.bank_sync_needs_plus) else it.message }
+                    }
+                    tokenFor = null
+                }) { Text(stringResource(R.string.connect)) }
+            },
+            dismissButton = { TextButton(onClick = { tokenFor = null }) { Text(stringResource(R.string.cancel)) } },
+        )
+    }
+}
+
+/** Lands here from the provider's consent page (penny://bank/callback?state=…&code=…). */
+@Composable
+fun BankCallbackScreen(state: String?, params: Map<String, String>, onDone: () -> Unit, bvm: BankViewModel = hiltViewModel()) {
+    WithBook { ctx, _ ->
+        var msg by rememberSaveable { mutableStateOf<String?>(null) }
+        val context = LocalContext.current
+        LaunchedEffect(state) {
+            msg = if (state == null) context.getString(R.string.bank_cancelled)
+            else runCatching { bvm.bank.complete(ctx.book, state, params) }.fold({ context.getString(R.string.bank_connected) }, { it.message })
+        }
+        PennyScreen(stringResource(R.string.bank_sync), onDone) { pad ->
+            Column(Modifier.padding(pad).padding(20.dp)) {
+                Text(msg ?: stringResource(R.string.loading), style = MaterialTheme.typography.bodyLarge)
+                TextButton(onClick = onDone) { Text(stringResource(R.string.done)) }
+            }
+        }
+    }
 }
 
 @Composable

@@ -128,6 +128,13 @@ fun DataScreen(onBack: () -> Unit, go: (String) -> Unit, onWiped: () -> Unit) {
                 val folderSet = vm.prefs.string("backup.folder") != null
                 ListRow(stringResource(if (folderSet) R.string.backup_folder_change else R.string.backup_folder_choose), subtitle = stringResource(R.string.backup_folder_sub), onClick = { folder.launch(null) }, divider = true)
                 if (folderSet) ListRow(stringResource(R.string.backup_now), subtitle = vm.prefs.long("backup.last").takeIf { it > 0 }?.let { stringResource(R.string.last_backup, java.text.DateFormat.getDateTimeInstance().format(java.util.Date(it))) }, onClick = { scope.launch { status = context.getString(if (app.penny.work.BackupWorker.runNow(context)) R.string.backup_done else R.string.backup_failed) } }, divider = true)
+                SectionHeader(stringResource(R.string.privacy))
+                var optIn by rememberSaveable { mutableStateOf(vm.prefs.analyticsOptIn) }
+                SwitchRow(stringResource(R.string.usage_counts), optIn, { optIn = it; vm.prefs.analyticsOptIn = it; if (!it) vm.telemetry.clear() }, subtitle = stringResource(R.string.usage_counts_hint))
+                if (optIn) {
+                    val counts = vm.telemetry.snapshot()
+                    Text(if (counts.isEmpty()) stringResource(R.string.usage_counts_none) else counts.entries.joinToString { "${it.key.lowercase()}: ${it.value}" }, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))
+                }
                 SectionHeader(stringResource(R.string.danger_zone))
                 ListRow(stringResource(R.string.delete_everything), subtitle = stringResource(R.string.delete_everything_sub), onClick = { wipe = true })
             }

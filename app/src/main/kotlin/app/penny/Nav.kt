@@ -291,6 +291,13 @@ fun PennyNavHost(nav: NavHostController, start: String, reduceMotion: Boolean) {
         composable(Routes.SYNC) { SyncScreen(back) }
         composable(Routes.PLUS) { PlusScreen(back) }
         composable(Routes.RATES) { app.penny.ui.settings.RatesScreen(back) }
+        composable(
+            "bank/callback?state={state}&code={code}&error={error}", arguments = listOf(str("state"), str("code"), str("error")),
+            deepLinks = listOf(navDeepLink { uriPattern = "${Brand.DEEP_LINK_SCHEME}://bank/callback?state={state}&code={code}&error={error}" }),
+        ) { e ->
+            val params = listOf("code", "error").mapNotNull { k -> e.arg(k)?.let { k to it } }.toMap()
+            app.penny.ui.settings.BankCallbackScreen(e.arg("state").takeIf { e.arg("error") == null }, params, onDone = { nav.navigate(Routes.SYNC) { popUpTo(Routes.main()) } })
+        }
         composable(Routes.ABOUT) { AboutScreen(back, go = { nav.navigate(it) }) }
         composable(Routes.HELP) { HelpScreen(back, go = { nav.navigate(it) }) }
         composable(Routes.GUIDES, arguments = listOf(str("topic"))) { e -> GuidesScreen(e.arg("topic"), back) }

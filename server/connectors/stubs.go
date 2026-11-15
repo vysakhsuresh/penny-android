@@ -33,7 +33,9 @@ func (s stub) err() error {
 	return fmt.Errorf("%w: %s needs %s", ErrNotConfigured, s.info.ID, strings.Join(missing, ", "))
 }
 
-func (s stub) Start(context.Context, string, string) (StartResult, error) { return StartResult{}, s.err() }
+func (s stub) Start(context.Context, string, string) (StartResult, error) {
+	return StartResult{}, s.err()
+}
 func (s stub) Complete(context.Context, string, map[string]string) (Connection, error) {
 	return Connection{}, s.err()
 }

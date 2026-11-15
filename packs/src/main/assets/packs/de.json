@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "id": "DE",
+  "name": "Germany",
+  "locales": [
+    "de-DE"
+  ],
+  "languages": [
+    "de",
+    "en"
+  ],
+  "currency": "EUR",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 1
+  },
+  "first_day_of_week": "MONDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "Europe/Berlin",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Weihnachten",
+      "month": 12
+    },
+    {
+      "name": "Urlaub",
+      "month": 7
+    },
+    {
+      "name": "Oktoberfest",
+      "month": 9
+    }
+  ],
+  "circle_names": [
+    "Sparclub"
+  ],
+  "payment_apps": [
+    {
+      "name": "PayPal",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "N26",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Sparkasse",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "DKB",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Trade Republic",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [],
+  "aggregator_provider": null,
+  "settlement_schemes": [
+    "SEPA",
+    "PayPal"
+  ],
+  "typical_amount_chips": [
+    5,
+    10,
+    20,
+    50,
+    100
+  ],
+  "cancellation_guides": [],
+  "price_points": {
+    "plus_monthly": 349,
+    "plus_yearly": 2799,
+    "plus_lifetime": 7499
+  },
+  "privacy_text_ref": null
+}

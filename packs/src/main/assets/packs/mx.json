@@ -1,0 +1,91 @@
+{
+  "schema": 1,
+  "id": "MX",
+  "name": "México",
+  "locales": [
+    "es-MX"
+  ],
+  "languages": [
+    "es",
+    "en"
+  ],
+  "currency": "MXN",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "semimonthly",
+    "firstDay": 15,
+    "secondDay": 31
+  },
+  "first_day_of_week": "MONDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "America/Mexico_City",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Navidad",
+      "month": 12
+    },
+    {
+      "name": "Aguinaldo",
+      "month": 12
+    },
+    {
+      "name": "Día de Muertos",
+      "month": 11
+    },
+    {
+      "name": "Regreso a clases",
+      "month": 8
+    }
+  ],
+  "circle_names": [
+    "Tanda"
+  ],
+  "payment_apps": [
+    {
+      "name": "BBVA",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Mercado Pago",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Nu",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Banorte",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "OXXO Pay",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [],
+  "aggregator_provider": null,
+  "settlement_schemes": [
+    "SPEI",
+    "CoDi"
+  ],
+  "typical_amount_chips": [
+    20,
+    50,
+    100,
+    200,
+    500
+  ],
+  "cancellation_guides": [],
+  "price_points": {
+    "plus_monthly": 4900,
+    "plus_yearly": 34900,
+    "plus_lifetime": 99900
+  },
+  "privacy_text_ref": null
+}

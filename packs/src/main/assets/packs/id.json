@@ -1,0 +1,90 @@
+{
+  "schema": 1,
+  "id": "ID",
+  "name": "Indonesia",
+  "locales": [
+    "id-ID"
+  ],
+  "languages": [
+    "id",
+    "en"
+  ],
+  "currency": "IDR",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 25
+  },
+  "first_day_of_week": "MONDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "Asia/Jakarta",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Lebaran",
+      "month": 3
+    },
+    {
+      "name": "THR",
+      "month": 3
+    },
+    {
+      "name": "Natal",
+      "month": 12
+    },
+    {
+      "name": "Tahun ajaran baru",
+      "month": 7
+    }
+  ],
+  "circle_names": [
+    "Arisan"
+  ],
+  "payment_apps": [
+    {
+      "name": "GoPay",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "OVO",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "DANA",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "BCA mobile",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "ShopeePay",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [],
+  "aggregator_provider": null,
+  "settlement_schemes": [
+    "QRIS",
+    "Transfer"
+  ],
+  "typical_amount_chips": [
+    10000,
+    20000,
+    50000,
+    100000,
+    200000
+  ],
+  "cancellation_guides": [],
+  "price_points": {
+    "plus_monthly": 29000,
+    "plus_yearly": 199000,
+    "plus_lifetime": 599000
+  },
+  "privacy_text_ref": null
+}

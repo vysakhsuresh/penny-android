@@ -1,0 +1,90 @@
+{
+  "schema": 1,
+  "id": "NG",
+  "name": "Nigeria",
+  "locales": [
+    "en-NG"
+  ],
+  "languages": [
+    "en"
+  ],
+  "currency": "NGN",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 25
+  },
+  "first_day_of_week": "MONDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "Africa/Lagos",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Christmas",
+      "month": 12
+    },
+    {
+      "name": "Sallah",
+      "month": 4
+    },
+    {
+      "name": "School fees",
+      "month": 9
+    },
+    {
+      "name": "Detty December",
+      "month": 12
+    }
+  ],
+  "circle_names": [
+    "Ajo",
+    "Esusu"
+  ],
+  "payment_apps": [
+    {
+      "name": "OPay",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "PalmPay",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Kuda",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "GTBank",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Moniepoint",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [],
+  "aggregator_provider": null,
+  "settlement_schemes": [
+    "Bank transfer",
+    "OPay"
+  ],
+  "typical_amount_chips": [
+    200,
+    500,
+    1000,
+    2000,
+    5000
+  ],
+  "cancellation_guides": [],
+  "price_points": {
+    "plus_monthly": 1500,
+    "plus_yearly": 9900,
+    "plus_lifetime": 29900
+  },
+  "privacy_text_ref": null
+}

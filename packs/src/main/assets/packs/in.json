@@ -1,0 +1,108 @@
+{
+  "schema": 1,
+  "id": "IN",
+  "name": "India",
+  "locales": [
+    "en-IN"
+  ],
+  "languages": [
+    "en",
+    "hi",
+    "ta",
+    "te",
+    "ml",
+    "bn",
+    "mr"
+  ],
+  "currency": "INR",
+  "number_grouping": "indian",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 1
+  },
+  "first_day_of_week": "MONDAY",
+  "fiscal_year_start": "04-01",
+  "timezone": "Asia/Kolkata",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Diwali",
+      "month": 10
+    },
+    {
+      "name": "Eid",
+      "month": 4
+    },
+    {
+      "name": "Onam",
+      "month": 9
+    },
+    {
+      "name": "Pongal",
+      "month": 1
+    },
+    {
+      "name": "Durga Puja",
+      "month": 10
+    },
+    {
+      "name": "Wedding season",
+      "month": 11
+    }
+  ],
+  "circle_names": [
+    "Chit fund",
+    "Committee (kameti)"
+  ],
+  "payment_apps": [
+    {
+      "name": "Google Pay",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "PhonePe",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Paytm",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "HDFC Bank",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "SBI YONO",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "ICICI iMobile",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [],
+  "aggregator_provider": null,
+  "settlement_schemes": [
+    "UPI"
+  ],
+  "typical_amount_chips": [
+    20,
+    50,
+    100,
+    200,
+    500
+  ],
+  "cancellation_guides": [],
+  "price_points": {
+    "plus_monthly": 9900,
+    "plus_yearly": 69900,
+    "plus_lifetime": 249900
+  },
+  "privacy_text_ref": null
+}

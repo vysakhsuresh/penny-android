@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "id": "AE",
+  "name": "الإمارات / UAE",
+  "locales": [
+    "ar-AE"
+  ],
+  "languages": [
+    "ar",
+    "en",
+    "hi",
+    "fil"
+  ],
+  "currency": "AED",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 28
+  },
+  "first_day_of_week": "MONDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "Asia/Dubai",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Ramadan",
+      "month": 3
+    },
+    {
+      "name": "Eid al-Fitr",
+      "month": 4
+    },
+    {
+      "name": "Eid al-Adha",
+      "month": 6
+    },
+    {
+      "name": "Back to school",
+      "month": 8
+    }
+  ],
+  "circle_names": [
+    "Jam'iya"
+  ],
+  "payment_apps": [
+    {
+      "name": "Emirates NBD",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "ADCB",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Careem Pay",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Botim",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "FAB",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [],
+  "aggregator_provider": null,
+  "settlement_schemes": [
+    "Aani",
+    "Bank transfer"
+  ],
+  "typical_amount_chips": [
+    10,
+    20,
+    50,
+    100,
+    200
+  ],
+  "cancellation_guides": [],
+  "price_points": {
+    "plus_monthly": 1499,
+    "plus_yearly": 9900,
+    "plus_lifetime": 29900
+  },
+  "privacy_text_ref": null
+}

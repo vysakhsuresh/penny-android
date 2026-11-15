@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "id": "GB",
+  "name": "United Kingdom",
+  "locales": [
+    "en-GB"
+  ],
+  "languages": [
+    "en"
+  ],
+  "currency": "GBP",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 25
+  },
+  "first_day_of_week": "MONDAY",
+  "fiscal_year_start": "04-06",
+  "timezone": "Europe/London",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Christmas",
+      "month": 12
+    },
+    {
+      "name": "Summer holiday",
+      "month": 7
+    },
+    {
+      "name": "Back to school",
+      "month": 9
+    }
+  ],
+  "circle_names": [
+    "Pardner",
+    "Savings club"
+  ],
+  "payment_apps": [
+    {
+      "name": "Monzo",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Starling",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Revolut",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Barclays",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Lloyds",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [],
+  "aggregator_provider": null,
+  "settlement_schemes": [
+    "Faster Payments",
+    "PayPal"
+  ],
+  "typical_amount_chips": [
+    5,
+    10,
+    20,
+    50,
+    100
+  ],
+  "cancellation_guides": [],
+  "price_points": {
+    "plus_monthly": 299,
+    "plus_yearly": 2499,
+    "plus_lifetime": 6999
+  },
+  "privacy_text_ref": null
+}

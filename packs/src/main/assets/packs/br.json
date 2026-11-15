@@ -1,0 +1,90 @@
+{
+  "schema": 1,
+  "id": "BR",
+  "name": "Brasil",
+  "locales": [
+    "pt-BR"
+  ],
+  "languages": [
+    "pt",
+    "en"
+  ],
+  "currency": "BRL",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 5
+  },
+  "first_day_of_week": "SUNDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "America/Sao_Paulo",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Natal",
+      "month": 12
+    },
+    {
+      "name": "Carnaval",
+      "month": 2
+    },
+    {
+      "name": "Volta às aulas",
+      "month": 2
+    },
+    {
+      "name": "13º salário",
+      "month": 11
+    }
+  ],
+  "circle_names": [
+    "Consórcio",
+    "Caixinha"
+  ],
+  "payment_apps": [
+    {
+      "name": "Nubank",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Pix",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Itaú",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "PicPay",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Mercado Pago",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [],
+  "aggregator_provider": null,
+  "settlement_schemes": [
+    "Pix"
+  ],
+  "typical_amount_chips": [
+    5,
+    10,
+    20,
+    50,
+    100
+  ],
+  "cancellation_guides": [],
+  "price_points": {
+    "plus_monthly": 1490,
+    "plus_yearly": 9990,
+    "plus_lifetime": 29900
+  },
+  "privacy_text_ref": null
+}

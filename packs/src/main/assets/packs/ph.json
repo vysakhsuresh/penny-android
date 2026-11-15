@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "id": "PH",
+  "name": "Philippines",
+  "locales": [
+    "en-PH"
+  ],
+  "languages": [
+    "en",
+    "fil",
+    "ceb"
+  ],
+  "currency": "PHP",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "semimonthly",
+    "firstDay": 15,
+    "secondDay": 31
+  },
+  "first_day_of_week": "SUNDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "Asia/Manila",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Pasko",
+      "month": 12
+    },
+    {
+      "name": "School opening",
+      "month": 6
+    },
+    {
+      "name": "Undas",
+      "month": 11
+    },
+    {
+      "name": "Fiesta",
+      "month": 5
+    }
+  ],
+  "circle_names": [
+    "Paluwagan"
+  ],
+  "payment_apps": [
+    {
+      "name": "GCash",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Maya",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "BPI",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "UnionBank",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "BDO",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [],
+  "aggregator_provider": null,
+  "settlement_schemes": [
+    "GCash",
+    "Maya",
+    "InstaPay"
+  ],
+  "typical_amount_chips": [
+    20,
+    50,
+    100,
+    200,
+    500
+  ],
+  "cancellation_guides": [],
+  "price_points": {
+    "plus_monthly": 7900,
+    "plus_yearly": 54900,
+    "plus_lifetime": 199900
+  },
+  "privacy_text_ref": null
+}

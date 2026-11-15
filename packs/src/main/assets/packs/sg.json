@@ -1,0 +1,91 @@
+{
+  "schema": 1,
+  "id": "SG",
+  "name": "Singapore",
+  "locales": [
+    "en-SG"
+  ],
+  "languages": [
+    "en",
+    "zh",
+    "ms",
+    "ta"
+  ],
+  "currency": "SGD",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 25
+  },
+  "first_day_of_week": "MONDAY",
+  "fiscal_year_start": "01-01",
+  "timezone": "Asia/Singapore",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "Lunar New Year",
+      "month": 2
+    },
+    {
+      "name": "Hari Raya",
+      "month": 4
+    },
+    {
+      "name": "Deepavali",
+      "month": 10
+    },
+    {
+      "name": "Christmas",
+      "month": 12
+    }
+  ],
+  "circle_names": [
+    "Tontine"
+  ],
+  "payment_apps": [
+    {
+      "name": "PayNow",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "DBS PayLah!",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "GrabPay",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "OCBC",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "UOB TMRW",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [],
+  "aggregator_provider": null,
+  "settlement_schemes": [
+    "PayNow"
+  ],
+  "typical_amount_chips": [
+    5,
+    10,
+    20,
+    50,
+    100
+  ],
+  "cancellation_guides": [],
+  "price_points": {
+    "plus_monthly": 399,
+    "plus_yearly": 2999,
+    "plus_lifetime": 7999
+  },
+  "privacy_text_ref": null
+}

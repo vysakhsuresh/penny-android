@@ -1,0 +1,90 @@
+{
+  "schema": 1,
+  "id": "JP",
+  "name": "日本",
+  "locales": [
+    "ja-JP"
+  ],
+  "languages": [
+    "ja",
+    "en"
+  ],
+  "currency": "JPY",
+  "number_grouping": "standard",
+  "pay_cycle_default": {
+    "type": "monthly",
+    "startDay": 25
+  },
+  "first_day_of_week": "SUNDAY",
+  "fiscal_year_start": "04-01",
+  "timezone": "Asia/Tokyo",
+  "holidays": [],
+  "festival_windows": [
+    {
+      "name": "お正月",
+      "month": 1
+    },
+    {
+      "name": "ゴールデンウィーク",
+      "month": 5
+    },
+    {
+      "name": "お盆",
+      "month": 8
+    },
+    {
+      "name": "ボーナス",
+      "month": 6
+    }
+  ],
+  "circle_names": [
+    "Tanomoshi"
+  ],
+  "payment_apps": [
+    {
+      "name": "PayPay",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "LINE Pay",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Rakuten Pay",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "Suica",
+      "package": null,
+      "parser_id": null
+    },
+    {
+      "name": "MUFG",
+      "package": null,
+      "parser_id": null
+    }
+  ],
+  "bank_apps": [],
+  "aggregator_provider": null,
+  "settlement_schemes": [
+    "PayPay",
+    "Bank transfer"
+  ],
+  "typical_amount_chips": [
+    100,
+    500,
+    1000,
+    3000,
+    5000
+  ],
+  "cancellation_guides": [],
+  "price_points": {
+    "plus_monthly": 480,
+    "plus_yearly": 3600,
+    "plus_lifetime": 9800
+  },
+  "privacy_text_ref": null
+}

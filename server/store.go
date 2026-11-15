@@ -108,6 +108,52 @@ type AdvisorLink struct {
 	CreatedAt time.Time
 }
 
+// Bank connection statuses.
+const (
+	ConnActive       = "active"
+	ConnNeedsConsent = "needs_consent"
+	ConnBroken       = "broken"
+	ConnDisconnected = "disconnected"
+)
+
+// BankConnection is a provider connection owned by an account. Secret is the AES-256-GCM
+// sealed provider credential (nil once access was revoked). Cursor is opaque sync state
+// (last fetch time and hashes of seen transaction ids); no transaction data is stored.
+type BankConnection struct {
+	ID            string
+	AccountID     string
+	Provider      string
+	Institution   string
+	Status        string
+	ConsentExpiry *time.Time
+	Secret        []byte
+	Cursor        []byte
+	LastSyncedAt  *time.Time
+	CreatedAt     time.Time
+	UpdatedAt     time.Time
+}
+
+// ConnectState is a pending redirect consent. Only a hash of the state value is stored.
+// ConnectionID is set when the consent renews an existing connection.
+type ConnectState struct {
+	StateHash    string
+	AccountID    string
+	Provider     string
+	ConnectionID string
+	RedirectURI  string
+	ExpiresAt    time.Time
+}
+
+// Entitlement records a Plus purchase. Only a hash of the store purchase token is kept.
+type Entitlement struct {
+	AccountID string
+	Store     string
+	ProductID string
+	TokenHash string
+	PlusUntil time.Time
+	UpdatedAt time.Time
+}
+
 // Store persists opaque relay state. Policy (who may do what) lives in the HTTP layer;
 // the store only guarantees atomicity where a policy check and a write must not race.
 type Store interface {
@@ -125,7 +171,8 @@ type Store interface {
 	ListDevices(ctx context.Context, accountID string) ([]Device, error)
 	RevokeDevice(ctx context.Context, accountID, deviceID string) error
 	// DeleteAccount removes the account, its devices, tokens, keys, personal streams, membership
-	// rows, invites it created and advisor links. It is idempotent.
+	// rows, invites it created, advisor links, bank connections (with their sealed credentials
+	// and cursors), connect states and entitlement. It is idempotent.
 	DeleteAccount(ctx context.Context, accountID string) error
 
 	// Streams. EnsurePersonalStream creates a personal stream owned by owner if id is unused and
@@ -160,7 +207,21 @@ type Store interface {
 	GetAdvisor(ctx context.Context, id string) (AdvisorLink, error)
 	DeleteAdvisor(ctx context.Context, id, accountID string) error
 
-	// PurgeExpired drops expired auth codes, advisor links and long-dead invites.
+	// Bank connections. UpdateConnection writes institution, status, consent expiry, secret,
+	// cursor, last sync and updated time. DeleteConnection also drops pending states for it.
+	CreateConnection(ctx context.Context, c BankConnection) error
+	GetConnection(ctx context.Context, id string) (BankConnection, error)
+	ListConnections(ctx context.Context, accountID string) ([]BankConnection, error)
+	UpdateConnection(ctx context.Context, c BankConnection) error
+	DeleteConnection(ctx context.Context, accountID, id string) error
+	// TakeConnectState returns and deletes the state if it belongs to accountID (ErrNotFound otherwise).
+	PutConnectState(ctx context.Context, st ConnectState) error
+	TakeConnectState(ctx context.Context, stateHash, accountID string) (ConnectState, error)
+
+	GetEntitlement(ctx context.Context, accountID string) (Entitlement, error)
+	PutEntitlement(ctx context.Context, e Entitlement) error
+
+	// PurgeExpired drops expired auth codes, advisor links, connect states and long-dead invites.
 	PurgeExpired(ctx context.Context, now time.Time) error
 	Close()
 }

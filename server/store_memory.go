@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"sort"
 	"sync"
@@ -20,6 +21,9 @@ type MemoryStore struct {
 	members  map[string][]Member     // by space id
 	invites  map[string]Invite       // by token hash
 	advisor  map[string]AdvisorLink
+	conns    map[string]BankConnection
+	states   map[string]ConnectState // by state hash
+	ents     map[string]Entitlement  // by account id
 }
 
 func NewMemoryStore() *MemoryStore {
@@ -27,7 +31,8 @@ func NewMemoryStore() *MemoryStore {
 		codes: map[string]AuthCode{}, accounts: map[string]Account{}, devices: map[string]Device{},
 		tokens: map[string]string{}, streams: map[string]Stream{}, events: map[string][]Event{},
 		keys: map[[2]string]StreamKey{}, members: map[string][]Member{}, invites: map[string]Invite{},
-		advisor: map[string]AdvisorLink{},
+		advisor: map[string]AdvisorLink{}, conns: map[string]BankConnection{}, states: map[string]ConnectState{},
+		ents: map[string]Entitlement{},
 	}
 }
 
@@ -182,6 +187,17 @@ func (m *MemoryStore) DeleteAccount(_ context.Context, accountID string) error {
 			delete(m.advisor, id)
 		}
 	}
+	for id, c := range m.conns {
+		if c.AccountID == accountID {
+			delete(m.conns, id)
+		}
+	}
+	for h, st := range m.states {
+		if st.AccountID == accountID {
+			delete(m.states, h)
+		}
+	}
+	delete(m.ents, accountID)
 	return nil
 }
 
@@ -482,5 +498,133 @@ func (m *MemoryStore) PurgeExpired(_ context.Context, now time.Time) error {
 			delete(m.invites, h)
 		}
 	}
+	for h, st := range m.states {
+		if !now.Before(st.ExpiresAt) {
+			delete(m.states, h)
+		}
+	}
+	return nil
+}
+
+func cloneConn(c BankConnection) BankConnection {
+	c.Secret = bytes.Clone(c.Secret)
+	c.Cursor = bytes.Clone(c.Cursor)
+	if c.ConsentExpiry != nil {
+		t := *c.ConsentExpiry
+		c.ConsentExpiry = &t
+	}
+	if c.LastSyncedAt != nil {
+		t := *c.LastSyncedAt
+		c.LastSyncedAt = &t
+	}
+	return c
+}
+
+func (m *MemoryStore) CreateConnection(_ context.Context, c BankConnection) error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	if _, ok := m.accounts[c.AccountID]; !ok {
+		return ErrNotFound
+	}
+	if _, ok := m.conns[c.ID]; ok {
+		return ErrConflict
+	}
+	m.conns[c.ID] = cloneConn(c)
+	return nil
+}
+
+func (m *MemoryStore) GetConnection(_ context.Context, id string) (BankConnection, error) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	c, ok := m.conns[id]
+	if !ok {
+		return BankConnection{}, ErrNotFound
+	}
+	return cloneConn(c), nil
+}
+
+func (m *MemoryStore) ListConnections(_ context.Context, accountID string) ([]BankConnection, error) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	var out []BankConnection
+	for _, c := range m.conns {
+		if c.AccountID == accountID {
+			out = append(out, cloneConn(c))
+		}
+	}
+	sort.Slice(out, func(i, j int) bool {
+		if !out[i].CreatedAt.Equal(out[j].CreatedAt) {
+			return out[i].CreatedAt.Before(out[j].CreatedAt)
+		}
+		return out[i].ID < out[j].ID
+	})
+	return out, nil
+}
+
+func (m *MemoryStore) UpdateConnection(_ context.Context, c BankConnection) error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	old, ok := m.conns[c.ID]
+	if !ok || old.AccountID != c.AccountID {
+		return ErrNotFound
+	}
+	c.Provider, c.CreatedAt = old.Provider, old.CreatedAt
+	m.conns[c.ID] = cloneConn(c)
+	return nil
+}
+
+func (m *MemoryStore) DeleteConnection(_ context.Context, accountID, id string) error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	if c, ok := m.conns[id]; !ok || c.AccountID != accountID {
+		return ErrNotFound
+	}
+	delete(m.conns, id)
+	for h, st := range m.states {
+		if st.ConnectionID == id {
+			delete(m.states, h)
+		}
+	}
+	return nil
+}
+
+func (m *MemoryStore) PutConnectState(_ context.Context, st ConnectState) error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	if _, ok := m.accounts[st.AccountID]; !ok {
+		return ErrNotFound
+	}
+	m.states[st.StateHash] = st
+	return nil
+}
+
+func (m *MemoryStore) TakeConnectState(_ context.Context, stateHash, accountID string) (ConnectState, error) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	st, ok := m.states[stateHash]
+	if !ok || st.AccountID != accountID {
+		return ConnectState{}, ErrNotFound
+	}
+	delete(m.states, stateHash)
+	return st, nil
+}
+
+func (m *MemoryStore) GetEntitlement(_ context.Context, accountID string) (Entitlement, error) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	e, ok := m.ents[accountID]
+	if !ok {
+		return Entitlement{}, ErrNotFound
+	}
+	return e, nil
+}
+
+func (m *MemoryStore) PutEntitlement(_ context.Context, e Entitlement) error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	if _, ok := m.accounts[e.AccountID]; !ok {
+		return ErrNotFound
+	}
+	m.ents[e.AccountID] = e
 	return nil
 }

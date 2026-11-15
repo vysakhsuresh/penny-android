@@ -94,6 +94,38 @@
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths" />
         </provider>
 
+
+        <!-- WG-01 widgets -->
+        <receiver android:name=".glance.SafeWidgetReceiver" android:exported="true" android:label="@string/widget_safe_label">
+            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_safe" />
+        </receiver>
+        <receiver android:name=".glance.QuickAddWidgetReceiver" android:exported="true" android:label="@string/widget_quick_label">
+            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_quick" />
+        </receiver>
+        <receiver android:name=".glance.EnvelopesWidgetReceiver" android:exported="true" android:label="@string/widget_envelopes_label">
+            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_envelopes" />
+        </receiver>
+
+        <!-- WG-03 Quick Settings tile -->
+        <service
+            android:name=".QuickAddTile"
+            android:exported="true"
+            android:icon="@drawable/ic_stat_penny"
+            android:label="@string/tile_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter><action android:name="android.service.quicksettings.action.QS_TILE" /></intent-filter>
+        </service>
+
+        <!-- WG-02 phone side of the watch app: answers safe-to-spend and receives quick adds over the Data Layer. -->
+        <service android:name=".wear.PhoneWearService" android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
+                <data android:scheme="wear" android:host="*" android:pathPrefix="/penny" />
+            </intent-filter>
+        </service>
         <!-- WorkManager is initialised by PennyApp with the Hilt worker factory. -->
         <provider
             android:name="androidx.startup.InitializationProvider"

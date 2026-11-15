@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Penny</string>
+    <string name="safe_to_spend">Safe to spend</string>
+    <string name="per_day_left">%1$s a day · %2$d days left</string>
+    <string name="say_it">Say a spend</string>
+    <string name="added">Added on your phone</string>
+    <string name="not_understood">Didn’t catch an amount</string>
+    <string name="no_phone">Phone not connected. Showing the last known number.</string>
+</resources>

@@ -133,13 +133,13 @@ fun SettingsScreen(onBack: () -> Unit, go: (String) -> Unit) {
                         Entry(stringResource(R.string.alerts), Icons.Outlined.NotificationsNone, stringResource(R.string.alerts_sub)) { go(Routes.ALERT_SETTINGS) }
                         Entry(stringResource(R.string.capture), Icons.Outlined.TouchApp, stringResource(R.string.capture_sub)) { go(Routes.CAPTURE_SETTINGS) }
                         Entry(stringResource(R.string.security), Icons.Outlined.Lock, stringResource(R.string.security_sub)) { go(Routes.SECURITY) }
-                        Entry(stringResource(R.string.language), Icons.Outlined.Language, stringResource(R.string.language_sub)) { go(Routes.PROFILE_SETTINGS + "#language") }
+                        Entry(stringResource(R.string.language), Icons.Outlined.Language, stringResource(R.string.language_sub)) { go(Routes.PROFILE_SETTINGS) }
                     }
                 }
                 item { SectionHeader(stringResource(R.string.sharing_and_sync)) }
                 item {
                     PennyCard {
-                        Entry(stringResource(R.string.spaces), Icons.Outlined.Groups, stringResource(R.string.spaces_sub)) { go(Routes.SPACES) }
+                        Entry(stringResource(R.string.spaces), Icons.Outlined.Groups, stringResource(R.string.spaces_sub)) { go("settings/spaces") }
                         Entry(stringResource(R.string.sync_and_banks), Icons.Outlined.CloudSync, stringResource(R.string.sync_sub)) { go(Routes.SYNC) }
                         Entry(stringResource(R.string.plus), Icons.Outlined.WorkspacePremium, stringResource(R.string.plus_sub)) { go(Routes.PLUS) }
                     }

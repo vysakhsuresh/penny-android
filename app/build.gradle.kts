@@ -79,6 +79,9 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.play.billing)
     implementation(libs.androidx.documentfile)
+    implementation(libs.androidx.glance)
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.play.services.wearable)
     debugImplementation(libs.androidx.compose.ui.tooling)
 
     implementation(libs.hilt.android)

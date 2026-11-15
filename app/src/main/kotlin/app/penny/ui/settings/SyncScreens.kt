@@ -233,7 +233,7 @@ private fun AdvisorSection(svm: SyncViewModel, ctx: app.penny.ui.common.Ctx) {
 
 /** US-05…US-13 / SP-01…SP-05: spaces (shared books), invites with roles, member management, audit log. */
 @Composable
-fun SpacesScreen(onBack: () -> Unit, svm: SyncViewModel = hiltViewModel()) {
+fun SpacesScreen(onBack: () -> Unit, initialToken: String? = null, svm: SyncViewModel = hiltViewModel()) {
     WithBook { ctx, vm ->
         val context = LocalContext.current
         val scope = rememberCoroutineScope()
@@ -244,7 +244,7 @@ fun SpacesScreen(onBack: () -> Unit, svm: SyncViewModel = hiltViewModel()) {
         var members by remember { mutableStateOf<List<MemberInfo>>(emptyList()) }
         var inviteRole by rememberSaveable { mutableStateOf(Role.EDITOR) }
         var error by rememberSaveable { mutableStateOf<String?>(null) }
-        var joinToken by rememberSaveable { mutableStateOf("") }
+        var joinToken by rememberSaveable { mutableStateOf(initialToken.orEmpty()) }
         val isSpace = ctx.book.spaces.any { it.state.id == ctx.book.profileId }
         LaunchedEffect(ctx.book.profileId, st.phase) { if (isSpace && st.phase == SyncPhase.READY) members = runCatching { svm.sync.members(ctx.book.profileId) }.getOrDefault(emptyList()) }
         PennyScreen(stringResource(R.string.spaces), onBack) { pad ->

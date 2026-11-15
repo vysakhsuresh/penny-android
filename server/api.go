@@ -9,6 +9,8 @@ import (
 	"regexp"
 	"strconv"
 	"time"
+
+	"penny/server/connectors"
 )
 
 const (
@@ -33,6 +35,9 @@ type Server struct {
 	pepper     []byte
 	trustProxy bool
 	now        func() time.Time
+	dev        bool
+	connectors *connectors.Registry
+	sealer     *Sealer
 
 	startByEmail *rateLimiter
 	startByIP    *rateLimiter
@@ -47,6 +52,12 @@ type Options struct {
 	Pepper     []byte
 	TrustProxy bool
 	Now        func() time.Time
+	// Dev waives the Plus entitlement for bank connections.
+	Dev bool
+	// Connectors is the bank-connector registry; nil means none are enabled.
+	Connectors *connectors.Registry
+	// Sealer encrypts connector credentials at rest; nil means a random per-process key.
+	Sealer *Sealer
 }
 
 func NewServer(o Options) *Server {
@@ -56,8 +67,12 @@ func NewServer(o Options) *Server {
 	if o.Log == nil {
 		o.Log = slog.New(slog.NewTextHandler(io.Discard, nil))
 	}
+	if o.Sealer == nil {
+		o.Sealer = RandomSealer()
+	}
 	return &Server{
 		store: o.Store, mailer: o.Mailer, log: o.Log, region: o.Region, pepper: o.Pepper, trustProxy: o.TrustProxy, now: o.Now,
+		dev: o.Dev, connectors: o.Connectors, sealer: o.Sealer,
 		startByEmail: newRateLimiter(2*time.Minute, 3, o.Now), // 3 codes, then one per 2 minutes
 		startByIP:    newRateLimiter(10*time.Second, 20, o.Now),
 		verifyByIP:   newRateLimiter(2*time.Second, 30, o.Now),
@@ -98,6 +113,16 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /v1/advisor/{id}/blob", cors(s.advisorBlob))
 	mux.HandleFunc("OPTIONS /v1/advisor/{id}/blob", cors(func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusNoContent) }))
 	mux.HandleFunc("GET /a/{id}", cors(s.advisorPage))
+
+	mux.HandleFunc("GET /v1/connectors", s.authed(s.listConnectors))
+	mux.HandleFunc("POST /v1/connections", s.authed(s.createConnection))
+	mux.HandleFunc("GET /v1/connections", s.authed(s.listConnections))
+	mux.HandleFunc("POST /v1/connections/complete", s.authed(s.completeConnection))
+	mux.HandleFunc("POST /v1/connections/{id}/sync", s.authed(s.syncConnection))
+	mux.HandleFunc("POST /v1/connections/{id}/reconsent", s.authed(s.reconsentConnection))
+	mux.HandleFunc("DELETE /v1/connections/{id}", s.authed(s.deleteConnection))
+	mux.HandleFunc("PUT /v1/entitlements/plus", s.authed(s.putPlus))
+	mux.HandleFunc("GET /v1/entitlements/plus", s.authed(s.getPlus))
 
 	return s.middleware(mux)
 }
@@ -835,6 +860,11 @@ func (s *Server) deleteAccount(w http.ResponseWriter, r *http.Request, c caller)
 			s.fail(w, r, err)
 			return
 		}
+	}
+	// Revoke bank access at each provider; the sealed credentials and cursors go with the account.
+	if err := s.disconnectAll(ctx, c.AccountID); err != nil {
+		s.fail(w, r, err)
+		return
 	}
 	if err := s.store.DeleteAccount(ctx, c.AccountID); err != nil {
 		s.fail(w, r, err)

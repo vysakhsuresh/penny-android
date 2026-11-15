@@ -173,7 +173,8 @@ func (p *PostgresStore) RevokeDevice(ctx context.Context, accountID, deviceID st
 
 func (p *PostgresStore) DeleteAccount(ctx context.Context, accountID string) error {
 	// Foreign keys cascade to devices, tokens, personal streams (and their events and keys),
-	// stream keys, memberships, invites created by the account and advisor links.
+	// stream keys, memberships, invites created by the account, advisor links, bank connections
+	// (sealed credentials and cursors), connect states and the entitlement.
 	return p.tx(ctx, func(tx pgx.Tx) error {
 		if _, err := tx.Exec(ctx, `DELETE FROM auth_codes WHERE email_hash IN (SELECT email_hash FROM accounts WHERE id=$1)`, accountID); err != nil {
 			return err
@@ -482,7 +483,117 @@ func (p *PostgresStore) PurgeExpired(ctx context.Context, now time.Time) error {
 		if _, err := tx.Exec(ctx, `DELETE FROM advisor_links WHERE expires_at <= $1`, now); err != nil {
 			return err
 		}
+		if _, err := tx.Exec(ctx, `DELETE FROM connect_states WHERE expires_at <= $1`, now); err != nil {
+			return err
+		}
 		_, err := tx.Exec(ctx, `DELETE FROM invites WHERE expires_at < $1`, now.Add(-inviteRetention))
 		return err
 	})
+}
+
+const connCols = `id, account_id, provider, institution, status, consent_expiry, secret, cursor, last_synced_at, created_at, updated_at`
+
+func scanConn(row pgx.Row) (BankConnection, error) {
+	var c BankConnection
+	err := row.Scan(&c.ID, &c.AccountID, &c.Provider, &c.Institution, &c.Status, &c.ConsentExpiry, &c.Secret,
+		&c.Cursor, &c.LastSyncedAt, &c.CreatedAt, &c.UpdatedAt)
+	return c, err
+}
+
+func nonNil(b []byte) []byte {
+	if b == nil {
+		return []byte{}
+	}
+	return b
+}
+
+func (p *PostgresStore) CreateConnection(ctx context.Context, c BankConnection) error {
+	_, err := p.pool.Exec(ctx, `INSERT INTO bank_connections(`+connCols+`) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`,
+		c.ID, c.AccountID, c.Provider, c.Institution, c.Status, c.ConsentExpiry, c.Secret, nonNil(c.Cursor),
+		c.LastSyncedAt, c.CreatedAt, c.UpdatedAt)
+	var pe *pgconn.PgError
+	if errors.As(err, &pe) && pe.Code == "23503" {
+		return ErrNotFound
+	}
+	return pgErr(err)
+}
+
+func (p *PostgresStore) GetConnection(ctx context.Context, id string) (BankConnection, error) {
+	c, err := scanConn(p.pool.QueryRow(ctx, `SELECT `+connCols+` FROM bank_connections WHERE id=$1`, id))
+	return c, pgErr(err)
+}
+
+func (p *PostgresStore) ListConnections(ctx context.Context, accountID string) ([]BankConnection, error) {
+	rows, err := p.pool.Query(ctx, `SELECT `+connCols+` FROM bank_connections WHERE account_id=$1 ORDER BY created_at, id`, accountID)
+	if err != nil {
+		return nil, err
+	}
+	return pgx.CollectRows(rows, func(r pgx.CollectableRow) (BankConnection, error) { return scanConn(r) })
+}
+
+func (p *PostgresStore) UpdateConnection(ctx context.Context, c BankConnection) error {
+	tag, err := p.pool.Exec(ctx, `UPDATE bank_connections SET institution=$3, status=$4, consent_expiry=$5, secret=$6,
+		cursor=$7, last_synced_at=$8, updated_at=$9 WHERE id=$1 AND account_id=$2`,
+		c.ID, c.AccountID, c.Institution, c.Status, c.ConsentExpiry, c.Secret, nonNil(c.Cursor), c.LastSyncedAt, c.UpdatedAt)
+	if err != nil {
+		return err
+	}
+	if tag.RowsAffected() == 0 {
+		return ErrNotFound
+	}
+	return nil
+}
+
+func (p *PostgresStore) DeleteConnection(ctx context.Context, accountID, id string) error {
+	// connect_states referencing the connection cascade.
+	tag, err := p.pool.Exec(ctx, `DELETE FROM bank_connections WHERE id=$1 AND account_id=$2`, id, accountID)
+	if err != nil {
+		return err
+	}
+	if tag.RowsAffected() == 0 {
+		return ErrNotFound
+	}
+	return nil
+}
+
+func (p *PostgresStore) PutConnectState(ctx context.Context, st ConnectState) error {
+	var connID *string
+	if st.ConnectionID != "" {
+		connID = &st.ConnectionID
+	}
+	_, err := p.pool.Exec(ctx, `INSERT INTO connect_states(state_hash, account_id, provider, connection_id, redirect_uri, expires_at)
+		VALUES($1,$2,$3,$4,$5,$6)`, st.StateHash, st.AccountID, st.Provider, connID, st.RedirectURI, st.ExpiresAt)
+	var pe *pgconn.PgError
+	if errors.As(err, &pe) && pe.Code == "23503" {
+		return ErrNotFound
+	}
+	return pgErr(err)
+}
+
+func (p *PostgresStore) TakeConnectState(ctx context.Context, stateHash, accountID string) (ConnectState, error) {
+	st := ConnectState{StateHash: stateHash, AccountID: accountID}
+	err := p.pool.QueryRow(ctx, `DELETE FROM connect_states WHERE state_hash=$1 AND account_id=$2
+		RETURNING provider, coalesce(connection_id, ''), redirect_uri, expires_at`, stateHash, accountID).
+		Scan(&st.Provider, &st.ConnectionID, &st.RedirectURI, &st.ExpiresAt)
+	return st, pgErr(err)
+}
+
+func (p *PostgresStore) GetEntitlement(ctx context.Context, accountID string) (Entitlement, error) {
+	e := Entitlement{AccountID: accountID}
+	err := p.pool.QueryRow(ctx, `SELECT store, product_id, token_hash, plus_until, updated_at FROM entitlements WHERE account_id=$1`, accountID).
+		Scan(&e.Store, &e.ProductID, &e.TokenHash, &e.PlusUntil, &e.UpdatedAt)
+	return e, pgErr(err)
+}
+
+func (p *PostgresStore) PutEntitlement(ctx context.Context, e Entitlement) error {
+	_, err := p.pool.Exec(ctx, `INSERT INTO entitlements(account_id, store, product_id, token_hash, plus_until, updated_at)
+		VALUES($1,$2,$3,$4,$5,$6)
+		ON CONFLICT (account_id) DO UPDATE SET store=EXCLUDED.store, product_id=EXCLUDED.product_id,
+		token_hash=EXCLUDED.token_hash, plus_until=EXCLUDED.plus_until, updated_at=EXCLUDED.updated_at`,
+		e.AccountID, e.Store, e.ProductID, e.TokenHash, e.PlusUntil, e.UpdatedAt)
+	var pe *pgconn.PgError
+	if errors.As(err, &pe) && pe.Code == "23503" {
+		return ErrNotFound
+	}
+	return err
 }

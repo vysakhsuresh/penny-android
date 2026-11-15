@@ -164,7 +164,7 @@ object Routes {
     const val SECURITY = "settings/security"
     const val DATA = "settings/data"
     const val IMPORT = "settings/import"
-    const val SPACES = "settings/spaces"
+    const val SPACES = "settings/spaces?token={token}"
     const val SYNC = "settings/sync"
     const val PLUS = "settings/plus"
     const val ABOUT = "settings/about"
@@ -283,7 +283,10 @@ fun PennyNavHost(nav: NavHostController, start: String, reduceMotion: Boolean) {
         composable(Routes.SECURITY) { SecurityScreen(back) }
         composable(Routes.DATA) { DataScreen(back, go = { nav.navigate(it) }, onWiped = { nav.navigate(Routes.ONBOARDING) { popUpTo(0) } }) }
         composable(Routes.IMPORT) { ImportScreen(back) }
-        composable(Routes.SPACES) { SpacesScreen(back) }
+        composable(
+            Routes.SPACES, arguments = listOf(str("token")),
+            deepLinks = listOf(navDeepLink { uriPattern = "${Brand.DEEP_LINK_SCHEME}://invite/{token}" }),
+        ) { e -> SpacesScreen(back, initialToken = e.arg("token")) }
         composable(Routes.SYNC) { SyncScreen(back) }
         composable(Routes.PLUS) { PlusScreen(back) }
         composable(Routes.ABOUT) { AboutScreen(back, go = { nav.navigate(it) }) }

@@ -15,6 +15,8 @@ import (
 	"strconv"
 	"syscall"
 	"time"
+
+	"penny/server/connectors"
 )
 
 func env(key, def string) string {
@@ -45,6 +47,7 @@ func run() error {
 		dev        = flag.Bool("dev", envBool("DEV"), "development mode: print sign-in codes to stdout (env DEV)")
 		migrate    = flag.Bool("migrate", envBool("MIGRATE"), "apply database migrations at startup (env MIGRATE)")
 		trustProxy = flag.Bool("trust-proxy", envBool("TRUST_PROXY"), "use X-Forwarded-For for client IPs (env TRUST_PROXY)")
+		connList   = flag.String("connectors", env("CONNECTORS", "sandbox,simplefin"), "enabled bank connectors, comma-separated (env CONNECTORS)")
 	)
 	flag.Parse()
 
@@ -69,6 +72,29 @@ func run() error {
 		pepper = make([]byte, 32)
 		_, _ = rand.Read(pepper)
 		log.Warn("EMAIL_PEPPER not set; using a random pepper, accounts will not survive a restart")
+	}
+
+	var sealer *Sealer
+	if v := os.Getenv("CONNECTOR_KEY"); v != "" {
+		key, err := ParseConnectorKey(v)
+		if err != nil {
+			return err
+		}
+		if sealer, err = NewSealer(key); err != nil {
+			return err
+		}
+	} else if *dev {
+		sealer = RandomSealer()
+		log.Warn("CONNECTOR_KEY not set; using a random key, bank connections will not survive a restart")
+	} else {
+		return errors.New("CONNECTOR_KEY is required outside -dev (32 bytes, base64; it encrypts bank credentials at rest)")
+	}
+	registry, unconfigured, err := connectors.NewRegistry(connectors.ParseList(*connList), connectors.All(time.Now)...)
+	if err != nil {
+		return err
+	}
+	for _, id := range unconfigured {
+		log.Warn("connector listed in CONNECTORS but not implemented or configured; left disabled", "connector", id)
 	}
 
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
@@ -107,7 +133,8 @@ func run() error {
 		log.Warn("SMTP_HOST not set and -dev off: sign-in codes cannot be delivered")
 	}
 
-	api := NewServer(Options{Store: store, Mailer: mailer, Log: log, Region: *region, Pepper: pepper, TrustProxy: *trustProxy})
+	api := NewServer(Options{Store: store, Mailer: mailer, Log: log, Region: *region, Pepper: pepper, TrustProxy: *trustProxy,
+		Dev: *dev, Connectors: registry, Sealer: sealer})
 	srv := &http.Server{
 		Addr:              *addr,
 		Handler:           api.Handler(),
@@ -118,7 +145,7 @@ func run() error {
 		MaxHeaderBytes:    16 << 10,
 	}
 
-	go func() { // janitor: drop expired codes, advisor links and dead invites
+	go func() { // janitor: drop expired codes, advisor links, connect states and dead invites
 		t := time.NewTicker(10 * time.Minute)
 		defer t.Stop()
 		for {

@@ -27,7 +27,7 @@ object Projector {
     /** Rebuilds every entity from the log; used for integrity checks and for rebuilding materialised tables. */
     fun rebuild(events: Iterable<Event>): Map<Pair<String, String>, EntityState> {
         val out = linkedMapOf<Pair<String, String>, EntityState>()
-        events.sortedBy { it.seq }.forEach { e ->
+        events.sortedWith(EventOrder.comparator).forEach { e ->
             val key = e.entity to e.entityId
             val next = apply(out[key], e)
             if (next == null) out.remove(key) else out[key] = next

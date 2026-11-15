@@ -88,7 +88,7 @@ open class EventSourcedRepository<T>(
         val events = store.eventsInGroup(groupId).filter { it.reason != Reasons.UNDO }
         if (events.isEmpty()) return null
         val g = ids.newId()
-        val compensating = events.sortedByDescending { it.seq }.mapNotNull { e ->
+        val compensating = events.sortedWith(EventOrder.comparator.reversed()).mapNotNull { e ->
             when (e.op) {
                 Op.CREATE -> event(e.entityId, e.profileId, Op.PURGE, JsonObject(emptyMap()), null, g, Reasons.UNDO)
                 Op.UPDATE -> event(e.entityId, e.profileId, Op.UPDATE, e.before ?: JsonObject(emptyMap()), e.patch, g, Reasons.UNDO)
@@ -103,7 +103,7 @@ open class EventSourcedRepository<T>(
 
     suspend fun history(id: String): List<Version> {
         var state: EntityState? = null
-        return store.eventsFor(entity, id).sortedBy { it.seq }.map { e ->
+        return store.eventsFor(entity, id).sortedWith(EventOrder.comparator).map { e ->
             val prev = state
             state = Projector.apply(state, e)
             val changes = when (e.op) {
@@ -118,7 +118,7 @@ open class EventSourcedRepository<T>(
     /** Data as it was right after [version]. */
     suspend fun stateAt(id: String, version: Int): EntityState? {
         var state: EntityState? = null
-        for (e in store.eventsFor(entity, id).sortedBy { it.seq }) {
+        for (e in store.eventsFor(entity, id).sortedWith(EventOrder.comparator)) {
             state = Projector.apply(state, e)
             if (state != null && state.version >= version) return state
         }

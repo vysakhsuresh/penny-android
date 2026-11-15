@@ -50,6 +50,46 @@ object Entities {
     const val ACCOUNT = "account"
     const val CATEGORY = "category"
     const val TRANSACTION = "transaction"
+    const val TAG = "tag"
+    const val PAYEE = "payee"
+    const val RULE = "rule"
+    const val ENVELOPE = "envelope"
+    const val ALLOCATION = "allocation"
+    const val BUDGET_MOVE = "budget_move"
+    const val GOAL = "goal"
+    const val GOAL_ENTRY = "goal_entry"
+    const val RECURRING = "recurring"
+    const val OCCURRENCE = "occurrence"
+    const val TEMPLATE = "template"
+    const val SAVED_SEARCH = "saved_search"
+    const val ATTACHMENT = "attachment"
+    const val VALUATION = "valuation"
+    const val FX_RATE = "fx_rate"
+    const val PERSON = "person"
+    const val LENDING = "lending"
+    const val GROUP = "group"
+    const val GROUP_EXPENSE = "group_expense"
+    const val SETTLEMENT = "settlement"
+    const val LOAN = "loan"
+    const val REMITTANCE = "remittance"
+    const val CIRCLE = "circle"
+    const val CIRCLE_CONTRIBUTION = "circle_contribution"
+    const val SPACE = "space"
+    const val MEMBER = "member"
+    const val INVITATION = "invitation"
+    const val DEVICE = "device"
+    const val SYNC_LINK = "sync_link"
+    const val ALERT = "alert"
+    const val WATCHLIST = "watchlist"
+    const val ADVISOR_LINK = "advisor_link"
+    const val CAPTURE = "capture"
+    const val CAPTURE_SOURCE = "capture_source"
+
+    /** Objects shown in the global Trash (HS-02). */
+    val TRASHABLE = listOf(
+        TRANSACTION, ACCOUNT, CATEGORY, TAG, PAYEE, RULE, ENVELOPE, GOAL, RECURRING, TEMPLATE, SAVED_SEARCH, PERSON,
+        LENDING, GROUP, GROUP_EXPENSE, LOAN, REMITTANCE, CIRCLE, ATTACHMENT, MEMBER, WATCHLIST,
+    )
 }
 
 /** Event reasons that history renders specially. */

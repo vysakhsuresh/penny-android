@@ -1,0 +1,369 @@
+package app.penny.ui.accounts
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.outlined.AccountBalance
+import androidx.compose.material.icons.outlined.ArrowDownward
+import androidx.compose.material.icons.outlined.ArrowUpward
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.History
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
+import app.penny.R
+import app.penny.core.insights.NetWorth
+import app.penny.core.model.AccountType
+import app.penny.core.model.CardFields
+import app.penny.core.model.FinancialAccount
+import app.penny.core.planning.Debt
+import app.penny.domain.ops.balance
+import app.penny.domain.ops.countCash
+import app.penny.domain.ops.deleteAccount
+import app.penny.domain.ops.isLiability
+import app.penny.domain.ops.reconcile
+import app.penny.domain.ops.reorderAccounts
+import app.penny.domain.ops.saveAccount
+import app.penny.domain.ops.setBalance
+import app.penny.ui.common.Ctx
+import app.penny.ui.common.TxRow
+import app.penny.ui.common.WithBook
+import app.penny.ui.common.accountIcon
+import app.penny.ui.common.accountTypeLabel
+import app.penny.ui.common.shortDate
+import app.penny.ui.kit.AmountInput
+import app.penny.ui.kit.Avatar
+import app.penny.ui.kit.Choice
+import app.penny.ui.kit.DateInput
+import app.penny.ui.kit.EmptyState
+import app.penny.ui.kit.LineChart
+import app.penny.ui.kit.ListRow
+import app.penny.ui.kit.MoneyLabel
+import app.penny.ui.kit.PennyCard
+import app.penny.ui.kit.PennyScreen
+import app.penny.ui.kit.PrimaryButton
+import app.penny.ui.kit.SectionHeader
+import app.penny.ui.kit.SelectField
+import app.penny.ui.kit.StatBlock
+import app.penny.ui.kit.SwitchRow
+import app.penny.ui.kit.TextInput
+import app.penny.ui.kit.TypedConfirmDialog
+import app.penny.ui.kit.currencyChoices
+import app.penny.ui.kit.parseAmount
+import app.penny.ui.theme.Penny
+import java.time.temporal.ChronoUnit
+
+@Composable
+fun AccountsScreen(onBack: () -> Unit, onOpen: (String) -> Unit, onAdd: () -> Unit) {
+    WithBook { ctx, vm ->
+        val b = ctx.book
+        var showArchived by rememberSaveable { mutableStateOf(false) }
+        var reorder by rememberSaveable { mutableStateOf(false) }
+        val (net, missing) = NetWorth.total(b.accounts.map { it.state.id to it.value }, b.txList, b.today(), ctx.base, b.fx, b.valuations.map { it.value })
+        PennyScreen(
+            stringResource(R.string.accounts), onBack,
+            actions = { TextButton(onClick = { reorder = !reorder }) { Text(stringResource(if (reorder) R.string.done else R.string.reorder)) } },
+            floating = { ExtendedFloatingActionButton(onClick = onAdd, icon = { Icon(Icons.Filled.Add, null) }, text = { Text(stringResource(R.string.add_account)) }) },
+        ) { pad ->
+            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 120.dp)) {
+                item {
+                    PennyCard(color = MaterialTheme.colorScheme.primaryContainer) {
+                        Column(Modifier.padding(20.dp)) {
+                            Text(stringResource(R.string.net_worth), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                            MoneyLabel(ctx.money(net), style = MaterialTheme.typography.displaySmall, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                            if (missing > 0) Text(pluralStringResource(R.plurals.no_rate_accounts, missing, missing), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                        }
+                    }
+                }
+                item { FilterChip(showArchived, { showArchived = !showArchived }, label = { Text(stringResource(R.string.show_archived)) }, modifier = Modifier.padding(horizontal = 16.dp)) }
+                val list = b.accounts.filter { showArchived || !it.value.archived }
+                if (list.isEmpty()) item { EmptyState(stringResource(R.string.no_accounts), stringResource(R.string.no_accounts_body), icon = Icons.Outlined.AccountBalance, action = stringResource(R.string.add_account), onAction = onAdd) }
+                list.groupBy { it.value.group ?: "" }.toSortedMap().forEach { (group, inGroup) ->
+                    inGroup.groupBy { if (group.isEmpty()) it.value.type else null }.forEach { (type, accts) ->
+                        item(key = "g:$group:$type") { SectionHeader(group.ifEmpty { type?.let { stringResource(accountTypeLabel(it)) }.orEmpty() }) }
+                        item(key = "c:$group:$type") {
+                            PennyCard {
+                                accts.forEach { a ->
+                                    val bal = b.balance(a.state.id)
+                                    ListRow(
+                                        title = a.value.name,
+                                        subtitle = listOfNotNull(
+                                            a.value.institution.takeIf { it.isNotBlank() },
+                                            stringResource(R.string.archived).takeIf { a.value.archived },
+                                            stringResource(R.string.excluded_net_worth).takeIf { !a.value.includeInNetWorth },
+                                            stringResource(R.string.manual).takeIf { a.value.syncLinkId == null && a.value.type == AccountType.BANK },
+                                        ).joinToString(" · "),
+                                        leading = { Avatar(a.value.name, a.state.id, icon = accountIcon(a.value.type)) },
+                                        trailingText = if (reorder) null else ctx.money(bal, a.value.currency),
+                                        trailing = if (reorder) ({
+                                            Row {
+                                                IconButton(onClick = { move(vm, ctx, a.state.id, -1) }) { Icon(Icons.Outlined.ArrowUpward, stringResource(R.string.move_up)) }
+                                                IconButton(onClick = { move(vm, ctx, a.state.id, 1) }) { Icon(Icons.Outlined.ArrowDownward, stringResource(R.string.move_down)) }
+                                            }
+                                        }) else null,
+                                        onClick = { onOpen(a.state.id) },
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+private fun move(vm: app.penny.ui.common.BookViewModel, ctx: Ctx, id: String, delta: Int) {
+    val ids = ctx.book.accounts.map { it.state.id }.toMutableList()
+    val i = ids.indexOf(id)
+    val j = i + delta
+    if (i < 0 || j !in ids.indices) return
+    ids[i] = ids[j].also { ids[j] = ids[i] }
+    vm.act(R.string.reordered) { reorderAccounts(it, ids) }
+}
+
+@Composable
+fun AccountDetailScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onOpenTx: (String) -> Unit, onHistory: (String) -> Unit) {
+    WithBook { ctx, vm ->
+        val b = ctx.book
+        val acct = b.accountMap[id]
+        if (acct == null) {
+            PennyScreen(stringResource(R.string.accounts), onBack) { pad -> EmptyState(stringResource(R.string.not_found), stringResource(R.string.not_found_body), Modifier.padding(pad), action = stringResource(R.string.back), onAction = onBack) }
+            return@WithBook
+        }
+        val a = acct.value
+        var dialog by rememberSaveable { mutableStateOf<String?>(null) }
+        val bal = b.balance(id)
+        val txs = b.transactions.filter { it.value.accountId == id || it.value.toAccountId == id }.sortedByDescending { it.value.date }
+        PennyScreen(
+            a.name, onBack,
+            actions = {
+                IconButton(onClick = { onHistory(id) }) { Icon(Icons.Outlined.History, stringResource(R.string.history)) }
+                IconButton(onClick = { onEdit(id) }) { Icon(Icons.Outlined.Edit, stringResource(R.string.edit)) }
+            },
+        ) { pad ->
+            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 48.dp)) {
+                item {
+                    PennyCard(color = MaterialTheme.colorScheme.primaryContainer) {
+                        Column(Modifier.padding(20.dp)) {
+                            Text(stringResource(accountTypeLabel(a.type)) + " · " + a.currency, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                            MoneyLabel(ctx.money(bal, a.currency), style = MaterialTheme.typography.displaySmall, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                            a.card?.let { c -> CardSummary(ctx, id, a, c, bal) }
+                        }
+                    }
+                }
+                // AC-03 balance history from the event log (end of each of the last 6 months).
+                item {
+                    val today = b.today()
+                    val pts = (5 downTo 0).map { m ->
+                        val d = if (m == 0) today else today.minusMonths(m.toLong()).withDayOfMonth(1).plusMonths(1).minusDays(1)
+                        shortDate(d) to NetWorth.value(id, a, b.txList, d, b.valuations.map { it.value })
+                    }
+                    if (txs.isNotEmpty()) { SectionHeader(stringResource(R.string.balance_history)); LineChart(pts, { ctx.money(it, a.currency) }) }
+                }
+                item {
+                    Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)) {
+                        OutlinedButton(onClick = { dialog = "set" }, modifier = Modifier.weight(1f).padding(end = 4.dp)) { Text(stringResource(R.string.set_balance)) }
+                        if (a.type == AccountType.CASH) OutlinedButton(onClick = { dialog = "count" }, modifier = Modifier.weight(1f).padding(start = 4.dp)) { Text(stringResource(R.string.count_cash)) }
+                        else OutlinedButton(onClick = { dialog = "reconcile" }, modifier = Modifier.weight(1f).padding(start = 4.dp)) { Text(stringResource(R.string.reconcile)) }
+                    }
+                    Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
+                        TextButton(onClick = { vm.act(if (a.archived) R.string.unarchived else R.string.archived_done) { saveAccount(it, id, a.copy(archived = !a.archived)) } }) {
+                            Text(stringResource(if (a.archived) R.string.unarchive else R.string.archive))
+                        }
+                        TextButton(onClick = { dialog = "delete" }) { Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error) }
+                    }
+                }
+                item { SectionHeader(stringResource(R.string.transactions)) }
+                if (txs.isEmpty()) item { EmptyState(stringResource(R.string.no_tx_title), stringResource(R.string.no_tx_account_body)) }
+                items(txs.take(300), key = { it.state.id }) { s -> TxRow(s.state.id, s.value, ctx, onOpen = { onOpenTx(s.state.id) }, showDate = true) }
+            }
+        }
+        when (dialog) {
+            "set", "count" -> AmountDialog(
+                ctx, stringResource(if (dialog == "set") R.string.set_balance else R.string.count_cash),
+                stringResource(if (dialog == "set") R.string.set_balance_body else R.string.count_cash_body), a.currency, ctx.fmt.editable(bal, a.currency),
+                onDismiss = { dialog = null },
+            ) { v ->
+                val count = dialog == "count"
+                vm.act(R.string.balance_updated) { if (count) countCash(it, id, v) else setBalance(it, id, v) }
+                dialog = null
+            }
+            "reconcile" -> AlertDialog(
+                onDismissRequest = { dialog = null },
+                title = { Text(stringResource(R.string.reconcile)) },
+                text = { Text(stringResource(R.string.reconcile_body, ctx.money(bal, a.currency))) },
+                confirmButton = { TextButton(onClick = { vm.act(R.string.reconciled_done) { reconcile(it, id, it.today()) }; dialog = null }) { Text(stringResource(R.string.reconcile)) } },
+                dismissButton = { TextButton(onClick = { dialog = "set" }) { Text(stringResource(R.string.set_balance)) } },
+            )
+            "delete" -> DeleteAccountDialog(ctx, id, a, txs.size, onDismiss = { dialog = null }) { moveTo ->
+                vm.act(R.string.account_deleted, after = onBack) { deleteAccount(it, id, moveTo) }
+                dialog = null
+            }
+        }
+    }
+}
+
+@Composable
+private fun CardSummary(ctx: Ctx, id: String, a: FinancialAccount, c: CardFields, bal: Long) {
+    val today = ctx.book.today()
+    val cyc = Debt.cardCycle(c.statementDay, c.dueDay, today)
+    val owed = -bal
+    val statementBal = -app.penny.core.budget.Ledger.balance(id, a, ctx.book.txList, cyc.statementDate)
+    val unbilled = owed - statementBal
+    val days = ChronoUnit.DAYS.between(today, cyc.dueDate)
+    val util = if (c.limitMinor > 0) (owed * 100 / c.limitMinor).toInt() else 0
+    Spacer(Modifier.height(12.dp))
+    Row {
+        StatBlock(stringResource(R.string.statement_balance), ctx.money(maxOf(0, statementBal), a.currency), Modifier.weight(1f), MaterialTheme.colorScheme.onPrimaryContainer)
+        StatBlock(stringResource(R.string.unbilled), ctx.money(maxOf(0, unbilled), a.currency), Modifier.weight(1f), MaterialTheme.colorScheme.onPrimaryContainer)
+    }
+    Spacer(Modifier.height(8.dp))
+    Row {
+        StatBlock(stringResource(R.string.minimum_due), ctx.money(maxOf(0, statementBal) * c.minDueBp / 10_000, a.currency), Modifier.weight(1f), MaterialTheme.colorScheme.onPrimaryContainer)
+        StatBlock(stringResource(R.string.utilisation), "$util%", Modifier.weight(1f), if (util >= 80) Penny.status.over else MaterialTheme.colorScheme.onPrimaryContainer)
+    }
+    Text(pluralStringResource(R.plurals.due_in_days, days.toInt().coerceAtLeast(0), days.toInt().coerceAtLeast(0)) + " · " + shortDate(cyc.dueDate), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onPrimaryContainer, modifier = Modifier.padding(top = 8.dp))
+}
+
+@Composable
+fun AmountDialog(ctx: Ctx, title: String, body: String, currency: String, initial: String, onDismiss: () -> Unit, onOk: (Long) -> Unit) {
+    var text by rememberSaveable { mutableStateOf(initial) }
+    val v = parseAmount(text, currency, ctx.fmt)
+    AlertDialog(
+        onDismissRequest = onDismiss, title = { Text(title) },
+        text = { Column { Text(body); Spacer(Modifier.height(8.dp)); AmountInput(text, { text = it }, currency, ctx.fmt, stringResource(R.string.field_amount)) } },
+        confirmButton = { TextButton(onClick = { v?.let(onOk) }, enabled = v != null) { Text(stringResource(R.string.save)) } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) } },
+    )
+}
+
+/** AC-06 + UX-02: choose to move the transactions or delete them; typed confirmation of the account name. */
+@Composable
+private fun DeleteAccountDialog(ctx: Ctx, id: String, a: FinancialAccount, count: Int, onDismiss: () -> Unit, onConfirm: (String?) -> Unit) {
+    var moveTo by rememberSaveable { mutableStateOf<String?>(ctx.book.activeAccounts.firstOrNull { it.state.id != id && it.value.currency == a.currency }?.state?.id) }
+    var confirm by rememberSaveable { mutableStateOf(false) }
+    if (!confirm && count > 0) {
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            title = { Text(stringResource(R.string.delete_account_title, a.name)) },
+            text = {
+                Column {
+                    Text(pluralStringResource(R.plurals.delete_account_body, count, count))
+                    SelectField(stringResource(R.string.move_to), moveTo, ctx.book.activeAccounts.filter { it.state.id != id }.map { Choice(it.state.id, it.value.name, it.value.currency) }, { moveTo = it }, allowNone = true, noneLabel = stringResource(R.string.delete_transactions_too))
+                }
+            },
+            confirmButton = { TextButton(onClick = { confirm = true }) { Text(stringResource(R.string.next)) } },
+            dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) } },
+        )
+    } else {
+        TypedConfirmDialog(
+            stringResource(R.string.delete_account_title, a.name), stringResource(R.string.delete_account_confirm), a.name,
+            stringResource(R.string.delete), onConfirm = { onConfirm(moveTo) }, onDismiss = onDismiss,
+        )
+    }
+}
+
+/** AC-01…AC-05: every field, including card details and net-worth/budget switches. */
+@Composable
+fun AccountEditScreen(id: String, onBack: () -> Unit) {
+    WithBook { ctx, vm ->
+        val b = ctx.book
+        val existing = b.accountMap[id]?.value
+        val isNew = existing == null
+        var name by rememberSaveable { mutableStateOf(existing?.name.orEmpty()) }
+        var type by rememberSaveable { mutableStateOf(existing?.type ?: AccountType.BANK) }
+        var currency by rememberSaveable { mutableStateOf(existing?.currency ?: ctx.base) }
+        var opening by rememberSaveable { mutableStateOf(existing?.let { ctx.fmt.editable(it.openingBalanceMinor, it.currency) } ?: "0") }
+        var openingDate by rememberSaveable { mutableStateOf((existing?.openingDate ?: b.today()).toString()) }
+        var institution by rememberSaveable { mutableStateOf(existing?.institution.orEmpty()) }
+        var group by rememberSaveable { mutableStateOf(existing?.group.orEmpty()) }
+        var note by rememberSaveable { mutableStateOf(existing?.note.orEmpty()) }
+        var netWorth by rememberSaveable { mutableStateOf(existing?.includeInNetWorth ?: true) }
+        var budget by rememberSaveable { mutableStateOf(existing?.includeInBudget ?: true) }
+        var limit by rememberSaveable { mutableStateOf(existing?.card?.let { ctx.fmt.editable(it.limitMinor, currency) }.orEmpty()) }
+        var stmt by rememberSaveable { mutableStateOf(existing?.card?.statementDay?.toString() ?: "1") }
+        var due by rememberSaveable { mutableStateOf(existing?.card?.dueDay?.toString() ?: "20") }
+        var minDue by rememberSaveable { mutableStateOf(existing?.card?.minDueBp?.let { (it / 100.0).toString() } ?: "5") }
+        var apr by rememberSaveable { mutableStateOf(existing?.card?.aprBp?.let { (it / 100.0).toString() } ?: "") }
+        var aliasOf by rememberSaveable { mutableStateOf(existing?.aliasOf) }
+        var grams by rememberSaveable { mutableStateOf(existing?.weightGrams?.toString().orEmpty()) }
+        var error by rememberSaveable { mutableStateOf<String?>(null) }
+        val nameErr = stringResource(R.string.err_name_required)
+        PennyScreen(stringResource(if (isNew) R.string.add_account else R.string.edit_account), onBack, large = false) { pad ->
+            Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
+                TextInput(name, { name = it; error = null }, stringResource(R.string.field_name), error = error)
+                SelectField(stringResource(R.string.field_type), type, AccountType.entries.map { Choice(it, stringResource(accountTypeLabel(it))) }, { it?.let { t -> type = t; if (t in listOf(AccountType.LOAN, AccountType.LIABILITY, AccountType.CREDIT_CARD)) budget = t == AccountType.CREDIT_CARD } })
+                SelectField(stringResource(R.string.field_currency), currency, currencyChoices(listOf(ctx.base)), { it?.let { c -> currency = c } })
+                AmountInput(opening, { opening = it }, currency, ctx.fmt, stringResource(R.string.opening_balance), allowZero = true)
+                DateInput(stringResource(R.string.opening_date), runCatching { java.time.LocalDate.parse(openingDate) }.getOrNull(), { openingDate = it.toString() }, quick = false, today = b.today())
+                TextInput(institution, { institution = it }, stringResource(R.string.institution))
+                TextInput(group, { group = it }, stringResource(R.string.account_group), supporting = stringResource(R.string.account_group_hint))
+                if (type == AccountType.CREDIT_CARD) {
+                    SectionHeader(stringResource(R.string.card_details))
+                    AmountInput(limit, { limit = it }, currency, ctx.fmt, stringResource(R.string.credit_limit))
+                    Row {
+                        TextInput(stmt, { stmt = it.filter(Char::isDigit).take(2) }, stringResource(R.string.statement_day), Modifier.weight(1f), keyboard = KeyboardType.Number)
+                        TextInput(due, { due = it.filter(Char::isDigit).take(2) }, stringResource(R.string.due_day), Modifier.weight(1f), keyboard = KeyboardType.Number)
+                    }
+                    Row {
+                        TextInput(minDue, { minDue = it }, stringResource(R.string.minimum_due_pct), Modifier.weight(1f), keyboard = KeyboardType.Decimal)
+                        TextInput(apr, { apr = it }, stringResource(R.string.apr_pct), Modifier.weight(1f), keyboard = KeyboardType.Decimal)
+                    }
+                }
+                if (type == AccountType.E_WALLET) {
+                    SelectField(stringResource(R.string.alias_of), aliasOf, b.activeAccounts.filter { it.state.id != id && it.value.type == AccountType.BANK }.map { Choice(it.state.id, it.value.name) }, { aliasOf = it }, allowNone = true)
+                    Text(stringResource(R.string.alias_of_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))
+                }
+                if (type == AccountType.ASSET) TextInput(grams, { grams = it }, stringResource(R.string.weight_grams), supporting = stringResource(R.string.weight_grams_hint), keyboard = KeyboardType.Decimal)
+                TextInput(note, { note = it }, stringResource(R.string.field_note), singleLine = false)
+                SwitchRow(stringResource(R.string.include_net_worth), netWorth, { netWorth = it })
+                SwitchRow(stringResource(R.string.include_budget), budget, { budget = it }, subtitle = stringResource(R.string.include_budget_hint))
+                Spacer(Modifier.height(12.dp))
+                PrimaryButton(stringResource(R.string.save), {
+                    if (name.isBlank()) { error = nameErr; return@PrimaryButton }
+                    fun bp(s: String) = s.replace(',', '.').toBigDecimalOrNull()?.multiply(java.math.BigDecimal(100))?.toInt()
+                    val acct = (existing ?: FinancialAccount(name, type, currency)).copy(
+                        name = name.trim(), type = type, currency = currency, openingBalanceMinor = parseAmount(opening, currency, ctx.fmt) ?: 0,
+                        openingDate = runCatching { java.time.LocalDate.parse(openingDate) }.getOrNull(), institution = institution.trim(),
+                        group = group.trim().ifEmpty { null }, note = note.trim(), includeInNetWorth = netWorth, includeInBudget = budget,
+                        card = if (type == AccountType.CREDIT_CARD) CardFields(parseAmount(limit, currency, ctx.fmt) ?: 0, stmt.toIntOrNull()?.coerceIn(1, 31) ?: 1, due.toIntOrNull()?.coerceIn(1, 31) ?: 20, bp(minDue) ?: 500, bp(apr) ?: 0) else null,
+                        aliasOf = aliasOf.takeIf { type == AccountType.E_WALLET }, weightGrams = grams.replace(',', '.').toDoubleOrNull().takeIf { type == AccountType.ASSET },
+                    )
+                    vm.act(if (isNew) R.string.account_added else R.string.saved, after = onBack) { saveAccount(it, if (isNew) null else id, acct) }
+                }, Modifier.padding(horizontal = 16.dp))
+            }
+        }
+        @Suppress("UNUSED_EXPRESSION") isLiabilityHint(type)
+    }
+}
+
+private fun isLiabilityHint(t: AccountType) = FinancialAccount("", t, "XXX").isLiability()

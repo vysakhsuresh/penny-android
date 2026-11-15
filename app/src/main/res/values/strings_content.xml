@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="faq_q">
+        <item>Is Penny really free?</item>
+        <item>Does Penny read my SMS?</item>
+        <item>Where is my data stored?</item>
+        <item>What does “safe to spend” mean?</item>
+        <item>How do I change my pay cycle?</item>
+        <item>I deleted something by mistake. Can I get it back?</item>
+        <item>How do I add money I lent to a friend?</item>
+        <item>Can I share a budget with my partner?</item>
+        <item>How do I move from another money app?</item>
+        <item>Why are transactions from my payment app not showing up?</item>
+        <item>How do I use Penny on a new phone?</item>
+        <item>Can I use more than one currency?</item>
+        <item>How do I lock the app?</item>
+        <item>How do I delete all my data?</item>
+    </string-array>
+    <string-array name="faq_a">
+        <item>Yes. Every feature is free. The optional Penny Plus only covers costs that grow per user, like bank connection fees and extra storage. There are no ads and we never sell data.</item>
+        <item>No. Penny never asks for SMS permission. It can read notifications from payment and bank apps you allow, on your phone only, and you can turn that off any time.</item>
+        <item>On your phone, encrypted. If you turn on sync, it is encrypted on your phone before it leaves, so the server stores data it cannot read.</item>
+        <item>It is the money you can spend from now until your next pay period without missing bills or your savings goals: income, minus bills still due, minus what you set aside, minus what you already spent.</item>
+        <item>Open Settings, Profile, Pay cycle. Choose monthly from any day, twice a month, weekly, every two weeks, every four weeks, or “when money lands”. History is regrouped and nothing is lost.</item>
+        <item>Yes. Right after deleting, tap Undo. Later, open Settings, Trash: deleted items stay there for 30 days. Every change is also in History, where you can go back to an earlier version.</item>
+        <item>Open the People tab and tap Record lending. Choose the person, the amount and whether you gave or received it. Penny keeps a running balance and can draft a friendly reminder for you to send.</item>
+        <item>Yes. Turn on sync, then open Settings, Shared spaces, and create a space. Invite your partner with a link. Each of you has your own login and a role, and you can keep personal spending private.</item>
+        <item>Export a CSV from your old app or bank, then open Settings, Data and backup, Import. Penny recognises files from many apps and shows a preview with duplicates before adding anything.</item>
+        <item>Check Settings, Capture: “Read payment notifications” must be on, and Penny must be allowed notification access in your phone settings. Only apps listed for your region, plus any you add, are read.</item>
+        <item>Turn on sync on your old phone and write down the recovery phrase. On the new phone, sign in with the same email and type the phrase. Or restore a backup file from your folder.</item>
+        <item>Yes. Each account has its own currency. Totals use your main currency with the exchange rate on the transaction date, and anything without a rate is shown, never guessed.</item>
+        <item>Open Settings, Security, App lock. Set a PIN and allow your fingerprint or face. You can also block screenshots and choose how soon the app locks again.</item>
+        <item>Open Settings, Data and backup, Delete everything on this phone. If sync is on, also delete your sync account in Sync and banks. Export first if you may need anything.</item>
+    </string-array>
+
+    <string-array name="guide_start">
+        <item>Pick your region. It sets your currency, number style and usual pay cycle. You can change all of it later.</item>
+        <item>Tell Penny when money comes in. Your budget follows your real pay cycle, not the calendar month.</item>
+        <item>Enter the cash you have now. Add banks, wallets and cards later from Accounts.</item>
+        <item>Tap the plus button to add a spend: type the amount, pick a category, save. It takes about three seconds.</item>
+        <item>Home shows one number: what is safe to spend until the next payday.</item>
+    </string-array>
+    <string-array name="guide_safe">
+        <item>Safe to spend starts with this period’s income, including salary you expect but haven’t received yet.</item>
+        <item>It takes away bills still due this period and what you set aside for goals.</item>
+        <item>Then it takes away what you already spent. Transfers between your own accounts never count.</item>
+        <item>“A day” divides what is left by the days left in the period.</item>
+        <item>If spending runs ahead of the calendar, Home shows a calm amber note. Penny never uses red for your money.</item>
+    </string-array>
+    <string-array name="guide_budget">
+        <item>An envelope is an amount for one part of life, like food or transport, for each period.</item>
+        <item>Open Budgets and tap Use a template, or add envelopes one by one.</item>
+        <item>Choose what happens to leftovers: start fresh, carry over, or carry over up to a cap.</item>
+        <item>If an envelope goes over, tap Cover from to move money from one that has some left. It is recorded and can be undone.</item>
+        <item>Prefer every unit to have a job? Turn on zero-based budgeting in Profile settings.</item>
+    </string-array>
+    <string-array name="guide_cycle">
+        <item>Many people are paid monthly, but not on the 1st; others are paid every two weeks, twice a month, or when a job pays out.</item>
+        <item>Open Settings, Profile, Pay cycle, and pick the one that matches your pay.</item>
+        <item>“When money lands” starts a new period each time income above a threshold arrives, which suits gig work and money sent from family abroad.</item>
+        <item>Changing the cycle regroups history and can be undone.</item>
+    </string-array>
+    <string-array name="guide_capture">
+        <item>Turn on payment notifications in Settings, Capture. Penny reads only payment and bank apps, on your phone.</item>
+        <item>Share a message, receipt or statement from any app to Penny.</item>
+        <item>Scan a receipt with the camera; Penny reads it on the phone.</item>
+        <item>Say a transaction with voice, like “250 on groceries yesterday”.</item>
+        <item>Captured items wait in Review. After ten in a row from one app without changes, Penny offers to add them automatically.</item>
+    </string-array>
+    <string-array name="guide_people">
+        <item>Record money you lend or borrow in the People tab. Penny uses neutral words: to receive and to give.</item>
+        <item>Partial paybacks are fine; add an entry for each.</item>
+        <item>Groups split shared costs equally, by exact amounts, percentages, shares or item by item.</item>
+        <item>Simplify debts finds the fewest payments to settle everyone.</item>
+        <item>Shared spaces let a household budget together, each with their own login and role.</item>
+    </string-array>
+    <string-array name="guide_bills">
+        <item>Add each bill once, with how often it repeats. Penny plans for it in safe to spend.</item>
+        <item>When a bill is paid, mark it paid; the transaction is created for you. Or let Penny add it automatically.</item>
+        <item>Skip or change a single occurrence without touching the rest, or change “this and future” ones.</item>
+        <item>Subscriptions show their yearly cost and when the price went up, with a drafted cancellation message.</item>
+        <item>EMIs show the full schedule and how much interest a prepayment would save.</item>
+    </string-array>
+    <string-array name="guide_goals">
+        <item>A goal has a target and, if you like, a date. Penny shows what to put aside each period.</item>
+        <item>Add money when you save; take money out when you need it.</item>
+        <item>Set an automatic amount each period so it counts in safe to spend.</item>
+        <item>An emergency fund suggests a target from your real essential spending.</item>
+    </string-array>
+    <string-array name="guide_import">
+        <item>Export a CSV from your bank or previous app.</item>
+        <item>Open Settings, Data and backup, Import from a file.</item>
+        <item>Penny recognises many apps automatically; for bank files, check the columns.</item>
+        <item>Review the preview. Likely duplicates are skipped unless you say otherwise.</item>
+        <item>Tap Import. You can undo the whole import in one tap.</item>
+    </string-array>
+    <string-array name="guide_undo">
+        <item>Every change in Penny can be undone for a few seconds with the Undo button.</item>
+        <item>Deleted items wait in Trash for 30 days.</item>
+        <item>Each transaction, account and envelope has a History of every change, who made it and when.</item>
+        <item>Tap “Revert to this version” to go back. The revert itself can be undone too.</item>
+    </string-array>
+    <string-array name="guide_privacy">
+        <item>Your data lives on your phone, in an encrypted database.</item>
+        <item>Sync encrypts on your phone before sending; the server cannot read your money data.</item>
+        <item>Penny shows no ads, offers no loans and sells no data.</item>
+        <item>Optional anonymous counts help improve the app and never include amounts, payees or notes.</item>
+    </string-array>
+    <string-array name="guide_sync">
+        <item>Turn on sync in Settings, Sync and banks, with your email.</item>
+        <item>Write down the 24-word recovery phrase. It opens your data on new phones and restores encrypted backups.</item>
+        <item>On a new phone, sign in with the same email and type the phrase.</item>
+        <item>Choose a backup folder in Data and backup for automatic encrypted backups you control.</item>
+    </string-array>
+
+    <string-array name="about_story">
+        <item>Penny started with a simple question: how much can I spend today without worrying about next week?</item>
+        <item>Most money apps answer with charts of the past or offers for loans. We wanted one calm number, based on your real pay cycle, your real bills and the people in your life.</item>
+        <item>Penny is built for the whole world: any currency, any pay cycle, the way people actually handle money, from savings circles to sending money home.</item>
+        <item>Every feature is free. We make no money from ads, loans or your data, and never will. If Penny helps you, a tip or a kind review keeps it going.</item>
+    </string-array>
+    <string-array name="trust_never">
+        <item>We never show ads.</item>
+        <item>We never offer loans, credit cards or other financial products.</item>
+        <item>We never sell or share your data.</item>
+        <item>We never read your SMS.</item>
+        <item>We never see your money data when you sync: it is encrypted on your phone.</item>
+        <item>We never put a feature behind a paywall. Plus covers real per-user costs only.</item>
+        <item>We never use red to shame your spending.</item>
+    </string-array>
+    <string-array name="changelog">
+        <item>v1.0.0</item>
+        <item>Budgets with envelopes on any pay cycle, rollovers, targets and a year view.</item>
+        <item>Goals, bills, subscriptions, EMIs and a debt payoff planner.</item>
+        <item>Lending, group splitting, money sent home and savings circles.</item>
+        <item>Capture from payment notifications, sharing, receipts and voice, with a review queue and rules that learn.</item>
+        <item>Insights with charts, forecast, net worth and an on-device coach.</item>
+        <item>End-to-end encrypted sync, shared spaces, encrypted backups, app lock.</item>
+        <item>v0.1.0</item>
+        <item>First version: safe to spend, transactions with undo and history.</item>
+    </string-array>
+    <string-array name="licences">
+        <item>Plus Jakarta Sans — SIL Open Font License 1.1, The Plus Jakarta Sans Project Authors.</item>
+        <item>AndroidX and Jetpack Compose — Apache License 2.0, The Android Open Source Project.</item>
+        <item>Kotlin and kotlinx libraries — Apache License 2.0, JetBrains.</item>
+        <item>Dagger and Hilt — Apache License 2.0, Google.</item>
+        <item>Room — Apache License 2.0, Google.</item>
+        <item>SQLCipher for Android — BSD-style licence, Zetetic LLC.</item>
+        <item>Tink — Apache License 2.0, Google.</item>
+        <item>OkHttp — Apache License 2.0, Square.</item>
+        <item>ML Kit Text Recognition — ML Kit Terms of Service, Google.</item>
+        <item>Material icons — Apache License 2.0, Google.</item>
+    </string-array>
+</resources>

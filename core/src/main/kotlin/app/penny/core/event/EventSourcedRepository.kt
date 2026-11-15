@@ -57,25 +57,54 @@ open class EventSourcedRepository<T>(
         return groupId
     }
 
-    suspend fun createAll(profileId: String, values: List<Pair<String, T>>, reason: String? = null): String {
-        val g = ids.newId()
+    suspend fun createAll(profileId: String, values: List<Pair<String, T>>, reason: String? = null, groupId: String = ids.newId()): String {
+        val g = groupId
         store.append(values.map { (id, v) -> event(id, profileId, Op.CREATE, encode(v), null, g, reason) })
         return g
     }
 
     /** Writes only the fields that changed. Returns null when nothing changed (no event is written). */
-    suspend fun update(id: String, value: T, reason: String? = null): String? {
+    suspend fun update(id: String, value: T, reason: String? = null, groupId: String = ids.newId()): String? {
         val cur = store.current(entity, id) ?: error("No $entity $id")
         val (patch, before) = Projector.diff(cur.data, encode(value))
         if (patch.isEmpty()) return null
-        val g = ids.newId()
-        store.append(listOf(event(id, cur.profileId, Op.UPDATE, patch, before, g, reason)))
-        return g
+        store.append(listOf(event(id, cur.profileId, Op.UPDATE, patch, before, groupId, reason)))
+        return groupId
     }
 
-    suspend fun delete(id: String): String = lifecycle(id, Op.DELETE)
-    suspend fun restore(id: String): String = lifecycle(id, Op.RESTORE)
-    suspend fun purge(id: String): String = lifecycle(id, Op.PURGE)
+    /** Bulk update in one append (TX-04): one undo group, one database transaction. */
+    suspend fun updateMany(values: List<Pair<String, T>>, groupId: String = ids.newId(), reason: String? = null): String? {
+        val events = values.mapNotNull { (id, v) ->
+            val cur = store.current(entity, id) ?: return@mapNotNull null
+            val (patch, before) = Projector.diff(cur.data, encode(v))
+            if (patch.isEmpty()) null else event(id, cur.profileId, Op.UPDATE, patch, before, groupId, reason)
+        }
+        if (events.isEmpty()) return null
+        store.append(events)
+        return groupId
+    }
+
+    suspend fun deleteMany(idList: List<String>, groupId: String = ids.newId()): String {
+        val events = idList.mapNotNull { id -> store.current(entity, id)?.let { event(id, it.profileId, Op.DELETE, JsonObject(emptyMap()), null, groupId, null) } }
+        if (events.isNotEmpty()) store.append(events)
+        return groupId
+    }
+
+    /** Creates or updates [id] (used for deterministic ids such as allocations and occurrences). */
+    suspend fun upsert(id: String, profileId: String, value: T, groupId: String = ids.newId(), reason: String? = null): String? {
+        val cur = store.current(entity, id)
+        return when {
+            cur == null -> create(id, profileId, value, groupId, reason)
+            cur.deletedAt != null -> { lifecycle(id, Op.RESTORE, groupId, reason); update(id, value, reason, groupId) ?: groupId }
+            else -> update(id, value, reason, groupId)
+        }
+    }
+
+    suspend fun delete(id: String, groupId: String = ids.newId()): String = lifecycle(id, Op.DELETE, groupId)
+    suspend fun restore(id: String, groupId: String = ids.newId()): String = lifecycle(id, Op.RESTORE, groupId)
+    suspend fun purge(id: String, groupId: String = ids.newId()): String = lifecycle(id, Op.PURGE, groupId)
+
+    fun newGroup(): String = ids.newId()
 
     private suspend fun lifecycle(id: String, op: Op, groupId: String = ids.newId(), reason: String? = null): String {
         val cur = store.current(entity, id) ?: error("No $entity $id")

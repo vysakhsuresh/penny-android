@@ -6,14 +6,48 @@ import app.penny.core.event.PennyJson
 import app.penny.core.event.Reasons
 import app.penny.core.event.Stored
 import app.penny.core.model.AccountType
+import app.penny.core.model.AdvisorLink
+import app.penny.core.model.AlertRecord
+import app.penny.core.model.Allocation
+import app.penny.core.model.Attachment
+import app.penny.core.model.BudgetMove
+import app.penny.core.model.CaptureItem
+import app.penny.core.model.CaptureSource
 import app.penny.core.model.Category
+import app.penny.core.model.Circle
+import app.penny.core.model.CircleContribution
 import app.penny.core.model.DefaultCategories
+import app.penny.core.model.Device
+import app.penny.core.model.Envelope
 import app.penny.core.model.FinancialAccount
+import app.penny.core.model.FxRate
+import app.penny.core.model.Goal
+import app.penny.core.model.GoalEntry
+import app.penny.core.model.Group
+import app.penny.core.model.GroupExpense
+import app.penny.core.model.Invitation
+import app.penny.core.model.LendingEntry
+import app.penny.core.model.Loan
+import app.penny.core.model.Member
+import app.penny.core.model.Occurrence
+import app.penny.core.model.Payee
+import app.penny.core.model.Person
 import app.penny.core.model.Profile
+import app.penny.core.model.ProfileKind
+import app.penny.core.model.Recurring
+import app.penny.core.model.Remittance
+import app.penny.core.model.Rule
+import app.penny.core.model.SavedSearch
+import app.penny.core.model.Settlement
+import app.penny.core.model.Space
+import app.penny.core.model.SyncLink
+import app.penny.core.model.Tag
+import app.penny.core.model.Template
 import app.penny.core.model.Transaction
+import app.penny.core.model.Valuation
+import app.penny.core.model.Watchlist
 import app.penny.core.period.CycleRule
 import app.penny.data.RoomEventStore
-import app.penny.data.db.EntityRow
 import app.penny.data.db.PennyDao
 import app.penny.data.db.TransactionRow
 import app.penny.data.toState
@@ -21,6 +55,7 @@ import app.penny.packs.PackRepository
 import app.penny.packs.RegionalPack
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -37,74 +72,156 @@ data class TxItem(val id: String, val tx: Transaction, val updatedAt: Long, val 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Singleton
 class PennyRepository @Inject constructor(
-    store: RoomEventStore,
-    private val dao: PennyDao,
+    val store: RoomEventStore,
+    val dao: PennyDao,
     val packs: PackRepository,
-    private val prefs: AppPrefs,
+    val prefs: AppPrefs,
 ) {
-    val profiles = EventSourcedRepository(Entities.PROFILE, Profile.serializer(), store, prefs::actor)
-    val accounts = EventSourcedRepository(Entities.ACCOUNT, FinancialAccount.serializer(), store, prefs::actor)
-    val categories = EventSourcedRepository(Entities.CATEGORY, Category.serializer(), store, prefs::actor)
-    val transactions = EventSourcedRepository(Entities.TRANSACTION, Transaction.serializer(), store, prefs::actor)
+    private fun <T> repo(entity: String, s: KSerializer<T>) = EventSourcedRepository(entity, s, store, prefs::actor)
+
+    val profiles = repo(Entities.PROFILE, Profile.serializer())
+    val accounts = repo(Entities.ACCOUNT, FinancialAccount.serializer())
+    val categories = repo(Entities.CATEGORY, Category.serializer())
+    val transactions = repo(Entities.TRANSACTION, Transaction.serializer())
+    val tags = repo(Entities.TAG, Tag.serializer())
+    val payees = repo(Entities.PAYEE, Payee.serializer())
+    val rules = repo(Entities.RULE, Rule.serializer())
+    val envelopes = repo(Entities.ENVELOPE, Envelope.serializer())
+    val allocations = repo(Entities.ALLOCATION, Allocation.serializer())
+    val moves = repo(Entities.BUDGET_MOVE, BudgetMove.serializer())
+    val goals = repo(Entities.GOAL, Goal.serializer())
+    val goalEntries = repo(Entities.GOAL_ENTRY, GoalEntry.serializer())
+    val recurring = repo(Entities.RECURRING, Recurring.serializer())
+    val occurrences = repo(Entities.OCCURRENCE, Occurrence.serializer())
+    val templates = repo(Entities.TEMPLATE, Template.serializer())
+    val savedSearches = repo(Entities.SAVED_SEARCH, SavedSearch.serializer())
+    val attachments = repo(Entities.ATTACHMENT, Attachment.serializer())
+    val valuations = repo(Entities.VALUATION, Valuation.serializer())
+    val fxRates = repo(Entities.FX_RATE, FxRate.serializer())
+    val people = repo(Entities.PERSON, Person.serializer())
+    val lending = repo(Entities.LENDING, LendingEntry.serializer())
+    val groups = repo(Entities.GROUP, Group.serializer())
+    val groupExpenses = repo(Entities.GROUP_EXPENSE, GroupExpense.serializer())
+    val settlements = repo(Entities.SETTLEMENT, Settlement.serializer())
+    val loans = repo(Entities.LOAN, Loan.serializer())
+    val remittances = repo(Entities.REMITTANCE, Remittance.serializer())
+    val circles = repo(Entities.CIRCLE, Circle.serializer())
+    val circleContributions = repo(Entities.CIRCLE_CONTRIBUTION, CircleContribution.serializer())
+    val alerts = repo(Entities.ALERT, AlertRecord.serializer())
+    val watchlists = repo(Entities.WATCHLIST, Watchlist.serializer())
+    val captures = repo(Entities.CAPTURE, CaptureItem.serializer())
+    val captureSources = repo(Entities.CAPTURE_SOURCE, CaptureSource.serializer())
+    val syncLinks = repo(Entities.SYNC_LINK, SyncLink.serializer())
+    val spaces = repo(Entities.SPACE, Space.serializer())
+    val members = repo(Entities.MEMBER, Member.serializer())
+    val invitations = repo(Entities.INVITATION, Invitation.serializer())
+    val devices = repo(Entities.DEVICE, Device.serializer())
+    val advisorLinks = repo(Entities.ADVISOR_LINK, AdvisorLink.serializer())
+
+    /** Any repository can undo any group: compensating events keep each original event's entity. */
+    val undoer get() = transactions
+
+    val byEntity: Map<String, EventSourcedRepository<*>> = mapOf(
+        Entities.PROFILE to profiles, Entities.ACCOUNT to accounts, Entities.CATEGORY to categories, Entities.TRANSACTION to transactions,
+        Entities.TAG to tags, Entities.PAYEE to payees, Entities.RULE to rules, Entities.ENVELOPE to envelopes,
+        Entities.ALLOCATION to allocations, Entities.BUDGET_MOVE to moves, Entities.GOAL to goals, Entities.GOAL_ENTRY to goalEntries,
+        Entities.RECURRING to recurring, Entities.OCCURRENCE to occurrences, Entities.TEMPLATE to templates,
+        Entities.SAVED_SEARCH to savedSearches, Entities.ATTACHMENT to attachments, Entities.VALUATION to valuations,
+        Entities.FX_RATE to fxRates, Entities.PERSON to people, Entities.LENDING to lending, Entities.GROUP to groups,
+        Entities.GROUP_EXPENSE to groupExpenses, Entities.SETTLEMENT to settlements, Entities.LOAN to loans,
+        Entities.REMITTANCE to remittances, Entities.CIRCLE to circles, Entities.CIRCLE_CONTRIBUTION to circleContributions,
+        Entities.ALERT to alerts, Entities.WATCHLIST to watchlists, Entities.CAPTURE to captures, Entities.CAPTURE_SOURCE to captureSources,
+        Entities.SYNC_LINK to syncLinks, Entities.SPACE to spaces, Entities.MEMBER to members, Entities.INVITATION to invitations,
+        Entities.DEVICE to devices, Entities.ADVISOR_LINK to advisorLinks,
+    )
+
+    fun repoFor(entity: String): EventSourcedRepository<*> = byEntity[entity] ?: error("No repository for $entity")
 
     val currentProfileId = prefs.currentProfileId
     val localAccountId get() = prefs.localAccountId
+    fun pid(): String = currentProfileId.value ?: error("No profile open")
 
-    fun observeProfile(): Flow<Stored<Profile>?> = currentProfileId.flatMapLatest { pid ->
-        if (pid == null) flowOf(null) else dao.observeAllOf(Entities.PROFILE).map { rows ->
-            rows.firstOrNull { it.id == pid }?.let { decodeStored(it, Profile.serializer()) }
-        }
+    private val cache = DecodeCache()
+
+    /** The open profile as one decoded snapshot; re-emitted on every change to that profile. */
+    fun observeBook(): Flow<Book?> = currentProfileId.flatMapLatest { pid ->
+        if (pid == null) flowOf(null) else observeBook(pid)
     }
 
-    fun observeAccounts(pid: String): Flow<List<Stored<FinancialAccount>>> =
-        dao.observeEntities(Entities.ACCOUNT, pid, false).map { rows ->
-            rows.map { decodeStored(it, FinancialAccount.serializer()) }.sortedWith(compareBy({ it.value.sort }, { it.value.name }))
-        }
+    fun observeBook(pid: String): Flow<Book?> = dao.observeProfileEntities(pid).map { rows ->
+        val profileRow = rows.firstOrNull { it.entity == Entities.PROFILE && it.id == pid && it.deletedAt == null } ?: return@map null
+        val profile = runCatching { PennyJson.decodeFromString(Profile.serializer(), profileRow.json) }.getOrNull() ?: return@map null
+        Book(pid, profile, rows, cache)
+    }
 
-    fun observeCategories(pid: String): Flow<List<Stored<Category>>> =
-        dao.observeEntities(Entities.CATEGORY, pid, false).map { rows ->
-            rows.map { decodeStored(it, Category.serializer()) }.filter { !it.value.archived }
-        }
+    /** All profiles on this device (US-02 switcher); decoys are hidden unless [includeDecoy]. */
+    fun observeProfiles(includeDecoy: Boolean = false): Flow<List<Stored<Profile>>> = dao.observeAllOf(Entities.PROFILE).map { rows ->
+        rows.mapNotNull { r ->
+            val st = r.toState()
+            runCatching { Stored(PennyJson.decodeFromJsonElement(Profile.serializer(), st.data), st) }.getOrNull()
+        }.filter { includeDecoy || !it.value.decoy }.sortedWith(compareBy({ it.value.sort }, { it.value.name }))
+    }.distinctUntilChanged()
 
-    fun observeTransactions(pid: String): Flow<List<TxItem>> = dao.observeAllTransactions(pid).map { it.map(::toItem) }
+    fun observeProfile(): Flow<Stored<Profile>?> = observeBook().map { b -> b?.let { Stored(it.profile, it.profileStateOrNull()) } }
+
+    private fun Book.profileStateOrNull() = app.penny.core.event.EntityState(
+        app.penny.core.event.Entities.PROFILE, profileId, profileId, kotlinx.serialization.json.JsonObject(emptyMap()), 0, 0, 0, null, "",
+    )
 
     fun observeTrash(pid: String): Flow<List<TxItem>> = dao.observeTrash(pid).map { it.map(::toItem) }
 
     private fun toItem(r: TransactionRow) =
         TxItem(r.id, PennyJson.decodeFromString(Transaction.serializer(), r.json), r.updatedAt, r.deletedAt)
 
-    private fun <T> decodeStored(row: EntityRow, s: KSerializer<T>): Stored<T> {
-        val state = row.toState()
-        return Stored(PennyJson.decodeFromJsonElement(s, state.data), state)
-    }
-
     fun newId(): String = UUID.randomUUID().toString()
 
-    /** OB-01: region, pay cycle and first cash account. Seeds categories from the universal tree. */
-    suspend fun completeOnboarding(pack: RegionalPack, cycle: CycleRule, cashName: String, openingMinor: Long): String {
+    /** OB-01: region, pay cycle and first cash account. Seeds categories from the universal tree and smart tags. */
+    suspend fun completeOnboarding(pack: RegionalPack, cycle: CycleRule, cashName: String, openingMinor: Long, profileName: String = "Personal"): String {
+        val pid = createProfile(pack, profileName, cycle, ProfileKind.PERSONAL, cashName, openingMinor)
+        prefs.setCurrentProfile(pid)
+        return pid
+    }
+
+    suspend fun createProfile(
+        pack: RegionalPack,
+        name: String,
+        cycle: CycleRule,
+        kind: ProfileKind,
+        cashName: String,
+        openingMinor: Long,
+        decoy: Boolean = false,
+    ): String {
         val pid = newId()
         val accountId = newId()
-        val profile = profileFor(pack, "Personal", cycle).copy(defaultAccountId = accountId)
+        val profile = profileFor(pack, name, cycle).copy(defaultAccountId = accountId, kind = kind, decoy = decoy,
+            business = if (kind == ProfileKind.BUSINESS) app.penny.core.model.BusinessSettings() else null)
         profiles.create(pid, pid, profile, reason = Reasons.SEED)
-
-        val keyToId = DefaultCategories.tree.associate { it.key to "$pid:${it.key}" }
-        categories.createAll(
-            pid,
-            DefaultCategories.tree.mapIndexed { i, c ->
-                keyToId.getValue(c.key) to Category(
-                    key = c.key, kind = c.kind, name = c.name, parentId = c.parentKey?.let(keyToId::getValue),
-                    excludedFromSpend = c.excluded, sort = i,
-                )
-            },
-            reason = Reasons.SEED,
-        )
+        seedCategories(pid)
         accounts.create(
             accountId, pid,
             FinancialAccount(cashName, AccountType.CASH, pack.currency, openingMinor, LocalDate.now(ZoneId.of(pack.timezone))),
             reason = Reasons.SEED,
         )
-        prefs.setCurrentProfile(pid)
+        tags.createAll(pid, SMART_TAGS.mapIndexed { i, (key, label) -> "$pid:tag:$key" to Tag(label, smart = key, sort = i) }, reason = Reasons.SEED)
         return pid
+    }
+
+    /** CAT-02: seeds missing defaults by key; never touches custom or renamed categories. Returns the undo group. */
+    suspend fun seedCategories(pid: String): String? {
+        val existing = categories.list(pid, includeDeleted = true).mapNotNull { it.value.key }.toSet()
+        val keyToId = DefaultCategories.tree.associate { it.key to "$pid:${it.key}" }
+        val missing = DefaultCategories.tree.withIndex().filter { it.value.key !in existing }
+        if (missing.isEmpty()) return null
+        return categories.createAll(
+            pid,
+            missing.map { (i, c) ->
+                keyToId.getValue(c.key) to Category(
+                    key = c.key, kind = c.kind, name = c.name, parentId = c.parentKey?.let(keyToId::getValue),
+                    excludedFromSpend = c.excluded, sort = i, tax = c.key.startsWith("fin.tax"),
+                )
+            },
+            reason = Reasons.SEED,
+        )
     }
 
     fun profileFor(pack: RegionalPack, name: String, cycle: CycleRule = pack.payCycleDefault) = Profile(
@@ -120,29 +237,32 @@ class PennyRepository @Inject constructor(
 
     /**
      * Switches the regional pack (OB-02): base currency, number format, pay cycle and calendar defaults follow the
-     * new pack. Accounts with no activity and the opening cash account switch currency too; transactions keep theirs.
-     * Returns the undo group ids.
+     * new pack. Accounts with no activity switch currency too; transactions keep theirs. Returns the undo group.
      */
-    suspend fun switchRegion(pid: String, packId: String): List<String> {
-        val cur = profiles.get(pid) ?: return emptyList()
+    suspend fun switchRegion(pid: String, packId: String): String {
+        val g = profiles.newGroup()
+        val cur = profiles.get(pid) ?: return g
         val pack = packs.get(packId)
-        val groups = mutableListOf<String>()
         profiles.update(
             pid,
             cur.value.copy(
                 regionPack = pack.id, baseCurrency = pack.currency, localeTag = pack.primaryLocale, cycle = pack.payCycleDefault,
                 firstDayOfWeek = pack.firstDayOfWeek, fiscalYearStart = pack.fiscalYearStart, groupingOverride = null,
             ),
-        )?.let(groups::add)
+            groupId = g,
+        )
         val usedAccounts = transactions.list(pid).flatMap { listOfNotNull(it.value.accountId, it.value.toAccountId) }.toSet()
         accounts.list(pid).filter { it.state.id !in usedAccounts && it.value.currency != pack.currency }.forEach { a ->
-            accounts.update(a.state.id, a.value.copy(currency = pack.currency, openingBalanceMinor = 0))?.let(groups::add)
+            accounts.update(a.state.id, a.value.copy(currency = pack.currency, openingBalanceMinor = 0), groupId = g)
         }
-        return groups
+        return g
     }
 
-    /** Undo works on any entity: compensating events keep each original event's entity. */
-    suspend fun undoAll(groups: List<String>) {
-        groups.asReversed().forEach { g -> transactions.undo(g) }
+    suspend fun undo(group: String?) { if (group != null) undoer.undo(group) }
+
+    suspend fun undoAll(groups: List<String>) { groups.asReversed().forEach { g -> undoer.undo(g) } }
+
+    companion object {
+        val SMART_TAGS = listOf("reimbursable" to "Reimbursable", "tax" to "Tax-deductible", "trip" to "Trip", "gift" to "Gift", "business" to "Business")
     }
 }

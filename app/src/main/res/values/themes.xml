@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.Penny" parent="android:Theme.Material.Light.NoActionBar">
+    <!-- AppCompat parent so BiometricPrompt (FragmentActivity) works; Compose draws everything else. -->
+    <style name="Theme.Penny" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/window_background</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">@bool/light_bars</item>
     </style>
 </resources>

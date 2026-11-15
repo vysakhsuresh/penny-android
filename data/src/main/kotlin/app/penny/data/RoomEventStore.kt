@@ -4,6 +4,7 @@ import androidx.room.withTransaction
 import app.penny.core.event.Entities
 import app.penny.core.event.EntityState
 import app.penny.core.event.Event
+import app.penny.core.event.EventOrder
 import app.penny.core.event.EventStore
 import app.penny.core.event.Op
 import app.penny.core.event.PennyJson
@@ -15,19 +16,34 @@ import app.penny.data.db.PennyDatabase
 import app.penny.data.db.TransactionRow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonObject
 
-/** Event store on SQLCipher-encrypted Room. Appending and projecting happen in one database transaction. */
+/**
+ * Event store on SQLCipher-encrypted Room. Appending and projecting happen in one database transaction.
+ * Local appends take the next Lamport clock; remote events are ingested and their entities re-projected in
+ * [EventOrder], so all devices converge (SY-02).
+ */
 class RoomEventStore(private val db: PennyDatabase) : EventStore {
     private val dao = db.dao()
     private val counter = MutableStateFlow(0L)
+    private val clockLock = Mutex()
+    private var lamport: Long? = null
     override val changes: Flow<Long> = counter
 
+    private suspend fun nextClock(): Long = clockLock.withLock {
+        val next = (lamport ?: dao.maxLamport()) + 1
+        lamport = next
+        next
+    }
+
     override suspend fun append(events: List<Event>): List<Event> {
+        val stamped = events.map { EventOrder.stamp(it, nextClock()) }
         val stored = db.withTransaction {
-            events.map { e ->
+            stamped.map { e ->
                 val seq = dao.insertEvent(e.toRow())
                 val s = e.copy(seq = seq)
                 project(s)
@@ -38,11 +54,39 @@ class RoomEventStore(private val db: PennyDatabase) : EventStore {
         return stored
     }
 
+    override suspend fun ingest(events: List<Event>): List<Event> {
+        if (events.isEmpty()) return emptyList()
+        val unique = events.distinctBy { it.id }
+        val known = unique.map { it.id }.chunked(500).flatMap { dao.knownIds(it) }.toSet()
+        val fresh = unique.filter { it.id !in known }
+        if (fresh.isEmpty()) return emptyList()
+        val stored = db.withTransaction {
+            val out = fresh.sortedWith(EventOrder.comparator).map { e ->
+                val seq = dao.insertEvent(e.toRow(remote = true))
+                e.copy(seq = seq)
+            }
+            out.map { it.entity to it.entityId }.toSet().forEach { (entity, id) -> reproject(entity, id) }
+            out
+        }
+        clockLock.withLock { lamport = maxOf(lamport ?: dao.maxLamport(), fresh.maxOf { EventOrder.lamport(it) }) }
+        counter.value++
+        return stored
+    }
+
+    private suspend fun reproject(entity: String, id: String) {
+        var state: EntityState? = null
+        dao.eventsFor(entity, id).map { it.toEvent() }.sortedWith(EventOrder.comparator).forEach { state = Projector.apply(state, it) }
+        write(entity, id, state)
+    }
+
     private suspend fun project(e: Event) {
-        val next = Projector.apply(dao.entity(e.entity, e.entityId)?.toState(), e)
-        if (next == null) dao.deleteEntity(e.entity, e.entityId) else dao.upsertEntity(next.toRow())
-        if (e.entity == Entities.TRANSACTION) {
-            if (next == null) dao.deleteTransaction(e.entityId) else dao.upsertTransaction(next.toTransactionRow())
+        write(e.entity, e.entityId, Projector.apply(dao.entity(e.entity, e.entityId)?.toState(), e))
+    }
+
+    private suspend fun write(entity: String, id: String, next: EntityState?) {
+        if (next == null) dao.deleteEntity(entity, id) else dao.upsertEntity(next.toRow())
+        if (entity == Entities.TRANSACTION) {
+            if (next == null) dao.deleteTransaction(id) else dao.upsertTransaction(next.toTransactionRow())
         }
     }
 
@@ -50,28 +94,54 @@ class RoomEventStore(private val db: PennyDatabase) : EventStore {
     suspend fun rebuild() = db.withTransaction {
         dao.clearEntities()
         dao.clearTransactions()
-        dao.allEvents().forEach { project(it.toEvent()) }
+        val byKey = dao.allEvents().map { it.toEvent() }.groupBy { it.entity to it.entityId }
+        byKey.forEach { (k, list) ->
+            var state: EntityState? = null
+            list.sortedWith(EventOrder.comparator).forEach { state = Projector.apply(state, it) }
+            write(k.first, k.second, state)
+        }
     }.also { counter.value++ }
 
+    override suspend fun eventsAfter(profileId: String, seq: Long, limit: Int) = dao.localEventsAfter(profileId, seq, limit).map { it.toEvent() }
     override suspend fun eventsFor(entity: String, entityId: String) = dao.eventsFor(entity, entityId).map { it.toEvent() }
     override suspend fun eventsInGroup(groupId: String) = dao.eventsInGroup(groupId).map { it.toEvent() }
     override suspend fun current(entity: String, entityId: String) = dao.entity(entity, entityId)?.toState()
     override suspend fun all(entity: String, profileId: String, includeDeleted: Boolean) =
         dao.entities(entity, profileId, includeDeleted).map { it.toState() }
+
+    suspend fun allEventsFor(profileId: String): List<Event> = dao.eventsForProfile(profileId).map { it.toEvent() }
+
+    /**
+     * SE-09 / ST-09 erasure: the one deliberate exception to append-only. A deleted profile's events and projections
+     * are removed from this device so the data is really gone (decision 2026-11-15 in DECISIONS.md).
+     */
+    suspend fun eraseProfile(profileId: String) {
+        db.withTransaction {
+            dao.eraseProfileEvents(profileId)
+            dao.eraseProfileEntities(profileId)
+            dao.eraseProfileTransactions(profileId)
+        }
+        counter.value++
+    }
+
+    suspend fun eventPage(profileId: String, limit: Int, offset: Int): List<Event> = dao.profileEventsPage(profileId, limit, offset).map { it.toEvent() }
 }
 
 private val vclockSerializer = MapSerializer(String.serializer(), Long.serializer())
 
-internal fun Event.toRow() = EventRow(
+internal fun Event.toRow(remote: Boolean = false) = EventRow(
     eventId = id, entity = entity, entityId = entityId, profileId = profileId, op = op.name,
     patch = patch.toString(), before = before?.toString(), actor = actor, device = device, ts = ts, groupId = groupId,
     reason = reason, vclock = PennyJson.encodeToString(vclockSerializer, vclock), ciphertextRef = ciphertextRef,
+    lamport = EventOrder.lamport(this), remote = remote,
 )
 
-internal fun EventRow.toEvent() = Event(
+fun EventRow.toEvent() = Event(
     id = eventId, seq = seq, entity = entity, entityId = entityId, profileId = profileId, op = Op.valueOf(op),
     patch = parseObject(patch), before = before?.let(::parseObject), actor = actor, device = device, ts = ts,
-    groupId = groupId, reason = reason, vclock = PennyJson.decodeFromString(vclockSerializer, vclock), ciphertextRef = ciphertextRef,
+    groupId = groupId, reason = reason,
+    vclock = PennyJson.decodeFromString(vclockSerializer, vclock).let { if (EventOrder.LAMPORT in it || lamport == 0L) it else it + (EventOrder.LAMPORT to lamport) },
+    ciphertextRef = ciphertextRef,
 )
 
 internal fun parseObject(s: String): JsonObject = PennyJson.parseToJsonElement(s) as JsonObject

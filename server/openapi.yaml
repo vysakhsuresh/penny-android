@@ -1,0 +1,408 @@
+openapi: 3.1.0
+info:
+  title: Penny sync relay
+  version: 1.0.0
+  description: |
+    Store-and-forward relay for end-to-end encrypted event blobs. The server never sees
+    plaintext user data. All binary values are base64url without padding (padded input is
+    accepted). Timestamps are epoch milliseconds. Errors use `{"error": "..."}`.
+servers:
+  - url: https://relay.example.com
+security:
+  - bearer: []
+tags:
+  - name: auth
+  - name: streams
+  - name: keys
+  - name: spaces
+  - name: devices
+  - name: advisor
+
+paths:
+  /healthz:
+    get:
+      security: []
+      summary: Liveness check
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { type: object, properties: { status: { type: string }, region: { type: string } } }
+
+  /v1/auth/start:
+    post:
+      tags: [auth]
+      security: []
+      summary: Email a 6-digit sign-in code (valid 10 minutes, 5 attempts)
+      description: Always 204 for a valid address, whether or not an account exists. Rate-limited per email and per IP.
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/StartAuth" } } }
+      responses:
+        "204": { description: Code sent }
+        "400": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/RateLimited" }
+        "502": { $ref: "#/components/responses/Error" }
+
+  /v1/auth/verify:
+    post:
+      tags: [auth]
+      security: []
+      summary: Exchange the code for a device session; creates the account on first sign-in
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/VerifyAuth" } } }
+      responses:
+        "200":
+          description: Signed in
+          content: { application/json: { schema: { $ref: "#/components/schemas/Session" } } }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { description: "Wrong, expired or burned code", content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
+        "429": { $ref: "#/components/responses/RateLimited" }
+
+  /v1/streams/{stream}/events:
+    parameters: [ { $ref: "#/components/parameters/stream" } ]
+    post:
+      tags: [streams]
+      summary: Append encrypted events
+      description: |
+        A personal stream is created implicitly on its owner's first push. Space streams accept
+        pushes from active members except VIEWER and NONE. Max 1000 blobs and 2 MB per request.
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/PushBody" } } }
+      responses:
+        "200":
+          description: Appended; cursor of the last event
+          content: { application/json: { schema: { $ref: "#/components/schemas/PushResult" } } }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "413": { $ref: "#/components/responses/Error" }
+    get:
+      tags: [streams]
+      summary: Pull events after a cursor, ordered by cursor
+      description: A stream that does not exist yet returns an empty list.
+      parameters:
+        - { name: after, in: query, schema: { type: integer, format: int64, minimum: 0, default: 0 } }
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 500, default: 200 }, description: "Values above 500 are clamped." }
+      responses:
+        "200":
+          description: Events
+          content: { application/json: { schema: { type: array, items: { $ref: "#/components/schemas/PulledBlob" } } } }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /v1/keys:
+    get:
+      tags: [keys]
+      summary: All wrapped stream keys stored for the caller's account
+      responses:
+        "200":
+          description: Keys
+          content: { application/json: { schema: { type: array, items: { $ref: "#/components/schemas/StreamKey" } } } }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/keys/{stream}/{accountId}:
+    parameters:
+      - { $ref: "#/components/parameters/stream" }
+      - { name: accountId, in: path, required: true, schema: { type: string } }
+    put:
+      tags: [keys]
+      summary: Store a stream key wrapped for one member
+      description: Allowed for the owner of a personal stream (for themselves), a space OWNER/ADMIN (for any active member), or the member themselves.
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/StreamKey" } } }
+      responses:
+        "204": { description: Stored }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/spaces:
+    post:
+      tags: [spaces]
+      summary: Create a shared space; the caller becomes OWNER
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/SpaceCreate" } } }
+      responses:
+        "201":
+          description: Created
+          content: { application/json: { schema: { $ref: "#/components/schemas/SpaceCreate" } } }
+        "400": { $ref: "#/components/responses/Error" }
+        "409": { description: Stream id already in use, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
+
+  /v1/spaces/{space}/invites:
+    parameters: [ { $ref: "#/components/parameters/space" } ]
+    post:
+      tags: [spaces]
+      summary: Create an invite (OWNER/ADMIN)
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/InviteCreate" } } }
+      responses:
+        "201":
+          description: Created
+          content: { application/json: { schema: { $ref: "#/components/schemas/InviteInfo" } } }
+        "400": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /v1/invites/{token}:
+    parameters: [ { $ref: "#/components/parameters/token" } ]
+    get:
+      tags: [spaces]
+      security: []
+      summary: Show what an invite will share (no auth)
+      responses:
+        "200":
+          description: Usable invite
+          content: { application/json: { schema: { $ref: "#/components/schemas/InviteInfo" } } }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "410": { $ref: "#/components/responses/Gone" }
+    delete:
+      tags: [spaces]
+      summary: Revoke an invite (OWNER/ADMIN of its space)
+      responses:
+        "204": { description: Revoked }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/invites/{token}/accept:
+    parameters: [ { $ref: "#/components/parameters/token" } ]
+    post:
+      tags: [spaces]
+      summary: Accept an invite (single use; max 10 active members per space)
+      requestBody:
+        content: { application/json: { schema: { $ref: "#/components/schemas/InviteAccept" } } }
+      responses:
+        "200":
+          description: Joined
+          content: { application/json: { schema: { $ref: "#/components/schemas/InviteInfo" } } }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "409": { description: "Already a member, or the space is full", content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
+        "410": { $ref: "#/components/responses/Gone" }
+
+  /v1/spaces/{space}/members:
+    parameters: [ { $ref: "#/components/parameters/space" } ]
+    get:
+      tags: [spaces]
+      summary: List members, including those who left (active members only)
+      responses:
+        "200":
+          description: Members ordered by joinedAt
+          content: { application/json: { schema: { type: array, items: { $ref: "#/components/schemas/MemberInfo" } } } }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /v1/spaces/{space}/members/{account}:
+    parameters:
+      - { $ref: "#/components/parameters/space" }
+      - { name: account, in: path, required: true, schema: { type: string } }
+    put:
+      tags: [spaces]
+      summary: Change a member's role
+      description: OWNER/ADMIN only. Only an OWNER may grant OWNER or change an OWNER's role. The last owner cannot be demoted (409).
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/RoleChange" } } }
+      responses:
+        "204": { description: Changed }
+        "400": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "409": { $ref: "#/components/responses/Error" }
+    delete:
+      tags: [spaces]
+      summary: Remove a member (OWNER/ADMIN) or leave (self)
+      description: Marks the member as left and drops their wrapped key; history stays. The last owner must transfer ownership before leaving a space that has other members. When the last member leaves, the space is deleted.
+      responses:
+        "204": { description: Removed }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "409": { $ref: "#/components/responses/Error" }
+
+  /v1/devices:
+    get:
+      tags: [devices]
+      summary: Signed-in devices of the caller's account
+      responses:
+        "200":
+          description: Devices
+          content: { application/json: { schema: { type: array, items: { $ref: "#/components/schemas/DeviceInfo" } } } }
+
+  /v1/devices/{id}:
+    delete:
+      tags: [devices]
+      summary: Sign a device out remotely (revokes its tokens)
+      parameters: [ { name: id, in: path, required: true, schema: { type: string } } ]
+      responses:
+        "204": { description: Revoked }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/account:
+    delete:
+      tags: [devices]
+      summary: Delete the account and everything it owns, immediately
+      description: Ownership of shared spaces passes to the earliest admin, else the earliest member; spaces with no other members are deleted.
+      responses:
+        "204": { description: Deleted }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/advisor/{id}:
+    parameters: [ { $ref: "#/components/parameters/advisorId" } ]
+    put:
+      tags: [advisor]
+      summary: Create or replace a read-only advisor link blob
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/AdvisorPut" } } }
+      responses:
+        "204": { description: Stored }
+        "400": { $ref: "#/components/responses/Error" }
+        "403": { description: Id belongs to another account, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
+    delete:
+      tags: [advisor]
+      summary: Delete an advisor link
+      responses:
+        "204": { description: Deleted }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/advisor/{id}/blob:
+    parameters: [ { $ref: "#/components/parameters/advisorId" } ]
+    get:
+      tags: [advisor]
+      security: []
+      summary: Public ciphertext for the advisor page (CORS enabled; 404 after expiry)
+      responses:
+        "200":
+          description: Blob
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [blob, expiresAt]
+                properties:
+                  blob: { type: string, description: "base64url(12-byte IV || AES-256-GCM ciphertext+tag)" }
+                  expiresAt: { type: integer, format: int64 }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /a/{id}:
+    parameters: [ { $ref: "#/components/parameters/advisorId" } ]
+    get:
+      tags: [advisor]
+      security: []
+      summary: Static read-only page; decrypts the blob with the key in the URL fragment
+      responses:
+        "200":
+          description: HTML page
+          content: { text/html: { schema: { type: string } } }
+
+components:
+  securitySchemes:
+    bearer: { type: http, scheme: bearer }
+  parameters:
+    stream: { name: stream, in: path, required: true, schema: { type: string, pattern: "^[A-Za-z0-9._:-]{1,128}$" } }
+    space: { name: space, in: path, required: true, schema: { type: string, pattern: "^[A-Za-z0-9._:-]{1,128}$" } }
+    token: { name: token, in: path, required: true, schema: { type: string } }
+    advisorId: { name: id, in: path, required: true, schema: { type: string, pattern: "^[A-Za-z0-9._:-]{1,128}$" } }
+  responses:
+    Error: { description: Error, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
+    Unauthorized: { description: "Missing, invalid or revoked token", content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
+    Forbidden: { description: Not allowed, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
+    NotFound: { description: Not found, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
+    Gone: { description: "Expired, revoked or used", content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
+    RateLimited:
+      description: Too many requests
+      headers: { Retry-After: { schema: { type: integer } } }
+      content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } }
+  schemas:
+    Role: { type: string, enum: [OWNER, ADMIN, EDITOR, CONTRIBUTOR, VIEWER, NONE] }
+    ErrorBody: { type: object, required: [error], properties: { error: { type: string } } }
+    StartAuth: { type: object, required: [email], properties: { email: { type: string, format: email } } }
+    VerifyAuth:
+      type: object
+      required: [email, code]
+      properties:
+        email: { type: string, format: email }
+        code: { type: string, pattern: "^[0-9]{6}$" }
+        deviceName: { type: string, maxLength: 100 }
+        platform: { type: string, maxLength: 32 }
+        publicKey: { type: string, maxLength: 2048 }
+    Session:
+      type: object
+      required: [accountId, deviceId, token, salt, region]
+      properties:
+        accountId: { type: string }
+        deviceId: { type: string }
+        token: { type: string, description: "Bearer token; shown once, stored only as SHA-256" }
+        salt: { type: string, description: "16 random bytes, base64url, fixed per account" }
+        region: { type: string, enum: [us, eu, in, sg] }
+    PushBody:
+      type: object
+      required: [blobs]
+      properties: { blobs: { type: array, minItems: 1, maxItems: 1000, items: { type: string } } }
+    PushResult: { type: object, required: [cursor], properties: { cursor: { type: integer, format: int64 } } }
+    PulledBlob:
+      type: object
+      required: [cursor, blob, device]
+      properties:
+        cursor: { type: integer, format: int64 }
+        blob: { type: string }
+        device: { type: string }
+    StreamKey:
+      type: object
+      required: [wrapped]
+      properties:
+        stream: { type: string }
+        accountId: { type: string }
+        wrapped: { type: string, maxLength: 8192 }
+        kind: { type: string, maxLength: 64 }
+    SpaceCreate: { type: object, required: [spaceId], properties: { spaceId: { type: string } } }
+    InviteCreate:
+      type: object
+      required: [role]
+      properties:
+        role: { type: string, enum: [ADMIN, EDITOR, CONTRIBUTOR, VIEWER] }
+        expiresInDays: { type: integer, minimum: 1, maximum: 30, default: 7 }
+        summary: { type: string, maxLength: 1000, description: "Shown to the invitee before accepting; visible to the server, keep it generic" }
+    InviteInfo:
+      type: object
+      required: [token, spaceId, role, expiresAt, summary, inviterPublicKey]
+      properties:
+        token: { type: string }
+        spaceId: { type: string }
+        role: { $ref: "#/components/schemas/Role" }
+        expiresAt: { type: integer, format: int64 }
+        summary: { type: string }
+        inviterPublicKey: { type: string }
+    InviteAccept: { type: object, properties: { publicKey: { type: string, maxLength: 2048 } } }
+    MemberInfo:
+      type: object
+      required: [accountId, role, publicKey, joinedAt, left]
+      properties:
+        accountId: { type: string }
+        role: { $ref: "#/components/schemas/Role" }
+        publicKey: { type: string }
+        joinedAt: { type: integer, format: int64 }
+        left: { type: boolean }
+    RoleChange: { type: object, required: [role], properties: { role: { $ref: "#/components/schemas/Role" } } }
+    DeviceInfo:
+      type: object
+      required: [deviceId, name, platform, lastSeen, current]
+      properties:
+        deviceId: { type: string }
+        name: { type: string }
+        platform: { type: string }
+        lastSeen: { type: integer, format: int64 }
+        current: { type: boolean }
+    AdvisorPut:
+      type: object
+      required: [blob, expiresAt]
+      properties:
+        blob: { type: string, description: "base64url(12-byte IV || ciphertext+tag), max 256 KiB" }
+        expiresAt: { type: integer, format: int64, description: "Epoch ms, in the future and at most 90 days ahead" }

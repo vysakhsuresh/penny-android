@@ -32,7 +32,16 @@ data class RegionalPack(
     @SerialName("cancellation_guides") val cancellationGuides: List<String> = emptyList(),
     @SerialName("price_points") val pricePoints: PricePoints? = null,
     @SerialName("privacy_text_ref") val privacyTextRef: String? = null,
+    /** CP-02 notification parsers as data: regex templates per payment/bank app package. */
+    @SerialName("notification_templates") val notificationTemplates: List<app.penny.core.capture.NotificationTemplate> = emptyList(),
+    /** IN-05 gold by weight: reference price per gram in minor units (updated with rate packs); null when unused. */
+    @SerialName("gold_price_per_gram") val goldPricePerGram: Long? = null,
+    /** CP-10 bank connector providers available in this region, in preference order. */
+    @SerialName("connectors") val connectors: List<String> = emptyList(),
+    @SerialName("tax_year_label") val taxYearLabel: String? = null,
 ) {
+    /** Package names of every app the notification listener may read for this region. */
+    val capturePackages: Set<String> get() = (paymentApps + bankApps).mapNotNull { it.packageName }.toSet() + notificationTemplates.flatMap { it.packages }
     val primaryLocale: String get() = locales.first()
     val grouping: Grouping get() = if (numberGrouping.equals("indian", ignoreCase = true)) Grouping.INDIAN else Grouping.STANDARD
 }

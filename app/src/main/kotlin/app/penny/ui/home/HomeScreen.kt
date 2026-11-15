@@ -1,9 +1,6 @@
 package app.penny.ui.home
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -11,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,257 +16,305 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.Inbox
+import androidx.compose.material.icons.outlined.NotificationsNone
+import androidx.compose.material.icons.outlined.ReceiptLong
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.Visibility
+import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.Badge
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SwipeToDismissBox
-import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.penny.R
+import app.penny.core.budget.EnvelopeState
+import app.penny.core.model.AlertState
+import app.penny.core.model.CaptureState
+import app.penny.domain.ops.balance
+import app.penny.domain.ops.envelopeStatuses
+import app.penny.domain.ops.period
+import app.penny.domain.ops.runScheduled
+import app.penny.domain.ops.safeToSpend
+import app.penny.domain.ops.upcoming
+import app.penny.ui.common.BookViewModel
+import app.penny.ui.common.Ctx
+import app.penny.ui.common.SwipeableTx
+import app.penny.ui.common.TxRow
+import app.penny.ui.common.WithBook
+import app.penny.ui.common.accountIcon
 import app.penny.ui.common.relativeDate
 import app.penny.ui.common.shortDate
-import app.penny.ui.theme.LocalStatusColors
+import app.penny.ui.kit.Avatar
+import app.penny.ui.kit.EmptyState
+import app.penny.ui.kit.Meter
+import app.penny.ui.kit.MoneyLabel
+import app.penny.ui.kit.PennyCard
+import app.penny.ui.kit.Pill
+import app.penny.ui.kit.SectionHeader
+import app.penny.ui.theme.Penny
+import java.time.temporal.ChronoUnit
 
-@OptIn(ExperimentalMaterial3Api::class)
+data class HomeNav(
+    val openTx: (String) -> Unit,
+    val add: () -> Unit,
+    val activity: () -> Unit,
+    val search: () -> Unit,
+    val accounts: () -> Unit,
+    val account: (String) -> Unit,
+    val envelope: (String) -> Unit,
+    val bills: () -> Unit,
+    val alerts: () -> Unit,
+    val review: () -> Unit,
+    val profiles: () -> Unit,
+    val categorySheet: (String) -> Unit,
+)
+
 @Composable
-fun HomeScreen(
-    vm: HomeViewModel,
-    onAdd: () -> Unit,
-    onOpen: (String) -> Unit,
-    onTrash: () -> Unit,
-    onSettings: () -> Unit,
-    onNeedsOnboarding: () -> Unit,
-) {
-    val ui by vm.ui.collectAsStateWithLifecycle()
-    LaunchedEffect(ui) { if (ui is HomeUi.NeedsOnboarding) onNeedsOnboarding() }
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.brand_name)) },
-                actions = {
-                    IconButton(onClick = onTrash) { Icon(Icons.Default.Delete, stringResource(R.string.trash)) }
-                    IconButton(onClick = onSettings) { Icon(Icons.Default.Settings, stringResource(R.string.settings)) }
-                },
-            )
-        },
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                onClick = onAdd,
-                icon = { Icon(Icons.Default.Add, null) },
-                text = { Text(stringResource(R.string.add_transaction)) },
-            )
-        },
-    ) { padding ->
-        when (val s = ui) {
-            HomeUi.Loading, HomeUi.NeedsOnboarding -> Box(Modifier.fillMaxSize().padding(padding), Alignment.Center) {
-                CircularProgressIndicator(Modifier.semantics { contentDescription = "loading" })
-            }
-            HomeUi.Error -> Column(
-                Modifier.fillMaxSize().padding(padding).padding(24.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Text(stringResource(R.string.error_generic), style = MaterialTheme.typography.bodyLarge)
-            }
-            is HomeUi.Ready -> HomeContent(s.data, padding, vm, onAdd, onOpen)
-        }
+fun HomeScreen(nav: HomeNav, padding: PaddingValues) {
+    WithBook { ctx, vm ->
+        // Auto-post due bills and goal contributions once per open (RC-01, GO-01).
+        LaunchedEffect(ctx.book.profileId) { vm.launch { runScheduled(ctx.book) } }
+        HomeContent(ctx, vm, nav, padding)
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun HomeContent(d: HomeData, padding: PaddingValues, vm: HomeViewModel, onAdd: () -> Unit, onOpen: (String) -> Unit) {
+private fun HomeContent(ctx: Ctx, vm: BookViewModel, nav: HomeNav, padding: PaddingValues) {
+    val b = ctx.book
+    var offset by rememberSaveable { mutableIntStateOf(0) }
+    var hide by rememberSaveable { mutableStateOf(vm.prefs.appearance.value.hideAmounts) }
+    val period = b.period(offset)
+    val safe = b.safeToSpend(period)
+    val today = b.today()
     val context = LocalContext.current
-    LazyColumn(
-        Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(top = padding.calculateTopPadding(), bottom = 120.dp),
-    ) {
-        item { SafeCard(d, vm) }
-        if (d.accounts.isNotEmpty()) {
+    val pendingReview = b.captures.count { it.value.state == CaptureState.PENDING }
+    val newAlerts = b.alerts.filter { it.value.state == AlertState.NEW }
+    val rows = b.transactions.filter { it.value.date in period }
+        .sortedWith(compareByDescending<app.penny.core.event.Stored<app.penny.core.model.Transaction>> { it.value.date }.thenByDescending { it.value.time }.thenByDescending { it.state.createdAt })
+
+    LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding() + 96.dp)) {
+        item {
+            Row(Modifier.fillMaxWidth().padding(start = 16.dp, end = 8.dp, top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                IconButton(onClick = nav.profiles) { Avatar(b.profile.name, b.profileId, size = 36.dp) }
+                Column(Modifier.weight(1f).padding(start = 4.dp)) {
+                    Text(b.profile.name, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(stringResource(R.string.period_range, shortDate(period.start), shortDate(period.endInclusive)), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+                IconButton(onClick = { hide = !hide; vm.prefs.setAppearance(vm.prefs.appearance.value.copy(hideAmounts = hide)) }) {
+                    Icon(if (hide) Icons.Outlined.VisibilityOff else Icons.Outlined.Visibility, stringResource(if (hide) R.string.show_amounts else R.string.hide_amounts))
+                }
+                IconButton(onClick = nav.search) { Icon(Icons.Outlined.Search, stringResource(R.string.search)) }
+                IconButton(onClick = nav.alerts) {
+                    BadgedBox(badge = { if (newAlerts.isNotEmpty()) Badge { Text(newAlerts.size.toString()) } }) {
+                        Icon(Icons.Outlined.NotificationsNone, stringResource(R.string.alerts))
+                    }
+                }
+            }
+        }
+        item { SafeHero(ctx, safe, offset, onShift = { d -> offset = if (d == 0) 0 else offset + d }) }
+
+        if (pendingReview > 0) item {
+            PennyCard(onClick = nav.review, color = MaterialTheme.colorScheme.tertiaryContainer) {
+                Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Outlined.Inbox, null, tint = MaterialTheme.colorScheme.onTertiaryContainer)
+                    Spacer(Modifier.width(12.dp))
+                    Column(Modifier.weight(1f)) {
+                        Text(pluralStringResource(R.plurals.review_waiting, pendingReview, pendingReview), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onTertiaryContainer)
+                        Text(stringResource(R.string.review_waiting_body), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onTertiaryContainer)
+                    }
+                }
+            }
+        }
+
+        newAlerts.firstOrNull()?.let { a ->
             item {
-                Text(
-                    stringResource(R.string.accounts),
-                    style = MaterialTheme.typography.titleSmall,
-                    modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp).semantics { heading() },
-                )
-                LazyRow(contentPadding = PaddingValues(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    items(d.accounts, key = { it.id }) { a ->
-                        OutlinedCard {
-                            Column(Modifier.padding(12.dp).width(140.dp)) {
-                                Text(a.name, style = MaterialTheme.typography.labelLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                                Text(a.balance, style = MaterialTheme.typography.titleMedium)
+                PennyCard(onClick = nav.alerts, color = Penny.status.nearContainer) {
+                    Column(Modifier.padding(16.dp)) {
+                        Text(a.value.title, style = MaterialTheme.typography.titleSmall)
+                        Text(a.value.body, style = MaterialTheme.typography.bodySmall)
+                    }
+                }
+            }
+        }
+
+        // Upcoming bills in the next 14 days (RC-06 coverage at a glance).
+        val bills = b.upcoming(today, today.plusDays(14)).filter { it.open }
+        if (bills.isNotEmpty() && offset == 0) {
+            item { SectionHeader(stringResource(R.string.upcoming), action = stringResource(R.string.see_all), onAction = nav.bills) }
+            item {
+                LazyRow(contentPadding = PaddingValues(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    items(bills.take(10), key = { it.key }) { u ->
+                        val days = ChronoUnit.DAYS.between(today, u.date).toInt()
+                        Card(onClick = nav.bills, colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest), shape = MaterialTheme.shapes.large) {
+                            Column(Modifier.padding(14.dp).width(150.dp)) {
+                                Icon(Icons.Outlined.ReceiptLong, null, tint = MaterialTheme.colorScheme.primary)
+                                Spacer(Modifier.height(6.dp))
+                                Text(u.recurring.name, style = MaterialTheme.typography.titleSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                MoneyLabel(ctx.money(u.amountMinor, u.recurring.currency), style = MaterialTheme.typography.titleMedium)
+                                Text(
+                                    if (days == 0) stringResource(R.string.due_today) else pluralStringResource(R.plurals.due_in_days, days, days),
+                                    style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
                             }
                         }
                     }
                 }
             }
         }
-        item {
-            Text(
-                stringResource(R.string.transactions),
-                style = MaterialTheme.typography.titleSmall,
-                modifier = Modifier.padding(start = 16.dp, top = 20.dp, bottom = 4.dp).semantics { heading() },
-            )
-        }
-        if (d.rows.isEmpty()) {
+
+        // Envelopes that need attention first (near or over), then the busiest.
+        val envs = b.envelopeStatuses(period.start).sortedByDescending { it.usedBp }.take(4)
+        if (envs.isNotEmpty()) {
+            item { SectionHeader(stringResource(R.string.budgets)) }
             item {
-                Column(Modifier.fillMaxWidth().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(stringResource(R.string.empty_period_title), style = MaterialTheme.typography.titleMedium)
-                    Text(stringResource(R.string.empty_period_body), style = MaterialTheme.typography.bodyMedium)
-                    TextButton(onClick = onAdd) { Text(stringResource(R.string.add_transaction)) }
+                PennyCard {
+                    envs.forEach { s ->
+                        Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp)) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(s.envelope.name, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                MoneyLabel(
+                                    if (s.availableMinor >= 0) stringResource(R.string.x_left, ctx.money(s.availableMinor, s.envelope.currency)) else stringResource(R.string.x_over, ctx.money(-s.availableMinor, s.envelope.currency)),
+                                    style = MaterialTheme.typography.labelLarge,
+                                    color = if (s.state == EnvelopeState.OVER) Penny.status.over else if (s.state == EnvelopeState.NEAR) Penny.status.near else MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
+                            }
+                            Spacer(Modifier.height(6.dp))
+                            Meter(s.usedBp, s.state)
+                        }
+                    }
                 }
+            }
+        }
+
+        if (b.activeAccounts.isNotEmpty()) {
+            item { SectionHeader(stringResource(R.string.accounts), action = stringResource(R.string.see_all), onAction = nav.accounts) }
+            item {
+                LazyRow(contentPadding = PaddingValues(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    items(b.activeAccounts, key = { it.state.id }) { a ->
+                        Card(onClick = { nav.account(a.state.id) }, colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest), shape = MaterialTheme.shapes.large) {
+                            Column(Modifier.padding(14.dp).width(148.dp)) {
+                                Avatar(a.value.name, a.state.id, icon = accountIcon(a.value.type), size = 32.dp)
+                                Spacer(Modifier.height(8.dp))
+                                Text(a.value.name, style = MaterialTheme.typography.labelLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                MoneyLabel(ctx.money(b.balance(a.state.id), a.value.currency), style = MaterialTheme.typography.titleMedium)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        item { SectionHeader(stringResource(R.string.transactions), action = stringResource(R.string.see_all), onAction = nav.activity) }
+        if (rows.isEmpty()) {
+            item {
+                EmptyState(
+                    stringResource(R.string.empty_period_title), stringResource(R.string.empty_period_body),
+                    action = stringResource(R.string.add_transaction), onAction = nav.add,
+                )
             }
         } else {
             var lastDate: java.time.LocalDate? = null
-            d.rows.forEach { row ->
-                if (row.date != lastDate) {
-                    val date = row.date
-                    lastDate = date
-                    item(key = "h$date") {
+            rows.take(60).forEach { s ->
+                if (s.value.date != lastDate) {
+                    lastDate = s.value.date
+                    val d = s.value.date
+                    item(key = "h$d") {
                         Text(
-                            relativeDate(context, date, d.today),
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(start = 16.dp, top = 12.dp, bottom = 4.dp),
+                            relativeDate(context, d, today), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(start = 20.dp, top = 14.dp, bottom = 4.dp).semantics { heading() },
                         )
                     }
                 }
-                item(key = row.id) { SwipeRow(row, onOpen = { onOpen(row.id) }, onDelete = { vm.delete(row.id) }) }
+                item(key = s.state.id) {
+                    SwipeableTx(s.state.id, onDelete = {
+                        vm.act(R.string.deleted_tx) { transactions.delete(s.state.id) }
+                    }, onCategory = { nav.categorySheet(s.state.id) }) {
+                        TxRow(s.state.id, s.value, ctx, onOpen = { nav.openTx(s.state.id) })
+                    }
+                }
             }
+            if (rows.size > 60) item { TextButton(onClick = nav.activity, modifier = Modifier.padding(horizontal = 12.dp)) { Text(stringResource(R.string.see_all_n, rows.size)) } }
         }
     }
 }
 
 @Composable
-private fun SafeCard(d: HomeData, vm: HomeViewModel) {
-    val status = LocalStatusColors.current
-    val ahead = d.safe.aheadOfPace
+private fun SafeHero(ctx: Ctx, safe: app.penny.core.budget.SafeToSpend, offset: Int, onShift: (Int) -> Unit) {
+    val st = Penny.status
+    val ahead = safe.aheadOfPace
+    val elapsedBp = if (safe.period.days == 0) 0 else safe.daysElapsed * 10_000 / safe.period.days
+    val budget = safe.incomeMinor + safe.expectedIncomeMinor - safe.committedMinor - safe.savingsMinor
+    val usedBp = if (budget <= 0) (if (safe.spentMinor > 0) 10_000 else 0) else (safe.spentMinor * 10_000 / budget).toInt()
     Card(
         Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+        shape = MaterialTheme.shapes.extraLarge,
     ) {
         Column(Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = { vm.shiftPeriod(-1) }) {
-                    Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, stringResource(R.string.prev_period))
-                }
                 Text(
-                    stringResource(R.string.period_range, shortDate(d.period.start), shortDate(d.period.endInclusive)),
-                    style = MaterialTheme.typography.labelLarge,
-                    modifier = Modifier.weight(1f),
+                    stringResource(if (offset == 0) R.string.safe_to_spend else if (offset < 0) R.string.safe_was else R.string.safe_planned),
+                    style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onPrimaryContainer, modifier = Modifier.weight(1f),
                 )
-                IconButton(onClick = { vm.shiftPeriod(1) }) {
-                    Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, stringResource(R.string.next_period))
-                }
+                IconButton(onClick = { onShift(-1) }) { Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, stringResource(R.string.prev_period), tint = MaterialTheme.colorScheme.onPrimaryContainer) }
+                IconButton(onClick = { onShift(1) }) { Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, stringResource(R.string.next_period), tint = MaterialTheme.colorScheme.onPrimaryContainer) }
             }
-            if (d.offset != 0) {
-                TextButton(onClick = { vm.shiftPeriod(0) }) { Text(stringResource(R.string.this_period)) }
-            }
-            Text(stringResource(R.string.safe_to_spend), style = MaterialTheme.typography.titleMedium)
-            Text(d.safeText, style = MaterialTheme.typography.displaySmall, modifier = Modifier.semantics(mergeDescendants = true) {})
-            Spacer(Modifier.height(4.dp))
-            Text(
-                stringResource(R.string.per_day, d.perDayText) + " · " +
-                    pluralStringResource(R.plurals.days_left, d.safe.daysLeft, d.safe.daysLeft),
-                style = MaterialTheme.typography.bodyMedium,
-            )
-            Text(stringResource(R.string.income_spent, d.incomeText, d.spentText), style = MaterialTheme.typography.bodySmall)
-            if (d.safe.unconvertedCount > 0) {
+            MoneyLabel(ctx.money(safe.safeMinor), style = MaterialTheme.typography.displayMedium, color = MaterialTheme.colorScheme.onPrimaryContainer)
+            Spacer(Modifier.height(2.dp))
+            if (offset == 0) {
                 Text(
-                    pluralStringResource(R.plurals.unconverted, d.safe.unconvertedCount, d.safe.unconvertedCount),
-                    style = MaterialTheme.typography.bodySmall,
+                    stringResource(R.string.per_day, ctx.money(safe.perDayMinor)) + " · " + pluralStringResource(R.plurals.days_left, safe.daysLeft, safe.daysLeft),
+                    style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
+            } else {
+                TextButton(onClick = { onShift(0) }) { Text(stringResource(R.string.this_period)) }
             }
-            Spacer(Modifier.height(8.dp))
-            if (d.offset == 0) {
-                Text(
-                    stringResource(if (ahead) R.string.ahead_of_pace else R.string.on_pace),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = if (ahead) status.onNear else MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier
-                        .background(if (ahead) status.near else MaterialTheme.colorScheme.primaryContainer, MaterialTheme.shapes.small)
-                        .padding(horizontal = 8.dp, vertical = 4.dp),
-                )
+            Spacer(Modifier.height(14.dp))
+            Meter(usedBp, if (ahead) EnvelopeState.NEAR else EnvelopeState.OK, height = 10.dp, paceBp = if (offset == 0) elapsedBp else null)
+            Spacer(Modifier.height(12.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                HeroStat(stringResource(R.string.income), ctx.money(safe.incomeMinor + safe.expectedIncomeMinor), Modifier.weight(1f))
+                HeroStat(stringResource(R.string.spent), ctx.money(safe.spentMinor), Modifier.weight(1f))
+                HeroStat(stringResource(R.string.bills_and_goals), ctx.money(safe.committedMinor + safe.savingsMinor), Modifier.weight(1f))
+            }
+            if (safe.unconvertedCount > 0) {
+                Spacer(Modifier.height(8.dp))
+                Text(pluralStringResource(R.plurals.unconverted, safe.unconvertedCount, safe.unconvertedCount), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onPrimaryContainer)
+            }
+            if (offset == 0) {
+                Spacer(Modifier.height(10.dp))
+                if (ahead) Pill(stringResource(R.string.ahead_of_pace), container = st.nearContainer, content = MaterialTheme.colorScheme.onSurface)
+                else Pill(stringResource(R.string.on_pace), container = MaterialTheme.colorScheme.surfaceContainerLowest, content = MaterialTheme.colorScheme.onSurface)
             }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SwipeRow(row: TxRowUi, onOpen: () -> Unit, onDelete: () -> Unit) {
-    val state = rememberSwipeToDismissBoxState()
-    LaunchedEffect(state.currentValue) {
-        if (state.currentValue == SwipeToDismissBoxValue.EndToStart) {
-            // Delete first (snapTo changes this effect's key and would cancel it), then reset: swipe state is saved
-            // per row key, and a row brought back by undo must not come back dismissed.
-            onDelete()
-            state.snapTo(SwipeToDismissBoxValue.Settled)
-        }
-    }
-    SwipeToDismissBox(
-        state = state,
-        enableDismissFromStartToEnd = false,
-        backgroundContent = {
-            Box(
-                Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surfaceVariant).padding(horizontal = 24.dp),
-                contentAlignment = Alignment.CenterEnd,
-            ) { Icon(Icons.Default.Delete, stringResource(R.string.delete)) }
-        },
-    ) {
-        Column(Modifier.background(MaterialTheme.colorScheme.surface)) {
-            Row(
-                Modifier.fillMaxWidth().heightIn(min = 56.dp).clickable(onClick = onOpen).padding(horizontal = 16.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Column(Modifier.weight(1f)) {
-                    Text(row.title, style = MaterialTheme.typography.bodyLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                    if (row.subtitle.isNotEmpty()) {
-                        Text(
-                            row.subtitle,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    }
-                }
-                Text(
-                    row.amount,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = if (row.inflow) LocalStatusColors.current.positive else MaterialTheme.colorScheme.onSurface,
-                )
-            }
-            HorizontalDivider(Modifier.padding(start = 16.dp))
-        }
+private fun HeroStat(label: String, value: String, modifier: Modifier) {
+    Column(modifier) {
+        Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f), maxLines = 1, overflow = TextOverflow.Ellipsis)
+        MoneyLabel(value, style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onPrimaryContainer)
     }
 }

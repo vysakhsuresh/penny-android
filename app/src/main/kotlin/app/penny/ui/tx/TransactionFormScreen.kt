@@ -1,60 +1,47 @@
 package app.penny.ui.tx
 
-import androidx.compose.foundation.clickable
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.outlined.AttachFile
+import androidx.compose.material.icons.outlined.BookmarkAdd
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.Repeat
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.AssistChip
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.InputChip
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonDefaults
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
-import androidx.compose.material3.Switch
+import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TimePicker
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.rememberDatePickerState
-import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.LiveRegionMode
-import androidx.compose.ui.semantics.liveRegion
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -62,283 +49,271 @@ import app.penny.R
 import app.penny.core.model.Direction
 import app.penny.core.model.TxStatus
 import app.penny.core.model.TxType
-import app.penny.core.money.AmountResult
-import app.penny.core.money.CurrencyUnit
-import app.penny.ui.common.shortDate
+import app.penny.domain.BookLoad
+import app.penny.domain.ops.allTagNames
 import app.penny.ui.common.typeLabel
-import java.time.Instant
+import app.penny.ui.kit.AmountInput
+import app.penny.ui.kit.Choice
+import app.penny.ui.kit.DateInput
+import app.penny.ui.kit.EmptyState
+import app.penny.ui.kit.LoadingState
+import app.penny.ui.kit.MoneyLabel
+import app.penny.ui.kit.PennyScreen
+import app.penny.ui.kit.Pill
+import app.penny.ui.kit.PrimaryButton
+import app.penny.ui.kit.SectionHeader
+import app.penny.ui.kit.Segmented
+import app.penny.ui.kit.SelectField
+import app.penny.ui.kit.SwitchRow
+import app.penny.ui.kit.TextInput
+import app.penny.ui.kit.TimeInput
+import app.penny.ui.kit.currencyChoices
+import app.penny.ui.theme.Penny
 import java.time.LocalDate
 import java.time.LocalTime
-import java.time.ZoneOffset
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun TransactionFormScreen(vm: TransactionFormViewModel, onBack: () -> Unit, onHistory: (String) -> Unit) {
-    val form by vm.form.collectAsStateWithLifecycle()
-    val ctx by vm.ctx.collectAsStateWithLifecycle()
+fun TransactionFormScreen(
+    vm: TransactionFormViewModel,
+    onBack: () -> Unit,
+    onHistory: (String) -> Unit,
+    onMakeRecurring: (String) -> Unit,
+) {
+    val formState by vm.form.collectAsStateWithLifecycle()
     val load by vm.load.collectAsStateWithLifecycle()
     val errors by vm.errors.collectAsStateWithLifecycle()
+    val dupes by vm.dupes.collectAsStateWithLifecycle()
+    val st by vm.state.collectAsStateWithLifecycle()
+    val ready = st as? BookLoad.Ready
+    var more by rememberSaveable { mutableStateOf(vm.isEdit) }
+    var templateDialog by rememberSaveable { mutableStateOf(false) }
+    var unlockReconciled by rememberSaveable { mutableStateOf(false) }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(if (vm.isEdit) R.string.edit_transaction else R.string.new_transaction)) },
-                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back)) } },
-                actions = {
-                    if (vm.isEdit && load == LoadState.READY) {
-                        TextButton(onClick = { onHistory(vm.txId!!) }) { Text(stringResource(R.string.history)) }
-                        IconButton(onClick = { vm.delete(onBack) }) { Icon(Icons.Default.Delete, stringResource(R.string.delete)) }
-                    }
-                },
-            )
+    PennyScreen(
+        title = stringResource(if (vm.isEdit) R.string.edit_transaction else R.string.new_transaction),
+        onBack = onBack, large = false,
+        actions = {
+            if (vm.isEdit) {
+                IconButton(onClick = { vm.txId?.let(onHistory) }) { Icon(Icons.Outlined.History, stringResource(R.string.history)) }
+                IconButton(onClick = { vm.delete(onBack) }) { Icon(Icons.Outlined.Delete, stringResource(R.string.delete)) }
+            }
         },
-    ) { padding ->
-        val f = form
-        val c = ctx
-        if (load == LoadState.MISSING) {
-            Box(Modifier.fillMaxSize().padding(padding), Alignment.Center) { Text(stringResource(R.string.tx_not_found)) }
-            return@Scaffold
-        }
-        if (f == null || c == null) {
-            Box(Modifier.fillMaxSize().padding(padding), Alignment.Center) { CircularProgressIndicator() }
-            return@Scaffold
-        }
-        Column(
-            Modifier.fillMaxSize().padding(padding).imePadding().verticalScroll(rememberScrollState()).padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            Text(stringResource(R.string.field_type), style = MaterialTheme.typography.labelLarge)
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                listOf(TxType.EXPENSE, TxType.INCOME, TxType.TRANSFER, TxType.REFUND, TxType.ADJUSTMENT).forEach { t ->
-                    FilterChip(
-                        selected = f.type == t,
-                        onClick = { vm.update { it.copy(type = t, categoryId = if (it.type == TxType.INCOME || t == TxType.INCOME) null else it.categoryId) } },
-                        label = { Text(stringResource(typeLabel(t))) },
-                    )
-                }
-            }
-
-            val preview = vm.preview(f, c)
-            OutlinedTextField(
-                value = f.amount,
-                onValueChange = { v -> vm.update { it.copy(amount = v) } },
-                label = { Text(stringResource(R.string.field_amount)) },
-                prefix = { Text(f.currency + " ") },
-                placeholder = { Text(stringResource(R.string.field_amount_hint)) },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                singleLine = true,
-                isError = preview is AmountResult.Invalid,
-                supportingText = {
-                    val text = when (preview) {
-                        is AmountResult.Ok -> if (preview.isExpression) {
-                            stringResource(
-                                if (preview.rounded) R.string.amount_rounded else R.string.amount_result,
-                                c.fmt.format(preview.minor, f.currency),
-                            )
-                        } else {
-                            null
+    ) { pad ->
+        val f = formState
+        when {
+            load == LoadState.MISSING -> EmptyState(stringResource(R.string.tx_not_found), stringResource(R.string.tx_not_found_body), Modifier.padding(pad), action = stringResource(R.string.back), onAction = onBack)
+            f == null || ready == null -> LoadingState(Modifier.padding(pad))
+            else -> {
+                val b = ready.book
+                val fmt = ready.fmt
+                val reconciledLocked = vm.isEdit && f.status == TxStatus.RECONCILED && !unlockReconciled
+                Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
+                    if (reconciledLocked) {
+                        // TX-12: reconciled items are locked; editing asks to un-reconcile first.
+                        Column(Modifier.fillMaxWidth().padding(16.dp)) {
+                            Text(stringResource(R.string.reconciled_locked), style = MaterialTheme.typography.bodyMedium)
+                            OutlinedButton(onClick = { unlockReconciled = true; vm.update { it.copy(status = TxStatus.CLEARED) } }) { Text(stringResource(R.string.unreconcile)) }
                         }
-                        is AmountResult.Invalid -> vm.amountErrorText(preview.error, f.currency)
-                        null -> null
                     }
-                    if (text != null) Text(text, Modifier.semantics { liveRegion = LiveRegionMode.Polite })
-                },
-                modifier = Modifier.fillMaxWidth(),
-            )
-
-            Picker(
-                label = stringResource(R.string.field_account),
-                selected = c.accounts.firstOrNull { it.state.id == f.accountId }?.value?.name.orEmpty(),
-                options = c.accounts.map { Option(it.state.id, "${it.value.name} · ${it.value.currency}") },
-                onSelect = vm::selectAccount,
-            )
-            OutlinedTextField(
-                value = f.currency,
-                onValueChange = { v -> vm.update { it.copy(currency = v.uppercase().filter(Char::isLetter).take(3)) } },
-                label = { Text(stringResource(R.string.field_currency)) },
-                isError = runCatching { CurrencyUnit.of(f.currency) }.isFailure,
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-            )
-
-            if (f.type == TxType.TRANSFER) {
-                Picker(
-                    label = stringResource(R.string.field_to_account),
-                    selected = c.accounts.firstOrNull { it.state.id == f.toAccountId }?.value?.name.orEmpty(),
-                    options = c.accounts.filter { it.state.id != f.accountId }.map { Option(it.state.id, "${it.value.name} · ${it.value.currency}") },
-                    onSelect = { id -> vm.update { it.copy(toAccountId = id) } },
-                )
-                val toCur = c.accounts.firstOrNull { it.state.id == f.toAccountId }?.value?.currency
-                if (toCur != null && toCur != f.currency) {
-                    OutlinedTextField(
-                        value = f.toAmount,
-                        onValueChange = { v -> vm.update { it.copy(toAmount = v) } },
-                        label = { Text(stringResource(R.string.field_to_amount)) },
-                        prefix = { Text("$toCur ") },
-                        singleLine = true,
-                        modifier = Modifier.fillMaxWidth(),
+                    Segmented(
+                        listOf(TxType.EXPENSE, TxType.INCOME, TxType.TRANSFER).map { Choice(it, stringResource(typeLabel(it))) },
+                        if (f.type in listOf(TxType.EXPENSE, TxType.INCOME, TxType.TRANSFER)) f.type else TxType.EXPENSE,
+                        { t -> vm.update { it.copy(type = t, categoryId = null) } },
                     )
-                }
-            } else {
-                val options = remember(c, f.type) { vm.categoryOptions(c, f.type) }
-                Picker(
-                    label = stringResource(R.string.field_category),
-                    selected = options.firstOrNull { it.id == f.categoryId }?.label ?: stringResource(R.string.uncategorised),
-                    options = listOf(Option("", stringResource(R.string.uncategorised))) + options,
-                    onSelect = { id -> vm.update { it.copy(categoryId = id.ifEmpty { null }) } },
-                )
-            }
-
-            if (f.type == TxType.ADJUSTMENT) {
-                Text(stringResource(R.string.field_direction), style = MaterialTheme.typography.labelLarge)
-                SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
-                    listOf(Direction.IN to R.string.direction_in, Direction.OUT to R.string.direction_out).forEachIndexed { i, (d, label) ->
-                        SegmentedButton(
-                            selected = f.direction == d,
-                            onClick = { vm.update { it.copy(direction = d) } },
-                            shape = SegmentedButtonDefaults.itemShape(i, 2),
-                        ) { Text(stringResource(label)) }
+                    if (more || f.type in listOf(TxType.REFUND, TxType.ADJUSTMENT, TxType.OPENING_BALANCE)) {
+                        Segmented(
+                            listOf(TxType.REFUND, TxType.ADJUSTMENT, TxType.OPENING_BALANCE).map { Choice(it, stringResource(typeLabel(it))) },
+                            f.type, { t -> vm.update { it.copy(type = t, direction = if (t == TxType.ADJUSTMENT) it.direction ?: Direction.OUT else null) } },
+                        )
                     }
+                    AmountInput(f.amount, { s -> vm.update { it.copy(amount = s) } }, f.currency, fmt, stringResource(R.string.field_amount), error = errors["amount"])
+                    // Typical amounts from the pack (TX-14 usual-amount chips).
+                    if (!vm.isEdit && f.amount.isBlank() && ready.pack.typicalAmountChips.isNotEmpty()) {
+                        FlowRow(Modifier.padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            ready.pack.typicalAmountChips.forEach { a ->
+                                SuggestionChip({ vm.update { it.copy(amount = a.toString()) } }, label = { Text(a.toString()) })
+                            }
+                        }
+                    }
+                    if (f.type == TxType.ADJUSTMENT) {
+                        Segmented(listOf(Choice(Direction.IN, stringResource(R.string.direction_in)), Choice(Direction.OUT, stringResource(R.string.direction_out))), f.direction ?: Direction.OUT, { d -> vm.update { it.copy(direction = d) } })
+                    }
+                    val accountChoices = b.activeAccounts.map { Choice(it.state.id, it.value.name, it.value.currency) }
+                    SelectField(stringResource(if (f.type == TxType.TRANSFER) R.string.field_from_account else R.string.field_account), f.accountId, accountChoices, { it?.let(vm::selectAccount) }, error = errors["account"])
+                    if (f.type == TxType.TRANSFER) {
+                        SelectField(stringResource(R.string.field_to_account), f.toAccountId, accountChoices.filter { it.value != f.accountId }, { id -> vm.update { it.copy(toAccountId = id) } }, error = errors["toAccount"])
+                        val toCur = b.accountMap[f.toAccountId]?.value?.currency
+                        if (toCur != null && toCur != f.currency) {
+                            AmountInput(f.toAmount, { s -> vm.update { it.copy(toAmount = s) } }, toCur, fmt, stringResource(R.string.field_to_amount), error = errors["toAmount"])
+                            val sent = app.penny.ui.kit.parseAmount(f.amount, f.currency, fmt)
+                            val got = app.penny.ui.kit.parseAmount(f.toAmount, toCur, fmt)
+                            if (sent != null && got != null) app.penny.core.budget.FxTable.impliedRate(sent, f.currency, got, toCur)?.let { r ->
+                                Text(stringResource(R.string.implied_rate, f.currency, r.stripTrailingZeros().toPlainString(), toCur), style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 20.dp))
+                            }
+                        }
+                    } else if (f.splits.isEmpty()) {
+                        SelectField(stringResource(R.string.field_category), f.categoryId, vm.categoryChoices(b, if (f.type == TxType.INCOME) TxType.INCOME else TxType.EXPENSE), { id -> vm.update { it.copy(categoryId = id) } }, allowNone = true, noneLabel = stringResource(R.string.uncategorised))
+                    }
+                    PayeeField(vm, f.payee)
+                    DateInput(stringResource(R.string.field_date), runCatching { LocalDate.parse(f.date) }.getOrNull(), { d -> vm.update { it.copy(date = d.toString()) } }, today = b.today())
+                    if (runCatching { LocalDate.parse(f.date) }.getOrNull()?.isAfter(b.today()) == true) {
+                        Pill(stringResource(R.string.future_scheduled), Modifier.padding(horizontal = 16.dp, vertical = 4.dp), container = Penny.status.nearContainer, content = MaterialTheme.colorScheme.onSurface)
+                    }
+                    TimeInput(stringResource(R.string.field_time), f.time?.let { runCatching { LocalTime.parse(it) }.getOrNull() }, { t -> vm.update { it.copy(time = t?.toString()) } })
+                    TextInput(f.note, { s -> vm.update { it.copy(note = s) } }, stringResource(R.string.field_note), singleLine = false)
+                    TagsEditor(f.tags, b.allTagNames()) { tags -> vm.update { it.copy(tags = tags) } }
+
+                    if (!more) {
+                        TextButton(onClick = { more = true }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.more_options)) }
+                    } else {
+                        if (f.type != TxType.TRANSFER) SplitsEditor(vm, f, ready, errors["splits"])
+                        SectionHeader(stringResource(R.string.details))
+                        SelectField(
+                            stringResource(R.string.field_currency), f.currency,
+                            currencyChoices(listOf(b.profile.baseCurrency) + b.accounts.map { it.value.currency }), { c -> c?.let { cur -> vm.update { it.copy(currency = cur) } } },
+                        )
+                        Segmented(
+                            listOf(TxStatus.PENDING, TxStatus.CLEARED, TxStatus.RECONCILED).map { Choice(it, stringResource(when (it) { TxStatus.PENDING -> R.string.status_pending; TxStatus.CLEARED -> R.string.status_cleared; else -> R.string.status_reconciled })) },
+                            f.status, { s -> vm.update { it.copy(status = s) } },
+                        )
+                        SelectField(stringResource(R.string.field_via), f.viaAccountId, b.activeAccounts.filter { it.state.id != f.accountId }.map { Choice(it.state.id, it.value.name) }, { id -> vm.update { it.copy(viaAccountId = id) } }, allowNone = true)
+                        TextInput(f.place, { s -> vm.update { it.copy(place = s) } }, stringResource(R.string.field_place), supporting = stringResource(R.string.field_place_hint))
+                        if (b.profile.business?.mileage == true) TextInput(f.distance, { s -> vm.update { it.copy(distance = s) } }, stringResource(R.string.field_distance), keyboard = KeyboardType.Decimal)
+                        SwitchRow(stringResource(R.string.field_private), f.isPrivate, { v -> vm.update { it.copy(isPrivate = v) } }, subtitle = stringResource(R.string.field_private_body))
+                        SwitchRow(stringResource(R.string.field_exclude_budget), f.excludeBudget, { v -> vm.update { it.copy(excludeBudget = v) } })
+                        SwitchRow(stringResource(R.string.field_exclude_reports), f.excludeReports, { v -> vm.update { it.copy(excludeReports = v) } })
+                        AttachmentsEditor(vm, f, ready)
+                        Row(Modifier.padding(horizontal = 8.dp)) {
+                            TextButton(onClick = { templateDialog = true }) { Icon(Icons.Outlined.BookmarkAdd, null); Spacer(Modifier.padding(4.dp)); Text(stringResource(R.string.save_as_template)) }
+                            if (vm.isEdit) TextButton(onClick = { vm.txId?.let(onMakeRecurring) }) { Icon(Icons.Outlined.Repeat, null); Spacer(Modifier.padding(4.dp)); Text(stringResource(R.string.make_recurring)) }
+                        }
+                    }
+                    if (errors.isNotEmpty()) {
+                        errors.values.forEach { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 20.dp)) }
+                    }
+                    Spacer(Modifier.height(12.dp))
+                    PrimaryButton(stringResource(R.string.save), { vm.save(onBack) }, Modifier.padding(horizontal = 16.dp), enabled = !reconciledLocked)
                 }
             }
-
-            OutlinedTextField(
-                value = f.payee,
-                onValueChange = { v -> vm.update { it.copy(payee = v) } },
-                label = { Text(stringResource(R.string.field_payee)) },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-            )
-
-            DateTimeRow(f.date, f.time, today = LocalDate.now(), onDate = { d -> vm.update { it.copy(date = d.toString()) } }) { t ->
-                vm.update { it.copy(time = t?.toString()) }
-            }
-            if (LocalDate.parse(f.date).isAfter(LocalDate.now())) {
-                Text(stringResource(R.string.future_scheduled), style = MaterialTheme.typography.bodySmall)
-            }
-
-            OutlinedTextField(
-                value = f.note,
-                onValueChange = { v -> vm.update { it.copy(note = v) } },
-                label = { Text(stringResource(R.string.field_note)) },
-                modifier = Modifier.fillMaxWidth(),
-            )
-            OutlinedTextField(
-                value = f.tags,
-                onValueChange = { v -> vm.update { it.copy(tags = v) } },
-                label = { Text(stringResource(R.string.field_tags)) },
-                supportingText = { Text(stringResource(R.string.field_tags_hint)) },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-            )
-
-            Text(stringResource(R.string.field_status), style = MaterialTheme.typography.labelLarge)
-            SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
-                val statuses = listOf(TxStatus.PENDING to R.string.status_pending, TxStatus.CLEARED to R.string.status_cleared,
-                    TxStatus.RECONCILED to R.string.status_reconciled)
-                statuses.forEachIndexed { i, (s, label) ->
-                    SegmentedButton(
-                        selected = f.status == s,
-                        onClick = { vm.update { it.copy(status = s) } },
-                        shape = SegmentedButtonDefaults.itemShape(i, statuses.size),
-                    ) { Text(stringResource(label)) }
-                }
-            }
-
-            SwitchRow(stringResource(R.string.field_private), stringResource(R.string.field_private_body), f.isPrivate) { v ->
-                vm.update { it.copy(isPrivate = v) }
-            }
-            SwitchRow(stringResource(R.string.field_exclude_budget), null, f.excludeBudget) { v -> vm.update { it.copy(excludeBudget = v) } }
-            SwitchRow(stringResource(R.string.field_exclude_reports), null, f.excludeReports) { v -> vm.update { it.copy(excludeReports = v) } }
-
-            errors.forEach { e ->
-                Text(e, color = MaterialTheme.colorScheme.error, modifier = Modifier.semantics { liveRegion = LiveRegionMode.Assertive })
-            }
-            Button(onClick = { vm.save(onBack) }, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)) {
-                Text(stringResource(R.string.save))
-            }
         }
     }
-}
 
-@Composable
-private fun Picker(label: String, selected: String, options: List<Option>, onSelect: (String) -> Unit) {
-    var open by remember { mutableStateOf(false) }
-    Box(Modifier.fillMaxWidth()) {
-        OutlinedTextField(
-            value = selected,
-            onValueChange = {},
-            readOnly = true,
-            label = { Text(label) },
-            modifier = Modifier.fillMaxWidth(),
-        )
-        Box(Modifier.matchParentSize().clickable(onClickLabel = label) { open = true })
-        DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
-            options.forEach { o ->
-                DropdownMenuItem(text = { Text(o.label) }, onClick = { open = false; onSelect(o.id) })
-            }
-        }
-    }
-}
-
-@Composable
-private fun SwitchRow(title: String, body: String?, checked: Boolean, onChange: (Boolean) -> Unit) {
-    Row(
-        Modifier.fillMaxWidth().heightIn(min = 48.dp).clickable { onChange(!checked) },
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Column(Modifier.weight(1f)) {
-            Text(title, style = MaterialTheme.typography.bodyLarge)
-            if (body != null) Text(body, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        }
-        Switch(checked = checked, onCheckedChange = onChange)
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
-@Composable
-private fun DateTimeRow(date: String, time: String?, today: LocalDate, onDate: (LocalDate) -> Unit, onTime: (LocalTime?) -> Unit) {
-    var showDate by rememberSaveable { mutableStateOf(false) }
-    var showTime by rememberSaveable { mutableStateOf(false) }
-    val d = LocalDate.parse(date)
-    val context = LocalContext.current
-    Text(stringResource(R.string.field_date), style = MaterialTheme.typography.labelLarge)
-    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        FilterChip(selected = d == today, onClick = { onDate(today) }, label = { Text(stringResource(R.string.today)) })
-        FilterChip(selected = d == today.minusDays(1), onClick = { onDate(today.minusDays(1)) }, label = { Text(stringResource(R.string.yesterday)) })
-        FilterChip(selected = d != today && d != today.minusDays(1), onClick = { showDate = true }, label = { Text(shortDate(d)) })
-        FilterChip(
-            selected = time != null,
-            onClick = { showTime = true },
-            label = { Text(time ?: context.getString(R.string.field_no_time)) },
-        )
-    }
-    if (showDate) {
-        val state = rememberDatePickerState(initialSelectedDateMillis = d.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli())
-        DatePickerDialog(
-            onDismissRequest = { showDate = false },
-            confirmButton = {
-                TextButton(onClick = {
-                    state.selectedDateMillis?.let { onDate(Instant.ofEpochMilli(it).atZone(ZoneOffset.UTC).toLocalDate()) }
-                    showDate = false
-                }) { Text(stringResource(R.string.done)) }
-            },
-            dismissButton = { TextButton(onClick = { showDate = false }) { Text(stringResource(R.string.cancel)) } },
-        ) { DatePicker(state) }
-    }
-    if (showTime) {
-        val t = time?.let(LocalTime::parse) ?: LocalTime.now()
-        val state = rememberTimePickerState(t.hour, t.minute, android.text.format.DateFormat.is24HourFormat(context))
+    dupes?.let { d ->
         AlertDialog(
-            onDismissRequest = { showTime = false },
-            title = { Text(stringResource(R.string.pick_time)) },
-            text = { TimePicker(state) },
-            confirmButton = {
-                TextButton(onClick = { onTime(LocalTime.of(state.hour, state.minute)); showTime = false }) { Text(stringResource(R.string.done)) }
-            },
-            dismissButton = {
-                TextButton(onClick = { onTime(null); showTime = false }) { Text(stringResource(R.string.clear_time)) }
-            },
+            onDismissRequest = { vm.resolveDupes(false, onBack) },
+            title = { Text(stringResource(R.string.dupe_title)) },
+            text = { Text(stringResource(R.string.dupe_body)) },
+            confirmButton = { TextButton(onClick = { vm.resolveDupes(true, onBack) }) { Text(stringResource(R.string.merge)) } },
+            dismissButton = { TextButton(onClick = { vm.resolveDupes(false, onBack) }) { Text(stringResource(R.string.keep_both)) } },
         )
+        @Suppress("UNUSED_EXPRESSION") d
+    }
+    if (templateDialog) {
+        var name by rememberSaveable { mutableStateOf(formState?.payee.orEmpty()) }
+        AlertDialog(
+            onDismissRequest = { templateDialog = false },
+            title = { Text(stringResource(R.string.save_as_template)) },
+            text = { OutlinedTextField(name, { name = it }, label = { Text(stringResource(R.string.field_name)) }, singleLine = true) },
+            confirmButton = { TextButton(onClick = { vm.saveTemplate(name.ifBlank { "Template" }); templateDialog = false }, enabled = name.isNotBlank()) { Text(stringResource(R.string.save)) } },
+            dismissButton = { TextButton(onClick = { templateDialog = false }) { Text(stringResource(R.string.cancel)) } },
+        )
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun PayeeField(vm: TransactionFormViewModel, payee: String) {
+    TextInput(payee, { s -> vm.update { it.copy(payee = s) } }, stringResource(R.string.field_payee))
+    val sugg = vm.payeeSuggestions(payee)
+    if (sugg.isNotEmpty()) {
+        FlowRow(Modifier.padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            sugg.forEach { s -> SuggestionChip({ vm.payeePicked(s) }, label = { Text(s) }) }
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun TagsEditor(tags: List<String>, known: List<String>, onChange: (List<String>) -> Unit) {
+    var input by rememberSaveable { mutableStateOf("") }
+    Column {
+        OutlinedTextField(
+            input, { s ->
+                if (s.endsWith(",") || s.endsWith("\n")) {
+                    val t = s.trimEnd(',', '\n').trim()
+                    if (t.isNotEmpty() && t !in tags) onChange(tags + t)
+                    input = ""
+                } else input = s
+            },
+            label = { Text(stringResource(R.string.field_tags)) }, supportingText = { Text(stringResource(R.string.field_tags_hint)) }, singleLine = true,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp), shape = MaterialTheme.shapes.medium,
+            trailingIcon = { if (input.isNotBlank()) TextButton(onClick = { onChange((tags + input.trim()).distinct()); input = "" }) { Text(stringResource(R.string.add)) } },
+        )
+        FlowRow(Modifier.padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            tags.forEach { t ->
+                InputChip(true, { onChange(tags - t) }, label = { Text(t) }, trailingIcon = { Icon(Icons.Outlined.Close, stringResource(R.string.remove_x, t)) })
+            }
+            known.filter { it !in tags && (input.isBlank() || it.contains(input, true)) }.take(6).forEach { t ->
+                SuggestionChip({ onChange(tags + t); input = "" }, label = { Text(t) })
+            }
+        }
+    }
+}
+
+/** TX-07: splits by amount or percent with live remaining; each line has category, note and tags. */
+@Composable
+private fun SplitsEditor(vm: TransactionFormViewModel, f: TxForm, ready: BookLoad.Ready, error: String?) {
+    val b = ready.book
+    SectionHeader(stringResource(R.string.field_splits))
+    if (f.splits.isNotEmpty()) {
+        Segmented(listOf(Choice(false, stringResource(R.string.split_by_amount)), Choice(true, stringResource(R.string.split_by_percent))), f.splitByPercent, { p -> vm.update { it.copy(splitByPercent = p) } })
+        val remaining = vm.splitRemaining(f, ready.fmt)
+        if (remaining != null) {
+            MoneyLabel(
+                stringResource(R.string.split_remaining, ready.fmt.format(remaining, f.currency)),
+                Modifier.padding(horizontal = 20.dp),
+                color = if (remaining == 0L) Penny.status.positive else Penny.status.near, style = MaterialTheme.typography.labelLarge,
+            )
+        }
+    }
+    f.splits.forEachIndexed { i, s ->
+        Column(Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(stringResource(R.string.split_n, i + 1), style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(start = 20.dp).weight(1f))
+                IconButton(onClick = { vm.update { it.copy(splits = it.splits.filterIndexed { j, _ -> j != i }) } }) { Icon(Icons.Outlined.Close, stringResource(R.string.remove_split)) }
+            }
+            if (f.splitByPercent) TextInput(s.amount, { v -> vm.update { it.copy(splits = it.splits.mapIndexed { j, x -> if (j == i) x.copy(amount = v) else x }) } }, stringResource(R.string.percent), keyboard = KeyboardType.Decimal)
+            else AmountInput(s.amount, { v -> vm.update { it.copy(splits = it.splits.mapIndexed { j, x -> if (j == i) x.copy(amount = v) else x }) } }, f.currency, ready.fmt, stringResource(R.string.field_amount))
+            SelectField(stringResource(R.string.field_category), s.categoryId, vm.categoryChoices(b, if (f.type == TxType.INCOME) TxType.INCOME else TxType.EXPENSE), { c -> vm.update { it.copy(splits = it.splits.mapIndexed { j, x -> if (j == i) x.copy(categoryId = c) else x }) } }, allowNone = true)
+            TextInput(s.note, { v -> vm.update { it.copy(splits = it.splits.mapIndexed { j, x -> if (j == i) x.copy(note = v) else x }) } }, stringResource(R.string.field_note))
+        }
+    }
+    error?.let { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 20.dp)) }
+    OutlinedButton(
+        onClick = {
+            vm.update { cur ->
+                val remaining = vm.splitRemaining(cur, ready.fmt)
+                val first = if (cur.splits.isEmpty()) listOf(SplitForm(cur.amount, cur.categoryId)) else emptyList()
+                cur.copy(splits = cur.splits + first + SplitForm(if (remaining != null && remaining > 0 && cur.splits.isNotEmpty() && !cur.splitByPercent) ready.fmt.editable(remaining, cur.currency) else ""), categoryId = null)
+            }
+        },
+        modifier = Modifier.padding(horizontal = 16.dp),
+    ) { Text(stringResource(if (f.splits.isEmpty()) R.string.split_this else R.string.add_split)) }
+}
+
+/** TX-11: attach from camera roll, files or PDF; shows each with remove. */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun AttachmentsEditor(vm: TransactionFormViewModel, f: TxForm, ready: BookLoad.Ready) {
+    val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri -> uri?.let(vm::attach) }
+    val context = LocalContext.current
+    SectionHeader(stringResource(R.string.field_attachments))
+    FlowRow(Modifier.padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        f.attachmentIds.forEach { id ->
+            val a = ready.book.attachments.firstOrNull { it.state.id == id }?.value
+            InputChip(true, { vm.removeAttachment(id) }, label = { Text(a?.fileName ?: context.getString(R.string.obj_attachment)) }, trailingIcon = { Icon(Icons.Outlined.Close, stringResource(R.string.remove_x, a?.fileName.orEmpty())) })
+        }
+        AssistChip({ picker.launch(arrayOf("image/*", "application/pdf")) }, label = { Text(stringResource(R.string.add_attachment)) }, leadingIcon = { Icon(Icons.Outlined.AttachFile, null) })
     }
 }

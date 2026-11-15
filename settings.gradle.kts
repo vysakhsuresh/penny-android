@@ -22,4 +22,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "penny-android"
 
-include(":core", ":packs", ":data", ":app")
+include(":core", ":packs", ":data", ":capture", ":sync", ":app")

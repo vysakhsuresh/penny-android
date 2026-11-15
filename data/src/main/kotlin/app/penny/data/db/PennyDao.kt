@@ -72,6 +72,60 @@ interface PennyDao {
     )
     suspend fun search(profileId: String, query: String): List<TransactionRow>
 
+    @Query("SELECT COALESCE(MAX(lamport), 0) FROM events")
+    suspend fun maxLamport(): Long
+
+    @Query("SELECT eventId FROM events WHERE eventId IN (:ids)")
+    suspend fun knownIds(ids: List<String>): List<String>
+
+    @Query("SELECT * FROM events WHERE profileId = :profileId AND seq > :seq AND remote = 0 ORDER BY seq LIMIT :limit")
+    suspend fun localEventsAfter(profileId: String, seq: Long, limit: Int): List<EventRow>
+
+    @Query("SELECT * FROM events WHERE profileId = :profileId ORDER BY seq")
+    suspend fun eventsForProfile(profileId: String): List<EventRow>
+
+    @Query("SELECT * FROM events WHERE profileId = :profileId AND ts >= :since ORDER BY seq DESC LIMIT :limit")
+    fun observeRecentEvents(profileId: String, since: Long, limit: Int): Flow<List<EventRow>>
+
+    @Query("SELECT COUNT(*) FROM events WHERE profileId = :profileId AND seq > :seq AND remote = 0")
+    fun observePendingCount(profileId: String, seq: Long): Flow<Int>
+
+    @Query("SELECT * FROM entities WHERE profileId = :profileId")
+    suspend fun entitiesForProfile(profileId: String): List<EntityRow>
+
+    @Query("SELECT * FROM entities WHERE profileId = :profileId")
+    fun observeProfileEntities(profileId: String): Flow<List<EntityRow>>
+
+    @Query("DELETE FROM events WHERE profileId = :profileId")
+    suspend fun eraseProfileEvents(profileId: String)
+
+    @Query("DELETE FROM entities WHERE profileId = :profileId")
+    suspend fun eraseProfileEntities(profileId: String)
+
+    @Query("DELETE FROM transactions WHERE profileId = :profileId")
+    suspend fun eraseProfileTransactions(profileId: String)
+
+    @Query("SELECT * FROM events WHERE profileId = :profileId ORDER BY seq DESC LIMIT :limit OFFSET :offset")
+    suspend fun profileEventsPage(profileId: String, limit: Int, offset: Int): List<EventRow>
+
+    @Query("SELECT * FROM entities WHERE profileId = :profileId AND deletedAt IS NOT NULL ORDER BY deletedAt DESC")
+    fun observeDeleted(profileId: String): Flow<List<EntityRow>>
+
+    @Query("SELECT * FROM entities WHERE entity = :entity AND profileId = :profileId AND deletedAt IS NOT NULL AND deletedAt < :before")
+    suspend fun deletedBefore(entity: String, profileId: String, before: Long): List<EntityRow>
+
+    @Query("SELECT value FROM kv WHERE `key` = :key")
+    suspend fun kv(key: String): String?
+
+    @Query("SELECT value FROM kv WHERE `key` = :key")
+    fun observeKv(key: String): Flow<String?>
+
+    @Upsert
+    suspend fun putKv(row: KvRow)
+
+    @Query("DELETE FROM kv WHERE `key` = :key")
+    suspend fun deleteKv(key: String)
+
     @Query("DELETE FROM entities")
     suspend fun clearEntities()
 

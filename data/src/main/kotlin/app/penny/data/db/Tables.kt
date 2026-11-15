@@ -8,7 +8,10 @@ import androidx.room.PrimaryKey
 /** Append-only event log (SY-01). Rows are never updated or deleted. */
 @Entity(
     tableName = "events",
-    indices = [Index(value = ["eventId"], unique = true), Index(value = ["entity", "entityId"]), Index(value = ["groupId"])],
+    indices = [
+        Index(value = ["eventId"], unique = true), Index(value = ["entity", "entityId"]), Index(value = ["groupId"]),
+        Index(value = ["profileId", "seq"]),
+    ],
 )
 data class EventRow(
     @PrimaryKey(autoGenerate = true) val seq: Long = 0,
@@ -26,7 +29,15 @@ data class EventRow(
     val reason: String?,
     val vclock: String,
     val ciphertextRef: String?,
+    /** SY-02 Lamport clock; ordering key shared by all devices. */
+    @androidx.room.ColumnInfo(defaultValue = "0") val lamport: Long = 0,
+    /** True for events that came from another device (never pushed back). */
+    @androidx.room.ColumnInfo(defaultValue = "0") val remote: Boolean = false,
 )
+
+/** Device-local key/value state that is not user data (sync cursors, last digest), never synced. */
+@Entity(tableName = "kv")
+data class KvRow(@PrimaryKey val key: String, val value: String)
 
 /** Materialised state of every entity, rebuilt from events. */
 @Entity(tableName = "entities", primaryKeys = ["entity", "id"], indices = [Index(value = ["entity", "profileId"])])

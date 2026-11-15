@@ -80,7 +80,7 @@ class OnboardingViewModel @Inject constructor(private val repo: PennyRepository)
 }
 
 @Composable
-fun OnboardingScreen(vm: OnboardingViewModel, onDone: () -> Unit) {
+fun OnboardingScreen(vm: OnboardingViewModel, onImport: () -> Unit, onDone: () -> Unit) {
     val context = LocalContext.current
     var step by rememberSaveable { mutableStateOf(0) }
     var packId by rememberSaveable { mutableStateOf(vm.devicePack.id) }
@@ -130,15 +130,23 @@ fun OnboardingScreen(vm: OnboardingViewModel, onDone: () -> Unit) {
                         ) { cycleIndex = i }
                     }
                 }
-                else -> OutlinedTextField(
-                    value = cash,
-                    onValueChange = { cash = it },
-                    label = { Text(stringResource(R.string.field_amount)) },
-                    prefix = { Text(pack.currency + " ") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                )
+                else -> Column {
+                    OutlinedTextField(
+                        value = cash,
+                        onValueChange = { cash = it },
+                        label = { Text(stringResource(R.string.field_amount)) },
+                        prefix = { Text(pack.currency + " ") },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                    Spacer(Modifier.height(24.dp))
+                    // OB-03 / OB-04: bring data from another app, or join a household, right after setup.
+                    TextButton(onClick = {
+                        if (!busy) { busy = true; vm.finish(pack, cycles.getOrElse(cycleIndex) { pack.payCycleDefault }, cashName, cash) { onDone(); onImport() } }
+                    }) { Text(stringResource(R.string.ob_import)) }
+                    Text(stringResource(R.string.ob_join_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
             }
         }
 

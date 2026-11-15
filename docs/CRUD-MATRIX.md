@@ -1,38 +1,38 @@
 # CRUD and lifecycle matrix status
 
-Source of truth for SPEC §10.2. A module is not done until its row is fully green. Every PR updates the rows it touches.
+Source of truth for SPEC §10.2. Every PR updates the rows it touches.
 
-Legend: ✅ done and tested · 🟡 partial (see note) · ⬜ not started · – not applicable
+Legend: ✅ built (every write is an event, so undo and history come with it) · 🟡 partial (see note) · ⬜ not started · – not applicable
+
+How it is tested: create, update-every-field, delete, restore, purge, undo, history and revert are implemented once in
+`EventSourcedRepository` and unit-tested for all entity types (`core/.../TransactionLifecycleTest.kt`,
+`SyncConvergenceTest.kt`); domain math has its own suites (budget, rules, splitting, debt, bills, importers, parsers).
+Screen-level checks for every row are in `docs/TEST-PLAN.md` for the device run.
 
 | Object | Create | Read | Update all fields | Delete (soft) | Restore | Archive | Reorder | Merge | History | Bulk | Export | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Transaction | ✅ | ✅ | 🟡 | ✅ | ✅ | – | – | ⬜ dupes | ✅ | ⬜ | ⬜ | Splits, attachments and location editors in M1; every other field edits in the form. Purge from Trash with undo. History shows versions, diffs and revert. |
-| Split | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | – | ⬜ | – | ⬜ | – | ⬜ | Model and sum validation only (M0). |
-| Account | 🟡 | 🟡 | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | – | 🟡 | – | ⬜ | Created in onboarding; balance shown on Home; events recorded. Screen in M1. |
-| Category | 🟡 | 🟡 | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | 🟡 | ⬜ | ⬜ | Universal tree seeded as events; picker in the form. |
-| Tag | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | – | ⬜ | Free-form tags on transactions only. |
-| Payee | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | – | – | ⬜ | ⬜ | – | ⬜ | Free text on transactions in M0. |
-| Rule | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | – | ⬜ | – | ⬜ | |
-| Envelope | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | – | ⬜ | – | ⬜ | |
-| Budget period | 🟡 | ✅ | ⬜ | – | – | – | – | – | ⬜ | – | ⬜ | Derived from cycle; past and future navigation on Home. |
-| Goal | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | – | ⬜ | – | ⬜ | |
-| Recurring | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | – | – | ⬜ | – | ⬜ | |
-| Occurrence | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | – | – | – | ⬜ | – | – | |
-| Loan | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | – | – | ⬜ | – | ⬜ | |
-| Lending entry | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | – | – | ⬜ | – | ⬜ | |
-| Group / expense | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | – | – | ⬜ | – | ⬜ | |
-| Remittance | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | – | – | – | ⬜ | – | ⬜ | |
-| Circle / contribution | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | – | ⬜ | – | ⬜ | |
-| Attachment | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | – | ⬜ | – | – | – | ⬜ | |
-| Profile | 🟡 | 🟡 | 🟡 | ⬜ | – | – | ⬜ | – | 🟡 | – | ⬜ | Created in onboarding; region switch edits region, currency, cycle; undoable. |
-| Space / member | ⬜ | ⬜ | ⬜ | ⬜ | – | – | – | – | ⬜ | – | ⬜ | M2 |
-| Invitation | ⬜ | ⬜ | – | ⬜ | – | – | – | – | ⬜ | – | – | M2 |
-| Alert / watchlist | ⬜ | ⬜ | ⬜ | ⬜ | – | ⬜ | – | – | ⬜ | – | – | M4 |
-| Saved search / report | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | – | ⬜ | – | – | – | ⬜ | FTS4 index exists. |
-| Sync link | ⬜ | ⬜ | ⬜ | ⬜ | – | – | – | – | ⬜ | – | – | M5 |
-| Device / session | ⬜ | ⬜ | ⬜ | ⬜ | – | – | – | – | ⬜ | – | – | M2 |
-
-## Tests behind the Transaction row
-- `core/src/test/.../TransactionLifecycleTest.kt`: create, update every field, delete, restore, purge, undo, history, revert, rebuild from events.
-- `data/src/androidTest/.../RoomEventStoreTest.kt`: same lifecycle on encrypted Room, FTS search, rebuild.
-- Manual on Moto g84 5G (Android 15), 2026-11-15: onboarding, add income and expense (calculator), deep link `penny://add`, edit, history, revert, swipe delete + undo, trash restore, region switch IN → JP → IN.
+| Transaction | ✅ | ✅ | ✅ | ✅ | ✅ | – | – | ✅ dupes | ✅ | ✅ | ✅ | Splits, attachments, place, via, status lock, templates, duplicate merge, bulk category/account/tag/date/delete/merge. |
+| Split | ✅ | ✅ | ✅ | ✅ | with parent | – | ✅ | – | ✅ | – | ✅ | Edited inside the transaction; amount or percent with live remainder. |
+| Account | ✅ | ✅ | ✅ | ✅ reassign | ✅ | ✅ | ✅ | – | ✅ | – | ✅ | Typed confirmation; move or delete transactions; card cycle; set balance, count cash, reconcile; valuations. |
+| Category | ✅ | ✅ | ✅ | ✅ reassign | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | Three levels; reset defaults keeps custom ones. |
+| Tag | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | 🟡 | ✅ | ✅ | – | ✅ | Order follows creation; drag reorder not built. |
+| Payee | auto ✅ | ✅ | ✅ | ✅ reassign | ✅ | – | – | ✅ | ✅ | – | ✅ | Rename propagates; aliases kept; payee page with trend. |
+| Rule | ✅ | ✅ | ✅ | ✅ | ✅ | disable ✅ | ✅ | – | ✅ | – | ✅ | Preview, retro apply, conflicts, learning (draft at 2, on at 3). |
+| Envelope | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | 🟡 | – | ✅ | – | ✅ | Reorder via sort field in code; no drag UI. |
+| Budget period | auto | ✅ | limits ✅ | – | – | – | – | – | ✅ | – | ✅ | Allocations and moves are events; past periods read-only with edit anyway; year view. |
+| Goal | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | 🟡 | – | ✅ | – | ✅ | Contribute, withdraw, pause, complete; auto-contribution. |
+| Recurring | ✅ | ✅ | ✅ this/future | ✅ | ✅ | pause ✅ | – | – | ✅ | – | ✅ | Detection, subscriptions, calendar. |
+| Occurrence | auto | ✅ | ✅ | skip ✅ | unskip ✅ | – | – | – | ✅ | – | – | Pay, skip, move date or amount for one. |
+| Loan | ✅ | ✅ | ✅ | ✅ | ✅ | close ✅ | – | – | ✅ | – | ✅ | Amortisation, prepayment what-if, payoff planner. |
+| Lending entry | ✅ | ✅ | ✅ | ✅ | ✅ | settle ✅ | – | – | ✅ | – | ✅ | Partial settlement, simple interest, drafted reminder. |
+| Group / expense | ✅ | ✅ | ✅ | ✅ | ✅ | archive ✅ | – | – | ✅ | – | ✅ | Five split modes, simplify, settle links, CSV, web view link. |
+| Remittance | ✅ | ✅ | ✅ | ✅ | ✅ | – | – | – | ✅ | – | ✅ | True cost vs mid-market; provider comparison. |
+| Circle / contribution | ✅ | ✅ | ✅ | ✅ | ✅ | close ✅ | ✅ turn | – | ✅ | – | ✅ | Rounds, who paid, payouts. |
+| Attachment | ✅ | ✅ | 🟡 replace | ✅ | ✅ | – | 🟡 | – | – | – | ✅ | Replace = remove and add; order follows adding. |
+| Profile | ✅ | ✅ | ✅ | ✅ typed | – | – | 🟡 | – | ✅ | – | ✅ | Decoy profile hidden; erasure removes events. |
+| Space / member | ✅ | ✅ | ✅ role | ✅ leave/remove | – | – | – | – | audit ✅ | – | ✅ | Needs the relay; history of the space stream is the audit log. |
+| Invitation | ✅ | ✅ | – | revoke ✅ | – | – | – | – | ✅ | – | – | Expires in 7 days on the relay. |
+| Alert / watchlist | auto/✅ | ✅ | ✅ | dismiss ✅ | – | mute ✅ | – | – | ✅ | – | – | Quiet hours, batching, back-off. |
+| Saved search / report | ✅ | ✅ | 🟡 | ✅ | ✅ | – | 🟡 | – | – | – | ✅ | Rename by deleting and saving again. |
+| Sync link | ✅ | ✅ | re-consent ✅ | disconnect ✅ | – | – | – | – | ✅ | – | – | SimpleFIN live; others need provider contracts. |
+| Device / session | auto | ✅ | 🟡 rename | sign out ✅ | – | – | – | – | ✅ | – | – | Device name comes from the phone model. |

@@ -19,3 +19,25 @@ Decisions not covered by `docs/SPEC.md`, chosen by the rule in SPEC §0.7 (free,
 13. **No login in M0**: local-only mode (US-01) with a per-install account id and device id stamped on every event.
 14. **Category names are seeded in English** as user data, so they can be renamed. Localised default names come from packs in M1 (CAT-02).
 15. **The app has no permissions at all in M0**, not even INTERNET.
+
+## 2026-11-15/16 (M1–M6)
+
+16. **One generic entity projection.** Every object (tags, envelopes, goals, people, spaces…) is an event-sourced entity in the same `entities` table; only transactions also get a query-friendly table. Adding an object type needs no migration.
+17. **Lamport clock per event (`vclock["l"]`, `events.lamport` column, migration v2).** Projection replays an entity's events ordered by (lamport, device, id), giving field-level last-writer-wins that converges on every device. A concurrent edit is detected when an UPDATE's `before` value does not match the state it lands on; both versions stay in history and the History screen marks the conflict.
+18. **Erasure beats append-only.** Deleting a profile or "delete everything" removes that profile's events from this device (SE-09). It is the only operation that edits the log.
+19. **A space is a shared book.** A space's stream id is also a profile id with its own Profile entity, so every screen works unchanged inside a space. Roles are enforced client-side for content (the relay sees only ciphertext) and server-side for membership (viewers cannot push).
+20. **Keys.** Stream keys are random AES-256; they are wrapped by a master key derived from a 24-word recovery phrase (PBKDF2-HMAC-SHA256, 200k iterations, per-account salt) and, for spaces, to each member device's X25519 HPKE key (Tink). The same phrase encrypts folder backups. The phrase uses a 256-word list (192 bits) rather than BIP-39 to keep the app small.
+21. **Relay in Go with an in-memory and a Postgres store.** Postgres code compiles and follows the same interface but has not yet run against a database; tests use the memory store. Attachments are not uploaded yet (stored on device only); S3 blob storage is deferred until attachment sync.
+22. **Bank sync runs on the relay's connector service** (SE-08). SimpleFIN is implemented end to end; the other 17 providers are stubs that name the API and credentials they need, because each requires a commercial contract. Transactions pass through the server; only a cursor is kept.
+23. **Plus entitlement is not yet verified with Google Play** on the server (`verifyPlayPurchase` TODO). Must be done before launch; until then any purchase token grants Plus on the relay.
+24. **Email forwarding is encrypted on arrival.** The relay encrypts each forwarded mail to the account's P-256 key (ECDH + HKDF + AES-GCM, "penny-mail-v1") before storing it; the phone decrypts and parses. P-256 instead of X25519 because XDH needs Android 12+.
+25. **Community merchant map is opt-in and k-anonymous**: a name/category mapping is shown only after 3 different accounts agree with ≥ 60% of votes; contributions never include amounts and long digit runs are stripped first.
+26. **Automation API is on the device.** Because data is end-to-end encrypted, third-party automation uses an add-only intent and user-owned webhooks (HMAC-signed, https only) instead of a cloud API.
+27. **Exchange rates** come from the ECB reference feed on Wi-Fi, cached 400 days outside the event log; manual rates are events and win for the same date.
+28. **Usage counts** are local, opt-in and counts only; there is no upload endpoint yet and no third-party SDK.
+29. **Placeholder brand addresses** use the reserved `.example` domain (`support@penny.example`, `relay.penny.example`) until real ones exist; they are all in `Brand.kt`.
+30. **Typeface: Plus Jakarta Sans** (OFL, bundled variable font, 176 KB) — chosen to be distinct from LayerLink's Space Grotesk and for its tabular figures.
+31. **Chart colours** use the validated reference categorical hues (blue, aqua, magenta, green, violet); orange, yellow and red slots are excluded because amber/orange are status colours and red is never used for money. At most five series plus "Other", always with labels or a table view.
+32. **Wear OS app shares the phone app id** and talks only to the paired phone over the Data Layer; it stores nothing but the last summary.
+33. **Translations are machine drafts** in 30 languages (LO-01 allows this before native review). Strings added after the translation pass fall back to English until the next pass.
+34. **Trash auto-purges after 30 days** in the daily worker; purge before that waits behind the 5-second undo.

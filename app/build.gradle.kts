@@ -21,8 +21,8 @@ android {
         applicationId = "app.penny"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "0.1.0-m0"
+        versionCode = 2
+        versionName = "1.0.0-beta1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         resValue("string", "brand_name", brandName)
     }

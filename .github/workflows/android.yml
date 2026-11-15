@@ -15,9 +15,23 @@ jobs:
           distribution: temurin
           java-version: "21"
       - uses: gradle/actions/setup-gradle@v4
-      - run: ./gradlew test lint detekt assembleDebug --console=plain
+      - name: Unit tests, lint and debug builds (phone and watch)
+        run: ./gradlew test lint detekt :app:assembleDebug :wear:assembleDebug --console=plain
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: reports
           path: "**/build/reports/**"
+
+  server:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.24"
+      - run: go vet ./...
+      - run: go test -race -count=1 ./...

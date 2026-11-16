@@ -44,4 +44,5 @@
     <string name="split_total_percent">Total: %1$s%% of 100%%</string>
     <string name="split_total_amount">Total: %1$s of %2$s</string>
     <string name="provider_not_named">Provider not named</string>
+    <string name="deleted_named">Deleted %1$s · %2$s</string>
 </resources>

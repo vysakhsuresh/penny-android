@@ -1,5 +1,6 @@
 package app.penny.ui.tx
 
+import androidx.compose.material3.InputChip
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -173,7 +174,13 @@ fun ActivityScreen(initialFilter: String?, onBack: () -> Unit, onOpen: (String) 
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = pad.calculateBottomPadding() + 48.dp)) {
                 item {
                     LazyRow(contentPadding = PaddingValues(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        item { FilterChip(showFilters, { showFilters = !showFilters }, label = { Text(stringResource(R.string.filters)) }, leadingIcon = { Icon(Icons.Outlined.Tune, null) }) }
+                        // A filter that arrived from elsewhere (an Insights tap, a saved search) stays visible and easy to clear.
+                        val filtered = filter.copy(sort = TxFilter().sort, ascending = TxFilter().ascending) != TxFilter()
+                        item { FilterChip(showFilters || filtered, { showFilters = !showFilters }, label = { Text(stringResource(R.string.filters)) }, leadingIcon = { Icon(Icons.Outlined.Tune, null) }) }
+                        if (filtered) item {
+                            InputChip(true, { setFilter(TxFilter(sort = filter.sort, ascending = filter.ascending)) }, label = { Text(stringResource(R.string.clear_filters)) },
+                                trailingIcon = { Icon(Icons.Outlined.Close, null) })
+                        }
                         item {
                             FilterChip(false, { sortMenu = true }, label = { Text(stringResource(R.string.sort)) }, leadingIcon = { Icon(Icons.Outlined.SwapVert, null) })
                             DropdownMenu(sortMenu, { sortMenu = false }) {
@@ -216,7 +223,7 @@ fun ActivityScreen(initialFilter: String?, onBack: () -> Unit, onOpen: (String) 
                 }
                 items(hits.take(1_000), key = { it.id }) { r ->
                     val sel = r.id in selected
-                    SwipeableTx(r.id, onDelete = { vm.act(R.string.deleted_tx) { transactions.delete(r.id) } }, onCategory = null) {
+                    SwipeableTx(r.id, onDelete = { vm.act(messageText = app.penny.ui.common.deletedMessage(context, ctx, r.tx)) { transactions.delete(r.id) } }, onCategory = null) {
                         TxRow(
                             r.id, r.tx, ctx, showDate = true, selected = sel,
                             onOpen = { if (selecting) selected = if (sel) selected - r.id else selected + r.id else onOpen(r.id) },

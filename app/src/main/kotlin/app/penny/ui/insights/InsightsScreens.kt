@@ -130,6 +130,13 @@ fun InsightsScreen(padding: PaddingValues, go: (String) -> Unit) {
                     IconButton(onClick = { offset++ }) { Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, stringResource(R.string.next)) }
                 }
             }
+            // "Pay period" follows the pay cycle in the profile; say which one it is and where to change it.
+            if (range == Range.PERIOD) item {
+                Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+                    Text(app.penny.ui.common.cycleLabel(LocalContext.current, ctx.book.profile.cycle), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    TextButton(onClick = { go(app.penny.Routes.PROFILE_SETTINGS) }) { Text(stringResource(R.string.change_cycle)) }
+                }
+            }
             item {
                 PennyCard {
                     Column(Modifier.padding(16.dp)) {
@@ -173,7 +180,9 @@ fun InsightsScreen(padding: PaddingValues, go: (String) -> Unit) {
                 item {
                     val flows = ins.flows(p, { id -> b.categoryMap[id]?.value?.name ?: context.getString(R.string.income) }, { id -> id?.let { label(it) } ?: context.getString(R.string.uncategorised) })
                     val sources = flows.filter { it.to == Insights.BUDGET }.map { Datum(it.from, if (it.from == Insights.FROM_SAVINGS) context.getString(R.string.from_savings) else it.from, it.amountMinor, ctx.money(it.amountMinor)) }
-                    val sinks = topWithOther(flows.filter { it.from == Insights.BUDGET }.map { Datum(it.to, if (it.to == Insights.SAVED) context.getString(R.string.saved_label) else it.to, it.amountMinor, ctx.money(it.amountMinor)) }, 5, other) { ctx.money(it) }
+                    val sinks = topWithOther(flows.filter { it.from == Insights.BUDGET }.map { Datum(it.to, if (it.to == Insights.SAVED) context.getString(R.string.saved_label) else it.to, it.amountMinor, ctx.money(it.amountMinor)) },
+                        // Income takes the first palette colours; the spending side gets the rest, never a repeat (Food was income-blue).
+                        (app.penny.ui.theme.LocalPenny.current.entityPalette.size - sources.size).coerceAtLeast(1), other) { ctx.money(it) }
                     PennyCard { Spacer(Modifier.height(12.dp)); FlowBars(sources, sinks); Spacer(Modifier.height(12.dp)) }
                 }
                 if (s.byPayee.isNotEmpty()) {
@@ -230,7 +239,9 @@ private fun ForecastCard(ctx: Ctx) {
     val start = b.activeAccounts.filter { it.value.includeInBudget && it.value.currency == ctx.base }.sumOf { b.balance(it.state.id) }
     val sched = b.upcoming(today.plusDays(1), today.plusDays(90)).filter { it.open }.map { u -> u.date to (if (u.recurring.type == TxType.INCOME) u.amountMinor else -u.amountMinor) }
     val top = remember(b) {
-        b.txList.filter { it.type == TxType.EXPENSE && it.date.isAfter(today.minusDays(90)) && it.recurringId == null }.groupBy { b.topLevel(it.categoryId) }
+        // Only everyday spending can be cut: not savings, transfers, money lent or loan payments.
+        b.txList.filter { it.type == TxType.EXPENSE && it.date.isAfter(today.minusDays(90)) && it.recurringId == null && it.categoryId !in b.excludedCategoryIds }.groupBy { b.topLevel(it.categoryId) }
+            .filterKeys { k -> k != null && k !in b.excludedCategoryIds && b.categoryMap[k]?.value?.key?.startsWith("loan") != true }
             .mapValues { (_, l) -> l.sumOf { it.amountMinor } }.entries.sortedByDescending { it.value }.take(4).mapNotNull { it.key }
     }
     val cutCats = cutCat?.let { c -> (listOf(c) + b.categories.filter { it.value.parentId == c }.map { it.state.id }).associateWith { (cut * 100).toInt() } }.orEmpty()
@@ -238,7 +249,7 @@ private fun ForecastCard(ctx: Ctx) {
     val safe = b.safeToSpend(b.period())
     PennyCard {
         Column(Modifier.padding(vertical = 12.dp)) {
-            LineChart(listOf(shortDate(today) to start) + pts.filterIndexed { i, _ -> i % 7 == 6 }.map { app.penny.ui.common.monthDay(it.date) to it.balanceMinor }, { ctx.money(it) })
+            LineChart(listOf(shortDate(today) to start) + pts.filterIndexed { i, _ -> i % 7 == 6 || i == pts.lastIndex }.map { app.penny.ui.common.monthDay(it.date) to it.balanceMinor }, { ctx.money(it) })
             Text(stringResource(R.string.forecast_end, ctx.money(pts.last().balanceMinor)), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
             Text(stringResource(R.string.forecast_period_end, ctx.money(safe.safeMinor)), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 16.dp))
             if (top.isNotEmpty()) {

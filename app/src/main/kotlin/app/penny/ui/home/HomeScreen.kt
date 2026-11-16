@@ -250,7 +250,7 @@ private fun HomeContent(ctx: Ctx, vm: BookViewModel, nav: HomeNav, padding: Padd
                 }
                 item(key = s.state.id) {
                     SwipeableTx(s.state.id, onDelete = {
-                        vm.act(R.string.deleted_tx) { transactions.delete(s.state.id) }
+                        vm.act(messageText = app.penny.ui.common.deletedMessage(context, ctx, s.value)) { transactions.delete(s.state.id) }
                     }, onCategory = { nav.categorySheet(s.state.id) }) {
                         TxRow(s.state.id, s.value, ctx, onOpen = { nav.openTx(s.state.id) })
                     }

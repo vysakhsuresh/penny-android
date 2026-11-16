@@ -1,5 +1,13 @@
 package app.penny.ui.common
 
+import androidx.compose.material3.Text
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.CustomAccessibilityAction
@@ -173,10 +181,34 @@ fun TxRow(
     )
 }
 
-/** TX-13: swipe left deletes with undo; swipe right opens the category sheet. */
+/** The undo line for a deleted transaction names it, so a deletion nobody meant is noticed. */
+fun deletedMessage(context: android.content.Context, ctx: Ctx, t: Transaction): String {
+    val name = t.payee?.takeIf { it.isNotBlank() } ?: ctx.book.categoryName(t.categoryId).takeIf { it.isNotBlank() } ?: context.getString(R.string.obj_transaction)
+    return context.getString(R.string.deleted_named, name, ctx.fmt.format(t.amountMinor, t.currency))
+}
+
+/**
+ * TX-13: swipe left deletes with undo; swipe right opens the category sheet. Both need a deliberate drag past half the
+ * row: a scroll that drifts sideways, or a quick flick, springs back instead of deleting (found on a phone test).
+ */
 @Composable
 fun SwipeableTx(key: String, onDelete: () -> Unit, onCategory: (() -> Unit)?, content: @Composable () -> Unit) {
-    val state = rememberSwipeToDismissBoxState()
+    var width by remember { mutableFloatStateOf(0f) }
+    val holder = remember { arrayOfNulls<androidx.compose.material3.SwipeToDismissBoxState>(1) }
+    val haptics = androidx.compose.ui.platform.LocalHapticFeedback.current
+    val state = rememberSwipeToDismissBoxState(
+        confirmValueChange = { v ->
+            if (v == SwipeToDismissBoxValue.Settled) true
+            else {
+                val offset = runCatching { holder[0]?.requireOffset() ?: 0f }.getOrDefault(0f)
+                val far = width > 0f && kotlin.math.abs(offset) >= width * 0.5f
+                if (far) haptics.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
+                far
+            }
+        },
+        positionalThreshold = { total -> total * 0.5f },
+    )
+    holder[0] = state
     LaunchedEffect(state.currentValue) {
         when (state.currentValue) {
             SwipeToDismissBoxValue.EndToStart -> { onDelete(); state.snapTo(SwipeToDismissBoxValue.Settled) }
@@ -188,7 +220,7 @@ fun SwipeableTx(key: String, onDelete: () -> Unit, onCategory: (() -> Unit)?, co
     val deleteLabel = stringResource(R.string.delete)
     val categoryLabel = stringResource(R.string.field_category)
     SwipeToDismissBox(
-        modifier = Modifier.semantics {
+        modifier = Modifier.onSizeChanged { width = it.width.toFloat() }.semantics {
             customActions = listOfNotNull(
                 CustomAccessibilityAction(deleteLabel) { onDelete(); true },
                 onCategory?.let { c -> CustomAccessibilityAction(categoryLabel) { c(); true } },
@@ -202,7 +234,12 @@ fun SwipeableTx(key: String, onDelete: () -> Unit, onCategory: (() -> Unit)?, co
                 Modifier.fillMaxSize().background(if (toStart) MaterialTheme.colorScheme.surfaceContainerHighest else MaterialTheme.colorScheme.secondaryContainer).padding(horizontal = 24.dp),
                 contentAlignment = if (toStart) Alignment.CenterEnd else Alignment.CenterStart,
             ) {
-                Icon(if (toStart) Icons.Outlined.Delete else Icons.Outlined.Category, stringResource(if (toStart) R.string.delete else R.string.field_category))
+                // The action is named, not just drawn, so a half-swipe shows what letting go would do.
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    if (!toStart) Icon(Icons.Outlined.Category, null)
+                    Text(stringResource(if (toStart) R.string.delete else R.string.field_category), style = MaterialTheme.typography.labelLarge)
+                    if (toStart) Icon(Icons.Outlined.Delete, null)
+                }
             }
         },
     ) { Box(Modifier.background(MaterialTheme.colorScheme.surfaceContainerLowest)) { content() } }

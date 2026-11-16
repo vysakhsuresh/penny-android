@@ -43,6 +43,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     @Inject lateinit var undo: UndoController
     @Inject lateinit var prefs: AppPrefs
+    @Inject lateinit var repo: app.penny.domain.PennyRepository
 
     private var locked by mutableStateOf(false)
     /** Deep links that arrive while the app is open (widgets, tile, shortcuts, notifications). */
@@ -61,6 +62,10 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) { prefs.security.collect { applySecureFlag(it) } }
         }
+        // No book selected but books exist (an interrupted switch): open the first real one instead of setup.
+        if (prefs.currentProfileId.value == null) {
+            kotlinx.coroutines.runBlocking(kotlinx.coroutines.Dispatchers.IO) { repo.firstRealProfileId() }?.let { prefs.setCurrentProfile(it) }
+        }
         val start = if (prefs.currentProfileId.value == null) Routes.ONBOARDING else Routes.main()
         setContent {
             val appearance by prefs.appearance.collectAsStateWithLifecycle()
@@ -73,9 +78,15 @@ class MainActivity : AppCompatActivity() {
                         Box(if (showLock) Modifier.fillMaxSize().clearAndSetSemantics {} else Modifier.fillMaxSize()) {
                             UndoHost(undo) { PennyNavHost(nav, start, appearance.reduceMotion) }
                         }
+                        val profileAtLock = androidx.compose.runtime.remember(showLock) { prefs.currentProfileId.value }
                         if (showLock) {
                             BackHandler { moveTaskToBack(true) }
-                            Surface(Modifier.fillMaxSize()) { LockScreen(onUnlocked = { unlockedInProcess = true; locked = false }) }
+                            Surface(Modifier.fillMaxSize()) { LockScreen(onUnlocked = {
+                                unlockedInProcess = true; locked = false
+                                // Switching between the real and the decoy book starts again at Home: the screen open before
+                                // locking (say, Security settings) must not carry over into the other book.
+                                if (prefs.currentProfileId.value != profileAtLock) nav.navigate(Routes.main()) { popUpTo(0) }
+                            }) }
                         }
                     }
                     LaunchedEffect(pendingIntent) {

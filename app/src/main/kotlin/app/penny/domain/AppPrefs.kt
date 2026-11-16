@@ -105,6 +105,9 @@ class AppPrefs @Inject constructor(@ApplicationContext context: Context) {
     fun setFlag(key: String, value: Boolean = true) { prefs.edit().putBoolean("flag.$key", value).apply() }
     fun string(key: String): String? = prefs.getString("s.$key", null)
     fun setString(key: String, value: String?) { prefs.edit().putString("s.$key", value).apply() }
+    /** SE-05: Penny is showing the decoy book because the duress PIN was used. */
+    fun inDuress(): Boolean = _security.value.duressProfileId?.let { it == _profileId.value } == true
+
     fun long(key: String): Long = prefs.getLong("l.$key", 0)
     fun setLong(key: String, value: Long) { prefs.edit().putLong("l.$key", value).apply() }
 

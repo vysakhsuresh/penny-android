@@ -84,8 +84,11 @@ fun promptBiometric(activity: FragmentActivity, title: String, onOk: () -> Unit)
         override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) = onOk()
     })
     prompt.authenticate(
+        // Fingerprint or face only, with "Use Penny PIN" to fall back. Allowing the phone's screen-lock PIN here skipped
+        // Penny's own PIN and with it the duress PIN (SE-05), and confused people who had set a separate Penny PIN.
         BiometricPrompt.PromptInfo.Builder().setTitle(title)
-            .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_WEAK or BiometricManager.Authenticators.DEVICE_CREDENTIAL).build(),
+            .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_WEAK)
+            .setNegativeButtonText(activity.getString(R.string.use_penny_pin)).build(),
     )
 }
 
@@ -113,9 +116,15 @@ fun LockScreen(onUnlocked: () -> Unit, vm: BookViewModel = hiltViewModel()) {
         scope.launch(kotlinx.coroutines.Dispatchers.Default) {
             val ok = sec.pinHash.isNotEmpty() && PinHasher.verify(p, sec.pinHash)
             val duress = !ok && sec.duressPinHash.isNotEmpty() && PinHasher.verify(p, sec.duressPinHash) && sec.duressProfileId != null
+            val backTo = if (ok && vm.prefs.inDuress()) vm.prefs.string("sec.realProfile") ?: vm.repo.firstRealProfileId() else null
             kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) { when {
-                ok -> unlocked()
+                ok -> {
+                    // The real PIN after a duress session returns to the real book, not the decoy left on screen.
+                    if (backTo != null) vm.prefs.setCurrentProfile(backTo)
+                    unlocked()
+                }
                 duress -> {
+                    if (!vm.prefs.inDuress()) vm.prefs.setString("sec.realProfile", vm.prefs.currentProfileId.value)
                     vm.prefs.setCurrentProfile(sec.duressProfileId)
                     unlocked()
                 }

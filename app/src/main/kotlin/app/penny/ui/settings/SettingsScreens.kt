@@ -441,8 +441,10 @@ fun SecurityScreen(onBack: () -> Unit) {
         var pinDialog by rememberSaveable { mutableStateOf<String?>(null) }
         PennyScreen(stringResource(R.string.security), onBack) { pad ->
             Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(bottom = 48.dp)) {
-                SwitchRow(stringResource(R.string.app_lock), s.lockEnabled, { on -> if (on && s.pinHash.isEmpty()) pinDialog = "pin" else vm.prefs.setSecurity(s.copy(lockEnabled = on)) }, subtitle = stringResource(R.string.app_lock_hint))
-                if (s.lockEnabled) {
+                // SE-05: in a duress session the lock looks ordinary and cannot be changed; nothing mentions a duress PIN.
+                val duress = vm.prefs.inDuress()
+                SwitchRow(stringResource(R.string.app_lock), s.lockEnabled, { on -> if (on && s.pinHash.isEmpty()) pinDialog = "pin" else vm.prefs.setSecurity(s.copy(lockEnabled = on)) }, subtitle = stringResource(R.string.app_lock_hint), enabled = !duress)
+                if (s.lockEnabled && !duress) {
                     SwitchRow(stringResource(R.string.use_biometric), s.biometric, { vm.prefs.setSecurity(s.copy(biometric = it)) }, enabled = canUseBiometrics(context))
                     ListRow(stringResource(R.string.change_pin), onClick = { pinDialog = "pin" }, divider = true)
                     SelectField(stringResource(R.string.auto_lock_after), s.autoLockSeconds, listOf(0, 30, 60, 300, 900).map { Choice(it, if (it == 0) context.getString(R.string.immediately) else context.resources.getQuantityString(R.plurals.seconds_n, it, it)) }, { it?.let { v -> vm.prefs.setSecurity(s.copy(autoLockSeconds = v)) } })

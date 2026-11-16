@@ -54,6 +54,7 @@ import app.penny.data.toState
 import app.penny.packs.PackRepository
 import app.penny.packs.RegionalPack
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
@@ -177,11 +178,20 @@ class PennyRepository @Inject constructor(
     }
 
     /** All profiles on this device (US-02 switcher); decoys are hidden unless [includeDecoy]. */
+    /** The first real (non-decoy) book, for leaving a duress session when the earlier book was not recorded. */
+    suspend fun firstRealProfileId(): String? = dao.observeAllOf(Entities.PROFILE).first().mapNotNull { r ->
+        val st = r.toState()
+        runCatching { Stored(PennyJson.decodeFromJsonElement(Profile.serializer(), st.data), st) }.getOrNull()
+    }.filter { !it.value.decoy && it.state.deletedAt == null }.sortedWith(compareBy({ it.value.sort }, { it.value.name })).firstOrNull()?.state?.id
+
     fun observeProfiles(includeDecoy: Boolean = false): Flow<List<Stored<Profile>>> = dao.observeAllOf(Entities.PROFILE).map { rows ->
         rows.mapNotNull { r ->
             val st = r.toState()
             runCatching { Stored(PennyJson.decodeFromJsonElement(Profile.serializer(), st.data), st) }.getOrNull()
-        }.filter { includeDecoy || !it.value.decoy }.sortedWith(compareBy({ it.value.sort }, { it.value.name }))
+        }.filter { p ->
+            // In a duress session only the decoy book exists; otherwise the decoy is hidden.
+            if (prefs.inDuress()) p.state.id == prefs.currentProfileId.value else includeDecoy || !p.value.decoy
+        }.sortedWith(compareBy({ it.value.sort }, { it.value.name }))
     }.distinctUntilChanged()
 
     fun observeProfile(): Flow<Stored<Profile>?> = observeBook().map { b -> b?.let { Stored(it.profile, it.profileStateOrNull()) } }

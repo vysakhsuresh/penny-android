@@ -11,7 +11,7 @@ import app.penny.R
  * notification-access settings missing on Android Go, …). Returns whether something opened.
  */
 /** Drops the invisible bidi isolates money labels carry on screen; pasted into chat apps they can show as boxes. */
-fun plainShareText(s: String): String = s.replace(Regex("[⁦⁧⁨⁩]"), "")
+fun plainShareText(s: String): String = s.filterNot { it.code in 0x2066..0x2069 }
 
 private fun cleanShare(intent: Intent): Intent {
     val inner = if (intent.action == Intent.ACTION_CHOOSER) intent.getParcelableExtra<Intent>(Intent.EXTRA_INTENT) else intent

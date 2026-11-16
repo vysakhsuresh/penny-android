@@ -60,8 +60,8 @@ data class PennyExtras(
     val isDark: Boolean,
 )
 
-private val Accent = Color(0xFF0B6E4F)
-private val AccentDark = Color(0xFF6FD6A8)
+private val Accent = Color(0xFF007D54)
+private val AccentDark = Color(0xFF52E0A6)
 
 private val LightScheme = lightColorScheme(
     primary = Accent, onPrimary = Color.White, primaryContainer = Color(0xFFCFF1E0), onPrimaryContainer = Color(0xFF002616),

@@ -3,7 +3,7 @@
     <uses-feature android:name="android.hardware.type.watch" />
     <application
         android:allowBackup="false"
-        android:icon="@drawable/ic_penny"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.DeviceDefault">

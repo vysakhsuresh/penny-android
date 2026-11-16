@@ -31,9 +31,13 @@ class ShareActivity : ComponentActivity() {
         }
         val type = i.type.orEmpty()
         lifecycleScope.launch {
+            var unreadable = false
             val ok = when {
                 type.startsWith("text/plain") -> i.getStringExtra(Intent.EXTRA_TEXT)?.let { capture.fromSharedText(it) } ?: false
                 type.startsWith("image/") -> stream(i)?.let { uri ->
+                    // An image Penny cannot open is a different problem from a receipt with no readable total.
+                    val readable = runCatching { contentResolver.openInputStream(uri)?.use { true } ?: false }.getOrDefault(false)
+                    if (!readable) { unreadable = true; return@let false }
                     val text = Ocr.recognize(this@ShareActivity, uri) ?: return@let false
                     val book = store.ready()?.book ?: return@let false
                     val parsed = ReceiptParser.parse(text, book.profile.baseCurrency, book.today()) ?: return@let false
@@ -49,7 +53,7 @@ class ShareActivity : ComponentActivity() {
                     finish(); return@launch
                 }
             }
-            Toast.makeText(this@ShareActivity, getString(if (ok) R.string.shared_to_review else R.string.shared_not_understood), Toast.LENGTH_LONG).show()
+            Toast.makeText(this@ShareActivity, getString(if (ok) R.string.shared_to_review else if (unreadable) R.string.shared_unreadable else R.string.shared_not_understood), Toast.LENGTH_LONG).show()
             if (ok) startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("${app.penny.core.Brand.DEEP_LINK_SCHEME}://review"), this@ShareActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
             finish()
         }

@@ -51,7 +51,15 @@ class Coach(
         val hits = TxSearch.filter(rows, parsed.filter)
         // Refunds reduce what was spent, so they are part of the answer.
         val spendHits = hits.filter { it.tx.type == TxType.EXPENSE || it.tx.type == TxType.REFUND || it.tx.type == TxType.INCOME && parsed.filter.types.contains(TxType.INCOME) }
-        fun sum(list: List<Row>) = list.sumOf { if (it.tx.type == TxType.REFUND) -it.baseAmount() else it.baseAmount() }
+        // A split bill counts only its parts in the asked-about categories (Big Bazaar's household part is not "food").
+        val cats = parsed.filter.categoryIds.toSet()
+        fun Row.relevant(): Long {
+            val whole = baseAmount()
+            if (cats.isEmpty() || tx.splits.isEmpty() || tx.amountMinor == 0L) return whole
+            val part = tx.splits.filter { it.categoryId in cats }.sumOf { it.amountMinor }
+            return java.math.BigDecimal(whole).multiply(java.math.BigDecimal(part)).divide(java.math.BigDecimal(tx.amountMinor), 0, java.math.RoundingMode.HALF_EVEN).toLong()
+        }
+        fun sum(list: List<Row>) = list.sumOf { if (it.tx.type == TxType.REFUND) -it.relevant() else it.relevant() }
         return when (intent) {
             CoachIntent.TOTAL, CoachIntent.UNKNOWN -> CoachAnswer(intent, sum(spendHits), null, parsed.understood, spendHits.take(50), tone)
             CoachIntent.AVERAGE -> CoachAnswer(intent, if (spendHits.isEmpty()) 0 else sum(spendHits) / spendHits.size, spendHits.size.toLong(), parsed.understood, spendHits.take(50), tone)

@@ -278,7 +278,8 @@ fun CoachScreen(onBack: () -> Unit, onOpenTx: (String) -> Unit) {
         val decimals = runCatching { CurrencyUnit.of(ctx.base).minorUnits }.getOrDefault(2)
         fun ask(text: String) {
             asked = text
-            val parser = NaturalQueryParser(b.today(), b.profile.cycle, decimals, b.categories.associate { it.value.name.lowercase() to it.state.id }, b.accounts.associate { it.value.name.lowercase() to it.state.id })
+            val parser = NaturalQueryParser(b.today(), b.profile.cycle, decimals, b.categories.associate { it.value.name.lowercase() to it.state.id }, b.accounts.associate { it.value.name.lowercase() to it.state.id },
+                categoryChildren = b.categories.filter { it.value.parentId != null }.groupBy({ it.value.parentId!! }, { it.state.id }))
             val prev = Periods.previous(b.period(), b.profile.cycle, b.periodContext)
             answer = Coach(parser, tone, b.profile.baseCurrency, b.fx).ask(text, b.rows, b.safeToSpend(b.period()).safeMinor, b.rows.filter { it.tx.date in prev })
         }

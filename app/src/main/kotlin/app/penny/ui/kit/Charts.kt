@@ -3,7 +3,7 @@ package app.penny.ui.kit
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -232,7 +232,8 @@ fun LineChart(points: List<Pair<String, Long>>, format: (Long) -> String, modifi
                         val f = (x / size.width).coerceIn(0f, 1f)
                         picked = ((if (rtl) 1 - f else f) * points.lastIndex).toInt().coerceIn(0, points.lastIndex)
                     }
-                    detectDragGestures(onDragStart = { pick(it.x) }, onDragEnd = { }) { c, _ -> pick(c.position.x) }
+                    // Horizontal only: a vertical swipe over the chart scrolls the page (it used to get stuck on charts).
+                    detectHorizontalDragGestures(onDragStart = { pick(it.x) }, onDragEnd = { }) { c, _ -> pick(c.position.x) }
                 }
                 .pointerInput(points) { detectTapGestures { o -> val f = (o.x / size.width).coerceIn(0f, 1f); picked = ((if (rtl) 1 - f else f) * points.lastIndex).toInt() } },
         ) {

@@ -81,13 +81,23 @@ class NaturalQueryParser(
     private val categoryByName: Map<String, String> = emptyMap(),
     private val accountByName: Map<String, String> = emptyMap(),
     private val extraPeriodWords: Map<String, String> = mapOf("kinsenas" to "period", "quincena" to "period", "fortnight" to "period", "payday" to "period"),
+    /** Parent id to child ids, so asking about a parent ("food") includes what is filed under its children. */
+    private val categoryChildren: Map<String, List<String>> = emptyMap(),
 ) {
+    private fun withChildren(id: String): List<String> = listOf(id) + categoryChildren[id].orEmpty().flatMap(::withChildren)
+
+    /** Categories whose name contains [w] as a whole word: "food" finds "Food and groceries". */
+    private fun categoriesByWord(w: String): List<String> =
+        if (w.length < 3) emptyList()
+        else categoryByName.filterKeys { name -> name.split(Regex("[^\\p{L}\\p{N}]+")).any { it == w || (w.length > 3 && w.endsWith("s") && it == w.dropLast(1)) } }.values.toList()
+
     private val months = listOf("january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december")
 
     fun parse(input: String): ParsedQuery {
         var f = TxFilter()
         val understood = mutableListOf<String>()
-        val tokens = RuleEngine.normalise(input).split(Regex("\\s+")).filter { it.isNotEmpty() }.toMutableList()
+        // Questions end in "?": punctuation around a word must not hide "month" or a category name.
+        val tokens = RuleEngine.normalise(input).split(Regex("\\s+")).map { it.trim('?', '!', ',', ';', ':', '"', '\'', '“', '”', '‘', '’') }.filter { it.isNotEmpty() }.toMutableList()
         val rest = mutableListOf<String>()
         var i = 0
         fun mult(): Long { var m = 1L; repeat(currencyDecimals) { m *= 10 }; return m }
@@ -142,7 +152,8 @@ class NaturalQueryParser(
                 w == "uncategorised" || w == "uncategorized" -> { f = f.copy(uncategorised = true); understood += w }
                 w == "pending" -> { f = f.copy(statuses = listOf(app.penny.core.model.TxStatus.PENDING)); understood += w }
                 w.startsWith("#") && w.length > 1 -> { f = f.copy(tags = f.tags + w.drop(1)); understood += w }
-                categoryByName[w] != null -> { f = f.copy(categoryIds = f.categoryIds + categoryByName.getValue(w)); understood += w }
+                categoryByName[w] != null -> { f = f.copy(categoryIds = (f.categoryIds + withChildren(categoryByName.getValue(w))).distinct()); understood += w }
+                w !in STOP && categoriesByWord(w).isNotEmpty() -> { f = f.copy(categoryIds = (f.categoryIds + categoriesByWord(w).flatMap(::withChildren)).distinct()); understood += w }
                 accountByName[w] != null -> { f = f.copy(accountIds = f.accountIds + accountByName.getValue(w)); understood += w }
                 w in STOP -> Unit
                 else -> rest += w
@@ -150,7 +161,7 @@ class NaturalQueryParser(
             i++
         }
         // Plural nouns like "rides" still match "ride" in payees and notes.
-        f = f.copy(text = rest.joinToString(" ") { if (it.length > 3 && it.endsWith("s")) it.dropLast(1) else it })
+        f = f.copy(text = rest.joinToString(" ") { if (it.length > 3 && it.endsWith("s") && !it.endsWith("ss") && !it.endsWith("is") && !it.endsWith("us")) it.dropLast(1) else it })
         return ParsedQuery(f, understood)
     }
 

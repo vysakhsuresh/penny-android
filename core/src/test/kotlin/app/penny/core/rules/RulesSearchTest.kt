@@ -81,6 +81,15 @@ class RulesSearchTest : FunSpec({
         Dedupe.isDuplicate(a, tx("Other", 450).copy(externalIds = listOf("bank:c:1"))) shouldBe true
     }
 
+    test("a word inside a category name finds it and its subcategories") {
+        val p = NaturalQueryParser(today, CycleRule.Monthly(1), 2,
+            categoryByName = mapOf("food and groceries" to "food", "groceries" to "groc", "markets" to "mkt", "fuel" to "fuel"),
+            categoryChildren = mapOf("food" to listOf("groc", "mkt")))
+        val q = p.parse("on food this month?")
+        q.filter.categoryIds.toSet() shouldBe setOf("food", "groc", "mkt")
+        q.filter.text shouldBe ""
+    }
+
     test("natural language: coffee last month over 200") {
         val p = NaturalQueryParser(today, CycleRule.Monthly(1), 2)
         val q = p.parse("coffee last month over 200")

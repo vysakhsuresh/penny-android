@@ -112,6 +112,7 @@ fun ActivityScreen(initialFilter: String?, onBack: () -> Unit, onOpen: (String) 
                 b.today(), b.profile.cycle, decimals,
                 categoryByName = b.categories.associate { it.value.name.lowercase() to it.state.id },
                 accountByName = b.accounts.associate { it.value.name.lowercase() to it.state.id },
+                categoryChildren = b.categories.filter { it.value.parentId != null }.groupBy({ it.value.parentId!! }, { it.state.id }),
             )
         }
         val parsed = if (query.isBlank()) null else parser.parse(query)

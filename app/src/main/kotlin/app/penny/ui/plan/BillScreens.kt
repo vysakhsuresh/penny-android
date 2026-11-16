@@ -147,7 +147,10 @@ fun BillsScreen(onBack: () -> Unit, onEdit: (String) -> Unit, onOpenTx: (String)
                         }
                         item {
                             val days = (1..ym.lengthOfMonth()).map { d -> ym.atDay(d).let { date -> date to up.filter { it.date == date && it.recurring.type == TxType.EXPENSE }.sumOf { it.amountMinor } } }
-                            Heatmap(days, { ctx.money(it) }, firstDay = b.profile.firstDayOfWeek)
+                            // RC-05: each day shows its total in a short form (e.g. 12K) under the date.
+                            val digits = runCatching { app.penny.core.money.CurrencyUnit.of(ctx.base).minorUnits }.getOrDefault(2)
+                            val compact = android.icu.text.CompactDecimalFormat.getInstance(Locale.getDefault(), android.icu.text.CompactDecimalFormat.CompactStyle.SHORT)
+                            Heatmap(days, { ctx.money(it) }, firstDay = b.profile.firstDayOfWeek, cellLabel = { v -> compact.format(v / Math.pow(10.0, digits.toDouble())) })
                         }
                         // RC-06: each bill shows whether safe-to-spend covers it.
                         item {

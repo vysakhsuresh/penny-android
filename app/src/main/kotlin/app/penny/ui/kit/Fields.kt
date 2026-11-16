@@ -286,7 +286,7 @@ private fun ChoiceRow(label: String, supporting: String?, selected: Boolean, onC
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
 @Composable
 fun DateInput(label: String, date: LocalDate?, onChange: (LocalDate) -> Unit, modifier: Modifier = Modifier, quick: Boolean = true, today: LocalDate = LocalDate.now()) {
     var open by rememberSaveable { mutableStateOf(false) }
@@ -301,7 +301,8 @@ fun DateInput(label: String, date: LocalDate?, onChange: (LocalDate) -> Unit, mo
             ),
         )
         if (quick) {
-            Row(Modifier.padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            // Wraps in narrow places (dialogs, 200% text) instead of squeezing the last chip into a vertical strip.
+            androidx.compose.foundation.layout.FlowRow(Modifier.padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 FilterChip(date == today, { onChange(today) }, label = { Text(stringResource(R.string.today)) })
                 FilterChip(date == today.minusDays(1), { onChange(today.minusDays(1)) }, label = { Text(stringResource(R.string.yesterday)) })
                 FilterChip(false, { open = true }, label = { Text(stringResource(R.string.pick_date)) })

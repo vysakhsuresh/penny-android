@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -254,7 +255,7 @@ fun LineChart(points: List<Pair<String, Long>>, format: (Long) -> String, modifi
 
 /** IN-02 calendar heatmap: sequential single hue, light to dark; weeks as rows; tap a day to drill down. */
 @Composable
-fun Heatmap(days: List<Pair<java.time.LocalDate, Long>>, format: (Long) -> String, modifier: Modifier = Modifier, firstDay: java.time.DayOfWeek = java.time.DayOfWeek.MONDAY, onSelect: ((java.time.LocalDate) -> Unit)? = null) {
+fun Heatmap(days: List<Pair<java.time.LocalDate, Long>>, format: (Long) -> String, modifier: Modifier = Modifier, firstDay: java.time.DayOfWeek = java.time.DayOfWeek.MONDAY, cellLabel: ((Long) -> String)? = null, onSelect: ((java.time.LocalDate) -> Unit)? = null) {
     if (days.isEmpty()) return
     val accent = MaterialTheme.colorScheme.primary
     val track = LocalPenny.current.status.track
@@ -262,6 +263,12 @@ fun Heatmap(days: List<Pair<java.time.LocalDate, Long>>, format: (Long) -> Strin
     val lead = ((days.first().first.dayOfWeek.value - firstDay.value) + 7) % 7
     val cells: List<Pair<java.time.LocalDate, Long>?> = List(lead) { null } + days
     Column(modifier.fillMaxWidth().padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        // Weekday initials, so a month that starts mid-week reads correctly.
+        Row(horizontalArrangement = Arrangement.spacedBy(4.dp), modifier = Modifier.clearAndSetSemantics { }) {
+            (0 until 7).forEach { i ->
+                Text(firstDay.plus(i.toLong()).getDisplayName(java.time.format.TextStyle.NARROW, java.util.Locale.getDefault()), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = androidx.compose.ui.text.style.TextAlign.Center, modifier = Modifier.weight(1f))
+            }
+        }
         cells.chunked(7).forEach { week ->
             Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                 week.forEach { c ->
@@ -269,11 +276,13 @@ fun Heatmap(days: List<Pair<java.time.LocalDate, Long>>, format: (Long) -> Strin
                     val bg = if (c == null) Color.Transparent else if (c.second <= 0) track else accent.copy(alpha = 0.18f + 0.82f * share)
                     Surface(
                         color = bg, shape = RoundedCornerShape(6.dp),
-                        modifier = Modifier.weight(1f).height(30.dp).semantics { if (c != null) contentDescription = "${c.first}: ${format(c.second)}" }
+                        modifier = Modifier.weight(1f).heightIn(min = if (cellLabel != null) 44.dp else 30.dp).semantics { if (c != null) contentDescription = "${c.first}: ${format(c.second)}" }
                             .then(if (c != null && onSelect != null) Modifier.clickable { onSelect(c.first) } else Modifier),
                     ) {
-                        if (c != null) Box(contentAlignment = Alignment.Center) {
-                            Text(c.first.dayOfMonth.toString(), style = MaterialTheme.typography.labelSmall, color = if (share > 0.55f) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant)
+                        if (c != null) Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                            val ink = if (share > 0.55f) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
+                            Text(c.first.dayOfMonth.toString(), style = MaterialTheme.typography.labelSmall, color = ink)
+                            if (cellLabel != null && c.second > 0) Text(cellLabel(c.second), style = MaterialTheme.typography.labelSmall.copy(fontSize = androidx.compose.ui.unit.TextUnit(9f, androidx.compose.ui.unit.TextUnitType.Sp)), color = ink, maxLines = 1)
                         }
                     }
                 }

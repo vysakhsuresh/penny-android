@@ -223,7 +223,7 @@ fun GlobalHistoryScreen(onBack: () -> Unit, onOpen: (String, String) -> Unit) {
                 }
                 if (shown.isEmpty()) item { EmptyState(stringResource(R.string.history_empty), stringResource(R.string.history_empty_body), icon = Icons.Outlined.History) }
                 items(shown, key = { it.id }) { e ->
-                    val name = nameOf(ctx, e)
+                    val name = nameOf(ctx, e, events.orEmpty())
                     val who = if (e.actor == vm.repo.localAccountId) stringResource(R.string.history_you) else e.actor.take(8)
                     ListRow(
                         title = "${opTitle(context, e.op, e.reason)} · ${entityLabel(context, e.entity)}",
@@ -237,12 +237,14 @@ fun GlobalHistoryScreen(onBack: () -> Unit, onOpen: (String, String) -> Unit) {
     }
 }
 
-private fun nameOf(ctx: Ctx, e: Event): String? {
+private fun nameOf(ctx: Ctx, e: Event, all: List<Event> = emptyList()): String? {
     val b = ctx.book
-    val p = e.patch
-    fun s(k: String) = (p[k] as? JsonPrimitive)?.content
-    return s("name") ?: s("payee") ?: s("description") ?: b.txMap[e.entityId]?.value?.payee ?: b.accountMap[e.entityId]?.value?.name
+    fun Event.s(k: String) = (patch[k] as? JsonPrimitive)?.content?.takeIf(String::isNotBlank)
+    fun Event.own() = s("name") ?: s("payee") ?: s("description")
+    return e.own() ?: b.txMap[e.entityId]?.value?.payee ?: b.accountMap[e.entityId]?.value?.name
         ?: b.categoryMap[e.entityId]?.value?.name
+        // Deleted objects are gone from the book: take the name from another event of the same object.
+        ?: all.asSequence().filter { it.entityId == e.entityId }.firstNotNullOfOrNull { it.own() }
 }
 
 /** HS-02 Trash for every object: restore or delete forever (with undo window), auto-purge at 30 days. */

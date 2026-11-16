@@ -216,10 +216,18 @@ class PennyRepository @Inject constructor(
 
     /** CAT-02: seeds missing defaults by key; never touches custom or renamed categories. Returns the undo group. */
     suspend fun seedCategories(pid: String): String? {
-        val existing = categories.list(pid, includeDeleted = true).mapNotNull { it.value.key }.toSet()
+        val all = categories.list(pid, includeDeleted = true)
+        val defaultKeys = DefaultCategories.tree.map { it.key }.toSet()
+        val live = all.filter { it.state.deletedAt == null }.mapNotNull { it.value.key }.toSet()
+        // A deleted default comes back from Trash (same id, history kept); one that never existed is created.
+        val toRestore = all.filter { it.state.deletedAt != null && it.value.key in defaultKeys && it.value.key !in live }.distinctBy { it.value.key }
+        val existing = all.mapNotNull { it.value.key }.toSet()
         val keyToId = DefaultCategories.tree.associate { it.key to "$pid:${it.key}" }
         val missing = DefaultCategories.tree.withIndex().filter { it.value.key !in existing }
-        if (missing.isEmpty()) return null
+        if (missing.isEmpty() && toRestore.isEmpty()) return null
+        val group = java.util.UUID.randomUUID().toString()
+        toRestore.forEach { categories.restore(it.state.id, group) }
+        if (missing.isEmpty()) return group
         return categories.createAll(
             pid,
             missing.map { (i, c) ->
@@ -229,6 +237,7 @@ class PennyRepository @Inject constructor(
                 )
             },
             reason = Reasons.SEED,
+            groupId = group,
         )
     }
 

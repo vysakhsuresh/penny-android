@@ -170,7 +170,8 @@ private fun reorder(vm: app.penny.ui.common.BookViewModel, b: Book, order: List<
 private fun ReassignDialog(b: Book, from: String, title: String, body: String, allowNone: Boolean = false, onDismiss: () -> Unit, onPick: (String?) -> Unit) {
     val kind = b.categoryMap[from]?.value?.kind ?: CategoryKind.EXPENSE
     val sub = b.categories.filter { it.value.parentId == from }.map { it.state.id }.toSet()
-    var to by rememberSaveable { mutableStateOf(b.categoriesOf(kind).firstOrNull { it.state.id != from && it.state.id !in sub }?.state?.id) }
+    // The parent is the natural home for a subcategory's transactions; otherwise the first other category.
+    var to by rememberSaveable { mutableStateOf(b.categoryMap[from]?.value?.parentId?.takeIf { it in b.categoryMap } ?: b.categoriesOf(kind).firstOrNull { it.state.id != from && it.state.id !in sub }?.state?.id) }
     AlertDialog(
         onDismissRequest = onDismiss, title = { Text(title) },
         text = {

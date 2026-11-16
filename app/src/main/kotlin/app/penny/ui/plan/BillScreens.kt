@@ -1,5 +1,6 @@
 package app.penny.ui.plan
 
+import app.penny.ui.common.safeStart
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -237,7 +238,7 @@ private fun SubscriptionRow(ctx: Ctx, id: String, r: Recurring, priceUp: Long?, 
                 TextButton(onClick = {
                     val text = ctxA.getString(R.string.cancel_message_template, r.name)
                     val send = android.content.Intent(android.content.Intent.ACTION_SEND).setType("text/plain").putExtra(android.content.Intent.EXTRA_TEXT, text)
-                    ctxA.startActivity(android.content.Intent.createChooser(send, null))
+                    ctxA.safeStart(android.content.Intent.createChooser(send, null))
                 }) { Text(stringResource(R.string.draft_cancellation)) }
             }
         }

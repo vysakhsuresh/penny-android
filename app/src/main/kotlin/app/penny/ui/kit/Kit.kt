@@ -1,5 +1,10 @@
 package app.penny.ui.kit
 
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.ui.draw.shadow
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.ui.semantics.role
@@ -123,17 +128,35 @@ fun PennyScreen(
 }
 
 @Composable
-fun SectionHeader(title: String, modifier: Modifier = Modifier, action: String? = null, onAction: (() -> Unit)? = null) {
+fun SectionHeader(title: String, modifier: Modifier = Modifier, action: String? = null, onAction: (() -> Unit)? = null, info: String? = null) {
     Row(
-        modifier.fillMaxWidth().padding(start = 20.dp, end = 8.dp, top = 20.dp, bottom = 6.dp),
+        modifier.fillMaxWidth().padding(start = 20.dp, end = 8.dp, top = 22.dp, bottom = 6.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             title, style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.weight(1f).semantics { heading() },
+            modifier = Modifier.semantics { heading() },
         )
+        if (info != null) InfoButton(title, info)
+        Spacer(Modifier.weight(1f))
         if (action != null && onAction != null) TextButton(onClick = onAction) { Text(action) }
     }
+}
+
+/** An "i" beside something whose meaning is not obvious; it opens a short plain-language explanation. */
+@Composable
+fun InfoButton(title: String, info: String, tint: Color = MaterialTheme.colorScheme.primary) {
+    var explain by remember { mutableStateOf(false) }
+    IconButton(onClick = { explain = true }, modifier = Modifier.size(36.dp)) {
+        Icon(Icons.Outlined.Info, stringResource(R.string.what_is_x, title), tint = tint, modifier = Modifier.size(18.dp))
+    }
+    if (explain) androidx.compose.material3.AlertDialog(
+        onDismissRequest = { explain = false },
+        icon = { Icon(Icons.Outlined.Info, null) },
+        title = { Text(title) },
+        text = { Text(info, style = MaterialTheme.typography.bodyMedium) },
+        confirmButton = { TextButton(onClick = { explain = false }) { Text(stringResource(R.string.got_it)) } },
+    )
 }
 
 /** Grouped surface for rows and content: soft container, rounded corners, no heavy borders. */
@@ -148,10 +171,12 @@ fun PennyCard(
 ) {
     val m = modifier.fillMaxWidth().padding(horizontal = Penny.spacing.gutter.dp, vertical = 6.dp)
     val colors = CardDefaults.cardColors(containerColor = color)
+    // A hairline edge gives cards a crisp, finished outline on both page colours (no heavy borders).
+    val edge = androidx.compose.foundation.BorderStroke(1.dp, if (Penny.extras.isDark) Color.White.copy(alpha = 0.06f) else Color.Black.copy(alpha = 0.06f))
     // The last row's divider would sit on the card edge; trim that 1 dp hairline here instead of at every call site.
     val inner = Modifier.padding(padding).trimBottomHairline().animateContentSize()
-    if (onClick != null) Card(onClick = onClick, modifier = m, colors = colors, shape = MaterialTheme.shapes.large) { Column(inner, content = content) }
-    else Card(modifier = m, colors = colors, shape = MaterialTheme.shapes.large) { Column(inner, content = content) }
+    if (onClick != null) Card(onClick = onClick, modifier = m, colors = colors, shape = MaterialTheme.shapes.large, border = edge) { Column(inner, content = content) }
+    else Card(modifier = m, colors = colors, shape = MaterialTheme.shapes.large, border = edge) { Column(inner, content = content) }
 }
 
 private fun Modifier.trimBottomHairline(): Modifier = this.clipToBounds().layout { measurable, constraints ->
@@ -412,4 +437,43 @@ fun RevealAmountsButton() {
     val toggle = LocalHideToggle.current ?: return
     if (!LocalPenny.current.hideAmounts) return
     IconButton(onClick = toggle) { Icon(androidx.compose.material.icons.Icons.Outlined.VisibilityOff, stringResource(R.string.show_amounts)) }
+}
+
+/**
+ * The one rich surface per screen (safe to spend, net worth, balances): a deep plum gradient with a soft light sheen
+ * and a faint coin-ring motif, like a premium card. Inside, the theme is re-pointed so existing content reads light on
+ * plum with gold accents, without each screen choosing colours.
+ */
+@Composable
+fun HeroCard(modifier: Modifier = Modifier, onClick: (() -> Unit)? = null, content: @Composable ColumnScope.() -> Unit) {
+    val dark = LocalPenny.current.isDark
+    val top = if (dark) Color(0xFF4A2380) else Color(0xFF6A34B0)
+    val mid = if (dark) Color(0xFF331764) else Color(0xFF4A2186)
+    val end = if (dark) Color(0xFF1E0C3E) else Color(0xFF2E1259)
+    val ink = Color(0xFFF6F0FF)
+    val gold = Color(0xFFF2C14E)
+    val cs = MaterialTheme.colorScheme.copy(
+        primaryContainer = Color.Transparent, onPrimaryContainer = ink, primary = gold, onPrimary = Color(0xFF2B1D00),
+        onSurface = ink, onSurfaceVariant = ink.copy(alpha = 0.78f), surfaceContainerLowest = Color.White.copy(alpha = 0.10f),
+    )
+    val extras = LocalPenny.current.let { e -> e.copy(status = e.status.copy(track = Color.White.copy(alpha = 0.18f), positive = Color(0xFF7BE8B6))) }
+    val shape = MaterialTheme.shapes.extraLarge
+    val base = modifier.fillMaxWidth().padding(horizontal = Penny.spacing.gutter.dp, vertical = 8.dp)
+        .shadow(if (dark) 0.dp else 10.dp, shape, ambientColor = top, spotColor = top)
+        .clip(shape)
+        .background(androidx.compose.ui.graphics.Brush.linearGradient(listOf(top, mid, end)))
+        .drawBehind {
+            // Light sheen from the top left, and a faint gold coin ring bleeding off the top right corner.
+            drawCircle(androidx.compose.ui.graphics.Brush.radialGradient(listOf(Color.White.copy(alpha = 0.16f), Color.Transparent), center = Offset(size.width * 0.15f, 0f), radius = size.width * 0.75f))
+            val r = size.minDimension * 0.55f
+            val c = Offset(size.width * 0.98f, size.height * 0.02f)
+            drawCircle(gold.copy(alpha = 0.10f), radius = r, center = c, style = androidx.compose.ui.graphics.drawscope.Stroke(width = r * 0.16f))
+            drawCircle(gold.copy(alpha = 0.07f), radius = r * 0.32f, center = c)
+        }
+        .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
+    androidx.compose.runtime.CompositionLocalProvider(LocalPenny provides extras, androidx.compose.material3.LocalContentColor provides ink) {
+        MaterialTheme(colorScheme = cs, typography = MaterialTheme.typography, shapes = MaterialTheme.shapes) {
+            Column(base, content = content)
+        }
+    }
 }

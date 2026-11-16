@@ -86,7 +86,7 @@ fun LoansScreen(onBack: () -> Unit, onOpen: (String) -> Unit, onAdd: () -> Unit)
                 if (debtors.isEmpty()) item { EmptyState(stringResource(R.string.no_debts), stringResource(R.string.no_debts_body), icon = Icons.Outlined.CreditCard, action = stringResource(R.string.add_loan), onAction = onAdd) }
                 if (plan != null) {
                     item {
-                        PennyCard(color = MaterialTheme.colorScheme.primaryContainer) {
+                        app.penny.ui.kit.HeroCard {
                             Column(Modifier.padding(20.dp)) {
                                 Text(stringResource(R.string.debt_free_by), style = MaterialTheme.typography.titleSmall)
                                 Text(shortDate(plan.debtFreeDate), style = MaterialTheme.typography.headlineMedium)

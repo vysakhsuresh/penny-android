@@ -274,17 +274,15 @@ private fun SafeHero(ctx: Ctx, safe: app.penny.core.budget.SafeToSpend, offset: 
     val usedBp = if (budget <= 0) (if (safe.spentMinor > 0) 10_001 else 0) else (safe.spentMinor * 10_000 / budget).toInt()
     val noIncome = safe.incomeMinor + safe.expectedIncomeMinor == 0L
     val over = safe.safeMinor < 0
-    Card(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-        shape = MaterialTheme.shapes.extraLarge,
-    ) {
+    app.penny.ui.kit.HeroCard {
         Column(Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     stringResource(if (offset == 0) R.string.safe_to_spend else if (offset < 0) R.string.safe_was else R.string.safe_planned),
-                    style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onPrimaryContainer, modifier = Modifier.weight(1f),
+                    style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
+                app.penny.ui.kit.InfoButton(stringResource(R.string.safe_to_spend), stringResource(R.string.info_safe_to_spend), tint = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f))
+                Spacer(Modifier.weight(1f))
                 IconButton(onClick = { onShift(-1) }) { Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, stringResource(R.string.prev_period), tint = MaterialTheme.colorScheme.onPrimaryContainer) }
                 IconButton(onClick = { onShift(1) }) { Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, stringResource(R.string.next_period), tint = MaterialTheme.colorScheme.onPrimaryContainer) }
             }

@@ -66,4 +66,16 @@
     <string name="alerts_open_to_see">Open Penny to see them.</string>
     <string name="switch_rename_profile">Switch, rename or add a profile</string>
     <string name="name_taken">That name is already used. Choose a different one.</string>
+    <string name="what_is_x">What is %1$s?</string>
+    <string name="got_it">Got it</string>
+    <string name="info_where_it_went">Your spending in this period, grouped by category. Tap a category to see the transactions in it. Transfers, savings and money lent are not counted as spending.</string>
+    <string name="info_trend">Spending (and income) for each of the last six periods, so you can see whether this one is higher or lower than usual. Tap a bar to see that period’s transactions.</string>
+    <string name="info_by_day">Each square is a day. The darker it is, the more you spent that day. Tap a day to see what you spent.</string>
+    <string name="info_money_flow">The top bar is the money that came in. The bar below shows where it went: each category, and what was left over as saved. The two bars use the same scale, so you can compare them directly.</string>
+    <string name="info_net_worth">Everything you own (cash, bank, assets) minus everything you owe (cards, loans), month by month.</string>
+    <string name="info_forecast">An estimate of how much money your everyday accounts will hold over the next 90 days. Penny starts from today’s balances, adds income it expects, and takes away your upcoming bills and your usual spending pace. If the line goes below zero, you may run short before then. Pick a category below and slide it to see how cutting back would change the picture. It is a guide, not a promise.</string>
+    <string name="info_top_payees">The places and people you paid the most in this period.</string>
+    <string name="info_safe_to_spend">What you can still spend until your next pay date: income for this period, minus what you have already spent, minus bills still to pay and money set aside for goals.</string>
+    <string name="info_available_to_assign">Income this period that is not yet given to an envelope. Give all of it a job: assign it to envelopes until this reaches zero.</string>
+    <string name="forecast_end_clear">If things carry on as usual, your everyday accounts will hold about %1$s in 90 days.</string>
 </resources>

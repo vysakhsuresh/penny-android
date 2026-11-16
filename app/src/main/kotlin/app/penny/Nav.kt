@@ -336,6 +336,10 @@ private fun MainTabs(nav: NavHostController, initial: String) {
                     }
                     NavigationBarItem(
                         selected = tab == t, onClick = { tab = t },
+                        colors = androidx.compose.material3.NavigationBarItemDefaults.colors(
+                            selectedIconColor = MaterialTheme.colorScheme.primary, selectedTextColor = MaterialTheme.colorScheme.primary,
+                            indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.14f),
+                        ),
                         icon = { Icon(if (tab == t) t.selected else t.icon, null) },
                         // Five labels share the width: large text is capped at 130% here and never breaks mid-word.
                         label = {

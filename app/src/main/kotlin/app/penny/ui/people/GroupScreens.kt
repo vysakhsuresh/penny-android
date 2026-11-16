@@ -497,7 +497,7 @@ fun CircleScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit) {
         PennyScreen(c.value.name, onBack, actions = { IconButton(onClick = { onEdit(id) }) { Icon(Icons.Outlined.Edit, stringResource(R.string.edit)) } }) { pad ->
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 48.dp)) {
                 item {
-                    PennyCard(color = MaterialTheme.colorScheme.primaryContainer) {
+                    app.penny.ui.kit.HeroCard {
                         Column(Modifier.padding(20.dp)) {
                             Text(c.value.localName.ifBlank { stringResource(R.string.circles) }, style = MaterialTheme.typography.labelLarge)
                             Row {

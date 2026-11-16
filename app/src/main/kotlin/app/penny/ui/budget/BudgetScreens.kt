@@ -158,10 +158,13 @@ fun BudgetsScreen(padding: PaddingValues, go: (String) -> Unit) {
             } else {
                 // BU-05: zero-based users see "available to assign" on top; others can hide it via profile settings.
                 item {
-                    PennyCard(color = if (ata < 0) app.penny.ui.theme.Penny.card else MaterialTheme.colorScheme.primaryContainer) {
+                    app.penny.ui.kit.HeroCard {
                         Row(Modifier.padding(20.dp), verticalAlignment = Alignment.CenterVertically) {
                             Column(Modifier.weight(1f)) {
-                                Text(stringResource(R.string.available_to_assign), style = MaterialTheme.typography.titleSmall)
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text(stringResource(R.string.available_to_assign), style = MaterialTheme.typography.titleSmall)
+                                    app.penny.ui.kit.InfoButton(stringResource(R.string.available_to_assign), stringResource(R.string.info_available_to_assign), tint = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f))
+                                }
                                 MoneyLabel(ctx.money(ata), style = MaterialTheme.typography.headlineMedium, color = if (ata < 0) Penny.status.over else androidx.compose.ui.graphics.Color.Unspecified)
                                 Text(stringResource(if (ata < 0) R.string.over_assigned_hint else R.string.ata_hint), style = MaterialTheme.typography.bodySmall)
                             }

@@ -97,7 +97,7 @@ fun AccountsScreen(onBack: () -> Unit, onOpen: (String) -> Unit, onAdd: () -> Un
         ) { pad ->
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 120.dp)) {
                 item {
-                    PennyCard(color = MaterialTheme.colorScheme.primaryContainer) {
+                    app.penny.ui.kit.HeroCard {
                         Column(Modifier.padding(20.dp)) {
                             Text(stringResource(R.string.net_worth), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onPrimaryContainer)
                             MoneyLabel(ctx.money(net), style = MaterialTheme.typography.displaySmall, color = MaterialTheme.colorScheme.onPrimaryContainer)
@@ -176,7 +176,7 @@ fun AccountDetailScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit
         ) { pad ->
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 48.dp)) {
                 item {
-                    PennyCard(color = MaterialTheme.colorScheme.primaryContainer) {
+                    app.penny.ui.kit.HeroCard {
                         Column(Modifier.padding(20.dp)) {
                             Text(stringResource(accountTypeLabel(a.type)) + " · " + a.currency, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onPrimaryContainer)
                             MoneyLabel(ctx.money(bal, a.currency), style = MaterialTheme.typography.displaySmall, color = MaterialTheme.colorScheme.onPrimaryContainer)

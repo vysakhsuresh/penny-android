@@ -180,7 +180,7 @@ fun PersonScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onEnt
         PennyScreen(p.value.name, onBack, actions = { IconButton(onClick = { onEdit(id) }) { Icon(Icons.Outlined.Edit, stringResource(R.string.edit)) } }) { pad ->
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 48.dp)) {
                 item {
-                    PennyCard(color = MaterialTheme.colorScheme.primaryContainer) {
+                    app.penny.ui.kit.HeroCard {
                         Column(Modifier.padding(20.dp)) {
                             if (bal.isEmpty()) Text(stringResource(R.string.settled_up), style = MaterialTheme.typography.headlineSmall)
                             bal.forEach { (cur, v) -> val (t, _) = balanceText(ctx, v, cur); MoneyLabel(t, style = MaterialTheme.typography.headlineSmall) }

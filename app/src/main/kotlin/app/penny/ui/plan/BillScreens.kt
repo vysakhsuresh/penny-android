@@ -164,7 +164,7 @@ fun BillsScreen(onBack: () -> Unit, onEdit: (String) -> Unit, onOpenTx: (String)
                         val subs = b.recurring.filter { it.value.kind == RecurringKind.SUBSCRIPTION && !it.value.paused }
                         val yearly = subs.sumOf { Bills.yearlyCost(it.value) }
                         item {
-                            PennyCard(color = MaterialTheme.colorScheme.primaryContainer) {
+                            app.penny.ui.kit.HeroCard {
                                 Column(Modifier.padding(20.dp)) {
                                     Text(stringResource(R.string.subscriptions_yearly), style = MaterialTheme.typography.titleSmall)
                                     MoneyLabel(ctx.money(yearly), style = MaterialTheme.typography.headlineMedium)

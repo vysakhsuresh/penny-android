@@ -107,8 +107,11 @@ object Importers {
             if (date == null || amount == null) { errors += "Row ${i + 1}"; return@forEachIndexed }
             val signed = if (m.invertSign) -amount else amount
             val payee = col(m.payeeCol)
+            // Bank narrations ("UPI-ZOMATO-zomato@hdfc-1234") become a readable payee; the raw text stays in the note.
+            val clean = cleanPayee(payee)
+            val note = col(m.noteCol).ifBlank { if (clean != payee) payee else "" }
             out += ImportedRow(
-                date, signed, cur, payee, col(m.noteCol), col(m.categoryCol), col(m.accountCol),
+                date, signed, cur, clean, note, col(m.categoryCol), col(m.accountCol),
                 col(m.tagsCol).split(',', ';').map { it.trim() }.filter { it.isNotEmpty() },
                 externalId = "csv:" + hash(m.name, date.toString(), signed.toString(), payee, col(m.noteCol), i.toString()),
             )
@@ -132,6 +135,24 @@ object Importers {
             out += ImportedRow(date, minor, cur, tag("NAME").ifEmpty { tag("PAYEE") }, tag("MEMO"), externalId = "ofx:$fit")
         }
         return ImportResult(out, errors)
+    }
+
+    private val CHANNEL = setOf("upi", "pos", "neft", "imps", "rtgs", "ach", "nach", "ecom", "atm", "trf", "transfer", "cr", "dr", "inb", "mb", "ib", "bil", "billpay", "card", "debit", "credit", "purchase", "payment", "ref", "txn")
+
+    /**
+     * Readable payee from a bank narration: drops channel words (UPI, POS, NEFT CR…), handles (x@bank), card and
+     * reference numbers, then title-cases an all-caps name. Text that is already a name passes through unchanged.
+     */
+    fun cleanPayee(raw: String): String {
+        val t = raw.trim()
+        if (t.isEmpty()) return t
+        val parts = t.split(Regex("[-/|*:]+|\\s{2,}")).map { it.trim() }.filter { it.isNotEmpty() }
+        val words = parts.map { seg ->
+            seg.split(Regex("\\s+")).filterNot { w -> '@' in w || w.lowercase() in CHANNEL || w.count(Char::isDigit) >= 4 }.joinToString(" ")
+        }.filter { it.isNotBlank() && it.any(Char::isLetter) }
+        val name = words.firstOrNull() ?: return t
+        val titled = if (name == name.uppercase()) name.lowercase().split(' ').joinToString(" ") { w -> w.replaceFirstChar { it.uppercase() } } else name
+        return titled.trim().ifEmpty { t }
     }
 
     /** QIF: D date, T amount, P payee, M memo, L category ("[Account]" = transfer), ^ ends a record. */

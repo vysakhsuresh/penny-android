@@ -47,4 +47,6 @@
     <string name="deleted_named">Deleted %1$s · %2$s</string>
     <string name="shared_unreadable">Penny couldn’t open that file. Try sharing it again from the app it’s in.</string>
     <string name="use_penny_pin">Use Penny PIN</string>
+    <string name="al_bill_covered_when">%1$s. Safe to spend covers it.</string>
+    <string name="al_bill_short_when">%1$s. Safe to spend may not cover it.</string>
 </resources>

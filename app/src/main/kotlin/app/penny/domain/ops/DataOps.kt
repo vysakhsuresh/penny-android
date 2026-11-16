@@ -69,8 +69,9 @@ fun Book.exportCsv(): Map<String, String> {
         Entities.CIRCLE_CONTRIBUTION, Entities.ATTACHMENT, Entities.VALUATION, Entities.FX_RATE, Entities.WATCHLIST,
     )
     tables.forEach { e ->
-        val items = list(e, kotlinx.serialization.json.JsonObject.serializer())
-        if (items.isNotEmpty()) out["$e.csv"] = Csv.write(listOf(listOf("id", "created", "updated", "json")) + items.map { listOf(it.state.id, it.state.createdAt.toString(), it.state.updatedAt.toString(), it.value.toString()) })
+        // Raw stored JSON: asking the decode cache for JsonObject returned already-decoded objects and the export crashed.
+        val items = raw(e)
+        if (items.isNotEmpty()) out["$e.csv"] = Csv.write(listOf(listOf("id", "created", "updated", "json")) + items.map { listOf(it.id, it.createdAt.toString(), it.updatedAt.toString(), it.data.toString()) })
     }
     return out
 }

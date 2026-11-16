@@ -132,7 +132,12 @@ class AlertService @Inject constructor(
         AlertKind.ENVELOPE_AT, AlertKind.ENVELOPE_OVER -> context.getString(R.string.al_cover_body)
         AlertKind.PACE -> context.getString(R.string.al_pace_body, d.args.firstOrNull() ?: "")
         AlertKind.SAFE_LOW -> context.getString(R.string.al_safe_low_body)
-        AlertKind.BILL_DUE -> context.getString(if (d.args.getOrNull(2) == "true") R.string.al_bill_covered else R.string.al_bill_short, d.args.getOrNull(1) ?: "")
+        AlertKind.BILL_DUE -> {
+            // "Due today" / "Due in 1 day" rather than "Due in 0 days" / "Due in 1 days".
+            val n = d.args.getOrNull(1)?.toIntOrNull()
+            val due = when (n) { null -> d.args.getOrNull(1).orEmpty(); 0 -> context.getString(R.string.due_today); else -> context.resources.getQuantityString(R.plurals.due_in_days, n, n) }
+            context.getString(if (d.args.getOrNull(2) == "true") R.string.al_bill_covered_when else R.string.al_bill_short_when, due)
+        }
         AlertKind.FORECAST_SHORT -> context.getString(R.string.al_forecast_body)
         else -> context.getString(R.string.al_review_body)
     }

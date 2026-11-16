@@ -96,6 +96,9 @@ class Book(
 
     fun <T> decode(st: EntityState, s: KSerializer<T>): T? = cache.get(st, s)
 
+    /** Live records of [entity] as stored (raw JSON), for exports that must not depend on the decode cache. */
+    fun raw(entity: String): List<EntityState> = live[entity].orEmpty()
+
     val accounts by lazy { list(Entities.ACCOUNT, FinancialAccount.serializer()).sortedWith(compareBy({ it.value.sort }, { it.value.name.lowercase() })) }
     val accountMap by lazy { accounts.associateBy { it.state.id } }
     val activeAccounts by lazy { accounts.filter { !it.value.archived } }

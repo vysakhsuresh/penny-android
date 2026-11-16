@@ -83,6 +83,8 @@ fun DataScreen(onBack: () -> Unit, go: (String) -> Unit, onWiped: () -> Unit) {
             uri ?: return@rememberLauncherForActivityResult
             scope.launch {
                 val ok = withContext(Dispatchers.IO) { runCatching { val j = vm.repo.exportJson(ctx.book.profileId); context.contentResolver.openOutputStream(uri)?.use { it.write(j.toByteArray()) } }.isSuccess }
+                // A failed export must not leave a broken, empty file behind in the chosen folder.
+                if (!ok) withContext(Dispatchers.IO) { runCatching { android.provider.DocumentsContract.deleteDocument(context.contentResolver, uri) } }
                 status = context.getString(if (ok) R.string.export_done else R.string.export_failed)
             }
         }
@@ -95,8 +97,10 @@ fun DataScreen(onBack: () -> Unit, go: (String) -> Unit, onWiped: () -> Unit) {
                         context.contentResolver.openOutputStream(uri)?.use { os ->
                             ZipOutputStream(os).use { z -> files.forEach { (name, body) -> z.putNextEntry(ZipEntry(name)); z.write(body.toByteArray()); z.closeEntry() } }
                         }
-                    }.isSuccess
+                    }.onFailure { android.util.Log.w("Penny", "CSV export failed", it) }.isSuccess
                 }
+                // A failed export must not leave a broken, empty file behind in the chosen folder.
+                if (!ok) withContext(Dispatchers.IO) { runCatching { android.provider.DocumentsContract.deleteDocument(context.contentResolver, uri) } }
                 status = context.getString(if (ok) R.string.export_done else R.string.export_failed)
             }
         }

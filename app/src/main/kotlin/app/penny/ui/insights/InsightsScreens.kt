@@ -203,7 +203,7 @@ fun InsightsScreen(padding: PaddingValues, go: (String) -> Unit) {
             }
             item { SectionHeader(stringResource(R.string.net_worth)) }
             item {
-                val hist = NetWorth.history(b.accounts.map { it.state.id to it.value }, b.txList, today, 12, ctx.base, b.fx, b.valuations.map { it.value })
+                val hist = NetWorth.history(b.accounts.map { it.state.id to it.value }, b.txList, today, 12, ctx.base, b.fx, b.valuations.map { it.value }, ctx.pack.goldPricePerGram)
                 PennyCard { Spacer(Modifier.height(12.dp)); LineChart(hist.map { app.penny.ui.common.monthDay(it.first) to it.second }, { ctx.money(it) }); Spacer(Modifier.height(12.dp)) }
             }
             item { SectionHeader(stringResource(R.string.forecast)) }

@@ -218,7 +218,8 @@ private fun HomeContent(ctx: Ctx, vm: BookViewModel, nav: HomeNav, padding: Padd
                                 Avatar(a.value.name, a.state.id, icon = accountIcon(a.value.type), size = 32.dp)
                                 Spacer(Modifier.height(8.dp))
                                 Text(a.value.name, style = MaterialTheme.typography.labelLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                                MoneyLabel(ctx.money(b.balance(a.state.id), a.value.currency), style = MaterialTheme.typography.titleMedium)
+                                val v = if (a.value.type in listOf(app.penny.core.model.AccountType.ASSET, app.penny.core.model.AccountType.INVESTMENT)) app.penny.core.insights.NetWorth.value(a.state.id, a.value, b.txList, b.today(), b.valuations.map { it.value }, ctx.pack.goldPricePerGram) else b.balance(a.state.id)
+                                MoneyLabel(ctx.money(v, a.value.currency), style = MaterialTheme.typography.titleMedium)
                             }
                         }
                     }

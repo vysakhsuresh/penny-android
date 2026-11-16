@@ -87,7 +87,7 @@ fun AccountsScreen(onBack: () -> Unit, onOpen: (String) -> Unit, onAdd: () -> Un
         val b = ctx.book
         var showArchived by rememberSaveable { mutableStateOf(false) }
         var reorder by rememberSaveable { mutableStateOf(false) }
-        val (net, missing) = NetWorth.total(b.accounts.map { it.state.id to it.value }, b.txList, b.today(), ctx.base, b.fx, b.valuations.map { it.value })
+        val (net, missing) = NetWorth.total(b.accounts.map { it.state.id to it.value }, b.txList, b.today(), ctx.base, b.fx, b.valuations.map { it.value }, ctx.pack.goldPricePerGram)
         PennyScreen(
             stringResource(R.string.accounts), onBack,
             actions = { TextButton(onClick = { reorder = !reorder }) { Text(stringResource(if (reorder) R.string.done else R.string.reorder)) } },
@@ -111,8 +111,8 @@ fun AccountsScreen(onBack: () -> Unit, onOpen: (String) -> Unit, onAdd: () -> Un
                         item(key = "g:$group:$type") { SectionHeader(group.ifEmpty { type?.let { stringResource(accountTypeLabel(it)) }.orEmpty() }) }
                         item(key = "c:$group:$type") {
                             PennyCard {
-                                accts.forEach { a ->
-                                    val bal = b.balance(a.state.id)
+                                accts.forEachIndexed { idx, a ->
+                                    val bal = if (a.value.type in listOf(AccountType.ASSET, AccountType.INVESTMENT)) NetWorth.value(a.state.id, a.value, b.txList, b.today(), b.valuations.map { it.value }, ctx.pack.goldPricePerGram) else b.balance(a.state.id)
                                     ListRow(
                                         title = a.value.name,
                                         subtitle = listOfNotNull(
@@ -125,8 +125,9 @@ fun AccountsScreen(onBack: () -> Unit, onOpen: (String) -> Unit, onAdd: () -> Un
                                         trailingText = if (reorder) null else ctx.money(bal, a.value.currency),
                                         trailing = if (reorder) ({
                                             Row {
-                                                IconButton(onClick = { move(vm, ctx, a.state.id, -1) }) { Icon(Icons.Outlined.ArrowUpward, stringResource(R.string.move_up)) }
-                                                IconButton(onClick = { move(vm, ctx, a.state.id, 1) }) { Icon(Icons.Outlined.ArrowDownward, stringResource(R.string.move_down)) }
+                                                // Accounts are shown in sections, so a move swaps with the neighbour in the same section.
+                                                IconButton(onClick = { move(vm, ctx, a.state.id, accts[idx - 1].state.id) }, enabled = idx > 0) { Icon(Icons.Outlined.ArrowUpward, stringResource(R.string.move_up)) }
+                                                IconButton(onClick = { move(vm, ctx, a.state.id, accts[idx + 1].state.id) }, enabled = idx < accts.lastIndex) { Icon(Icons.Outlined.ArrowDownward, stringResource(R.string.move_down)) }
                                             }
                                         }) else null,
                                         onClick = { onOpen(a.state.id) },
@@ -141,11 +142,11 @@ fun AccountsScreen(onBack: () -> Unit, onOpen: (String) -> Unit, onAdd: () -> Un
     }
 }
 
-private fun move(vm: app.penny.ui.common.BookViewModel, ctx: Ctx, id: String, delta: Int) {
+private fun move(vm: app.penny.ui.common.BookViewModel, ctx: Ctx, id: String, with: String) {
     val ids = ctx.book.accounts.map { it.state.id }.toMutableList()
     val i = ids.indexOf(id)
-    val j = i + delta
-    if (i < 0 || j !in ids.indices) return
+    val j = ids.indexOf(with)
+    if (i < 0 || j < 0) return
     ids[i] = ids[j].also { ids[j] = ids[i] }
     vm.act(R.string.reordered) { reorderAccounts(it, ids) }
 }
@@ -186,7 +187,7 @@ fun AccountDetailScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit
                     val today = b.today()
                     val pts = (5 downTo 0).map { m ->
                         val d = if (m == 0) today else today.minusMonths(m.toLong()).withDayOfMonth(1).plusMonths(1).minusDays(1)
-                        shortDate(d) to NetWorth.value(id, a, b.txList, d, b.valuations.map { it.value })
+                        shortDate(d) to NetWorth.value(id, a, b.txList, d, b.valuations.map { it.value }, ctx.pack.goldPricePerGram)
                     }
                     if (txs.isNotEmpty()) { SectionHeader(stringResource(R.string.balance_history)); LineChart(pts, { ctx.money(it, a.currency) }) }
                 }

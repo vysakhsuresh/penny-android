@@ -140,7 +140,8 @@ object NetWorth {
         goldPricePerGramMinor: Long? = null,
     ): Long {
         val v = valuations.filter { it.accountId == id && !it.date.isAfter(on) }.maxByOrNull { it.date }
-        if (a.weightGrams != null && goldPricePerGramMinor != null) return (a.weightGrams * goldPricePerGramMinor).toLong()
+        // A value the user recorded wins; grams x the pack's reference price is only the fallback.
+        if (v == null && a.weightGrams != null && goldPricePerGramMinor != null) return Math.round(a.weightGrams * goldPricePerGramMinor)
         val ledger = Ledger.balance(id, a, txs, on)
         return if (v != null) v.valueMinor + txs.filter { it.date.isAfter(v.date) && !it.date.isAfter(on) }.flatMap(Ledger::effects).filter { it.first == id }.sumOf { it.second } else ledger
     }
@@ -152,11 +153,12 @@ object NetWorth {
         base: String,
         fx: FxConverter,
         valuations: List<Valuation> = emptyList(),
+        goldPricePerGramMinor: Long? = null,
     ): Pair<Long, Int> {
         var sum = 0L
         var missing = 0
         accounts.filter { it.second.includeInNetWorth && (it.second.openingDate == null || !it.second.openingDate!!.isAfter(on)) }.forEach { (id, a) ->
-            val v = value(id, a, txs, on, valuations)
+            val v = value(id, a, txs, on, valuations, goldPricePerGramMinor)
             val c = fx.convert(v, a.currency, base, on)
             if (c == null) missing++ else sum = Math.addExact(sum, c)
         }
@@ -164,10 +166,10 @@ object NetWorth {
     }
 
     /** Net worth at the end of each of the last [months] months, oldest first. */
-    fun history(accounts: List<Pair<String, FinancialAccount>>, txs: List<Transaction>, today: LocalDate, months: Int, base: String, fx: FxConverter, valuations: List<Valuation> = emptyList()): List<Pair<LocalDate, Long>> =
+    fun history(accounts: List<Pair<String, FinancialAccount>>, txs: List<Transaction>, today: LocalDate, months: Int, base: String, fx: FxConverter, valuations: List<Valuation> = emptyList(), goldPricePerGramMinor: Long? = null): List<Pair<LocalDate, Long>> =
         (months - 1 downTo 0).map { i ->
             val d = if (i == 0) today else today.minusMonths(i.toLong()).withDayOfMonth(1).plusMonths(1).minusDays(1)
-            d to total(accounts, txs, d, base, fx, valuations).first
+            d to total(accounts, txs, d, base, fx, valuations, goldPricePerGramMinor).first
         }
 }
 

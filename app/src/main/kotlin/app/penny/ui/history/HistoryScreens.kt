@@ -262,6 +262,9 @@ fun TrashScreen(onBack: () -> Unit) {
                     val title = runCatching {
                         val o = st.data
                         listOf("payee", "name", "description", "fileName").firstNotNullOfOrNull { (o[it] as? JsonPrimitive)?.content?.takeIf(String::isNotBlank) }
+                            // A transaction without a payee is known by its category and date.
+                            ?: (o["categoryId"] as? JsonPrimitive)?.content?.let { c -> ctx.book.categoryName(c).takeIf(String::isNotBlank) }
+                                ?.let { n -> (o["date"] as? JsonPrimitive)?.content?.let { d -> runCatching { "$n · " + app.penny.ui.common.shortDate(java.time.LocalDate.parse(d)) }.getOrNull() } ?: n }
                     }.getOrNull() ?: entityLabel(context, st.entity)
                     val amount = (st.data["amountMinor"] as? JsonPrimitive)?.content?.toLongOrNull()?.let { m ->
                         ctx.fmt.format(m, (st.data["currency"] as? JsonPrimitive)?.content ?: ctx.base)

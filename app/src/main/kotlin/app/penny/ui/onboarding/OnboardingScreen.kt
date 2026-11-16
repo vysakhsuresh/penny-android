@@ -1,5 +1,9 @@
 package app.penny.ui.onboarding
 
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -74,9 +78,26 @@ import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
-class OnboardingViewModel @Inject constructor(private val repo: PennyRepository) : ViewModel() {
+class OnboardingViewModel @Inject constructor(
+    private val repo: PennyRepository,
+    @dagger.hilt.android.qualifiers.ApplicationContext private val context: android.content.Context,
+) : ViewModel() {
     val packs: List<RegionalPack> = repo.packs.all()
-    val devicePack: RegionalPack = repo.packs.forCountry(Locale.getDefault().country)
+
+    /**
+     * Where the person lives, best guess: the SIM's country, then the network's, then the phone language's region.
+     * A phone set to English (US) in Dubai suggested the United States; the SIM knows better. No permission needed.
+     */
+    val devicePack: RegionalPack = run {
+        val tm = context.getSystemService(android.content.Context.TELEPHONY_SERVICE) as? android.telephony.TelephonyManager
+        val candidates = listOfNotNull(
+            runCatching { tm?.simCountryIso }.getOrNull(),
+            runCatching { tm?.networkCountryIso }.getOrNull(),
+            Locale.getDefault().country,
+        ).filter { it.length == 2 }
+        candidates.asSequence().map { repo.packs.forCountry(it) }.firstOrNull { it.id != app.penny.packs.PackParser.GENERIC_ID }
+            ?: repo.packs.forCountry(Locale.getDefault().country)
+    }
 
     fun cycleOptions(pack: RegionalPack): List<CycleRule> {
         val today = LocalDate.now()
@@ -122,6 +143,8 @@ fun OnboardingScreen(vm: OnboardingViewModel, onImport: () -> Unit, onDone: () -
     var step by rememberSaveable { mutableStateOf(0) }
     var packId by rememberSaveable { mutableStateOf(vm.devicePack.id) }
     var cycleIndex by rememberSaveable { mutableStateOf(0) }
+    // OB-02: a monthly cycle can start on payday (the 25th, the last day), not only on the 1st.
+    var monthDay by rememberSaveable { mutableStateOf<Int?>(null) }
     var cash by rememberSaveable { mutableStateOf("") }
     var query by rememberSaveable { mutableStateOf("") }
     val busy by vm.busy.collectAsState()
@@ -132,7 +155,8 @@ fun OnboardingScreen(vm: OnboardingViewModel, onImport: () -> Unit, onDone: () -
     val cashName = stringResource(R.string.ob_cash_name)
 
     fun finish(sample: Boolean = false, target: String = "main") {
-        vm.finish(pack, cycles.getOrElse(cycleIndex) { pack.payCycleDefault }, cashName, cash, sample, target)
+        val chosen = cycles.getOrElse(cycleIndex) { pack.payCycleDefault }.let { c -> if (c is CycleRule.Monthly && monthDay != null) CycleRule.Monthly(monthDay!!) else c }
+        vm.finish(pack, chosen, cashName, cash, sample, target)
     }
 
     Column(Modifier.fillMaxSize().safeDrawingPadding().imePadding().padding(horizontal = 24.dp, vertical = 16.dp)) {
@@ -166,6 +190,14 @@ fun OnboardingScreen(vm: OnboardingViewModel, onImport: () -> Unit, onDone: () -
                             val label = cycleLabel(context, cycles[i])
                             OptionRow(i == cycleIndex, if (i == 0) stringResource(R.string.cycle_default_suffix, label) else label, null) { cycleIndex = i }
                         }
+                    }
+                    (cycles.getOrNull(cycleIndex) as? CycleRule.Monthly)?.let { m ->
+                        Spacer(Modifier.height(8.dp))
+                        app.penny.ui.kit.SelectField(
+                            stringResource(R.string.cycle_start_day), monthDay ?: m.startDay,
+                            (1..28).map { app.penny.ui.kit.Choice(it, it.toString()) } + app.penny.ui.kit.Choice(app.penny.core.period.LAST_DAY_OF_MONTH, stringResource(R.string.last_day)),
+                            { it?.let { d -> monthDay = d } },
+                        )
                     }
                 }
                 else -> Column {
@@ -204,8 +236,10 @@ fun OnboardingScreen(vm: OnboardingViewModel, onImport: () -> Unit, onDone: () -
 @Composable
 private fun Welcome() {
     Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
-        Surface(shape = CircleShape, color = MaterialTheme.colorScheme.primaryContainer, modifier = Modifier.size(84.dp)) {
-            Box(contentAlignment = Alignment.Center) { Text("P", style = MaterialTheme.typography.displaySmall, color = MaterialTheme.colorScheme.onPrimaryContainer, fontWeight = FontWeight.ExtraBold) }
+        // The app icon itself (plum with the gold coin), so the first screen matches what is on the home screen.
+        Box(Modifier.size(84.dp).clip(RoundedCornerShape(24.dp)).semantics { contentDescription = app.penny.core.Brand.NAME }) {
+            androidx.compose.foundation.Image(androidx.compose.ui.res.painterResource(R.drawable.ic_launcher_background), null, Modifier.fillMaxSize(), contentScale = androidx.compose.ui.layout.ContentScale.Crop)
+            androidx.compose.foundation.Image(androidx.compose.ui.res.painterResource(R.drawable.ic_launcher_foreground), null, Modifier.fillMaxSize().graphicsLayer { scaleX = 1.35f; scaleY = 1.35f })
         }
         Spacer(Modifier.height(28.dp))
         Text(Brand.NAME, style = MaterialTheme.typography.displayMedium)

@@ -48,7 +48,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -65,6 +70,37 @@ import java.time.ZoneOffset
 
 data class Choice<T>(val value: T, val label: String, val supporting: String? = null)
 
+/**
+ * Keeps the field's text locally so every keystroke lands at once, even when the caller's state arrives a frame
+ * later (StateFlow in a ViewModel). Without this, fast typing, IME suggestions and voice typing drop characters.
+ * A value coming from outside (a chip, a reset, a loaded record) replaces the buffer; echoes of what we sent do not.
+ */
+private class TextBuffer(initial: String) {
+    var tfv by mutableStateOf(TextFieldValue(initial, TextRange(initial.length)))
+    val sent = ArrayDeque<String>()
+
+    fun sync(external: String) {
+        if (external == tfv.text || external in sent) return
+        tfv = TextFieldValue(external, TextRange(external.length))
+        sent.clear()
+    }
+
+    fun edit(v: TextFieldValue, transform: (String) -> String = { it }): String {
+        val text = transform(v.text)
+        tfv = if (text == v.text) v else v.copy(text = text, selection = TextRange(v.selection.end.coerceAtMost(text.length)))
+        sent.addLast(text)
+        while (sent.size > 32) sent.removeFirst()
+        return text
+    }
+}
+
+@Composable
+private fun rememberTextBuffer(value: String): TextBuffer {
+    val b = remember { TextBuffer(value) }
+    b.sync(value)
+    return b
+}
+
 @Composable
 fun TextInput(
     value: String,
@@ -77,8 +113,9 @@ fun TextInput(
     keyboard: KeyboardType = KeyboardType.Text,
     placeholder: String? = null,
 ) {
+    val buf = rememberTextBuffer(value)
     OutlinedTextField(
-        value = value, onValueChange = onChange, label = { Text(label) },
+        value = buf.tfv, onValueChange = { onChange(buf.edit(it)) }, label = { Text(label) },
         modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
         singleLine = singleLine, isError = error != null,
         supportingText = (error ?: supporting)?.let { { Text(it) } },
@@ -105,22 +142,61 @@ fun AmountInput(
 ) {
     val unit = runCatching { CurrencyUnit.of(currency) }.getOrNull()
     val preview = if (value.isBlank() || unit == null) null else runCatching { AmountCalculator.evaluate(value, unit, fmt.spec) }.getOrNull()
-    val supporting = when (preview) {
-        is AmountResult.Ok -> if (preview.isExpression || preview.rounded) stringResource(if (preview.rounded) R.string.amount_rounded else R.string.amount_result, fmt.format(preview.minor, currency)) else null
-        else -> null
+    // Both strings are resolved on every pass: a composable call made only in some branches changes the group
+    // structure as the text goes empty -> non-empty, and that re-created the field and dropped the keyboard.
+    val shown = (preview as? AmountResult.Ok)?.let { fmt.format(it.minor, currency) }.orEmpty()
+    val roundedText = stringResource(R.string.amount_rounded, shown)
+    val resultText = stringResource(R.string.amount_result, shown)
+    val supporting = (preview as? AmountResult.Ok)?.let { p -> if (p.rounded) roundedText else if (p.isExpression) resultText else null }
+    // State-based field (TextFieldState): the text lives in the field, so keystrokes never wait for the caller's
+    // state. The value-based field lost focus and closed the keyboard right after the first digit on a Moto g84.
+    val state = androidx.compose.foundation.text.input.rememberTextFieldState(value)
+    val sent = remember { ArrayDeque<String>() }
+    val latestOnChange by androidx.compose.runtime.rememberUpdatedState(onChange)
+    // Outside -> field: a chip, a reset or a loaded record replaces the text; echoes of our own edits do not.
+    androidx.compose.runtime.LaunchedEffect(value) {
+        if (value != state.text.toString() && value !in sent) { state.edit { replace(0, length, value); selection = androidx.compose.ui.text.TextRange(value.length) }; sent.clear() }
     }
-    OutlinedTextField(
-        value = value,
-        onValueChange = { s -> onChange(s.replace('*', '×').replace('/', '÷')) },
-        label = { Text(label) },
-        prefix = { Text(app.penny.core.money.CurrencySymbols.symbol(currency, fmt.spec.localeTag) + " ") },
-        modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
-        singleLine = true, isError = error != null,
-        supportingText = { Text(error ?: supporting ?: stringResource(R.string.field_amount_hint)) },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Next),
-        textStyle = MaterialTheme.typography.headlineSmall.copy(fontFeatureSettings = app.penny.ui.theme.TabularNumbers),
-        shape = MaterialTheme.shapes.medium,
-    )
+    // Field -> outside.
+    androidx.compose.runtime.LaunchedEffect(state) {
+        androidx.compose.runtime.snapshotFlow { state.text.toString() }.collect { s ->
+            sent.addLast(s); while (sent.size > 32) sent.removeFirst()
+            latestOnChange(s)
+        }
+    }
+    fun insert(op: String) = state.edit { replace(selection.min, selection.max, op) }
+    Column(modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp)) {
+        OutlinedTextField(
+            state = state,
+            label = { Text(label) },
+            prefix = { Text(app.penny.core.money.CurrencySymbols.symbol(currency, fmt.spec.localeTag) + " ") },
+            modifier = Modifier.fillMaxWidth(),
+            lineLimits = androidx.compose.foundation.text.input.TextFieldLineLimits.SingleLine,
+            isError = error != null,
+            inputTransformation = {
+                val s = asCharSequence().toString()
+                if ('*' in s || '/' in s) replace(0, length, s.replace('*', '×').replace('/', '÷'))
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Next),
+            textStyle = MaterialTheme.typography.headlineSmall.copy(fontFeatureSettings = app.penny.ui.theme.TabularNumbers),
+            shape = MaterialTheme.shapes.medium,
+        )
+        Row(Modifier.fillMaxWidth().padding(start = 16.dp, top = 2.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                error ?: supporting.orEmpty(),
+                style = MaterialTheme.typography.bodySmall,
+                color = if (error != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.weight(1f),
+            )
+            // Number keyboards have no + × ÷ keys, so the calculator operators are offered here.
+            listOf("+" to R.string.op_plus, "−" to R.string.op_minus, "×" to R.string.op_times, "÷" to R.string.op_divide).forEach { (op, desc) ->
+                val d = stringResource(desc)
+                TextButton(onClick = { insert(op) }, modifier = Modifier.clearAndSetSemantics { contentDescription = d; role = Role.Button; onClick { insert(op); true } }) {
+                    Text(op, style = MaterialTheme.typography.titleMedium)
+                }
+            }
+        }
+    }
     if (allowZero) Unit
 }
 

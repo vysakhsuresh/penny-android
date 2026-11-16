@@ -18,4 +18,8 @@
     <string name="source_other">Captured</string>
     <string name="setup_first">Set up Penny first</string>
     <string name="setup_first_body">Go back and finish the first steps, then try again.</string>
+    <string name="op_plus">Add</string>
+    <string name="op_minus">Subtract</string>
+    <string name="op_times">Multiply</string>
+    <string name="op_divide">Divide</string>
 </resources>

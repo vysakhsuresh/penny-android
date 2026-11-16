@@ -107,7 +107,8 @@ fun TransactionFormScreen(
             else -> {
                 val b = ready.book
                 val fmt = ready.fmt
-                val reconciledLocked = vm.isEdit && f.status == TxStatus.RECONCILED && !unlockReconciled
+                // Locked only when the saved record is reconciled; choosing Reconciled in this form must still allow Save.
+                val reconciledLocked = vm.isEdit && vm.savedAsReconciled() && !unlockReconciled
                 Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                     if (reconciledLocked) {
                         // TX-12: reconciled items are locked; editing asks to un-reconcile first.
@@ -129,7 +130,9 @@ fun TransactionFormScreen(
                     }
                     AmountInput(f.amount, { s -> vm.update { it.copy(amount = s) } }, f.currency, fmt, stringResource(R.string.field_amount), error = errors["amount"])
                     // Typical amounts from the pack (TX-14 usual-amount chips).
-                    if (!vm.isEdit && f.amount.isBlank() && ready.pack.typicalAmountChips.isNotEmpty()) {
+                    // Shown for the whole new-transaction form, not only while blank: removing the row under a focused
+                    // field on the first keystroke shifts the layout and drops the next keys typed quickly.
+                    if (!vm.isEdit && ready.pack.typicalAmountChips.isNotEmpty()) {
                         FlowRow(Modifier.padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             ready.pack.typicalAmountChips.forEach { a ->
                                 SuggestionChip({ vm.update { it.copy(amount = a.toString()) } }, label = { Text(a.toString()) })

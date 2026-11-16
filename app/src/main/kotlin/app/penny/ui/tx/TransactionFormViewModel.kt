@@ -111,6 +111,8 @@ class TransactionFormViewModel @Inject constructor(
     private val _dupes = MutableStateFlow<DupePrompt?>(null)
     val dupes: StateFlow<DupePrompt?> = _dupes
     private var original: Transaction? = null
+    /** The form exactly as loaded from the record; equal to the current form while the user has not edited it. */
+    private var loaded: TxForm? = null
 
     init {
         viewModelScope.launch {
@@ -121,13 +123,23 @@ class TransactionFormViewModel @Inject constructor(
             if (_form.value == null) {
                 when {
                     txId != null && existing == null -> { _load.value = LoadState.MISSING; return@launch }
-                    existing != null -> set(fromTx(existing.value, ready.fmt))
+                    existing != null -> fromTx(existing.value, ready.fmt).let { loaded = it; set(it) }
                     else -> set(newForm(b, ready.fmt))
                 }
             }
             _load.value = LoadState.READY
+            // The record can change while this form is open (Revert in History, sync, a rule). Untouched forms follow
+            // it; a form with unsaved edits keeps them, so saving never silently undoes the other change.
+            if (txId != null) store.state.filterIsInstance<BookLoad.Ready>().collect { r ->
+                val cur = r.book.txMap[txId]?.value ?: return@collect
+                if (cur == original) return@collect
+                val untouched = loaded != null && _form.value == loaded
+                original = cur
+                if (untouched) fromTx(cur, r.fmt).let { loaded = it; set(it) }
+            }
         }
     }
+
 
     private fun newForm(b: Book, fmt: MoneyFmt): TxForm {
         val acct = b.profile.defaultAccountId?.let { id -> b.activeAccounts.firstOrNull { it.state.id == id } } ?: b.activeAccounts.firstOrNull()
@@ -162,6 +174,9 @@ class TransactionFormViewModel @Inject constructor(
     )
 
     fun update(f: (TxForm) -> TxForm) { _form.value?.let { set(f(it)) } }
+
+    /** TX-12: the stored record (not the form being edited) is reconciled. */
+    fun savedAsReconciled() = original?.status == TxStatus.RECONCILED
 
     private fun set(f: TxForm) {
         _form.value = f

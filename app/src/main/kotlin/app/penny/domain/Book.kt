@@ -143,7 +143,23 @@ class Book(
     val zone: ZoneId by lazy { runCatching { ZoneId.of(profile.timezone) }.getOrDefault(ZoneId.systemDefault()) }
     fun today(): LocalDate = LocalDate.now(zone)
 
-    val fx: FxConverter by lazy { FxTable(cachedRates + fxRates.map { it.value }) }
+    /**
+     * A transaction recorded in another currency than its account carries both amounts, so it is also a rate for that
+     * day (AED sent from a rupee account). Reference rates come first, these next, the user's own rates last (they win).
+     */
+    private val impliedRates: List<app.penny.core.model.FxRate> by lazy {
+        txList.mapNotNull { t ->
+            val own = t.accountAmountMinor ?: return@mapNotNull null
+            val acct = accountMap[t.accountId]?.value?.currency ?: return@mapNotNull null
+            if (acct == t.currency || own <= 0 || t.amountMinor <= 0) return@mapNotNull null
+            val dTx = runCatching { app.penny.core.money.CurrencyUnit.of(t.currency).minorUnits }.getOrNull() ?: return@mapNotNull null
+            val dAcct = runCatching { app.penny.core.money.CurrencyUnit.of(acct).minorUnits }.getOrNull() ?: return@mapNotNull null
+            val rate = java.math.BigDecimal(own).movePointLeft(dAcct).divide(java.math.BigDecimal(t.amountMinor).movePointLeft(dTx), java.math.MathContext.DECIMAL64)
+            app.penny.core.model.FxRate(t.currency, acct, t.date, rate.toPlainString(), manual = false)
+        }
+    }
+
+    val fx: FxConverter by lazy { FxTable(cachedRates + impliedRates + fxRates.map { it.value }) }
 
     /** Category ids excluded from spend, including children of excluded parents (CAT-04). */
     val excludedCategoryIds: Set<String> by lazy {

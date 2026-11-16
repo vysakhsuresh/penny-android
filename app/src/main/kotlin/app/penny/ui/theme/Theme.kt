@@ -206,6 +206,16 @@ fun PennyTheme(appearance: Appearance = Appearance(), content: @Composable () ->
         entityPalette = if (dark) DarkPalette else LightPalette, isDark = dark,
     )
     val density = LocalDensity.current
+    // System bar icons follow Penny's theme, not the phone's: light theme on a dark phone left white icons on white.
+    val view = androidx.compose.ui.platform.LocalView.current
+    if (!view.isInEditMode) androidx.compose.runtime.SideEffect {
+        (view.context as? android.app.Activity)?.window?.let { w ->
+            androidx.core.view.WindowCompat.getInsetsController(w, view).apply {
+                isAppearanceLightStatusBars = !dark
+                isAppearanceLightNavigationBars = !dark
+            }
+        }
+    }
     CompositionLocalProvider(
         LocalPenny provides extras,
         LocalStatusColors provides status,

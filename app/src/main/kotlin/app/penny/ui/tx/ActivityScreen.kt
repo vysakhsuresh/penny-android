@@ -52,6 +52,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.penny.R
 import app.penny.core.event.PennyJson
+import app.penny.core.model.CategoryKind
 import app.penny.core.model.SavedSearch
 import app.penny.core.model.SortBy
 import app.penny.core.model.TxFilter
@@ -69,6 +70,7 @@ import app.penny.ui.common.Ctx
 import app.penny.ui.common.SwipeableTx
 import app.penny.ui.common.TxRow
 import app.penny.ui.common.WithBook
+import app.penny.ui.common.isInflow
 import app.penny.ui.common.shortDate
 import app.penny.ui.common.typeLabel
 import app.penny.ui.kit.Choice
@@ -223,7 +225,12 @@ fun ActivityScreen(initialFilter: String?, onBack: () -> Unit, onOpen: (String) 
         }
 
         when (bulkSheet) {
-            "category" -> OptionSheet(stringResource(R.string.change_category), null as String?, b.categories.filter { !it.value.archived }.map { Choice(it.state.id, b.categoryName(it.state.id)) }, true, stringResource(R.string.uncategorised), true, { bulkSheet = null }) { c ->
+            // The kind that matches the selection comes first: expense categories for spending, income for inflows.
+            "category" -> OptionSheet(stringResource(R.string.change_category), null as String?, run {
+                val inflows = selected.mapNotNull { b.txMap[it]?.value }.let { l -> l.isNotEmpty() && l.all(::isInflow) }
+                val (first, second) = if (inflows) CategoryKind.INCOME to CategoryKind.EXPENSE else CategoryKind.EXPENSE to CategoryKind.INCOME
+                (b.categoriesOf(first) + b.categoriesOf(second)).map { Choice(it.state.id, b.categoryName(it.state.id)) }
+            }, true, stringResource(R.string.uncategorised), true, { bulkSheet = null }) { c ->
                 val ids = selected; vm.act(R.string.updated) { bulkEdit(it, ids) { t -> t.copy(categoryId = c, splits = emptyList()) } }; bulkSheet = null; selected = emptySet()
             }
             "account" -> OptionSheet(stringResource(R.string.change_account), null as String?, b.activeAccounts.map { Choice(it.state.id, it.value.name) }, false, "", false, { bulkSheet = null }) { a ->

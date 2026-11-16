@@ -402,8 +402,19 @@ fun TypedConfirmDialog(title: String, body: String, expected: String, confirmLab
 }
 
 /** All ISO 4217 currencies known to the platform, most relevant first. */
+/**
+ * Currencies in circulation: those some locale uses. getAvailableCurrencies() also lists retired ones (Andorran
+ * peseta, Deutsche Mark...), which only clutter the picker. Codes already in use in the book stay listed via `first`.
+ */
+private val circulatingCurrencies: List<String> by lazy {
+    java.util.Locale.getAvailableLocales()
+        .mapNotNull { l -> if (l.country.isEmpty()) null else runCatching { java.util.Currency.getInstance(l)?.currencyCode }.getOrNull() }
+        .filter { it != "XXX" }
+        .distinct().sorted()
+}
+
 fun currencyChoices(first: List<String>): List<Choice<String>> {
-    val all = java.util.Currency.getAvailableCurrencies().map { it.currencyCode }.sorted()
+    val all = circulatingCurrencies
     val ordered = first.distinct() + all.filter { it !in first }
     return ordered.map { code ->
         Choice(code, code, runCatching { java.util.Currency.getInstance(code).displayName }.getOrNull())

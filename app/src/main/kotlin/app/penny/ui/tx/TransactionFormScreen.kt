@@ -151,9 +151,17 @@ fun TransactionFormScreen(
                             AmountInput(f.toAmount, { s -> vm.update { it.copy(toAmount = s) } }, toCur, fmt, stringResource(R.string.field_to_amount), error = errors["toAmount"])
                             val sent = app.penny.ui.kit.parseAmount(f.amount, f.currency, fmt)
                             val got = app.penny.ui.kit.parseAmount(f.toAmount, toCur, fmt)
-                            if (sent != null && got != null) app.penny.core.budget.FxTable.impliedRate(sent, f.currency, got, toCur)?.let { r ->
-                                Text(stringResource(R.string.implied_rate, f.currency, r.stripTrailingZeros().toPlainString(), toCur), style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 20.dp))
+                            // Shown in the direction that reads naturally (1 USD = 95 INR, not 1 INR = 0.0105 USD).
+                            val rate = if (sent != null && got != null) app.penny.core.budget.FxTable.impliedRate(sent, f.currency, got, toCur) else null
+                            val rateParts = rate?.takeIf { it.signum() > 0 }?.let { r ->
+                                if (r >= java.math.BigDecimal.ONE) Triple(f.currency, r, toCur)
+                                else Triple(toCur, java.math.BigDecimal.ONE.divide(r, 10, java.math.RoundingMode.HALF_EVEN), f.currency)
                             }
+                            val rateText = stringResource(
+                                R.string.implied_rate, rateParts?.first.orEmpty(),
+                                rateParts?.second?.setScale(4, java.math.RoundingMode.HALF_EVEN)?.stripTrailingZeros()?.toPlainString().orEmpty(), rateParts?.third.orEmpty(),
+                            )
+                            Text(if (rateParts != null) rateText else "", style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 20.dp))
                         }
                     } else if (f.splits.isEmpty()) {
                         SelectField(stringResource(R.string.field_category), f.categoryId, vm.categoryChoices(b, if (f.type == TxType.INCOME) TxType.INCOME else TxType.EXPENSE), { id -> vm.update { it.copy(categoryId = id) } }, allowNone = true, noneLabel = stringResource(R.string.uncategorised))

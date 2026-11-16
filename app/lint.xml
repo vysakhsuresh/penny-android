@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- DECISIONS.md 33: strings added after a translation pass fall back to English until the next pass. -->
+<lint>
+    <issue id="MissingTranslation" severity="warning" />
+    <!-- every_n_* plurals are only called with n >= 1, so "one" without %d ("Every day") is correct. -->
+    <issue id="ImpliedQuantity" severity="warning" />
+</lint>

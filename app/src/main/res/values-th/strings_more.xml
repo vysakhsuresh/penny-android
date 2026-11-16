@@ -509,7 +509,7 @@
     <string name="plus_always_free">ฟรีเสมอ</string>
     <string name="plus_free_body">งบประมาณ การบันทึกอัตโนมัติ การแชร์ การซิงค์ การส่งออก ข้อมูลเชิงลึก และทุกอย่างที่เหลือ ไม่มีโฆษณา ไม่มีสินเชื่อ ไม่ขายข้อมูล</string>
     <string name="plus_monthly">รายเดือน</string>
-    <string name="plus_yearly">รายปี (ถูกลงประมาณ 40%)</string>
+    <string name="plus_yearly" formatted="false">รายปี (ถูกลงประมาณ 40%)</string>
     <string name="plus_lifetime">จ่ายครั้งเดียวตลอดชีพ</string>
     <string name="restore_purchases">กู้คืนการซื้อ</string>
     <string name="manage_cancel">จัดการหรือยกเลิก</string>

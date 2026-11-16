@@ -519,7 +519,7 @@
     <string name="plus_always_free">תמיד בחינם</string>
     <string name="plus_free_body">תקציבים, קליטה, שיתוף, סנכרון, ייצוא, תובנות וכל השאר. בלי פרסומות, בלי הלוואות, בלי מכירת נתונים.</string>
     <string name="plus_monthly">חודשי</string>
-    <string name="plus_yearly">שנתי (בערך 40% פחות)</string>
+    <string name="plus_yearly" formatted="false">שנתי (בערך 40% פחות)</string>
     <string name="plus_lifetime">פעם אחת, לכל החיים</string>
     <string name="restore_purchases">שחזור רכישות</string>
     <string name="manage_cancel">ניהול או ביטול</string>

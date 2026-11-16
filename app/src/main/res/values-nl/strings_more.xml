@@ -519,7 +519,7 @@
     <string name="plus_always_free">Altijd gratis</string>
     <string name="plus_free_body">Budgetten, vastleggen, delen, synchronisatie, exporteren, inzichten, al het andere. Geen advertenties, geen leningen, geen verkoop van gegevens.</string>
     <string name="plus_monthly">Maandelijks</string>
-    <string name="plus_yearly">Jaarlijks (ongeveer 40% minder)</string>
+    <string name="plus_yearly" formatted="false">Jaarlijks (ongeveer 40% minder)</string>
     <string name="plus_lifetime">Eenmalig, voor altijd</string>
     <string name="restore_purchases">Aankopen herstellen</string>
     <string name="manage_cancel">Beheren of opzeggen</string>

@@ -519,7 +519,7 @@
     <string name="plus_always_free">ہمیشہ مفت</string>
     <string name="plus_free_body">بجٹ، کیپچر، شیئرنگ، سنک، ایکسپورٹ، جائزے، باقی سب کچھ۔ نہ اشتہارات، نہ قرض، نہ ڈیٹا کی فروخت۔</string>
     <string name="plus_monthly">ماہانہ</string>
-    <string name="plus_yearly">سالانہ (تقریباً 40% کم)</string>
+    <string name="plus_yearly" formatted="false">سالانہ (تقریباً 40% کم)</string>
     <string name="plus_lifetime">ایک بار، زندگی بھر کے لیے</string>
     <string name="restore_purchases">خریداریاں بحال کریں</string>
     <string name="manage_cancel">منظم یا منسوخ کریں</string>

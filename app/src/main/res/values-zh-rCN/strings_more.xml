@@ -519,7 +519,7 @@
     <string name="plus_always_free">永久免费</string>
     <string name="plus_free_body">预算、自动记录、共享、同步、导出、分析以及其他一切。没有广告，没有贷款，不出售数据。</string>
     <string name="plus_monthly">按月</string>
-    <string name="plus_yearly">按年（约省 40%）</string>
+    <string name="plus_yearly" formatted="false">按年（约省 40%）</string>
     <string name="plus_lifetime">一次购买，终身使用</string>
     <string name="restore_purchases">恢复购买</string>
     <string name="manage_cancel">管理或取消</string>

@@ -519,7 +519,7 @@
     <string name="plus_always_free">সবসময় বিনামূল্যে</string>
     <string name="plus_free_body">বাজেট, ক্যাপচার, শেয়ারিং, সিঙ্ক, এক্সপোর্ট, বিশ্লেষণ, বাকি সবকিছু। কোনো বিজ্ঞাপন নেই, কোনো ঋণ নেই, কোনো ডেটা বিক্রি নেই।</string>
     <string name="plus_monthly">মাসিক</string>
-    <string name="plus_yearly">বার্ষিক (প্রায় 40% কম)</string>
+    <string name="plus_yearly" formatted="false">বার্ষিক (প্রায় 40% কম)</string>
     <string name="plus_lifetime">একবার, আজীবনের জন্য</string>
     <string name="restore_purchases">কেনাকাটা ফিরিয়ে আনুন</string>
     <string name="manage_cancel">পরিচালনা বা বাতিল করুন</string>

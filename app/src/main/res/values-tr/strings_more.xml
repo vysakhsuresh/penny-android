@@ -519,7 +519,7 @@
     <string name="plus_always_free">Her zaman ücretsiz</string>
     <string name="plus_free_body">Bütçeler, yakalama, paylaşım, eşitleme, dışa aktarma, içgörüler ve diğer her şey. Reklam yok, kredi yok, veri satışı yok.</string>
     <string name="plus_monthly">Aylık</string>
-    <string name="plus_yearly">Yıllık (yaklaşık yüzde 40 daha az)</string>
+    <string name="plus_yearly" formatted="false">Yıllık (yaklaşık yüzde 40 daha az)</string>
     <string name="plus_lifetime">Tek seferlik, ömür boyu</string>
     <string name="restore_purchases">Satın alımları geri yükle</string>
     <string name="manage_cancel">Yönet veya iptal et</string>

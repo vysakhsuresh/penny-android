@@ -519,7 +519,7 @@
     <string name="plus_always_free">مجاني دائمًا</string>
     <string name="plus_free_body">الميزانيات والالتقاط والمشاركة والمزامنة والتصدير والرؤى وكل شيء آخر. بلا إعلانات ولا قروض ولا بيع للبيانات.</string>
     <string name="plus_monthly">شهريًا</string>
-    <string name="plus_yearly">سنويًا (أقل بنحو 40%)</string>
+    <string name="plus_yearly" formatted="false">سنويًا (أقل بنحو 40%)</string>
     <string name="plus_lifetime">مرة واحدة، مدى الحياة</string>
     <string name="restore_purchases">استعادة المشتريات</string>
     <string name="manage_cancel">الإدارة أو الإلغاء</string>

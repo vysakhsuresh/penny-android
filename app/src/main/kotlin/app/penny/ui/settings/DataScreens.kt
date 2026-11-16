@@ -269,12 +269,14 @@ fun ImportScreen(onBack: () -> Unit) {
 }
 
 /** Reads UTF-8 (with or without BOM), UTF-16 with BOM, or falls back to Windows-1252 for old bank exports. */
+private val BOM = Char(0xFEFF).toString()
+
 fun readText(bytes: ByteArray): String = when {
     bytes.size >= 2 && bytes[0] == 0xFF.toByte() && bytes[1] == 0xFE.toByte() -> String(bytes, Charsets.UTF_16LE).drop(1)
     bytes.size >= 2 && bytes[0] == 0xFE.toByte() && bytes[1] == 0xFF.toByte() -> String(bytes, Charsets.UTF_16BE).drop(1)
     else -> {
         val utf = String(bytes, Charsets.UTF_8)
-        if (utf.contains('�')) String(bytes, charset("windows-1252")) else utf.removePrefix("﻿")
+        if (utf.contains('�')) String(bytes, charset("windows-1252")) else utf.removePrefix(BOM)
     }
 }
 

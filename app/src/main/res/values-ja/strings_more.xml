@@ -519,7 +519,7 @@
     <string name="plus_always_free">ずっと無料</string>
     <string name="plus_free_body">予算、取り込み、共有、同期、エクスポート、分析など、その他すべて。広告、ローン、データ販売はありません。</string>
     <string name="plus_monthly">月額</string>
-    <string name="plus_yearly">年額（約40%お得）</string>
+    <string name="plus_yearly" formatted="false">年額（約40%お得）</string>
     <string name="plus_lifetime">買い切り</string>
     <string name="restore_purchases">購入を復元</string>
     <string name="manage_cancel">管理または解約</string>

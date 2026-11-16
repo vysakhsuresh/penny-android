@@ -519,7 +519,7 @@
     <string name="plus_always_free">Всегда бесплатно</string>
     <string name="plus_free_body">Бюджеты, захват, совместный доступ, синхронизация, экспорт, аналитика и всё остальное. Без рекламы, кредитов и продажи данных.</string>
     <string name="plus_monthly">Ежемесячно</string>
-    <string name="plus_yearly">Ежегодно (примерно на 40% дешевле)</string>
+    <string name="plus_yearly" formatted="false">Ежегодно (примерно на 40% дешевле)</string>
     <string name="plus_lifetime">Один раз, навсегда</string>
     <string name="restore_purchases">Восстановить покупки</string>
     <string name="manage_cancel">Управлять или отменить</string>

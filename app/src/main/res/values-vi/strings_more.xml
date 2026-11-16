@@ -519,7 +519,7 @@
     <string name="plus_always_free">Luôn miễn phí</string>
     <string name="plus_free_body">Ngân sách, ghi nhận, chia sẻ, đồng bộ, xuất dữ liệu, phân tích, và mọi thứ khác. Không quảng cáo, không cho vay, không bán dữ liệu.</string>
     <string name="plus_monthly">Hằng tháng</string>
-    <string name="plus_yearly">Hằng năm (rẻ hơn khoảng 40%)</string>
+    <string name="plus_yearly" formatted="false">Hằng năm (rẻ hơn khoảng 40%)</string>
     <string name="plus_lifetime">Một lần, dùng trọn đời</string>
     <string name="restore_purchases">Khôi phục giao dịch mua</string>
     <string name="manage_cancel">Quản lý hoặc hủy</string>

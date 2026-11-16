@@ -519,7 +519,7 @@
     <string name="plus_always_free">Libre kanunay</string>
     <string name="plus_free_body">Budget, capture, pagpaambit, sync, export, obserbasyon, ug ang tanan pa. Walay ads, walay utang, walay pagbaligya sa data.</string>
     <string name="plus_monthly">Binulan</string>
-    <string name="plus_yearly">Tinuig (mga 40% mas barato)</string>
+    <string name="plus_yearly" formatted="false">Tinuig (mga 40% mas barato)</string>
     <string name="plus_lifetime">Kausa, hangtod sa kahangturan</string>
     <string name="restore_purchases">Ibalik ang mga napalit</string>
     <string name="manage_cancel">Dumalaha o kanselaha</string>

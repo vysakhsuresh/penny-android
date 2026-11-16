@@ -519,7 +519,7 @@
     <string name="plus_always_free">हमेशा मुफ़्त</string>
     <string name="plus_free_body">बजट, कैप्चर, शेयरिंग, सिंक, एक्सपोर्ट, इनसाइट, बाकी सब कुछ। न विज्ञापन, न लोन, न डेटा की बिक्री।</string>
     <string name="plus_monthly">मासिक</string>
-    <string name="plus_yearly">सालाना (करीब 40% कम)</string>
+    <string name="plus_yearly" formatted="false">सालाना (करीब 40% कम)</string>
     <string name="plus_lifetime">एक बार, जीवन भर के लिए</string>
     <string name="restore_purchases">खरीदारी वापस लाएं</string>
     <string name="manage_cancel">मैनेज करें या रद्द करें</string>

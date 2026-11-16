@@ -519,7 +519,7 @@
     <string name="plus_always_free">Selalu gratis</string>
     <string name="plus_free_body">Anggaran, tangkap, berbagi, sinkronisasi, ekspor, wawasan, dan semua yang lain. Tanpa iklan, tanpa pinjaman, tanpa jual data.</string>
     <string name="plus_monthly">Bulanan</string>
-    <string name="plus_yearly">Tahunan (hemat sekitar 40%)</string>
+    <string name="plus_yearly" formatted="false">Tahunan (hemat sekitar 40%)</string>
     <string name="plus_lifetime">Sekali bayar, seumur hidup</string>
     <string name="restore_purchases">Pulihkan pembelian</string>
     <string name="manage_cancel">Kelola atau batalkan</string>

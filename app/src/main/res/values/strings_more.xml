@@ -519,7 +519,7 @@
     <string name="plus_always_free">Always free</string>
     <string name="plus_free_body">Budgets, capture, sharing, sync, export, insights, everything else. No ads, no loans, no data sale.</string>
     <string name="plus_monthly">Monthly</string>
-    <string name="plus_yearly">Yearly (about 40% less)</string>
+    <string name="plus_yearly" formatted="false">Yearly (about 40% less)</string>
     <string name="plus_lifetime">Once, for life</string>
     <string name="restore_purchases">Restore purchases</string>
     <string name="manage_cancel">Manage or cancel</string>

@@ -519,7 +519,7 @@
     <string name="plus_always_free">Immer kostenlos</string>
     <string name="plus_free_body">Budgets, Erfassung, Teilen, Sync, Export, Auswertungen und alles andere. Keine Werbung, keine Kredite, kein Datenverkauf.</string>
     <string name="plus_monthly">Monatlich</string>
-    <string name="plus_yearly">Jährlich (etwa 40 % günstiger)</string>
+    <string name="plus_yearly" formatted="false">Jährlich (etwa 40 % günstiger)</string>
     <string name="plus_lifetime">Einmalig, für immer</string>
     <string name="restore_purchases">Käufe wiederherstellen</string>
     <string name="manage_cancel">Verwalten oder kündigen</string>

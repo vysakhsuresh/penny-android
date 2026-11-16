@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exchange_rates">மாற்று விகிதங்கள்</string>
+    <string name="rates_body">ஒவ்வொரு பரிவர்த்தனையின் தேதியில் இருந்த விகிதத்தில் Penny மாற்றுகிறது. குறிப்பு விகிதங்கள் Wi-Fi-இல் பதிவிறக்கப்பட்டு ஃபோனிலேயே வைக்கப்படும்; நீங்கள் உள்ளிடும் விகிதங்களுக்கே எப்போதும் முன்னுரிமை.</string>
+    <string name="rates_updated">%1$s வரையிலான குறிப்பு விகிதங்கள்</string>
+    <string name="rates_never">குறிப்பு விகிதங்கள் இன்னும் பதிவிறக்கப்படவில்லை</string>
+    <string name="rates_refreshed">விகிதங்கள் புதுப்பிக்கப்பட்டன</string>
+    <string name="rates_offline">விகித மூலத்தை அணுக முடியவில்லை. Wi-Fi-இல் மீண்டும் முயலவும்.</string>
+    <string name="refresh_now">இப்போது புதுப்பி</string>
+    <string name="add_manual_rate">என் விகிதத்தைச் சேர்</string>
+    <string name="your_currencies">இன்று உங்கள் நாணயங்கள்</string>
+    <string name="no_rate">விகிதம் இல்லை</string>
+    <string name="manual_rates">உங்கள் விகிதங்கள்</string>
+    <string name="no_manual_rates">இன்னும் இல்லை. உங்கள் வங்கி அல்லது பணமாற்றுநர் வேறு விகிதம் தந்திருந்தால் சேர்க்கவும்.</string>
+    <string name="rate_in_x">%1$s-இல் ஒரு அலகின் மதிப்பு</string>
+    <string name="record_value">மதிப்பைப் பதிவுசெய்</string>
+    <string name="record_value_body">இன்று இதன் மதிப்பு என்ன? மதிப்புகளின் வரலாறு நிகர மதிப்பைக் கணக்கிடப் பயன்படும்.</string>
+    <string name="value_recorded">மதிப்பு பதிவுசெய்யப்பட்டது</string>
+    <string name="valuations">மதிப்பீடுகள்</string>
+    <string name="share_group_link">ஆப் இல்லாதவர்களுக்கு ஒரு பார்வையைப் பகிரவும்</string>
+    <string name="group_link_text">“%1$s” இருப்புகள் (பார்க்க மட்டும், 30 நாட்களில் காலாவதியாகும்): %2$s</string>
+    <string name="usage_counts">அநாமதேயப் பயன்பாட்டு எண்ணிக்கைகளைப் பகிரவும்</string>
+    <string name="usage_counts_hint">அம்சங்கள் எவ்வளவு முறை பயன்படுத்தப்படுகின்றன என்பது மட்டும்; தொகைகள், பெறுநர்கள், குறிப்புகள் அல்லது நீங்கள் தட்டச்சு செய்த எதுவும் ஒருபோதும் இல்லை. இயல்பாக முடக்கப்பட்டுள்ளது.</string>
+    <string name="usage_counts_none">இன்னும் எதுவும் எண்ணப்படவில்லை.</string>
+    <string name="consent_until">%1$s வரை ஒப்புதல்</string>
+    <string name="reconsent">ஒப்புதலைப் புதுப்பி</string>
+    <string name="disconnect">இணைப்பைத் துண்டி</string>
+    <string name="disconnected">இணைப்பு துண்டிக்கப்பட்டது. வங்கி இணைப்பும் சேமிக்கப்பட்ட அணுகலும் நீக்கப்பட்டன; கணக்குகள் இப்போது கைமுறையானவை.</string>
+    <string name="bank_needs_sync">வங்கியை இணைக்க மேலே ஒத்திசைவை இயக்கவும்.</string>
+    <string name="connect_with_token">அமைவு டோக்கனுடன் இணை</string>
+    <string name="connect_in_browser">வழங்குநரின் பாதுகாப்பான பக்கத்தில் இணை</string>
+    <string name="simplefin_help">உங்கள் SimpleFIN Bridge கணக்கில் ஒரு அமைவு டோக்கனை உருவாக்கி இங்கே ஒட்டவும். Penny சர்வர் அதை அணுகலுக்காக மாற்றிக்கொள்ளும்; டோக்கன் இந்த ஃபோனில் ஒருபோதும் சேமிக்கப்படாது.</string>
+    <string name="setup_token">அமைவு டோக்கன்</string>
+    <string name="connect">இணை</string>
+    <string name="bank_connected">வங்கி இணைக்கப்பட்டது. அடுத்த ஒத்திசைவில் பரிவர்த்தனைகள் வரும்.</string>
+    <string name="bank_cancelled">இணைப்பு ரத்துசெய்யப்பட்டது. எதுவும் இணைக்கப்படவில்லை.</string>
+    <plurals name="bank_synced"><item quantity="one">%d பரிவர்த்தனை சேர்க்கப்பட்டது அல்லது புதுப்பிக்கப்பட்டது</item><item quantity="other">%d பரிவர்த்தனைகள் சேர்க்கப்பட்டன அல்லது புதுப்பிக்கப்பட்டன</item></plurals>
+    <string name="automation">தானியக்கம்</string>
+    <string name="automation_sub">Tasker, ஷார்ட்கட்கள், வெப்ஹூக்குகள்</string>
+    <string name="automation_body">Penny-ஐத் தானியக்க ஆப்களுடனும் உங்கள் சொந்தச் சேவைகளுடனும் இணைக்கவும். நீங்கள் வெப்ஹூக் முகவரியை அமைக்காத வரை அனைத்தும் இந்த ஃபோனிலேயே இருக்கும்.</string>
+    <string name="automation_apps">தானியக்க ஆப்கள்</string>
+    <string name="allow_automation_apps">தானியக்க ஆப்கள் பரிவர்த்தனைகளைச் சேர்க்க அனுமதி</string>
+    <string name="allow_automation_hint">Tasker, Automate போன்ற ஆப்கள் intent மூலம் பரிவர்த்தனைகளைச் சேர்க்கலாம். அவை உங்கள் தரவை ஒருபோதும் படிக்க முடியாது.</string>
+    <string name="deep_link_example">அல்லது எந்த ஆப் அல்லது ஷார்ட்கட்டிலிருந்தும் penny://add?amount=1250&amp;category=Groceries என்பதைத் திறக்கவும் (தொகை சிறு அலகுகளில்).</string>
+    <string name="webhooks">வெப்ஹூக்குகள்</string>
+    <string name="webhooks_body">ஒவ்வொரு புதிய பரிவர்த்தனையையும் கையொப்பமிட்ட JSON ஆக உங்கள் சொந்த சர்வருக்கு அனுப்பவும். நீங்கள் கட்டுப்படுத்தும் முகவரியை மட்டும் பயன்படுத்தவும்.</string>
+    <string name="webhook_url">வெப்ஹூக் முகவரி (https)</string>
+    <string name="https_only">https முகவரிகள் மட்டுமே அனுமதிக்கப்படும்</string>
+    <string name="signing_secret">கையொப்ப ரகசியம் (X-Penny-Signature ஹெடரைச் சரிபார்க்கவும்):</string>
+    <string name="create_secret">ரகசியத்தை உருவாக்கு</string>
+    <string name="new_secret">புதிய ரகசியம்</string>
+    <string name="copy">நகலெடு</string>
+    <string name="send_now">இப்போது அனுப்பு</string>
+    <plurals name="webhook_sent"><item quantity="one">%d பரிவர்த்தனை அனுப்பப்பட்டது</item><item quantity="other">%d பரிவர்த்தனைகள் அனுப்பப்பட்டன</item></plurals>
+    <string name="ob_get_started">தொடங்கு</string>
+    <string name="ob_sample">மாதிரித் தரவுடன் பாருங்கள்</string>
+    <string name="ob_point_safe">ஒரே அமைதியான எண்: சம்பள நாள் வரை எவ்வளவு செலவிடலாம்</string>
+    <string name="ob_point_world">எந்த நாணயமும், எந்தச் சம்பளச் சுழற்சியும், நீங்கள் உண்மையில் பணத்தைக் கையாளும் விதத்திலேயே</string>
+    <string name="ob_point_private">வடிவமைப்பிலேயே தனியுரிமை: உங்கள் ஃபோனில், முழுமையாக என்க்ரிப்ட் செய்யப்பட்டது</string>
+    <string name="ob_point_free">எல்லா அம்சங்களும் இலவசம். விளம்பரங்கள் இல்லை, கடன்கள் இல்லை, தரவு விற்பனை இல்லை</string>
+    <string name="no_income_yet">இந்தக் காலத்தில் இன்னும் வருமானம் பதிவாகவில்லை</string>
+    <string name="spent_more_than_income">செலவு இந்தக் காலத்தின் வருமானத்தை விட அதிகம்</string>
+    <string name="get_address">என் ஃபார்வர்டிங் முகவரியைப் பெறு</string>
+    <string name="new_address">புதிய முகவரி</string>
+    <string name="turn_off">முடக்கு</string>
+    <string name="email_forwarding_privacy">ஆர்டர், பயண, உணவு ரசீதுகளை இந்த முகவரிக்கு ஃபார்வர்டு செய்யவும். சர்வர் ஒவ்வொரு மின்னஞ்சலையும் உடனே இந்த ஃபோனுக்காக என்க்ரிப்ட் செய்து, Penny இங்கே படித்தவுடன் நீக்கிவிடும்.</string>
+    <string name="community_merchants">சமூக வணிகர் பெயர்கள்</string>
+    <string name="community_merchants_hint">பெறுநர் பெயர்களையும் பிரிவுகளையும் (தொகைகளை ஒருபோதும் அல்ல) உங்கள் பகுதியில் உள்ளவர்களுடன் அநாமதேயமாகப் பகிர்ந்து, சுத்தமான பெயர்களைப் பெறுங்கள். இயல்பாக முடக்கப்பட்டுள்ளது.</string>
+</resources>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tagline">എത്ര ചെലവാക്കാം എന്ന് അറിയുക.</string>
+
+    <!-- Common -->
+    <string name="save">സേവ് ചെയ്യുക</string>
+    <string name="cancel">റദ്ദാക്കുക</string>
+    <string name="delete">ഇല്ലാതാക്കുക</string>
+    <string name="undo">പഴയപടിയാക്കുക</string>
+    <string name="restore">പുനഃസ്ഥാപിക്കുക</string>
+    <string name="retry">വീണ്ടും ശ്രമിക്കുക</string>
+    <string name="back">തിരികെ</string>
+    <string name="next">അടുത്തത്</string>
+    <string name="skip">ഒഴിവാക്കുക</string>
+    <string name="done">പൂർത്തിയായി</string>
+    <string name="none">ഒന്നുമില്ല</string>
+    <string name="loading">ലോഡ് ചെയ്യുന്നു</string>
+    <string name="error_generic">നിങ്ങളുടെ ഡാറ്റ വായിക്കുമ്പോൾ എന്തോ പിശക് സംഭവിച്ചു. ഒന്നും നഷ്ടപ്പെട്ടിട്ടില്ല.</string>
+
+    <!-- Onboarding (OB-01) -->
+    <string name="ob_step">ഘട്ടം %1$d / %2$d</string>
+    <string name="ob_region_title">നിങ്ങൾ എവിടെയാണ് താമസിക്കുന്നത്?</string>
+    <string name="ob_region_body">ഇത് നിങ്ങളുടെ കറൻസി, നമ്പർ ഫോർമാറ്റ്, സാധാരണ ശമ്പള സൈക്കിൾ എന്നിവ സജ്ജമാക്കുന്നു. ഇവയെല്ലാം പിന്നീട് മാറ്റാം.</string>
+    <string name="ob_cycle_title">പണം എപ്പോഴാണ് വരുന്നത്?</string>
+    <string name="ob_cycle_body">നിങ്ങളുടെ ബജറ്റ് യഥാർത്ഥ ശമ്പള സൈക്കിൾ പിന്തുടരുന്നു.</string>
+    <string name="ob_account_title">ഇപ്പോൾ നിങ്ങളുടെ കൈയിൽ എത്ര പണമുണ്ട്?</string>
+    <string name="ob_account_body">ഒരു ക്യാഷ് അക്കൗണ്ടിൽ തുടങ്ങാം. ബാങ്കുകളും കാർഡുകളും പിന്നീട് ചേർക്കാം.</string>
+    <string name="ob_cash_name">ക്യാഷ്</string>
+    <string name="ob_finish">%1$s ഉപയോഗിച്ചു തുടങ്ങുക</string>
+
+    <!-- Cycles -->
+    <string name="cycle_monthly">മാസംതോറും, %1$d-ാം തീയതി മുതൽ</string>
+    <string name="cycle_monthly_last">മാസംതോറും, അവസാന ദിവസം മുതൽ</string>
+    <string name="cycle_semimonthly">മാസത്തിൽ രണ്ടുതവണ, %1$d-ാം തീയതിയും അവസാന ദിവസവും</string>
+    <string name="cycle_weekly">ആഴ്ചതോറും</string>
+    <string name="cycle_biweekly">രണ്ടാഴ്ചയിലൊരിക്കൽ</string>
+    <string name="cycle_fourweekly">നാലാഴ്ചയിലൊരിക്കൽ</string>
+    <string name="cycle_quarterly">മൂന്നുമാസത്തിലൊരിക്കൽ</string>
+    <string name="cycle_yearly">വർഷംതോറും</string>
+    <string name="cycle_onincome">പണം വരുമ്പോൾ</string>
+    <string name="cycle_default_suffix">%1$s (ഇവിടെ സാധാരണം)</string>
+    <string name="cycle_start_day">മാസത്തിലെ തുടക്ക ദിവസം</string>
+
+    <!-- Home -->
+    <string name="safe_to_spend">ചെലവാക്കാവുന്നത്</string>
+    <string name="per_day">ദിവസം %1$s</string>
+    <string name="on_pace">ശരിയായ വേഗത്തിൽ</string>
+    <string name="ahead_of_pace">ചെലവ് കലണ്ടറിനേക്കാൾ മുന്നിലാണ്</string>
+    <string name="period_range">%1$s – %2$s</string>
+    <string name="prev_period">മുൻ കാലയളവ്</string>
+    <string name="next_period">അടുത്ത കാലയളവ്</string>
+    <string name="this_period">ഈ കാലയളവിലേക്ക് മടങ്ങുക</string>
+    <string name="income_spent">വരുമാനം %1$s · ചെലവ് %2$s</string>
+    <string name="accounts">അക്കൗണ്ടുകൾ</string>
+    <string name="transactions">ഇടപാടുകൾ</string>
+    <string name="empty_period_title">ഈ കാലയളവിൽ ഇതുവരെ ഒന്നുമില്ല</string>
+    <string name="empty_period_body">ആദ്യ ഇടപാട് രേഖപ്പെടുത്താൻ ചേർക്കുക ടാപ്പ് ചെയ്യുക.</string>
+    <string name="add_transaction">ഇടപാട് ചേർക്കുക</string>
+    <string name="trash">ട്രാഷ്</string>
+    <string name="settings">ക്രമീകരണം</string>
+    <string name="today">ഇന്ന്</string>
+    <string name="yesterday">ഇന്നലെ</string>
+    <string name="deleted_tx">ഇടപാട് ഇല്ലാതാക്കി</string>
+    <string name="saved_tx">ഇടപാട് സേവ് ചെയ്തു</string>
+    <string name="uncategorised">വിഭാഗമില്ല</string>
+    <string name="transfer_to">%1$s-ലേക്ക്</string>
+    <string name="swipe_delete_hint">ഇല്ലാതാക്കാൻ ഇടത്തേക്ക് സ്വൈപ്പ് ചെയ്യുക</string>
+
+    <!-- Transaction form (TX-02) -->
+    <string name="new_transaction">പുതിയ ഇടപാട്</string>
+    <string name="edit_transaction">ഇടപാട് എഡിറ്റ് ചെയ്യുക</string>
+    <string name="type_expense">ചെലവ്</string>
+    <string name="type_income">വരുമാനം</string>
+    <string name="type_transfer">ട്രാൻസ്ഫർ</string>
+    <string name="type_refund">റീഫണ്ട്</string>
+    <string name="type_adjustment">ക്രമീകരണം</string>
+    <string name="type_opening">തുടക്ക ബാലൻസ്</string>
+    <string name="field_type">തരം</string>
+    <string name="field_amount">തുക</string>
+    <string name="field_amount_hint">കണക്കുകൂട്ടാൻ + − × ÷ ഉപയോഗിക്കുക</string>
+    <string name="amount_result">= %1$s</string>
+    <string name="amount_rounded">= %1$s (റൗണ്ട് ചെയ്തത്)</string>
+    <string name="field_currency">കറൻസി</string>
+    <string name="field_account">അക്കൗണ്ട്</string>
+    <string name="field_to_account">ഏത് അക്കൗണ്ടിലേക്ക്</string>
+    <string name="field_to_amount">ലഭിച്ച തുക</string>
+    <string name="field_category">വിഭാഗം</string>
+    <string name="field_payee">സ്വീകർത്താവ്</string>
+    <string name="field_date">തീയതി</string>
+    <string name="field_time">സമയം</string>
+    <string name="field_no_time">സമയമില്ല</string>
+    <string name="field_note">കുറിപ്പ്</string>
+    <string name="field_tags">ടാഗുകൾ</string>
+    <string name="field_tags_hint">കോമ ഉപയോഗിച്ച് വേർതിരിക്കുക</string>
+    <string name="field_status">നില</string>
+    <string name="status_pending">തീർപ്പാക്കാനുണ്ട്</string>
+    <string name="status_cleared">ക്ലിയർ ആയി</string>
+    <string name="status_reconciled">ഒത്തുനോക്കി</string>
+    <string name="field_direction">ദിശ</string>
+    <string name="direction_in">ബാലൻസിൽ ചേർക്കുന്നു</string>
+    <string name="direction_out">ബാലൻസിൽ നിന്ന് എടുക്കുന്നു</string>
+    <string name="field_private">സ്വകാര്യം</string>
+    <string name="field_private_body">പങ്കിട്ട സ്‌പേസുകളിൽ സ്വീകർത്താവ്, കുറിപ്പ്, അറ്റാച്ച്‌മെന്റുകൾ എന്നിവ മറ്റുള്ളവരിൽ നിന്ന് മറയ്ക്കുക</string>
+    <string name="field_exclude_budget">ബജറ്റിൽ ഉൾപ്പെടുത്തേണ്ട</string>
+    <string name="field_exclude_reports">റിപ്പോർട്ടുകളിൽ ഉൾപ്പെടുത്തേണ്ട</string>
+    <string name="field_splits">വിഭജനങ്ങൾ</string>
+    <string name="field_attachments">അറ്റാച്ച്‌മെന്റുകൾ</string>
+    <string name="future_scheduled">ഭാവി തീയതി: ഇത് ഷെഡ്യൂൾ ചെയ്തതായി കണക്കാക്കും.</string>
+    <string name="history">ചരിത്രം</string>
+    <string name="pick_date">തീയതി തിരഞ്ഞെടുക്കുക</string>
+    <string name="pick_time">സമയം തിരഞ്ഞെടുക്കുക</string>
+    <string name="clear_time">സമയം മായ്ക്കുക</string>
+
+    <!-- Validation (TX-08) -->
+    <string name="err_amount_empty">തുക നൽകുക</string>
+    <string name="err_amount_invalid">ഇതൊരു സാധുവായ തുകയല്ല</string>
+    <string name="err_amount_positive">തുക പൂജ്യത്തിൽ കൂടുതലായിരിക്കണം. വരുമാനമാണോ ചെലവാണോ എന്ന് തരം തീരുമാനിക്കും.</string>
+    <string name="err_amount_decimals_none">%1$s-ൽ ദശാംശങ്ങളില്ല</string>
+    <string name="err_amount_decimals">%1$s-ൽ %2$d ദശാംശ സ്ഥാനങ്ങൾ വരെ അനുവദിക്കും</string>
+    <string name="err_amount_large">ആ തുക വളരെ വലുതാണ്</string>
+    <string name="err_divide_zero">പൂജ്യം കൊണ്ട് ഹരിക്കാനാകില്ല</string>
+    <string name="err_account_required">ഒരു അക്കൗണ്ട് തിരഞ്ഞെടുക്കുക</string>
+    <string name="err_transfer_target">പണം പോകുന്ന അക്കൗണ്ട് തിരഞ്ഞെടുക്കുക</string>
+    <string name="err_transfer_same">ട്രാൻസ്ഫറിനായി മറ്റൊരു അക്കൗണ്ട് തിരഞ്ഞെടുക്കുക</string>
+    <string name="err_transfer_to_amount">മറ്റേ കറൻസിയിൽ ലഭിച്ച തുക നൽകുക</string>
+    <string name="err_direction">ഇത് ചേർക്കുകയാണോ എടുക്കുകയാണോ എന്ന് തിരഞ്ഞെടുക്കുക</string>
+    <string name="err_splits">വിഭജനങ്ങളുടെ ആകെ മൊത്തം തുകയ്ക്ക് തുല്യമായിരിക്കണം</string>
+    <string name="tx_not_found">ഈ ഇടപാട് ഇപ്പോൾ നിലവിലില്ല.</string>
+
+    <!-- History (TX-05) -->
+    <string name="history_title">ചരിത്രം</string>
+    <string name="history_created">സൃഷ്ടിച്ചു</string>
+    <string name="history_edited">എഡിറ്റ് ചെയ്തു</string>
+    <string name="history_deleted">ഇല്ലാതാക്കി</string>
+    <string name="history_restored">പുനഃസ്ഥാപിച്ചു</string>
+    <string name="history_undo">പഴയപടിയാക്കി</string>
+    <string name="history_reverted">പതിപ്പ് %1$d-ലേക്ക് മാറ്റി</string>
+    <string name="history_version">പതിപ്പ് %1$d</string>
+    <string name="history_by">%1$s · %2$s</string>
+    <string name="history_you">നിങ്ങൾ</string>
+    <string name="history_revert">ഈ പതിപ്പിലേക്ക് മാറ്റുക</string>
+    <string name="history_change">%1$s: %2$s → %3$s</string>
+    <string name="history_set">%1$s: %2$s</string>
+    <string name="history_empty">ഇതുവരെ മാറ്റങ്ങളൊന്നും രേഖപ്പെടുത്തിയിട്ടില്ല.</string>
+    <string name="reverted">പഴയ പതിപ്പിലേക്ക് മാറ്റി</string>
+
+    <!-- Trash (TX-03, HS-02) -->
+    <string name="trash_title">ട്രാഷ്</string>
+    <string name="trash_body">ഇല്ലാതാക്കിയ ഇടപാടുകൾ 30 ദിവസം ഇവിടെ ഉണ്ടാകും.</string>
+    <string name="trash_empty">ട്രാഷ് ശൂന്യമാണ്</string>
+    <string name="delete_forever">ശാശ്വതമായി ഇല്ലാതാക്കുക</string>
+    <string name="restored">പുനഃസ്ഥാപിച്ചു</string>
+    <string name="deleted_forever">ശാശ്വതമായി ഇല്ലാതാക്കി</string>
+
+    <!-- Settings -->
+    <string name="settings_region">പ്രദേശം</string>
+    <string name="settings_region_body">കറൻസി, നമ്പർ ഫോർമാറ്റ്, ശമ്പള സൈക്കിൾ എന്നിവ പ്രദേശത്തെ പിന്തുടരും. നിലവിലുള്ള ഇടപാടുകൾ അവയുടെ സ്വന്തം കറൻസിയിൽ തുടരും.</string>
+    <string name="settings_sample">ഉദാഹരണം: %1$s</string>
+    <string name="region_changed">പ്രദേശം %1$s ആക്കി മാറ്റി</string>
+    <string name="settings_cycle">ശമ്പള സൈക്കിൾ</string>
+    <string name="settings_about">%1$s സൗജന്യമാണ്. പരസ്യങ്ങളില്ല, ലോണുകളില്ല, ഡാറ്റ വിൽപ്പനയില്ല.</string>
+
+    <plurals name="days_left">
+        <item quantity="one">%d ദിവസം ബാക്കി</item>
+        <item quantity="other">%d ദിവസം ബാക്കി</item>
+    </plurals>
+    <plurals name="unconverted">
+        <item quantity="one">മറ്റൊരു കറൻസിയിലുള്ള %d ഇടപാട് ഇതുവരെ കണക്കാക്കിയിട്ടില്ല</item>
+        <item quantity="other">മറ്റ് കറൻസികളിലുള്ള %d ഇടപാടുകൾ ഇതുവരെ കണക്കാക്കിയിട്ടില്ല</item>
+    </plurals>
+    <plurals name="trash_count">
+        <item quantity="one">%d ഇനം</item>
+        <item quantity="other">%d ഇനങ്ങൾ</item>
+    </plurals>
+</resources>

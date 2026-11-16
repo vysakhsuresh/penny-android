@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Penny</string>
+    <string name="safe_to_spend">Salama kutumia</string>
+    <string name="per_day_left">%1$s kwa siku · siku %2$d zimebaki</string>
+    <string name="say_it">Taja matumizi</string>
+    <string name="added">Imeongezwa kwenye simu yako</string>
+    <string name="not_understood">Kiasi hakijasikika</string>
+    <string name="no_phone">Simu haijaunganishwa. Inaonyesha kiasi cha mwisho kinachojulikana.</string>
+</resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exchange_rates">Viwango vya ubadilishaji</string>
+    <string name="rates_body">Penny hubadilisha kwa kiwango cha tarehe ya kila muamala. Viwango vya marejeleo hupakuliwa kupitia Wi-Fi na kuhifadhiwa kwenye simu; viwango vyako mwenyewe hupewa kipaumbele kila wakati.</string>
+    <string name="rates_updated">Viwango vya marejeleo hadi %1$s</string>
+    <string name="rates_never">Bado hakuna viwango vya marejeleo vilivyopakuliwa</string>
+    <string name="rates_refreshed">Viwango vimesasishwa</string>
+    <string name="rates_offline">Imeshindwa kufikia chanzo cha viwango. Jaribu tena ukiwa kwenye Wi-Fi.</string>
+    <string name="refresh_now">Onyesha upya sasa</string>
+    <string name="add_manual_rate">Ongeza kiwango changu</string>
+    <string name="your_currencies">Sarafu zako leo</string>
+    <string name="no_rate">Hakuna kiwango</string>
+    <string name="manual_rates">Viwango vyako</string>
+    <string name="no_manual_rates">Bado hakuna. Ongeza kimoja kama benki yako au mbadilishaji alikupa kiwango tofauti.</string>
+    <string name="rate_in_x">Thamani ya kipimo kimoja kwa %1$s</string>
+    <string name="record_value">Rekodi thamani</string>
+    <string name="record_value_body">Hiki kina thamani gani leo? Historia ya thamani hutumika kukokotoa utajiri halisi.</string>
+    <string name="value_recorded">Thamani imerekodiwa</string>
+    <string name="valuations">Tathmini</string>
+    <string name="share_group_link">Shiriki mwonekano kwa watu wasio na programu</string>
+    <string name="group_link_text">Salio za “%1$s” (kusoma tu, inaisha baada ya siku 30): %2$s</string>
+    <string name="usage_counts">Shiriki takwimu za matumizi bila kujulikana</string>
+    <string name="usage_counts_hint">Ni mara ngapi vipengele vinatumika tu, kamwe si kiasi, wapokeaji, maelezo au chochote ulichoandika. Imezimwa kwa chaguomsingi.</string>
+    <string name="usage_counts_none">Bado hakuna kilichohesabiwa.</string>
+    <string name="consent_until">idhini hadi %1$s</string>
+    <string name="reconsent">Fanya upya idhini</string>
+    <string name="disconnect">Tenganisha</string>
+    <string name="disconnected">Imetenganishwa. Kiungo cha benki na ufikiaji wake uliohifadhiwa vimefutwa; akaunti sasa ni za kujaza mwenyewe.</string>
+    <string name="bank_needs_sync">Washa usawazishaji hapo juu ili kuunganisha benki.</string>
+    <string name="connect_with_token">Unganisha kwa tokeni ya usanidi</string>
+    <string name="connect_in_browser">Unganisha kwenye ukurasa salama wa mtoa huduma</string>
+    <string name="simplefin_help">Unda tokeni ya usanidi kwenye akaunti yako ya SimpleFIN Bridge na uibandike hapa. Seva ya Penny huibadilisha ili kupata ufikiaji; tokeni haihifadhiwi kamwe kwenye simu hii.</string>
+    <string name="setup_token">Tokeni ya usanidi</string>
+    <string name="connect">Unganisha</string>
+    <string name="bank_connected">Benki imeunganishwa. Miamala itaingia katika usawazishaji ujao.</string>
+    <string name="bank_cancelled">Muunganisho umeghairiwa. Hakuna kilichounganishwa.</string>
+    <plurals name="bank_synced"><item quantity="one">Muamala %d umeongezwa au kusasishwa</item><item quantity="other">Miamala %d imeongezwa au kusasishwa</item></plurals>
+    <string name="automation">Uendeshaji otomatiki</string>
+    <string name="automation_sub">Tasker, njia za mkato na webhook</string>
+    <string name="automation_body">Unganisha Penny na programu za uendeshaji otomatiki na huduma zako mwenyewe. Kila kitu hubaki kwenye simu hii isipokuwa uweke anwani ya webhook.</string>
+    <string name="automation_apps">Programu za uendeshaji otomatiki</string>
+    <string name="allow_automation_apps">Ruhusu programu za otomatiki kuongeza miamala</string>
+    <string name="allow_automation_hint">Tasker, Automate na programu kama hizo zinaweza kuongeza miamala kwa intent. Haziwezi kamwe kusoma data yako.</string>
+    <string name="deep_link_example">Au fungua penny://add?amount=1250&amp;category=Groceries kutoka programu yoyote au njia ya mkato (kiasi kwa vipimo vidogo).</string>
+    <string name="webhooks">Webhook</string>
+    <string name="webhooks_body">Tuma kila muamala mpya kwa seva yako mwenyewe kama JSON iliyotiwa sahihi. Tumia tu anwani unayoidhibiti.</string>
+    <string name="webhook_url">Anwani ya webhook (https)</string>
+    <string name="https_only">Anwani za https pekee ndizo zinaruhusiwa</string>
+    <string name="signing_secret">Siri ya kutia sahihi (thibitisha kichwa cha X-Penny-Signature):</string>
+    <string name="create_secret">Unda siri</string>
+    <string name="new_secret">Siri mpya</string>
+    <string name="copy">Nakili</string>
+    <string name="send_now">Tuma sasa</string>
+    <plurals name="webhook_sent"><item quantity="one">Muamala %d umetumwa</item><item quantity="other">Miamala %d imetumwa</item></plurals>
+    <string name="ob_get_started">Anza</string>
+    <string name="ob_sample">Gundua kwa data ya mfano</string>
+    <string name="ob_point_safe">Namba moja tulivu: kiasi salama kutumia hadi siku ya mshahara</string>
+    <string name="ob_point_world">Sarafu yoyote, mzunguko wowote wa mshahara, kwa jinsi unavyoshughulikia pesa kweli</string>
+    <string name="ob_point_private">Faragha tangu mwanzo: kwenye simu yako, imesimbwa mwanzo hadi mwisho</string>
+    <string name="ob_point_free">Kila kipengele ni bure. Hakuna matangazo, hakuna mikopo, hakuna uuzaji wa data</string>
+    <string name="no_income_yet">Bado hakuna mapato yaliyorekodiwa katika kipindi hiki</string>
+    <string name="spent_more_than_income">Matumizi yamezidi mapato ya kipindi hiki</string>
+    <string name="get_address">Pata anwani yangu ya kusambaza</string>
+    <string name="new_address">Anwani mpya</string>
+    <string name="turn_off">Zima</string>
+    <string name="email_forwarding_privacy">Sambaza risiti za oda, usafiri na chakula kwa anwani hii. Seva husimba kila barua pepe kwa ajili ya simu hii mara moja na kuifuta mara Penny inapoisoma hapa.</string>
+    <string name="community_merchants">Majina ya wafanyabiashara ya jamii</string>
+    <string name="community_merchants_hint">Shiriki majina ya wapokeaji na makundi, kamwe si kiasi, bila kujulikana na watu wa eneo lako, na upate majina safi. Imezimwa kwa chaguomsingi.</string>
+</resources>

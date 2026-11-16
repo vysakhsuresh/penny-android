@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Penny</string>
+    <string name="safe_to_spend">ఖర్చు చేయగలిగేది</string>
+    <string name="per_day_left">రోజుకు %1$s · %2$d రోజులు మిగిలాయి</string>
+    <string name="say_it">ఖర్చును చెప్పండి</string>
+    <string name="added">మీ ఫోన్‌లో జోడించబడింది</string>
+    <string name="not_understood">మొత్తం అర్థం కాలేదు</string>
+    <string name="no_phone">ఫోన్ కనెక్ట్ కాలేదు. చివరిగా తెలిసిన మొత్తం చూపిస్తున్నాం.</string>
+</resources>

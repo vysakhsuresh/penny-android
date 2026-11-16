@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">ചെലവാക്കാവുന്ന തുക ഒറ്റനോട്ടത്തിൽ</string>
+    <string name="widget_quick_desc">ഒറ്റ ടാപ്പിൽ ഇടപാട് ചേർക്കുക അല്ലെങ്കിൽ ടെംപ്ലേറ്റ് ഉപയോഗിക്കുക</string>
+    <string name="widget_envelopes_desc">എൻവലപ്പുകളും വരാനിരിക്കുന്ന ബില്ലുകളും</string>
+    <string name="widget_safe_label">ചെലവാക്കാവുന്നത്</string>
+    <string name="widget_quick_label">വേഗം ചേർക്കുക</string>
+    <string name="widget_envelopes_label">ബജറ്റുകൾ</string>
+    <string name="shortcut_add">ചേർക്കുക</string>
+    <string name="tile_label">Penny-യിൽ ചേർക്കുക</string>
+</resources>

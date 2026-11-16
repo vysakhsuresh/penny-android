@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -92,7 +93,7 @@ fun promptBiometric(activity: FragmentActivity, title: String, onOk: () -> Unit)
 @Composable
 fun LockScreen(onUnlocked: () -> Unit, vm: BookViewModel = hiltViewModel()) {
     val context = LocalContext.current
-    val sec = vm.prefs.security.value
+    val sec by vm.prefs.security.collectAsState()
     var pin by rememberSaveable { mutableStateOf("") }
     // Failure count and lockout end are persisted, so killing the app or re-locking cannot reset the back-off.
     var fails by remember { mutableStateOf(vm.prefs.long("pin.fails").toInt()) }

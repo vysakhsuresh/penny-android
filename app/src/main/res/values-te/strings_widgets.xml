@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">ఖర్చు చేయగలిగేది ఒక్క చూపులో</string>
+    <string name="widget_quick_desc">ఒక్క ట్యాప్‌లో లావాదేవీని జోడించండి లేదా టెంప్లేట్‌ను వాడండి</string>
+    <string name="widget_envelopes_desc">ఎన్వలప్‌లు, రాబోయే బిల్లులు</string>
+    <string name="widget_safe_label">ఖర్చు చేయగలిగేది</string>
+    <string name="widget_quick_label">త్వరగా జోడించండి</string>
+    <string name="widget_envelopes_label">బడ్జెట్‌లు</string>
+    <string name="shortcut_add">జోడించండి</string>
+    <string name="tile_label">Penny‌కి జోడించండి</string>
+</resources>

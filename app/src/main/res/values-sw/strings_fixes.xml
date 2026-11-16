@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_failed">Hilo halikuhifadhiwa. Hakuna kilichobadilishwa, tafadhali jaribu tena.</string>
+    <string name="no_app_for_action">Hakuna programu kwenye simu hii inayoweza kufungua hicho.</string>
+    <string name="import_read_failed">Imeshindwa kusoma faili hiyo. Hakikisha ni faili ya benki iliyohamishwa (CSV, OFX, QIF, CAMT au MT940).</string>
+    <string name="template_default_name">Kiolezo</string>
+    <string name="item_default_name">Kipengee</string>
+    <string name="sync_status_active">Imeunganishwa</string>
+    <string name="sync_status_needs_consent">Inahitaji idhini yako tena</string>
+    <string name="sync_status_broken">Haifanyi kazi, jaribu kuunganisha tena</string>
+    <string name="sync_status_disconnected">Imetenganishwa</string>
+    <string name="remit_status_sent">Imetumwa</string>
+    <string name="remit_status_received">Imepokelewa</string>
+    <string name="remit_status_confirmed">Imethibitishwa</string>
+    <string name="source_notification">Arifa</string>
+    <string name="source_share">Imeshirikiwa</string>
+    <string name="source_email">Barua pepe</string>
+    <string name="source_other">Imenaswa</string>
+    <string name="setup_first">Weka Penny kwanza</string>
+    <string name="setup_first_body">Rudi nyuma umalize hatua za kwanza, kisha ujaribu tena.</string>
+</resources>

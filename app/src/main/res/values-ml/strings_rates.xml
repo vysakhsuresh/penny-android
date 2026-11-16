@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exchange_rates">വിനിമയ നിരക്കുകൾ</string>
+    <string name="rates_body">ഓരോ ഇടപാടിന്റെയും തീയതിയിലെ നിരക്കിലാണ് Penny മാറ്റുന്നത്. റഫറൻസ് നിരക്കുകൾ Wi-Fi-യിൽ ഡൗൺലോഡ് ചെയ്ത് ഫോണിൽ തന്നെ സൂക്ഷിക്കുന്നു; നിങ്ങളുടെ സ്വന്തം നിരക്കുകൾക്കാണ് എപ്പോഴും മുൻഗണന.</string>
+    <string name="rates_updated">%1$s വരെയുള്ള റഫറൻസ് നിരക്കുകൾ</string>
+    <string name="rates_never">റഫറൻസ് നിരക്കുകൾ ഇതുവരെ ഡൗൺലോഡ് ചെയ്തിട്ടില്ല</string>
+    <string name="rates_refreshed">നിരക്കുകൾ അപ്ഡേറ്റ് ചെയ്തു</string>
+    <string name="rates_offline">നിരക്കുകളുടെ ഉറവിടത്തിൽ എത്താനായില്ല. Wi-Fi-യിൽ വീണ്ടും ശ്രമിക്കുക.</string>
+    <string name="refresh_now">ഇപ്പോൾ പുതുക്കുക</string>
+    <string name="add_manual_rate">എന്റെ സ്വന്തം നിരക്ക് ചേർക്കുക</string>
+    <string name="your_currencies">ഇന്ന് നിങ്ങളുടെ കറൻസികൾ</string>
+    <string name="no_rate">നിരക്കില്ല</string>
+    <string name="manual_rates">നിങ്ങളുടെ നിരക്കുകൾ</string>
+    <string name="no_manual_rates">ഇതുവരെ ഒന്നുമില്ല. നിങ്ങളുടെ ബാങ്കോ എക്സ്ചേഞ്ചോ മറ്റൊരു നിരക്ക് നൽകിയെങ്കിൽ അത് ചേർക്കുക.</string>
+    <string name="rate_in_x">%1$s-ൽ ഒരു യൂണിറ്റിന്റെ മൂല്യം</string>
+    <string name="record_value">മൂല്യം രേഖപ്പെടുത്തുക</string>
+    <string name="record_value_body">ഇന്ന് ഇതിന്റെ മൂല്യം എത്ര? മൂല്യങ്ങളുടെ ചരിത്രം അറ്റ ആസ്തി കണക്കാക്കാൻ ഉപയോഗിക്കുന്നു.</string>
+    <string name="value_recorded">മൂല്യം രേഖപ്പെടുത്തി</string>
+    <string name="valuations">മൂല്യനിർണ്ണയങ്ങൾ</string>
+    <string name="share_group_link">ആപ്പില്ലാത്തവർക്കായി ഒരു കാഴ്ച പങ്കിടുക</string>
+    <string name="group_link_text">“%1$s” ബാലൻസുകൾ (കാണാൻ മാത്രം, 30 ദിവസത്തിൽ കാലഹരണപ്പെടും): %2$s</string>
+    <string name="usage_counts">അജ്ഞാത ഉപയോഗ എണ്ണങ്ങൾ പങ്കിടുക</string>
+    <string name="usage_counts_hint">ഫീച്ചറുകൾ എത്ര തവണ ഉപയോഗിക്കുന്നു എന്നത് മാത്രം; തുകകൾ, സ്വീകർത്താക്കൾ, കുറിപ്പുകൾ, നിങ്ങൾ ടൈപ്പ് ചെയ്ത ഒന്നും ഒരിക്കലുമില്ല. ഡിഫോൾട്ടായി ഓഫാണ്.</string>
+    <string name="usage_counts_none">ഇതുവരെ ഒന്നും എണ്ണിയിട്ടില്ല.</string>
+    <string name="consent_until">%1$s വരെ സമ്മതം</string>
+    <string name="reconsent">സമ്മതം പുതുക്കുക</string>
+    <string name="disconnect">വിച്ഛേദിക്കുക</string>
+    <string name="disconnected">വിച്ഛേദിച്ചു. ബാങ്ക് ലിങ്കും സൂക്ഷിച്ച ആക്‌സസും ഇല്ലാതാക്കി; അക്കൗണ്ടുകൾ ഇപ്പോൾ മാനുവലാണ്.</string>
+    <string name="bank_needs_sync">ബാങ്ക് കണക്റ്റ് ചെയ്യാൻ മുകളിൽ സിങ്ക് ഓണാക്കുക.</string>
+    <string name="connect_with_token">സെറ്റപ്പ് ടോക്കൺ ഉപയോഗിച്ച് കണക്റ്റ് ചെയ്യുക</string>
+    <string name="connect_in_browser">ദാതാവിന്റെ സുരക്ഷിത പേജിൽ കണക്റ്റ് ചെയ്യുക</string>
+    <string name="simplefin_help">നിങ്ങളുടെ SimpleFIN Bridge അക്കൗണ്ടിൽ ഒരു സെറ്റപ്പ് ടോക്കൺ സൃഷ്ടിച്ച് ഇവിടെ പേസ്റ്റ് ചെയ്യുക. Penny-യുടെ സെർവർ അത് ആക്‌സസിനായി കൈമാറുന്നു; ടോക്കൺ ഈ ഫോണിൽ ഒരിക്കലും സൂക്ഷിക്കില്ല.</string>
+    <string name="setup_token">സെറ്റപ്പ് ടോക്കൺ</string>
+    <string name="connect">കണക്റ്റ് ചെയ്യുക</string>
+    <string name="bank_connected">ബാങ്ക് കണക്റ്റ് ചെയ്തു. അടുത്ത സിങ്കിൽ ഇടപാടുകൾ എത്തും.</string>
+    <string name="bank_cancelled">കണക്ഷൻ റദ്ദാക്കി. ഒന്നും ലിങ്ക് ചെയ്തിട്ടില്ല.</string>
+    <plurals name="bank_synced"><item quantity="one">%d ഇടപാട് ചേർത്തു അല്ലെങ്കിൽ അപ്ഡേറ്റ് ചെയ്തു</item><item quantity="other">%d ഇടപാടുകൾ ചേർത്തു അല്ലെങ്കിൽ അപ്ഡേറ്റ് ചെയ്തു</item></plurals>
+    <string name="automation">ഓട്ടോമേഷൻ</string>
+    <string name="automation_sub">Tasker, ഷോർട്ട്കട്ടുകൾ, വെബ്‌ഹുക്കുകൾ</string>
+    <string name="automation_body">Penny-യെ ഓട്ടോമേഷൻ ആപ്പുകളുമായും നിങ്ങളുടെ സ്വന്തം സേവനങ്ങളുമായും ബന്ധിപ്പിക്കുക. നിങ്ങൾ ഒരു വെബ്‌ഹുക്ക് വിലാസം സജ്ജമാക്കാത്തിടത്തോളം എല്ലാം ഈ ഫോണിൽ തന്നെ നിൽക്കും.</string>
+    <string name="automation_apps">ഓട്ടോമേഷൻ ആപ്പുകൾ</string>
+    <string name="allow_automation_apps">ഓട്ടോമേഷൻ ആപ്പുകളെ ഇടപാടുകൾ ചേർക്കാൻ അനുവദിക്കുക</string>
+    <string name="allow_automation_hint">Tasker, Automate പോലുള്ള ആപ്പുകൾക്ക് intent വഴി ഇടപാടുകൾ ചേർക്കാം. അവയ്ക്ക് നിങ്ങളുടെ ഡാറ്റ ഒരിക്കലും വായിക്കാനാകില്ല.</string>
+    <string name="deep_link_example">അല്ലെങ്കിൽ ഏത് ആപ്പിൽ നിന്നോ ഷോർട്ട്കട്ടിൽ നിന്നോ penny://add?amount=1250&amp;category=Groceries തുറക്കുക (തുക ചെറിയ യൂണിറ്റുകളിൽ).</string>
+    <string name="webhooks">വെബ്‌ഹുക്കുകൾ</string>
+    <string name="webhooks_body">ഓരോ പുതിയ ഇടപാടും ഒപ്പിട്ട JSON ആയി നിങ്ങളുടെ സ്വന്തം സെർവറിലേക്ക് അയയ്ക്കുക. നിങ്ങളുടെ നിയന്ത്രണത്തിലുള്ള വിലാസം മാത്രം ഉപയോഗിക്കുക.</string>
+    <string name="webhook_url">വെബ്‌ഹുക്ക് വിലാസം (https)</string>
+    <string name="https_only">https വിലാസങ്ങൾ മാത്രമേ അനുവദിക്കൂ</string>
+    <string name="signing_secret">സൈനിംഗ് സീക്രട്ട് (X-Penny-Signature ഹെഡർ പരിശോധിക്കുക):</string>
+    <string name="create_secret">സീക്രട്ട് സൃഷ്ടിക്കുക</string>
+    <string name="new_secret">പുതിയ സീക്രട്ട്</string>
+    <string name="copy">പകർത്തുക</string>
+    <string name="send_now">ഇപ്പോൾ അയയ്ക്കുക</string>
+    <plurals name="webhook_sent"><item quantity="one">%d ഇടപാട് അയച്ചു</item><item quantity="other">%d ഇടപാടുകൾ അയച്ചു</item></plurals>
+    <string name="ob_get_started">തുടങ്ങാം</string>
+    <string name="ob_sample">സാമ്പിൾ ഡാറ്റ ഉപയോഗിച്ച് നോക്കുക</string>
+    <string name="ob_point_safe">ശാന്തമായ ഒരൊറ്റ സംഖ്യ: ശമ്പള ദിവസം വരെ എത്ര ചെലവാക്കാം</string>
+    <string name="ob_point_world">ഏത് കറൻസിയും, ഏത് ശമ്പള സൈക്കിളും, നിങ്ങൾ യഥാർത്ഥത്തിൽ പണം കൈകാര്യം ചെയ്യുന്ന രീതിയിൽ</string>
+    <string name="ob_point_private">രൂപകൽപ്പനയിൽ തന്നെ സ്വകാര്യം: നിങ്ങളുടെ ഫോണിൽ, എൻഡ്-ടു-എൻഡ് എൻക്രിപ്റ്റ് ചെയ്തത്</string>
+    <string name="ob_point_free">എല്ലാ ഫീച്ചറുകളും സൗജന്യം. പരസ്യങ്ങളില്ല, ലോണുകളില്ല, ഡാറ്റ വിൽപ്പനയില്ല</string>
+    <string name="no_income_yet">ഈ കാലയളവിൽ ഇതുവരെ വരുമാനം രേഖപ്പെടുത്തിയിട്ടില്ല</string>
+    <string name="spent_more_than_income">ചെലവ് ഈ കാലയളവിലെ വരുമാനത്തേക്കാൾ കൂടുതലാണ്</string>
+    <string name="get_address">എന്റെ ഫോർവേഡിംഗ് വിലാസം നേടുക</string>
+    <string name="new_address">പുതിയ വിലാസം</string>
+    <string name="turn_off">ഓഫാക്കുക</string>
+    <string name="email_forwarding_privacy">ഓർഡർ, യാത്ര, ഭക്ഷണ രസീതുകൾ ഈ വിലാസത്തിലേക്ക് ഫോർവേഡ് ചെയ്യുക. സെർവർ ഓരോ ഇമെയിലും ഉടൻ ഈ ഫോണിനായി എൻക്രിപ്റ്റ് ചെയ്യുകയും Penny ഇവിടെ വായിച്ചാലുടൻ ഇല്ലാതാക്കുകയും ചെയ്യുന്നു.</string>
+    <string name="community_merchants">കമ്മ്യൂണിറ്റി വ്യാപാരി പേരുകൾ</string>
+    <string name="community_merchants_hint">സ്വീകർത്താക്കളുടെ പേരുകളും വിഭാഗങ്ങളും (തുകകൾ ഒരിക്കലുമില്ല) നിങ്ങളുടെ പ്രദേശത്തുള്ളവരുമായി അജ്ഞാതമായി പങ്കിടുക, വൃത്തിയുള്ള പേരുകൾ തിരികെ നേടുക. ഡിഫോൾട്ടായി ഓഫാണ്.</string>
+</resources>

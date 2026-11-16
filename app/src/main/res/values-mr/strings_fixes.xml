@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_failed">ते सेव्ह झाले नाही. काहीही बदलले नाही, पुन्हा प्रयत्न करा.</string>
+    <string name="no_app_for_action">या फोनवरील कोणतेही ॲप ते उघडू शकत नाही.</string>
+    <string name="import_read_failed">ती फाइल वाचता आली नाही. ती बँक एक्सपोर्ट (CSV, OFX, QIF, CAMT किंवा MT940) आहे का ते तपासा.</string>
+    <string name="template_default_name">टेम्पलेट</string>
+    <string name="item_default_name">आयटम</string>
+    <string name="sync_status_active">कनेक्ट झाले</string>
+    <string name="sync_status_needs_consent">तुमची पुन्हा संमती हवी</string>
+    <string name="sync_status_broken">चालत नाही, पुन्हा कनेक्ट करून पाहा</string>
+    <string name="sync_status_disconnected">डिस्कनेक्ट झाले</string>
+    <string name="remit_status_sent">पाठवले</string>
+    <string name="remit_status_received">मिळाले</string>
+    <string name="remit_status_confirmed">पुष्टी झाली</string>
+    <string name="source_notification">सूचना</string>
+    <string name="source_share">शेअर केलेले</string>
+    <string name="source_email">ईमेल</string>
+    <string name="source_other">कॅप्चर केलेले</string>
+    <string name="setup_first">आधी Penny सेट करा</string>
+    <string name="setup_first_body">मागे जा आणि पहिल्या पायऱ्या पूर्ण करा, मग पुन्हा प्रयत्न करा.</string>
+</resources>

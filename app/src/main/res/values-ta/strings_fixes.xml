@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_failed">அது சேமிக்கப்படவில்லை. எதுவும் மாற்றப்படவில்லை, மீண்டும் முயலவும்.</string>
+    <string name="no_app_for_action">இந்த ஃபோனில் உள்ள எந்த ஆப்பாலும் அதைத் திறக்க முடியாது.</string>
+    <string name="import_read_failed">அந்தக் கோப்பைப் படிக்க முடியவில்லை. அது வங்கி ஏற்றுமதிக் கோப்பா (CSV, OFX, QIF, CAMT அல்லது MT940) எனச் சரிபார்க்கவும்.</string>
+    <string name="template_default_name">டெம்ப்ளேட்</string>
+    <string name="item_default_name">உருப்படி</string>
+    <string name="sync_status_active">இணைக்கப்பட்டது</string>
+    <string name="sync_status_needs_consent">உங்கள் ஒப்புதல் மீண்டும் தேவை</string>
+    <string name="sync_status_broken">வேலை செய்யவில்லை, மீண்டும் இணைக்க முயலவும்</string>
+    <string name="sync_status_disconnected">இணைப்பு துண்டிக்கப்பட்டது</string>
+    <string name="remit_status_sent">அனுப்பப்பட்டது</string>
+    <string name="remit_status_received">பெறப்பட்டது</string>
+    <string name="remit_status_confirmed">உறுதிசெய்யப்பட்டது</string>
+    <string name="source_notification">அறிவிப்பு</string>
+    <string name="source_share">பகிரப்பட்டது</string>
+    <string name="source_email">மின்னஞ்சல்</string>
+    <string name="source_other">பதிவானது</string>
+    <string name="setup_first">முதலில் Penny-ஐ அமைக்கவும்</string>
+    <string name="setup_first_body">பின்சென்று முதல் படிகளை முடித்து, மீண்டும் முயலவும்.</string>
+</resources>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="faq_q">
+        <item>Je, Penny ni bure kweli?</item>
+        <item>Je, Penny husoma SMS zangu?</item>
+        <item>Data yangu huhifadhiwa wapi?</item>
+        <item>“Salama kutumia” inamaanisha nini?</item>
+        <item>Ninabadilishaje mzunguko wangu wa mshahara?</item>
+        <item>Nimefuta kitu kwa makosa. Ninaweza kukirudisha?</item>
+        <item>Ninaongezaje pesa nilizomkopesha rafiki?</item>
+        <item>Je, ninaweza kushiriki bajeti na mwenzangu?</item>
+        <item>Ninahamaje kutoka programu nyingine ya pesa?</item>
+        <item>Kwa nini miamala ya programu yangu ya malipo haionekani?</item>
+        <item>Ninatumiaje Penny kwenye simu mpya?</item>
+        <item>Je, ninaweza kutumia zaidi ya sarafu moja?</item>
+        <item>Ninafungaje programu?</item>
+        <item>Ninafutaje data yangu yote?</item>
+    </string-array>
+    <string-array name="faq_a">
+        <item>Ndiyo. Kila kipengele ni bure. Penny Plus, ambayo ni hiari, hulipia tu gharama zinazoongezeka kwa kila mtumiaji, kama ada za kuunganisha benki na hifadhi ya ziada. Hakuna matangazo na hatuuzi data kamwe.</item>
+        <item>Hapana. Penny haiombi kamwe ruhusa ya SMS. Inaweza kusoma arifa za programu za malipo na benki unazoruhusu, kwenye simu yako pekee, na unaweza kuzima hilo wakati wowote.</item>
+        <item>Kwenye simu yako, imesimbwa. Ukiwasha usawazishaji, data husimbwa kwenye simu yako kabla haijatoka, kwa hivyo seva huhifadhi data isiyoweza kuisoma.</item>
+        <item>Ni pesa unazoweza kutumia kuanzia sasa hadi kipindi chako kijacho cha mshahara bila kukosa kulipa bili au malengo yako ya akiba: mapato, toa bili ambazo bado hazijalipwa, toa ulichotenga, toa ulichokwisha kutumia.</item>
+        <item>Fungua Mipangilio, Wasifu, Mzunguko wa mshahara. Chagua kila mwezi kuanzia siku yoyote, mara mbili kwa mwezi, kila wiki, kila wiki mbili, kila wiki nne, au “pesa zinapoingia”. Historia hupangwa upya na hakuna kinachopotea.</item>
+        <item>Ndiyo. Mara baada ya kufuta, gusa Tendua. Baadaye, fungua Mipangilio, Tupio: vitu vilivyofutwa hukaa hapo kwa siku 30. Kila badiliko pia liko kwenye Historia, ambapo unaweza kurudi kwenye toleo la awali.</item>
+        <item>Fungua kichupo cha Watu na uguse Rekodi mkopo. Chagua mtu, kiasi na kama ulitoa au ulipokea. Penny huweka salio linaloendelea na inaweza kukuandalia ukumbusho wa kirafiki wa kutuma.</item>
+        <item>Ndiyo. Washa usawazishaji, kisha fungua Mipangilio, Nafasi za pamoja, na uunde nafasi. Mwalike mwenzako kwa kiungo. Kila mmoja ana kuingia kwake na jukumu lake, na unaweza kuweka matumizi binafsi kuwa ya faragha.</item>
+        <item>Hamisha CSV kutoka programu yako ya zamani au benki, kisha fungua Mipangilio, Data na nakala rudufu, Leta. Penny hutambua faili za programu nyingi na huonyesha onyesho la kukagua pamoja na nakala zinazojirudia kabla ya kuongeza chochote.</item>
+        <item>Angalia Mipangilio, Kunasa: “Soma arifa za malipo” lazima iwe imewashwa, na Penny lazima iruhusiwe kufikia arifa katika mipangilio ya simu yako. Programu zilizoorodheshwa kwa eneo lako pekee, pamoja na zile unazoongeza, ndizo husomwa.</item>
+        <item>Washa usawazishaji kwenye simu yako ya zamani na uandike kifungu cha urejeshaji. Kwenye simu mpya, ingia kwa barua pepe ile ile na uandike kifungu hicho. Au rejesha faili ya nakala rudufu kutoka kwenye folda yako.</item>
+        <item>Ndiyo. Kila akaunti ina sarafu yake. Jumla hutumia sarafu yako kuu kwa kiwango cha ubadilishaji cha tarehe ya muamala, na kitu chochote kisicho na kiwango huonyeshwa, hakikisiwi kamwe.</item>
+        <item>Fungua Mipangilio, Usalama, Kufuli ya programu. Weka PIN na uruhusu alama ya kidole au uso. Unaweza pia kuzuia picha za skrini na kuchagua muda kabla programu haijajifunga tena.</item>
+        <item>Fungua Mipangilio, Data na nakala rudufu, Futa kila kitu kwenye simu hii. Ikiwa usawazishaji umewashwa, futa pia akaunti yako ya usawazishaji katika Usawazishaji na benki. Hamisha kwanza ikiwa huenda ukahitaji kitu.</item>
+    </string-array>
+
+    <string-array name="guide_start">
+        <item>Chagua eneo lako. Huweka sarafu yako, mtindo wa namba na mzunguko wako wa kawaida wa mshahara. Unaweza kubadilisha yote baadaye.</item>
+        <item>Iambie Penny pesa huingia lini. Bajeti yako hufuata mzunguko wako halisi wa mshahara, si mwezi wa kalenda.</item>
+        <item>Weka pesa taslimu ulizo nazo sasa. Ongeza benki, pochi za simu na kadi baadaye kutoka Akaunti.</item>
+        <item>Gusa kitufe cha kuongeza ili kuweka matumizi: andika kiasi, chagua kundi, hifadhi. Huchukua takriban sekunde tatu.</item>
+        <item>Mwanzo huonyesha namba moja: kiasi salama kutumia hadi siku ijayo ya mshahara.</item>
+    </string-array>
+    <string-array name="guide_safe">
+        <item>Salama kutumia huanza na mapato ya kipindi hiki, pamoja na mshahara unaoutarajia lakini bado hujaupokea.</item>
+        <item>Huondoa bili ambazo bado zinadaiwa kipindi hiki na ulichotenga kwa ajili ya malengo.</item>
+        <item>Kisha huondoa ulichokwisha kutumia. Uhamisho kati ya akaunti zako mwenyewe hauhesabiwi kamwe.</item>
+        <item>“Kwa siku” hugawanya kilichobaki kwa siku zilizobaki katika kipindi.</item>
+        <item>Matumizi yakienda mbele ya kalenda, Mwanzo huonyesha ujumbe tulivu wa rangi ya kahawia-njano. Penny haitumii kamwe rangi nyekundu kwa pesa zako.</item>
+    </string-array>
+    <string-array name="guide_budget">
+        <item>Bahasha ni kiasi cha sehemu moja ya maisha, kama chakula au usafiri, kwa kila kipindi.</item>
+        <item>Fungua Bajeti na uguse Tumia kiolezo, au ongeza bahasha moja moja.</item>
+        <item>Chagua kinachotokea kwa kinachobaki: anza upya, hamishia kipindi kijacho, au hamishia hadi kikomo.</item>
+        <item>Bahasha ikizidi, gusa Fidia kutoka ili kuhamisha pesa kutoka bahasha nyingine yenye salio. Hurekodiwa na inaweza kutenduliwa.</item>
+        <item>Unapenda kila kipimo cha pesa kiwe na kazi? Washa bajeti ya msingi sifuri katika mipangilio ya Wasifu.</item>
+    </string-array>
+    <string-array name="guide_cycle">
+        <item>Watu wengi hulipwa kila mwezi, lakini si tarehe 1; wengine hulipwa kila wiki mbili, mara mbili kwa mwezi, au kazi inapolipa.</item>
+        <item>Fungua Mipangilio, Wasifu, Mzunguko wa mshahara, na uchague unaolingana na malipo yako.</item>
+        <item>“Pesa zinapoingia” huanza kipindi kipya kila mara mapato yanayozidi kiwango fulani yanapoingia, jambo linalofaa kazi za vibarua na pesa zinazotumwa na familia kutoka nje ya nchi.</item>
+        <item>Kubadilisha mzunguko hupanga upya historia na kunaweza kutenduliwa.</item>
+    </string-array>
+    <string-array name="guide_capture">
+        <item>Washa arifa za malipo katika Mipangilio, Kunasa. Penny husoma programu za malipo na benki pekee, kwenye simu yako.</item>
+        <item>Shiriki ujumbe, risiti au taarifa kutoka programu yoyote kwenda Penny.</item>
+        <item>Changanua risiti kwa kamera; Penny huisoma kwenye simu.</item>
+        <item>Taja muamala kwa sauti, kama “250 kwa vyakula jana”.</item>
+        <item>Vilivyonaswa husubiri katika Kagua. Baada ya kumi mfululizo kutoka programu moja bila mabadiliko, Penny hujitolea kuviongeza kiotomatiki.</item>
+    </string-array>
+    <string-array name="guide_people">
+        <item>Rekodi pesa unazokopesha au kukopa katika kichupo cha Watu. Penny hutumia maneno yasiyoegemea upande wowote: ya kupokea na ya kutoa.</item>
+        <item>Kulipa kidogo kidogo ni sawa; ongeza ingizo kwa kila malipo.</item>
+        <item>Vikundi hugawanya gharama za pamoja kwa usawa, kwa kiasi kamili, kwa asilimia, kwa hisa au kipengee kwa kipengee.</item>
+        <item>Rahisisha madeni hutafuta idadi ndogo zaidi ya malipo ili kumaliza hesabu za kila mtu.</item>
+        <item>Nafasi za pamoja huruhusu familia kupanga bajeti pamoja, kila mmoja akiwa na kuingia kwake na jukumu lake.</item>
+    </string-array>
+    <string-array name="guide_bills">
+        <item>Ongeza kila bili mara moja, pamoja na inavyojirudia. Penny huipangia katika salama kutumia.</item>
+        <item>Bili ikilipwa, iwekee alama ya imelipwa; muamala huundwa kwa ajili yako. Au acha Penny iiongeze kiotomatiki.</item>
+        <item>Ruka au badilisha tukio moja bila kugusa mengine, au badilisha “hili na yajayo”.</item>
+        <item>Usajili huonyesha gharama yake ya mwaka na lini bei ilipanda, pamoja na ujumbe ulioandaliwa wa kughairi.</item>
+        <item>EMI huonyesha ratiba kamili na riba kiasi gani ingeokolewa kwa kulipa mapema.</item>
+    </string-array>
+    <string-array name="guide_goals">
+        <item>Lengo lina kiasi kinacholengwa na, ukipenda, tarehe. Penny huonyesha kiasi cha kutenga kila kipindi.</item>
+        <item>Ongeza pesa unapoweka akiba; toa pesa unapozihitaji.</item>
+        <item>Weka kiasi cha kiotomatiki kila kipindi ili kihesabiwe katika salama kutumia.</item>
+        <item>Mfuko wa dharura hupendekeza lengo kutokana na matumizi yako halisi ya lazima.</item>
+    </string-array>
+    <string-array name="guide_import">
+        <item>Hamisha CSV kutoka benki yako au programu ya awali.</item>
+        <item>Fungua Mipangilio, Data na nakala rudufu, Leta kutoka faili.</item>
+        <item>Penny hutambua programu nyingi kiotomatiki; kwa faili za benki, kagua safu.</item>
+        <item>Kagua onyesho la awali. Yanayoonekana kujirudia yanarukwa usiposema vinginevyo.</item>
+        <item>Gusa Leta. Unaweza kutendua uletaji wote kwa mguso mmoja.</item>
+    </string-array>
+    <string-array name="guide_undo">
+        <item>Kila badiliko katika Penny linaweza kutenduliwa kwa sekunde chache kwa kitufe cha Tendua.</item>
+        <item>Vitu vilivyofutwa husubiri katika Tupio kwa siku 30.</item>
+        <item>Kila muamala, akaunti na bahasha ina Historia ya kila badiliko, aliyelifanya na lini.</item>
+        <item>Gusa “Rudisha kwenye toleo hili” ili kurudi. Urejeshaji wenyewe pia unaweza kutenduliwa.</item>
+    </string-array>
+    <string-array name="guide_privacy">
+        <item>Data yako iko kwenye simu yako, katika hifadhidata iliyosimbwa.</item>
+        <item>Usawazishaji husimba kwenye simu yako kabla ya kutuma; seva haiwezi kusoma data yako ya pesa.</item>
+        <item>Penny haionyeshi matangazo, haitoi mikopo na haiuzi data.</item>
+        <item>Takwimu za hiari zisizojulikana husaidia kuboresha programu na hazijumuishi kamwe kiasi, wapokeaji au maelezo.</item>
+    </string-array>
+    <string-array name="guide_sync">
+        <item>Washa usawazishaji katika Mipangilio, Usawazishaji na benki, kwa barua pepe yako.</item>
+        <item>Andika kifungu cha urejeshaji cha maneno 24. Hufungua data yako kwenye simu mpya na kurejesha nakala rudufu zilizosimbwa.</item>
+        <item>Kwenye simu mpya, ingia kwa barua pepe ile ile na uandike kifungu hicho.</item>
+        <item>Chagua folda ya nakala rudufu katika Data na nakala rudufu kwa nakala za kiotomatiki zilizosimbwa unazozidhibiti.</item>
+    </string-array>
+
+    <string-array name="about_story">
+        <item>Penny ilianza na swali rahisi: ninaweza kutumia kiasi gani leo bila kuhofia wiki ijayo?</item>
+        <item>Programu nyingi za pesa hujibu kwa chati za yaliyopita au ofa za mikopo. Tulitaka namba moja tulivu, inayotokana na mzunguko wako halisi wa mshahara, bili zako halisi na watu katika maisha yako.</item>
+        <item>Penny imejengwa kwa ajili ya dunia nzima: sarafu yoyote, mzunguko wowote wa mshahara, jinsi watu wanavyoshughulikia pesa kweli, kuanzia vikundi vya akiba hadi kutuma pesa nyumbani.</item>
+        <item>Kila kipengele ni bure. Hatupati pesa kutokana na matangazo, mikopo au data yako, na hatutapata kamwe. Ikiwa Penny inakusaidia, mchango mdogo au maoni mazuri huifanya iendelee.</item>
+    </string-array>
+    <string-array name="trust_never">
+        <item>Hatuonyeshi matangazo kamwe.</item>
+        <item>Hatutoi kamwe mikopo, kadi za mkopo au bidhaa nyingine za kifedha.</item>
+        <item>Hatuuzi wala kushiriki data yako kamwe.</item>
+        <item>Hatusomi SMS zako kamwe.</item>
+        <item>Hatuoni kamwe data yako ya pesa unaposawazisha: husimbwa kwenye simu yako.</item>
+        <item>Hatuweki kamwe kipengele nyuma ya malipo. Plus hulipia tu gharama halisi za kila mtumiaji.</item>
+        <item>Hatutumii kamwe rangi nyekundu kukuaibisha kwa matumizi yako.</item>
+    </string-array>
+    <string-array name="changelog">
+        <item>v1.0.0</item>
+        <item>Bajeti zenye bahasha kwa mzunguko wowote wa mshahara, uhamishaji wa salio, malengo na mwonekano wa mwaka.</item>
+        <item>Malengo, bili, usajili, EMI na mpangaji wa kulipa madeni.</item>
+        <item>Kukopesha, kugawanya katika vikundi, pesa zinazotumwa nyumbani na vikundi vya akiba.</item>
+        <item>Kunasa kutoka arifa za malipo, kushiriki, risiti na sauti, pamoja na foleni ya kukagua na kanuni zinazojifunza.</item>
+        <item>Maarifa yenye chati, utabiri, utajiri halisi na mshauri anayefanya kazi kwenye kifaa.</item>
+        <item>Usawazishaji uliosimbwa mwanzo hadi mwisho, nafasi za pamoja, nakala rudufu zilizosimbwa, kufuli ya programu.</item>
+        <item>v0.1.0</item>
+        <item>Toleo la kwanza: salama kutumia, miamala yenye kutendua na historia.</item>
+    </string-array>
+    <string-array name="licences">
+        <item>Plus Jakarta Sans — SIL Open Font License 1.1, The Plus Jakarta Sans Project Authors.</item>
+        <item>AndroidX and Jetpack Compose — Apache License 2.0, The Android Open Source Project.</item>
+        <item>Kotlin and kotlinx libraries — Apache License 2.0, JetBrains.</item>
+        <item>Dagger and Hilt — Apache License 2.0, Google.</item>
+        <item>Room — Apache License 2.0, Google.</item>
+        <item>SQLCipher for Android — BSD-style licence, Zetetic LLC.</item>
+        <item>Tink — Apache License 2.0, Google.</item>
+        <item>OkHttp — Apache License 2.0, Square.</item>
+        <item>ML Kit Text Recognition — ML Kit Terms of Service, Google.</item>
+        <item>Material icons — Apache License 2.0, Google.</item>
+    </string-array>
+</resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exchange_rates">మారకపు రేట్లు</string>
+    <string name="rates_body">ప్రతి లావాదేవీ తేదీ నాటి రేటుతో Penny మారుస్తుంది. రిఫరెన్స్ రేట్లు Wi-Fiలో డౌన్‌లోడ్ అయి ఫోన్‌లోనే ఉంటాయి; మీ సొంత రేట్లకే ఎప్పుడూ ప్రాధాన్యత.</string>
+    <string name="rates_updated">%1$s వరకు రిఫరెన్స్ రేట్లు</string>
+    <string name="rates_never">ఇంకా రిఫరెన్స్ రేట్లు డౌన్‌లోడ్ కాలేదు</string>
+    <string name="rates_refreshed">రేట్లు అప్‌డేట్ అయ్యాయి</string>
+    <string name="rates_offline">రేట్ల మూలాన్ని చేరుకోలేకపోయాం. Wi-Fiలో మళ్లీ ప్రయత్నించండి.</string>
+    <string name="refresh_now">ఇప్పుడే రిఫ్రెష్ చేయండి</string>
+    <string name="add_manual_rate">నా సొంత రేటు జోడించండి</string>
+    <string name="your_currencies">ఈరోజు మీ కరెన్సీలు</string>
+    <string name="no_rate">రేటు లేదు</string>
+    <string name="manual_rates">మీ రేట్లు</string>
+    <string name="no_manual_rates">ఇంకా ఏవీ లేవు. మీ బ్యాంక్ లేదా ఎక్స్ఛేంజ్ వేరే రేటు ఇస్తే జోడించండి.</string>
+    <string name="rate_in_x">%1$sలో ఒక యూనిట్ విలువ</string>
+    <string name="record_value">విలువను నమోదు చేయండి</string>
+    <string name="record_value_body">ఈరోజు దీని విలువ ఎంత? విలువల చరిత్ర నికర సంపదను లెక్కించడానికి ఉపయోగపడుతుంది.</string>
+    <string name="value_recorded">విలువ నమోదైంది</string>
+    <string name="valuations">విలువలు</string>
+    <string name="share_group_link">యాప్ లేని వారికి ఒక వ్యూను షేర్ చేయండి</string>
+    <string name="group_link_text">“%1$s” బ్యాలెన్స్‌లు (చూడటానికి మాత్రమే, 30 రోజుల్లో గడువు ముగుస్తుంది): %2$s</string>
+    <string name="usage_counts">అనామక వినియోగ గణాంకాలను షేర్ చేయండి</string>
+    <string name="usage_counts_hint">ఫీచర్‌లు ఎన్నిసార్లు వాడారో మాత్రమే; మొత్తాలు, గ్రహీతలు, నోట్‌లు లేదా మీరు టైప్ చేసినవి ఎప్పుడూ కాదు. డిఫాల్ట్‌గా ఆఫ్.</string>
+    <string name="usage_counts_none">ఇంకా ఏదీ లెక్కించలేదు.</string>
+    <string name="consent_until">%1$s వరకు సమ్మతి</string>
+    <string name="reconsent">సమ్మతిని పునరుద్ధరించండి</string>
+    <string name="disconnect">డిస్‌కనెక్ట్ చేయండి</string>
+    <string name="disconnected">డిస్‌కనెక్ట్ అయింది. బ్యాంక్ లింక్, దాని నిల్వ చేసిన యాక్సెస్ తొలగించబడ్డాయి; ఖాతాలు ఇప్పుడు మాన్యువల్.</string>
+    <string name="bank_needs_sync">బ్యాంక్‌ను కనెక్ట్ చేయడానికి పైన సింక్ ఆన్ చేయండి.</string>
+    <string name="connect_with_token">సెటప్ టోకెన్‌తో కనెక్ట్ చేయండి</string>
+    <string name="connect_in_browser">ప్రొవైడర్ సురక్షిత పేజీలో కనెక్ట్ చేయండి</string>
+    <string name="simplefin_help">మీ SimpleFIN Bridge ఖాతాలో సెటప్ టోకెన్ సృష్టించి ఇక్కడ పేస్ట్ చేయండి. Penny సర్వర్ దాన్ని యాక్సెస్ కోసం మార్చుకుంటుంది; టోకెన్ ఈ ఫోన్‌లో ఎప్పుడూ నిల్వ కాదు.</string>
+    <string name="setup_token">సెటప్ టోకెన్</string>
+    <string name="connect">కనెక్ట్ చేయండి</string>
+    <string name="bank_connected">బ్యాంక్ కనెక్ట్ అయింది. తర్వాతి సింక్‌లో లావాదేవీలు వస్తాయి.</string>
+    <string name="bank_cancelled">కనెక్షన్ రద్దయింది. ఏదీ లింక్ కాలేదు.</string>
+    <plurals name="bank_synced"><item quantity="one">%d లావాదేవీ జోడించబడింది లేదా అప్‌డేట్ అయింది</item><item quantity="other">%d లావాదేవీలు జోడించబడ్డాయి లేదా అప్‌డేట్ అయ్యాయి</item></plurals>
+    <string name="automation">ఆటోమేషన్</string>
+    <string name="automation_sub">Tasker, షార్ట్‌కట్‌లు, వెబ్‌హుక్‌లు</string>
+    <string name="automation_body">Pennyని ఆటోమేషన్ యాప్‌లకు, మీ సొంత సేవలకు కనెక్ట్ చేయండి. మీరు వెబ్‌హుక్ చిరునామా సెట్ చేయకపోతే అంతా ఈ ఫోన్‌లోనే ఉంటుంది.</string>
+    <string name="automation_apps">ఆటోమేషన్ యాప్‌లు</string>
+    <string name="allow_automation_apps">ఆటోమేషన్ యాప్‌లను లావాదేవీలు జోడించనివ్వండి</string>
+    <string name="allow_automation_hint">Tasker, Automate వంటి యాప్‌లు intent ద్వారా లావాదేవీలు జోడించగలవు. అవి మీ డేటాను ఎప్పుడూ చదవలేవు.</string>
+    <string name="deep_link_example">లేదా ఏ యాప్ లేదా షార్ట్‌కట్ నుండైనా penny://add?amount=1250&amp;category=Groceries తెరవండి (మొత్తం చిన్న యూనిట్‌లలో).</string>
+    <string name="webhooks">వెబ్‌హుక్‌లు</string>
+    <string name="webhooks_body">ప్రతి కొత్త లావాదేవీని సంతకం చేసిన JSONగా మీ సొంత సర్వర్‌కు పంపండి. మీ నియంత్రణలో ఉన్న చిరునామాను మాత్రమే వాడండి.</string>
+    <string name="webhook_url">వెబ్‌హుక్ చిరునామా (https)</string>
+    <string name="https_only">https చిరునామాలకు మాత్రమే అనుమతి ఉంది</string>
+    <string name="signing_secret">సైనింగ్ సీక్రెట్ (X-Penny-Signature హెడర్‌ను ధృవీకరించండి):</string>
+    <string name="create_secret">సీక్రెట్ సృష్టించండి</string>
+    <string name="new_secret">కొత్త సీక్రెట్</string>
+    <string name="copy">కాపీ చేయండి</string>
+    <string name="send_now">ఇప్పుడే పంపండి</string>
+    <plurals name="webhook_sent"><item quantity="one">%d లావాదేవీ పంపబడింది</item><item quantity="other">%d లావాదేవీలు పంపబడ్డాయి</item></plurals>
+    <string name="ob_get_started">మొదలుపెట్టండి</string>
+    <string name="ob_sample">నమూనా డేటాతో చూడండి</string>
+    <string name="ob_point_safe">ఒకే ప్రశాంతమైన సంఖ్య: జీతం రోజు వరకు ఎంత ఖర్చు చేయవచ్చు</string>
+    <string name="ob_point_world">ఏ కరెన్సీ అయినా, ఏ జీతం సైకిల్ అయినా, మీరు నిజంగా డబ్బును నిర్వహించే విధంగానే</string>
+    <string name="ob_point_private">డిజైన్‌తోనే ప్రైవేట్: మీ ఫోన్‌లో, ఎండ్-టు-ఎండ్ ఎన్‌క్రిప్ట్ చేయబడింది</string>
+    <string name="ob_point_free">అన్ని ఫీచర్‌లు ఉచితం. ప్రకటనలు లేవు, లోన్‌లు లేవు, డేటా అమ్మకం లేదు</string>
+    <string name="no_income_yet">ఈ వ్యవధిలో ఇంకా ఆదాయం నమోదు కాలేదు</string>
+    <string name="spent_more_than_income">ఖర్చు ఈ వ్యవధి ఆదాయం కంటే ఎక్కువగా ఉంది</string>
+    <string name="get_address">నా ఫార్వర్డింగ్ చిరునామా పొందండి</string>
+    <string name="new_address">కొత్త చిరునామా</string>
+    <string name="turn_off">ఆఫ్ చేయండి</string>
+    <string name="email_forwarding_privacy">ఆర్డర్, రైడ్, ఫుడ్ రసీదులను ఈ చిరునామాకు ఫార్వర్డ్ చేయండి. సర్వర్ ప్రతి ఈమెయిల్‌ను వెంటనే ఈ ఫోన్ కోసం ఎన్‌క్రిప్ట్ చేసి, Penny ఇక్కడ చదివిన వెంటనే తొలగిస్తుంది.</string>
+    <string name="community_merchants">కమ్యూనిటీ వ్యాపారి పేర్లు</string>
+    <string name="community_merchants_hint">గ్రహీత పేర్లు, కేటగిరీలను (మొత్తాలను ఎప్పుడూ కాదు) మీ ప్రాంతంలోని వారితో అనామకంగా షేర్ చేసి, శుభ్రమైన పేర్లు పొందండి. డిఫాల్ట్‌గా ఆఫ్.</string>
+</resources>

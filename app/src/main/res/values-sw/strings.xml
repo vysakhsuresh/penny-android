@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tagline">Jua kiasi ambacho ni salama kutumia.</string>
+
+    <!-- Common -->
+    <string name="save">Hifadhi</string>
+    <string name="cancel">Ghairi</string>
+    <string name="delete">Futa</string>
+    <string name="undo">Tendua</string>
+    <string name="restore">Rejesha</string>
+    <string name="retry">Jaribu tena</string>
+    <string name="back">Rudi</string>
+    <string name="next">Endelea</string>
+    <string name="skip">Ruka</string>
+    <string name="done">Nimemaliza</string>
+    <string name="none">Hakuna</string>
+    <string name="loading">Inapakia</string>
+    <string name="error_generic">Hitilafu imetokea wakati wa kusoma data yako. Hakuna kilichopotea.</string>
+
+    <!-- Onboarding (OB-01) -->
+    <string name="ob_step">Hatua %1$d kati ya %2$d</string>
+    <string name="ob_region_title">Unaishi wapi?</string>
+    <string name="ob_region_body">Hii huweka sarafu yako, muundo wa namba na mzunguko wako wa kawaida wa mshahara. Unaweza kubadilisha yote baadaye.</string>
+    <string name="ob_cycle_title">Pesa huingia lini?</string>
+    <string name="ob_cycle_body">Bajeti yako hufuata mzunguko wako halisi wa mshahara.</string>
+    <string name="ob_account_title">Una pesa taslimu kiasi gani sasa?</string>
+    <string name="ob_account_body">Tunaanza na akaunti moja ya pesa taslimu. Ongeza benki na kadi baadaye.</string>
+    <string name="ob_cash_name">Pesa taslimu</string>
+    <string name="ob_finish">Anza kutumia %1$s</string>
+
+    <!-- Cycles -->
+    <string name="cycle_monthly">Kila mwezi, kuanzia tarehe %1$d</string>
+    <string name="cycle_monthly_last">Kila mwezi, kuanzia siku ya mwisho</string>
+    <string name="cycle_semimonthly">Mara mbili kwa mwezi, tarehe %1$d na siku ya mwisho</string>
+    <string name="cycle_weekly">Kila wiki</string>
+    <string name="cycle_biweekly">Kila wiki mbili</string>
+    <string name="cycle_fourweekly">Kila wiki nne</string>
+    <string name="cycle_quarterly">Kila robo mwaka</string>
+    <string name="cycle_yearly">Kila mwaka</string>
+    <string name="cycle_onincome">Pesa zinapoingia</string>
+    <string name="cycle_default_suffix">%1$s (kawaida hapa)</string>
+    <string name="cycle_start_day">Siku ya kuanza ya mwezi</string>
+
+    <!-- Home -->
+    <string name="safe_to_spend">Salama kutumia</string>
+    <string name="per_day">%1$s kwa siku</string>
+    <string name="on_pace">Kwa kasi sahihi</string>
+    <string name="ahead_of_pace">Matumizi yako mbele ya kalenda</string>
+    <string name="period_range">%1$s – %2$s</string>
+    <string name="prev_period">Kipindi kilichopita</string>
+    <string name="next_period">Kipindi kijacho</string>
+    <string name="this_period">Rudi kipindi hiki</string>
+    <string name="income_spent">Mapato %1$s · Matumizi %2$s</string>
+    <string name="accounts">Akaunti</string>
+    <string name="transactions">Miamala</string>
+    <string name="empty_period_title">Bado hakuna kitu katika kipindi hiki</string>
+    <string name="empty_period_body">Gusa Ongeza ili kurekodi muamala wako wa kwanza.</string>
+    <string name="add_transaction">Ongeza muamala</string>
+    <string name="trash">Tupio</string>
+    <string name="settings">Mipangilio</string>
+    <string name="today">Leo</string>
+    <string name="yesterday">Jana</string>
+    <string name="deleted_tx">Muamala umefutwa</string>
+    <string name="saved_tx">Muamala umehifadhiwa</string>
+    <string name="uncategorised">Bila aina</string>
+    <string name="transfer_to">Kwenda %1$s</string>
+    <string name="swipe_delete_hint">Telezesha kushoto ili kufuta</string>
+
+    <!-- Transaction form (TX-02) -->
+    <string name="new_transaction">Muamala mpya</string>
+    <string name="edit_transaction">Hariri muamala</string>
+    <string name="type_expense">Matumizi</string>
+    <string name="type_income">Mapato</string>
+    <string name="type_transfer">Uhamisho</string>
+    <string name="type_refund">Marejesho</string>
+    <string name="type_adjustment">Marekebisho</string>
+    <string name="type_opening">Salio la kuanzia</string>
+    <string name="field_type">Aina</string>
+    <string name="field_amount">Kiasi</string>
+    <string name="field_amount_hint">Tumia + − × ÷ kukokotoa</string>
+    <string name="amount_result">= %1$s</string>
+    <string name="amount_rounded">= %1$s (imekadiriwa)</string>
+    <string name="field_currency">Sarafu</string>
+    <string name="field_account">Akaunti</string>
+    <string name="field_to_account">Kwenda akaunti</string>
+    <string name="field_to_amount">Kiasi kilichopokelewa</string>
+    <string name="field_category">Kundi</string>
+    <string name="field_payee">Mpokeaji</string>
+    <string name="field_date">Tarehe</string>
+    <string name="field_time">Saa</string>
+    <string name="field_no_time">Bila saa</string>
+    <string name="field_note">Maelezo</string>
+    <string name="field_tags">Lebo</string>
+    <string name="field_tags_hint">Tenganisha kwa koma</string>
+    <string name="field_status">Hali</string>
+    <string name="status_pending">Inasubiri</string>
+    <string name="status_cleared">Imekamilika</string>
+    <string name="status_reconciled">Imelinganishwa</string>
+    <string name="field_direction">Mwelekeo</string>
+    <string name="direction_in">Huongeza salio</string>
+    <string name="direction_out">Hupunguza salio</string>
+    <string name="field_private">Binafsi</string>
+    <string name="field_private_body">Ficha mpokeaji, maelezo na viambatisho kwa wengine katika nafasi za pamoja</string>
+    <string name="field_exclude_budget">Usijumuishe kwenye bajeti</string>
+    <string name="field_exclude_reports">Usijumuishe kwenye ripoti</string>
+    <string name="field_splits">Mgawanyo</string>
+    <string name="field_attachments">Viambatisho</string>
+    <string name="future_scheduled">Tarehe ya baadaye: huu utahesabiwa kama muamala ulioratibiwa.</string>
+    <string name="history">Historia</string>
+    <string name="pick_date">Chagua tarehe</string>
+    <string name="pick_time">Chagua saa</string>
+    <string name="clear_time">Ondoa saa</string>
+
+    <!-- Validation (TX-08) -->
+    <string name="err_amount_empty">Weka kiasi</string>
+    <string name="err_amount_invalid">Hicho si kiasi sahihi</string>
+    <string name="err_amount_positive">Kiasi lazima kiwe zaidi ya sifuri. Aina ndiyo huamua kama ni mapato au matumizi.</string>
+    <string name="err_amount_decimals_none">%1$s haina desimali</string>
+    <string name="err_amount_decimals">%1$s inaruhusu nafasi %2$d za desimali</string>
+    <string name="err_amount_large">Kiasi hicho ni kikubwa mno</string>
+    <string name="err_divide_zero">Haiwezekani kugawanya kwa sifuri</string>
+    <string name="err_account_required">Chagua akaunti</string>
+    <string name="err_transfer_target">Chagua akaunti ambayo pesa zinaenda</string>
+    <string name="err_transfer_same">Chagua akaunti nyingine ya kuhamishia</string>
+    <string name="err_transfer_to_amount">Weka kiasi kilichopokelewa kwa sarafu nyingine</string>
+    <string name="err_direction">Chagua kama huu unaongeza au unapunguza</string>
+    <string name="err_splits">Jumla ya mgawanyo lazima ilingane na jumla kuu</string>
+    <string name="tx_not_found">Muamala huu haupo tena.</string>
+
+    <!-- History (TX-05) -->
+    <string name="history_title">Historia</string>
+    <string name="history_created">Umeundwa</string>
+    <string name="history_edited">Umehaririwa</string>
+    <string name="history_deleted">Umefutwa</string>
+    <string name="history_restored">Umerejeshwa</string>
+    <string name="history_undo">Umetenduliwa</string>
+    <string name="history_reverted">Umerudishwa kwenye toleo %1$d</string>
+    <string name="history_version">Toleo %1$d</string>
+    <string name="history_by">%1$s · %2$s</string>
+    <string name="history_you">Wewe</string>
+    <string name="history_revert">Rudisha kwenye toleo hili</string>
+    <string name="history_change">%1$s: %2$s → %3$s</string>
+    <string name="history_set">%1$s: %2$s</string>
+    <string name="history_empty">Bado hakuna mabadiliko yaliyorekodiwa.</string>
+    <string name="reverted">Imerudishwa</string>
+
+    <!-- Trash (TX-03, HS-02) -->
+    <string name="trash_title">Tupio</string>
+    <string name="trash_body">Miamala iliyofutwa hukaa hapa kwa siku 30.</string>
+    <string name="trash_empty">Tupio ni tupu</string>
+    <string name="delete_forever">Futa kabisa</string>
+    <string name="restored">Imerejeshwa</string>
+    <string name="deleted_forever">Imefutwa kabisa</string>
+
+    <!-- Settings -->
+    <string name="settings_region">Eneo</string>
+    <string name="settings_region_body">Sarafu, muundo wa namba na mzunguko wa mshahara hufuata eneo. Miamala iliyopo hubaki na sarafu yake.</string>
+    <string name="settings_sample">Mfano: %1$s</string>
+    <string name="region_changed">Eneo limebadilishwa kuwa %1$s</string>
+    <string name="settings_cycle">Mzunguko wa mshahara</string>
+    <string name="settings_about">%1$s ni bure. Hakuna matangazo, hakuna mikopo, hakuna uuzaji wa data.</string>
+
+    <plurals name="days_left">
+        <item quantity="one">Imebaki siku %d</item>
+        <item quantity="other">Zimebaki siku %d</item>
+    </plurals>
+    <plurals name="unconverted">
+        <item quantity="one">Muamala %d wa sarafu nyingine bado haujahesabiwa</item>
+        <item quantity="other">Miamala %d ya sarafu nyingine bado haijahesabiwa</item>
+    </plurals>
+    <plurals name="trash_count">
+        <item quantity="one">Kipengee %d</item>
+        <item quantity="other">Vipengee %d</item>
+    </plurals>
+</resources>

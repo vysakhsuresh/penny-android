@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tagline">எவ்வளவு செலவிடலாம் என்று தெரிந்துகொள்ளுங்கள்.</string>
+
+    <!-- Common -->
+    <string name="save">சேமி</string>
+    <string name="cancel">ரத்துசெய்</string>
+    <string name="delete">நீக்கு</string>
+    <string name="undo">செயல்தவிர்</string>
+    <string name="restore">மீட்டமை</string>
+    <string name="retry">மீண்டும் முயலவும்</string>
+    <string name="back">பின்செல்</string>
+    <string name="next">அடுத்து</string>
+    <string name="skip">தவிர்</string>
+    <string name="done">முடிந்தது</string>
+    <string name="none">ஏதுமில்லை</string>
+    <string name="loading">ஏற்றுகிறது</string>
+    <string name="error_generic">உங்கள் தரவைப் படிக்கும்போது ஏதோ தவறு நடந்தது. எதுவும் இழக்கப்படவில்லை.</string>
+
+    <!-- Onboarding (OB-01) -->
+    <string name="ob_step">படி %1$d / %2$d</string>
+    <string name="ob_region_title">நீங்கள் எங்கே வசிக்கிறீர்கள்?</string>
+    <string name="ob_region_body">இது உங்கள் நாணயம், எண் வடிவம், வழக்கமான சம்பளச் சுழற்சி ஆகியவற்றை அமைக்கும். இவை அனைத்தையும் பின்னர் மாற்றலாம்.</string>
+    <string name="ob_cycle_title">பணம் எப்போது வருகிறது?</string>
+    <string name="ob_cycle_body">உங்கள் பட்ஜெட் உங்கள் உண்மையான சம்பளச் சுழற்சியைப் பின்பற்றுகிறது.</string>
+    <string name="ob_account_title">இப்போது உங்களிடம் எவ்வளவு ரொக்கம் உள்ளது?</string>
+    <string name="ob_account_body">ஒரு ரொக்கக் கணக்குடன் தொடங்குகிறோம். வங்கிகளையும் கார்டுகளையும் பின்னர் சேர்க்கலாம்.</string>
+    <string name="ob_cash_name">ரொக்கம்</string>
+    <string name="ob_finish">%1$s-ஐப் பயன்படுத்தத் தொடங்கு</string>
+
+    <!-- Cycles -->
+    <string name="cycle_monthly">மாதந்தோறும், %1$d-ஆம் நாளிலிருந்து</string>
+    <string name="cycle_monthly_last">மாதந்தோறும், கடைசி நாளிலிருந்து</string>
+    <string name="cycle_semimonthly">மாதம் இருமுறை, %1$d-ஆம் நாளும் கடைசி நாளும்</string>
+    <string name="cycle_weekly">வாரந்தோறும்</string>
+    <string name="cycle_biweekly">இரண்டு வாரங்களுக்கு ஒருமுறை</string>
+    <string name="cycle_fourweekly">நான்கு வாரங்களுக்கு ஒருமுறை</string>
+    <string name="cycle_quarterly">காலாண்டுக்கு ஒருமுறை</string>
+    <string name="cycle_yearly">ஆண்டுதோறும்</string>
+    <string name="cycle_onincome">பணம் வரும்போது</string>
+    <string name="cycle_default_suffix">%1$s (இங்கே வழக்கமானது)</string>
+    <string name="cycle_start_day">மாதத்தின் தொடக்க நாள்</string>
+
+    <!-- Home -->
+    <string name="safe_to_spend">செலவிடக்கூடியது</string>
+    <string name="per_day">நாளுக்கு %1$s</string>
+    <string name="on_pace">சரியான வேகத்தில்</string>
+    <string name="ahead_of_pace">நாட்காட்டியை விட செலவு வேகமாக உள்ளது</string>
+    <string name="period_range">%1$s – %2$s</string>
+    <string name="prev_period">முந்தைய காலம்</string>
+    <string name="next_period">அடுத்த காலம்</string>
+    <string name="this_period">இந்தக் காலத்துக்குத் திரும்பு</string>
+    <string name="income_spent">வருமானம் %1$s · செலவு %2$s</string>
+    <string name="accounts">கணக்குகள்</string>
+    <string name="transactions">பரிவர்த்தனைகள்</string>
+    <string name="empty_period_title">இந்தக் காலத்தில் இன்னும் எதுவும் இல்லை</string>
+    <string name="empty_period_body">உங்கள் முதல் பரிவர்த்தனையைப் பதிவுசெய்ய சேர் என்பதைத் தட்டவும்.</string>
+    <string name="add_transaction">பரிவர்த்தனையைச் சேர்</string>
+    <string name="trash">குப்பை</string>
+    <string name="settings">அமைப்புகள்</string>
+    <string name="today">இன்று</string>
+    <string name="yesterday">நேற்று</string>
+    <string name="deleted_tx">பரிவர்த்தனை நீக்கப்பட்டது</string>
+    <string name="saved_tx">பரிவர்த்தனை சேமிக்கப்பட்டது</string>
+    <string name="uncategorised">வகைப்படுத்தப்படாதது</string>
+    <string name="transfer_to">%1$s-க்கு</string>
+    <string name="swipe_delete_hint">நீக்க இடதுபுறம் ஸ்வைப் செய்யவும்</string>
+
+    <!-- Transaction form (TX-02) -->
+    <string name="new_transaction">புதிய பரிவர்த்தனை</string>
+    <string name="edit_transaction">பரிவர்த்தனையைத் திருத்து</string>
+    <string name="type_expense">செலவு</string>
+    <string name="type_income">வருமானம்</string>
+    <string name="type_transfer">பரிமாற்றம்</string>
+    <string name="type_refund">ரீஃபண்ட்</string>
+    <string name="type_adjustment">சரிசெய்தல்</string>
+    <string name="type_opening">தொடக்க இருப்பு</string>
+    <string name="field_type">வகை</string>
+    <string name="field_amount">தொகை</string>
+    <string name="field_amount_hint">கணக்கிட + − × ÷ பயன்படுத்தவும்</string>
+    <string name="amount_result">= %1$s</string>
+    <string name="amount_rounded">= %1$s (முழுமையாக்கப்பட்டது)</string>
+    <string name="field_currency">நாணயம்</string>
+    <string name="field_account">கணக்கு</string>
+    <string name="field_to_account">பெறும் கணக்கு</string>
+    <string name="field_to_amount">பெற்ற தொகை</string>
+    <string name="field_category">பிரிவு</string>
+    <string name="field_payee">பெறுநர்</string>
+    <string name="field_date">தேதி</string>
+    <string name="field_time">நேரம்</string>
+    <string name="field_no_time">நேரம் இல்லை</string>
+    <string name="field_note">குறிப்பு</string>
+    <string name="field_tags">டேக்குகள்</string>
+    <string name="field_tags_hint">காற்புள்ளியால் பிரிக்கவும்</string>
+    <string name="field_status">நிலை</string>
+    <string name="status_pending">நிலுவையில்</string>
+    <string name="status_cleared">முடிந்தது</string>
+    <string name="status_reconciled">சரிபார்க்கப்பட்டது</string>
+    <string name="field_direction">திசை</string>
+    <string name="direction_in">இருப்பில் சேர்க்கும்</string>
+    <string name="direction_out">இருப்பிலிருந்து எடுக்கும்</string>
+    <string name="field_private">தனிப்பட்டது</string>
+    <string name="field_private_body">பகிரப்பட்ட இடங்களில் பெறுநர், குறிப்பு, இணைப்புகளை மற்றவர்களிடமிருந்து மறைக்கும்</string>
+    <string name="field_exclude_budget">பட்ஜெட்டில் சேர்க்க வேண்டாம்</string>
+    <string name="field_exclude_reports">அறிக்கைகளில் சேர்க்க வேண்டாம்</string>
+    <string name="field_splits">பிரிப்புகள்</string>
+    <string name="field_attachments">இணைப்புகள்</string>
+    <string name="future_scheduled">எதிர்காலத் தேதி: இது திட்டமிடப்பட்டதாகக் கணக்கிடப்படும்.</string>
+    <string name="history">வரலாறு</string>
+    <string name="pick_date">தேதியைத் தேர்வுசெய்யவும்</string>
+    <string name="pick_time">நேரத்தைத் தேர்வுசெய்யவும்</string>
+    <string name="clear_time">நேரத்தை அழி</string>
+
+    <!-- Validation (TX-08) -->
+    <string name="err_amount_empty">தொகையை உள்ளிடவும்</string>
+    <string name="err_amount_invalid">இது சரியான தொகை அல்ல</string>
+    <string name="err_amount_positive">தொகை பூஜ்ஜியத்தை விட அதிகமாக இருக்க வேண்டும். வருமானமா செலவா என்பதை வகை தீர்மானிக்கும்.</string>
+    <string name="err_amount_decimals_none">%1$s-இல் தசம இடங்கள் இல்லை</string>
+    <string name="err_amount_decimals">%1$s-இல் %2$d தசம இடங்கள் வரை அனுமதி</string>
+    <string name="err_amount_large">தொகை மிகப் பெரியது</string>
+    <string name="err_divide_zero">பூஜ்ஜியத்தால் வகுக்க முடியாது</string>
+    <string name="err_account_required">ஒரு கணக்கைத் தேர்வுசெய்யவும்</string>
+    <string name="err_transfer_target">பணம் செல்லும் கணக்கைத் தேர்வுசெய்யவும்</string>
+    <string name="err_transfer_same">பரிமாற்றத்துக்கு வேறு கணக்கைத் தேர்வுசெய்யவும்</string>
+    <string name="err_transfer_to_amount">மற்ற நாணயத்தில் பெற்ற தொகையை உள்ளிடவும்</string>
+    <string name="err_direction">இது சேர்க்கிறதா எடுக்கிறதா என்பதைத் தேர்வுசெய்யவும்</string>
+    <string name="err_splits">பிரிப்புகளின் கூட்டுத்தொகை மொத்தத்துக்குச் சமமாக இருக்க வேண்டும்</string>
+    <string name="tx_not_found">இந்தப் பரிவர்த்தனை இப்போது இல்லை.</string>
+
+    <!-- History (TX-05) -->
+    <string name="history_title">வரலாறு</string>
+    <string name="history_created">உருவாக்கப்பட்டது</string>
+    <string name="history_edited">திருத்தப்பட்டது</string>
+    <string name="history_deleted">நீக்கப்பட்டது</string>
+    <string name="history_restored">மீட்டமைக்கப்பட்டது</string>
+    <string name="history_undo">செயல்தவிர்க்கப்பட்டது</string>
+    <string name="history_reverted">பதிப்பு %1$d-க்குத் திருப்பப்பட்டது</string>
+    <string name="history_version">பதிப்பு %1$d</string>
+    <string name="history_by">%1$s · %2$s</string>
+    <string name="history_you">நீங்கள்</string>
+    <string name="history_revert">இந்தப் பதிப்புக்குத் திருப்பு</string>
+    <string name="history_change">%1$s: %2$s → %3$s</string>
+    <string name="history_set">%1$s: %2$s</string>
+    <string name="history_empty">இன்னும் மாற்றங்கள் எதுவும் பதிவாகவில்லை.</string>
+    <string name="reverted">திருப்பப்பட்டது</string>
+
+    <!-- Trash (TX-03, HS-02) -->
+    <string name="trash_title">குப்பை</string>
+    <string name="trash_body">நீக்கப்பட்ட பரிவர்த்தனைகள் 30 நாட்கள் இங்கே இருக்கும்.</string>
+    <string name="trash_empty">குப்பை காலியாக உள்ளது</string>
+    <string name="delete_forever">நிரந்தரமாக நீக்கு</string>
+    <string name="restored">மீட்டமைக்கப்பட்டது</string>
+    <string name="deleted_forever">நிரந்தரமாக நீக்கப்பட்டது</string>
+
+    <!-- Settings -->
+    <string name="settings_region">பகுதி</string>
+    <string name="settings_region_body">நாணயம், எண் வடிவம், சம்பளச் சுழற்சி ஆகியவை பகுதியைப் பின்பற்றும். ஏற்கெனவே உள்ள பரிவர்த்தனைகள் அவற்றின் சொந்த நாணயத்திலேயே இருக்கும்.</string>
+    <string name="settings_sample">எடுத்துக்காட்டு: %1$s</string>
+    <string name="region_changed">பகுதி %1$s என மாற்றப்பட்டது</string>
+    <string name="settings_cycle">சம்பளச் சுழற்சி</string>
+    <string name="settings_about">%1$s இலவசம். விளம்பரங்கள் இல்லை, கடன்கள் இல்லை, தரவு விற்பனை இல்லை.</string>
+
+    <plurals name="days_left">
+        <item quantity="one">%d நாள் உள்ளது</item>
+        <item quantity="other">%d நாட்கள் உள்ளன</item>
+    </plurals>
+    <plurals name="unconverted">
+        <item quantity="one">வேறு நாணயத்தில் உள்ள %d பரிவர்த்தனை இன்னும் கணக்கில் சேர்க்கப்படவில்லை</item>
+        <item quantity="other">வேறு நாணயங்களில் உள்ள %d பரிவர்த்தனைகள் இன்னும் கணக்கில் சேர்க்கப்படவில்லை</item>
+    </plurals>
+    <plurals name="trash_count">
+        <item quantity="one">%d உருப்படி</item>
+        <item quantity="other">%d உருப்படிகள்</item>
+    </plurals>
+</resources>

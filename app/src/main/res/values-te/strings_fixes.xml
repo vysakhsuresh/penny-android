@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_failed">అది సేవ్ కాలేదు. ఏదీ మారలేదు, మళ్లీ ప్రయత్నించండి.</string>
+    <string name="no_app_for_action">ఈ ఫోన్‌లోని ఏ యాప్ దాన్ని తెరవలేదు.</string>
+    <string name="import_read_failed">ఆ ఫైల్‌ను చదవలేకపోయాం. అది బ్యాంక్ ఎక్స్‌పోర్ట్ (CSV, OFX, QIF, CAMT లేదా MT940) అని సరిచూడండి.</string>
+    <string name="template_default_name">టెంప్లేట్</string>
+    <string name="item_default_name">అంశం</string>
+    <string name="sync_status_active">కనెక్ట్ అయింది</string>
+    <string name="sync_status_needs_consent">మీ సమ్మతి మళ్లీ కావాలి</string>
+    <string name="sync_status_broken">పనిచేయడం లేదు, మళ్లీ కనెక్ట్ చేసి చూడండి</string>
+    <string name="sync_status_disconnected">డిస్‌కనెక్ట్ అయింది</string>
+    <string name="remit_status_sent">పంపబడింది</string>
+    <string name="remit_status_received">అందింది</string>
+    <string name="remit_status_confirmed">నిర్ధారించబడింది</string>
+    <string name="source_notification">నోటిఫికేషన్</string>
+    <string name="source_share">షేర్ చేసినది</string>
+    <string name="source_email">ఈమెయిల్</string>
+    <string name="source_other">క్యాప్చర్ అయినది</string>
+    <string name="setup_first">ముందుగా Pennyని సెటప్ చేయండి</string>
+    <string name="setup_first_body">వెనక్కి వెళ్లి మొదటి దశలు పూర్తి చేసి, మళ్లీ ప్రయత్నించండి.</string>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">खर्च करता येणारी रक्कम एका नजरेत</string>
+    <string name="widget_quick_desc">एका टॅपमध्ये व्यवहार जोडा किंवा टेम्पलेट वापरा</string>
+    <string name="widget_envelopes_desc">एन्व्हलप आणि येणारी बिले</string>
+    <string name="widget_safe_label">खर्च करता येईल</string>
+    <string name="widget_quick_label">झटपट जोडा</string>
+    <string name="widget_envelopes_label">बजेट</string>
+    <string name="shortcut_add">जोडा</string>
+    <string name="tile_label">Penny मध्ये जोडा</string>
+</resources>

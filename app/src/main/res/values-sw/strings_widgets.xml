@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_safe_desc">Salama kutumia kwa haraka</string>
+    <string name="widget_quick_desc">Ongeza muamala au tumia kiolezo kwa mguso mmoja</string>
+    <string name="widget_envelopes_desc">Bahasha na bili zijazo</string>
+    <string name="widget_safe_label">Salama kutumia</string>
+    <string name="widget_quick_label">Ongeza haraka</string>
+    <string name="widget_envelopes_label">Bajeti</string>
+    <string name="shortcut_add">Ongeza</string>
+    <string name="tile_label">Ongeza kwenye Penny</string>
+</resources>

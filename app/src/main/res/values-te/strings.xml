@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tagline">ఎంత ఖర్చు చేయవచ్చో తెలుసుకోండి.</string>
+
+    <!-- Common -->
+    <string name="save">సేవ్ చేయండి</string>
+    <string name="cancel">రద్దు చేయండి</string>
+    <string name="delete">తొలగించండి</string>
+    <string name="undo">చర్య రద్దు</string>
+    <string name="restore">పునరుద్ధరించండి</string>
+    <string name="retry">మళ్లీ ప్రయత్నించండి</string>
+    <string name="back">వెనుకకు</string>
+    <string name="next">తర్వాత</string>
+    <string name="skip">దాటవేయండి</string>
+    <string name="done">పూర్తయింది</string>
+    <string name="none">ఏదీ లేదు</string>
+    <string name="loading">లోడ్ అవుతోంది</string>
+    <string name="error_generic">మీ డేటాను చదువుతున్నప్పుడు ఏదో తప్పు జరిగింది. ఏదీ పోలేదు.</string>
+
+    <!-- Onboarding (OB-01) -->
+    <string name="ob_step">దశ %1$d / %2$d</string>
+    <string name="ob_region_title">మీరు ఎక్కడ నివసిస్తున్నారు?</string>
+    <string name="ob_region_body">దీని ద్వారా మీ కరెన్సీ, నంబర్ ఫార్మాట్, సాధారణ జీతం సైకిల్ సెట్ అవుతాయి. వీటన్నిటినీ తర్వాత మార్చవచ్చు.</string>
+    <string name="ob_cycle_title">డబ్బు ఎప్పుడు వస్తుంది?</string>
+    <string name="ob_cycle_body">మీ బడ్జెట్ మీ అసలు జీతం సైకిల్‌ను అనుసరిస్తుంది.</string>
+    <string name="ob_account_title">ఇప్పుడు మీ దగ్గర ఎంత నగదు ఉంది?</string>
+    <string name="ob_account_body">ఒక నగదు ఖాతాతో మొదలుపెడతాం. బ్యాంకులు, కార్డులను తర్వాత జోడించవచ్చు.</string>
+    <string name="ob_cash_name">నగదు</string>
+    <string name="ob_finish">%1$s వాడటం మొదలుపెట్టండి</string>
+
+    <!-- Cycles -->
+    <string name="cycle_monthly">ప్రతి నెల, %1$dవ రోజు నుండి</string>
+    <string name="cycle_monthly_last">ప్రతి నెల, చివరి రోజు నుండి</string>
+    <string name="cycle_semimonthly">నెలకు రెండుసార్లు, %1$dవ రోజు మరియు చివరి రోజు</string>
+    <string name="cycle_weekly">ప్రతి వారం</string>
+    <string name="cycle_biweekly">ప్రతి రెండు వారాలకు</string>
+    <string name="cycle_fourweekly">ప్రతి నాలుగు వారాలకు</string>
+    <string name="cycle_quarterly">మూడు నెలలకు ఒకసారి</string>
+    <string name="cycle_yearly">ప్రతి సంవత్సరం</string>
+    <string name="cycle_onincome">డబ్బు వచ్చినప్పుడు</string>
+    <string name="cycle_default_suffix">%1$s (ఇక్కడ సాధారణం)</string>
+    <string name="cycle_start_day">నెలలో ప్రారంభ రోజు</string>
+
+    <!-- Home -->
+    <string name="safe_to_spend">ఖర్చు చేయగలిగేది</string>
+    <string name="per_day">రోజుకు %1$s</string>
+    <string name="on_pace">సరైన వేగంలో ఉంది</string>
+    <string name="ahead_of_pace">క్యాలెండర్ కంటే ఖర్చు ముందుంది</string>
+    <string name="period_range">%1$s – %2$s</string>
+    <string name="prev_period">మునుపటి వ్యవధి</string>
+    <string name="next_period">తర్వాతి వ్యవధి</string>
+    <string name="this_period">ఈ వ్యవధికి తిరిగి వెళ్లండి</string>
+    <string name="income_spent">ఆదాయం %1$s · ఖర్చు %2$s</string>
+    <string name="accounts">ఖాతాలు</string>
+    <string name="transactions">లావాదేవీలు</string>
+    <string name="empty_period_title">ఈ వ్యవధిలో ఇంకా ఏమీ లేదు</string>
+    <string name="empty_period_body">మీ మొదటి లావాదేవీని నమోదు చేయడానికి జోడించండి నొక్కండి.</string>
+    <string name="add_transaction">లావాదేవీని జోడించండి</string>
+    <string name="trash">ట్రాష్</string>
+    <string name="settings">సెట్టింగ్‌లు</string>
+    <string name="today">ఈరోజు</string>
+    <string name="yesterday">నిన్న</string>
+    <string name="deleted_tx">లావాదేవీ తొలగించబడింది</string>
+    <string name="saved_tx">లావాదేవీ సేవ్ అయింది</string>
+    <string name="uncategorised">కేటగిరీ లేదు</string>
+    <string name="transfer_to">%1$sకు</string>
+    <string name="swipe_delete_hint">తొలగించడానికి ఎడమకు స్వైప్ చేయండి</string>
+
+    <!-- Transaction form (TX-02) -->
+    <string name="new_transaction">కొత్త లావాదేవీ</string>
+    <string name="edit_transaction">లావాదేవీని ఎడిట్ చేయండి</string>
+    <string name="type_expense">ఖర్చు</string>
+    <string name="type_income">ఆదాయం</string>
+    <string name="type_transfer">బదిలీ</string>
+    <string name="type_refund">రీఫండ్</string>
+    <string name="type_adjustment">సర్దుబాటు</string>
+    <string name="type_opening">ప్రారంభ నిల్వ</string>
+    <string name="field_type">రకం</string>
+    <string name="field_amount">మొత్తం</string>
+    <string name="field_amount_hint">లెక్కించడానికి + − × ÷ వాడండి</string>
+    <string name="amount_result">= %1$s</string>
+    <string name="amount_rounded">= %1$s (రౌండ్ చేయబడింది)</string>
+    <string name="field_currency">కరెన్సీ</string>
+    <string name="field_account">ఖాతా</string>
+    <string name="field_to_account">ఏ ఖాతాకు</string>
+    <string name="field_to_amount">అందిన మొత్తం</string>
+    <string name="field_category">కేటగిరీ</string>
+    <string name="field_payee">గ్రహీత</string>
+    <string name="field_date">తేదీ</string>
+    <string name="field_time">సమయం</string>
+    <string name="field_no_time">సమయం లేదు</string>
+    <string name="field_note">నోట్</string>
+    <string name="field_tags">ట్యాగ్‌లు</string>
+    <string name="field_tags_hint">కామాలతో వేరు చేయండి</string>
+    <string name="field_status">స్థితి</string>
+    <string name="status_pending">పెండింగ్‌లో ఉంది</string>
+    <string name="status_cleared">క్లియర్ అయింది</string>
+    <string name="status_reconciled">సరిపోల్చబడింది</string>
+    <string name="field_direction">దిశ</string>
+    <string name="direction_in">నిల్వకు కలుపుతుంది</string>
+    <string name="direction_out">నిల్వ నుండి తీసుకుంటుంది</string>
+    <string name="field_private">ప్రైవేట్</string>
+    <string name="field_private_body">షేర్ చేసిన స్పేస్‌లలో గ్రహీత, నోట్, అటాచ్‌మెంట్‌లను ఇతరులకు కనిపించకుండా దాచండి</string>
+    <string name="field_exclude_budget">బడ్జెట్‌లో లెక్కించవద్దు</string>
+    <string name="field_exclude_reports">రిపోర్ట్‌లలో లెక్కించవద్దు</string>
+    <string name="field_splits">విభజనలు</string>
+    <string name="field_attachments">అటాచ్‌మెంట్‌లు</string>
+    <string name="future_scheduled">భవిష్యత్తు తేదీ: ఇది షెడ్యూల్ చేసినదిగా లెక్కించబడుతుంది.</string>
+    <string name="history">చరిత్ర</string>
+    <string name="pick_date">తేదీని ఎంచుకోండి</string>
+    <string name="pick_time">సమయాన్ని ఎంచుకోండి</string>
+    <string name="clear_time">సమయాన్ని తీసివేయండి</string>
+
+    <!-- Validation (TX-08) -->
+    <string name="err_amount_empty">మొత్తాన్ని నమోదు చేయండి</string>
+    <string name="err_amount_invalid">ఇది సరైన మొత్తం కాదు</string>
+    <string name="err_amount_positive">మొత్తం సున్నా కంటే ఎక్కువ ఉండాలి. ఆదాయమా ఖర్చా అనేది రకం నిర్ణయిస్తుంది.</string>
+    <string name="err_amount_decimals_none">%1$sలో దశాంశాలు ఉండవు</string>
+    <string name="err_amount_decimals">%1$sలో %2$d దశాంశ స్థానాల వరకు అనుమతి ఉంది</string>
+    <string name="err_amount_large">ఆ మొత్తం చాలా ఎక్కువ</string>
+    <string name="err_divide_zero">సున్నాతో భాగించలేము</string>
+    <string name="err_account_required">ఖాతాను ఎంచుకోండి</string>
+    <string name="err_transfer_target">డబ్బు వెళ్లే ఖాతాను ఎంచుకోండి</string>
+    <string name="err_transfer_same">బదిలీ కోసం వేరే ఖాతాను ఎంచుకోండి</string>
+    <string name="err_transfer_to_amount">ఇతర కరెన్సీలో అందిన మొత్తాన్ని నమోదు చేయండి</string>
+    <string name="err_direction">ఇది కలుపుతుందా తీసుకుంటుందా ఎంచుకోండి</string>
+    <string name="err_splits">విభజనల మొత్తం పూర్తి మొత్తానికి సమానంగా ఉండాలి</string>
+    <string name="tx_not_found">ఈ లావాదేవీ ఇప్పుడు లేదు.</string>
+
+    <!-- History (TX-05) -->
+    <string name="history_title">చరిత్ర</string>
+    <string name="history_created">సృష్టించబడింది</string>
+    <string name="history_edited">ఎడిట్ చేయబడింది</string>
+    <string name="history_deleted">తొలగించబడింది</string>
+    <string name="history_restored">పునరుద్ధరించబడింది</string>
+    <string name="history_undo">రద్దు చేయబడింది</string>
+    <string name="history_reverted">వెర్షన్ %1$dకి తిరిగి మార్చబడింది</string>
+    <string name="history_version">వెర్షన్ %1$d</string>
+    <string name="history_by">%1$s · %2$s</string>
+    <string name="history_you">మీరు</string>
+    <string name="history_revert">ఈ వెర్షన్‌కి తిరిగి మార్చండి</string>
+    <string name="history_change">%1$s: %2$s → %3$s</string>
+    <string name="history_set">%1$s: %2$s</string>
+    <string name="history_empty">ఇంకా మార్పులు ఏవీ నమోదు కాలేదు.</string>
+    <string name="reverted">తిరిగి మార్చబడింది</string>
+
+    <!-- Trash (TX-03, HS-02) -->
+    <string name="trash_title">ట్రాష్</string>
+    <string name="trash_body">తొలగించిన లావాదేవీలు 30 రోజులు ఇక్కడ ఉంటాయి.</string>
+    <string name="trash_empty">ట్రాష్ ఖాళీగా ఉంది</string>
+    <string name="delete_forever">శాశ్వతంగా తొలగించండి</string>
+    <string name="restored">పునరుద్ధరించబడింది</string>
+    <string name="deleted_forever">శాశ్వతంగా తొలగించబడింది</string>
+
+    <!-- Settings -->
+    <string name="settings_region">ప్రాంతం</string>
+    <string name="settings_region_body">కరెన్సీ, నంబర్ ఫార్మాట్, జీతం సైకిల్ ప్రాంతాన్ని అనుసరిస్తాయి. ఇప్పటికే ఉన్న లావాదేవీలు వాటి సొంత కరెన్సీలోనే ఉంటాయి.</string>
+    <string name="settings_sample">ఉదాహరణ: %1$s</string>
+    <string name="region_changed">ప్రాంతం %1$sకి మార్చబడింది</string>
+    <string name="settings_cycle">జీతం సైకిల్</string>
+    <string name="settings_about">%1$s ఉచితం. ప్రకటనలు లేవు, లోన్‌లు లేవు, డేటా అమ్మకం లేదు.</string>
+
+    <plurals name="days_left">
+        <item quantity="one">%d రోజు మిగిలింది</item>
+        <item quantity="other">%d రోజులు మిగిలాయి</item>
+    </plurals>
+    <plurals name="unconverted">
+        <item quantity="one">వేరే కరెన్సీలోని %d లావాదేవీ ఇంకా లెక్కలోకి రాలేదు</item>
+        <item quantity="other">వేరే కరెన్సీలలోని %d లావాదేవీలు ఇంకా లెక్కలోకి రాలేదు</item>
+    </plurals>
+    <plurals name="trash_count">
+        <item quantity="one">%d అంశం</item>
+        <item quantity="other">%d అంశాలు</item>
+    </plurals>
+</resources>

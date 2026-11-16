@@ -344,6 +344,7 @@ fun AccountEditScreen(id: String, onBack: () -> Unit) {
         var grams by rememberSaveable { mutableStateOf(existing?.weightGrams?.toString().orEmpty()) }
         var error by rememberSaveable { mutableStateOf<String?>(null) }
         val nameErr = stringResource(R.string.err_name_required)
+        val takenErr = stringResource(R.string.name_taken)
         PennyScreen(stringResource(if (isNew) R.string.add_account else R.string.edit_account), onBack, large = false) { pad ->
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                 TextInput(name, { name = it; error = null }, stringResource(R.string.field_name), error = error)
@@ -376,6 +377,8 @@ fun AccountEditScreen(id: String, onBack: () -> Unit) {
                 Spacer(Modifier.height(12.dp))
                 PrimaryButton(stringResource(R.string.save), {
                     if (name.isBlank()) { error = nameErr; return@PrimaryButton }
+                    // Two accounts with one name cannot be told apart in pickers and on Home.
+                    if (b.accounts.any { it.state.id != id && it.value.name.trim().equals(name.trim(), ignoreCase = true) }) { error = takenErr; return@PrimaryButton }
                     fun bp(s: String) = s.replace(',', '.').toBigDecimalOrNull()?.multiply(java.math.BigDecimal(100))?.toInt()
                     val acct = (existing ?: FinancialAccount(name, type, currency)).copy(
                         name = name.trim(), type = type, currency = currency, openingBalanceMinor = (parseAmount(opening, currency, ctx.fmt) ?: 0).let { if (isLiabilityHint(type)) -it else it },

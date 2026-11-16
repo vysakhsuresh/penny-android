@@ -151,10 +151,10 @@ fun PeopleScreen(padding: PaddingValues, go: (String) -> Unit) {
             item { SectionHeader(stringResource(R.string.more_with_people)) }
             item {
                 PennyCard {
-                    ListRow(stringResource(R.string.remittances), leading = { Avatar("R", "remit", color = androidx.compose.material3.MaterialTheme.colorScheme.primary, icon = Icons.Outlined.Public) }, subtitle = stringResource(R.string.remittances_sub), onClick = { go(Routes.REMITTANCES) }, divider = true)
+                    ListRow(stringResource(R.string.remittances), leading = { Avatar("R", "remit", color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant, icon = Icons.Outlined.Public) }, subtitle = stringResource(R.string.remittances_sub), onClick = { go(Routes.REMITTANCES) }, divider = true)
                     ListRow(
                         ctx.pack.circleNames.firstOrNull() ?: stringResource(R.string.circles),
-                        leading = { Avatar("C", "circle", color = androidx.compose.material3.MaterialTheme.colorScheme.primary, icon = Icons.Outlined.Savings) },
+                        leading = { Avatar("C", "circle", color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant, icon = Icons.Outlined.Savings) },
                         subtitle = stringResource(R.string.circles_sub),
                         onClick = { go(b.circles.firstOrNull()?.let { "circle/${it.state.id}" } ?: "circle/new/edit") },
                     )

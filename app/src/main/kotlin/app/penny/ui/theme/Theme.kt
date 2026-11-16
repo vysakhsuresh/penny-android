@@ -70,34 +70,35 @@ private val AccentDark = Color(0xFF52E0A6)
  * white on plum 9.6:1, plum on background 9.2:1; in dark, lavender on background 9.9:1.
  */
 private val Plum = Color(0xFF5B2D8E)
-private val PlumDark = Color(0xFFD4B8FF)
+private val PlumDark = Color(0xFFCDB6F2)
 
+// Neutral greys carry the page; plum is reserved for actions, selection and key figures (not every surface).
 private val LightScheme = lightColorScheme(
-    primary = Plum, onPrimary = Color.White, primaryContainer = Color(0xFFEFE4FB), onPrimaryContainer = Color(0xFF24093F),
-    secondary = Color(0xFF5E5470), onSecondary = Color.White, secondaryContainer = Color(0xFFE9E2F2), onSecondaryContainer = Color(0xFF1C1527),
+    primary = Plum, onPrimary = Color.White, primaryContainer = Color(0xFFF1ECF6), onPrimaryContainer = Color(0xFF2A1640),
+    secondary = Color(0xFF5C5B63), onSecondary = Color.White, secondaryContainer = Color(0xFFE7E6EA), onSecondaryContainer = Color(0xFF1C1B20),
     tertiary = Color(0xFF7A5600), onTertiary = Color.White, tertiaryContainer = Color(0xFFFFE6A8), onTertiaryContainer = Color(0xFF261A00),
-    background = Color(0xFFF8F6FB), onBackground = Color(0xFF1C1724),
-    surface = Color(0xFFF8F6FB), onSurface = Color(0xFF1C1724),
-    surfaceVariant = Color(0xFFE7E1EE), onSurfaceVariant = Color(0xFF4D4659),
-    surfaceContainerLowest = Color(0xFFFFFFFF), surfaceContainerLow = Color(0xFFF3F0F8), surfaceContainer = Color(0xFFEEEAF4),
-    surfaceContainerHigh = Color(0xFFE8E3EF), surfaceContainerHighest = Color(0xFFE2DCEA),
-    outline = Color(0xFF7B7387), outlineVariant = Color(0xFFCEC6DA),
+    background = Color(0xFFF7F7F8), onBackground = Color(0xFF1B1B1F),
+    surface = Color(0xFFF7F7F8), onSurface = Color(0xFF1B1B1F),
+    surfaceVariant = Color(0xFFE5E5E9), onSurfaceVariant = Color(0xFF4A4A52),
+    surfaceContainerLowest = Color(0xFFFFFFFF), surfaceContainerLow = Color(0xFFF2F2F4), surfaceContainer = Color(0xFFECECEF),
+    surfaceContainerHigh = Color(0xFFE6E6EA), surfaceContainerHighest = Color(0xFFE0E0E5),
+    outline = Color(0xFF77777F), outlineVariant = Color(0xFFCACAD1),
     error = Color(0xFFB3261E), onError = Color.White, errorContainer = Color(0xFFF9DEDC), onErrorContainer = Color(0xFF410E0B),
-    inverseSurface = Color(0xFF312B39), inverseOnSurface = Color(0xFFF3EEF8), inversePrimary = PlumDark,
+    inverseSurface = Color(0xFF2F2F33), inverseOnSurface = Color(0xFFF2F2F4), inversePrimary = PlumDark,
 )
 
 private val DarkScheme = darkColorScheme(
-    primary = PlumDark, onPrimary = Color(0xFF3A1468), primaryContainer = Color(0xFF41206B), onPrimaryContainer = Color(0xFFEDDFFF),
-    secondary = Color(0xFFCDC1DC), onSecondary = Color(0xFF332B40), secondaryContainer = Color(0xFF3B3348), onSecondaryContainer = Color(0xFFE9DEF7),
+    primary = PlumDark, onPrimary = Color(0xFF34155C), primaryContainer = Color(0xFF2A2532), onPrimaryContainer = Color(0xFFE8DDF7),
+    secondary = Color(0xFFC6C5CE), onSecondary = Color(0xFF2F2F36), secondaryContainer = Color(0xFF34343B), onSecondaryContainer = Color(0xFFE4E3EA),
     tertiary = Color(0xFFF2C14E), onTertiary = Color(0xFF3D2B00), tertiaryContainer = Color(0xFF5A4200), onTertiaryContainer = Color(0xFFFFE6A8),
-    background = Color(0xFF141118), onBackground = Color(0xFFE9E3EE),
-    surface = Color(0xFF141118), onSurface = Color(0xFFE9E3EE),
-    surfaceVariant = Color(0xFF4A4352), onSurfaceVariant = Color(0xFFCBC3D3),
-    surfaceContainerLowest = Color(0xFF0F0C13), surfaceContainerLow = Color(0xFF1B1721), surfaceContainer = Color(0xFF201B26),
-    surfaceContainerHigh = Color(0xFF2A2431), surfaceContainerHighest = Color(0xFF352E3C),
-    outline = Color(0xFF958D9F), outlineVariant = Color(0xFF4A4352),
+    background = Color(0xFF121214), onBackground = Color(0xFFE5E5EA),
+    surface = Color(0xFF121214), onSurface = Color(0xFFE5E5EA),
+    surfaceVariant = Color(0xFF45454C), onSurfaceVariant = Color(0xFFC5C5CD),
+    surfaceContainerLowest = Color(0xFF0D0D0F), surfaceContainerLow = Color(0xFF1B1B1E), surfaceContainer = Color(0xFF1F1F23),
+    surfaceContainerHigh = Color(0xFF29292D), surfaceContainerHighest = Color(0xFF333338),
+    outline = Color(0xFF8F8F98), outlineVariant = Color(0xFF45454C),
     error = Color(0xFFF2B8B5), onError = Color(0xFF601410), errorContainer = Color(0xFF8C1D18), onErrorContainer = Color(0xFFF9DEDC),
-    inverseSurface = Color(0xFFE9E3EE), inverseOnSurface = Color(0xFF312B39), inversePrimary = Plum,
+    inverseSurface = Color(0xFFE5E5EA), inverseOnSurface = Color(0xFF2F2F33), inversePrimary = Plum,
 )
 
 private val BlackScheme = DarkScheme.copy(
@@ -118,12 +119,12 @@ private val HighContrastScheme = lightColorScheme(
 private val LightStatus = StatusColors(
     near = Color(0xFF7A4A00), onNear = Color.White, nearContainer = Color(0xFFFFE6BF),
     over = Color(0xFF9A3D00), onOver = Color.White, overContainer = Color(0xFFFFDCC7),
-    positive = Accent, positiveContainer = Color(0xFFCFF1E0), track = Color(0xFFE4DFEB),
+    positive = Accent, positiveContainer = Color(0xFFCFF1E0), track = Color(0xFFE3E3E8),
 )
 private val DarkStatus = StatusColors(
     near = Color(0xFFFFC46B), onNear = Color(0xFF3A2600), nearContainer = Color(0xFF4A3300),
     over = Color(0xFFFFA06A), onOver = Color(0xFF3D1600), overContainer = Color(0xFF5A2600),
-    positive = AccentDark, positiveContainer = Color(0xFF0F4E37), track = Color(0xFF2E2836),
+    positive = AccentDark, positiveContainer = Color(0xFF0F4E37), track = Color(0xFF2E2E33),
 )
 private val HighContrastStatus = LightStatus.copy(near = Color(0xFF5C3700), over = Color(0xFF7A2F00), track = Color(0xFFBDBDBD))
 

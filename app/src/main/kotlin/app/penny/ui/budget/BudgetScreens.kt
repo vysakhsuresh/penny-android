@@ -180,9 +180,9 @@ fun BudgetsScreen(padding: PaddingValues, go: (String) -> Unit) {
             item { SectionHeader(stringResource(R.string.plan)) }
             item {
                 PennyCard {
-                    ListRow(stringResource(R.string.goals), leading = { Avatar("G", "goals", color = androidx.compose.material3.MaterialTheme.colorScheme.primary, icon = Icons.Outlined.Flag) }, subtitle = stringResource(R.string.goals_sub), onClick = { go(Routes.GOALS) }, divider = true)
-                    ListRow(stringResource(R.string.bills_subscriptions), leading = { Avatar("B", "bills", color = androidx.compose.material3.MaterialTheme.colorScheme.primary, icon = Icons.Outlined.ReceiptLong) }, subtitle = stringResource(R.string.bills_sub), onClick = { go(Routes.BILLS) }, divider = true)
-                    ListRow(stringResource(R.string.debt_loans), leading = { Avatar("D", "debt", color = androidx.compose.material3.MaterialTheme.colorScheme.primary, icon = Icons.Outlined.CreditCard) }, subtitle = stringResource(R.string.debt_sub), onClick = { go(Routes.LOANS) })
+                    ListRow(stringResource(R.string.goals), leading = { Avatar("G", "goals", color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant, icon = Icons.Outlined.Flag) }, subtitle = stringResource(R.string.goals_sub), onClick = { go(Routes.GOALS) }, divider = true)
+                    ListRow(stringResource(R.string.bills_subscriptions), leading = { Avatar("B", "bills", color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant, icon = Icons.Outlined.ReceiptLong) }, subtitle = stringResource(R.string.bills_sub), onClick = { go(Routes.BILLS) }, divider = true)
+                    ListRow(stringResource(R.string.debt_loans), leading = { Avatar("D", "debt", color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant, icon = Icons.Outlined.CreditCard) }, subtitle = stringResource(R.string.debt_sub), onClick = { go(Routes.LOANS) })
                 }
             }
         }

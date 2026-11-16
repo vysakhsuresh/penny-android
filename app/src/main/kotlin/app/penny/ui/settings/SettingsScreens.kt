@@ -105,7 +105,7 @@ import java.util.Locale
 
 @Composable
 private fun Entry(title: String, icon: ImageVector, subtitle: String? = null, onClick: () -> Unit) =
-    ListRow(title, subtitle = subtitle, leading = { Avatar(title, title, icon = icon, size = 36.dp, color = MaterialTheme.colorScheme.primary) }, onClick = onClick, divider = true)
+    ListRow(title, subtitle = subtitle, leading = { Avatar(title, title, icon = icon, size = 36.dp, color = MaterialTheme.colorScheme.onSurfaceVariant) }, onClick = onClick, divider = true)
 
 /** Settings hub (ST-01…ST-12): everything is at most two taps from Home (UX-03). */
 @Composable
@@ -180,6 +180,7 @@ fun ProfileSettingsScreen(onBack: () -> Unit, onDeleted: () -> Unit, onRates: ()
         val context = LocalContext.current
         var deleting by rememberSaveable { mutableStateOf(false) }
         var rename by rememberSaveable { mutableStateOf(false) }
+        val allProfiles by vm.repo.observeProfiles().collectAsStateWithLifecycle(emptyList())
         fun save(np: Profile, msg: Int = R.string.updated) { vm.act(msg) { profiles.update(it.profileId, np) } }
         PennyScreen(stringResource(R.string.profile_settings), onBack) { pad ->
             Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(bottom = 48.dp)) {
@@ -231,7 +232,8 @@ fun ProfileSettingsScreen(onBack: () -> Unit, onDeleted: () -> Unit, onRates: ()
                 TextButton(onClick = { deleting = true }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.delete_profile), color = MaterialTheme.colorScheme.error) }
             }
         }
-        if (rename) app.penny.ui.catalog.NameDialog(stringResource(R.string.rename), p.name, { rename = false }) { n -> save(p.copy(name = n), R.string.renamed); rename = false }
+        if (rename) app.penny.ui.catalog.NameDialog(stringResource(R.string.rename), p.name, { rename = false },
+            taken = { n -> allProfiles.any { it.state.id != b.profileId && it.value.name.trim().equals(n, ignoreCase = true) } }) { n -> save(p.copy(name = n), R.string.renamed); rename = false }
         if (deleting) TypedConfirmDialog(
             stringResource(R.string.delete_profile), stringResource(R.string.delete_profile_body), p.name, stringResource(R.string.delete),
             onConfirm = {
@@ -314,23 +316,26 @@ fun ProfilesScreen(onBack: () -> Unit, onSwitched: () -> Unit, onNone: () -> Uni
         }
         renaming?.let { rid ->
             val cur = profiles.firstOrNull { it.state.id == rid }?.value
-            if (cur != null) app.penny.ui.catalog.NameDialog(stringResource(R.string.rename), cur.name, { renaming = null }) { n ->
+            if (cur != null) app.penny.ui.catalog.NameDialog(stringResource(R.string.rename), cur.name, { renaming = null },
+                taken = { n -> profiles.any { it.state.id != rid && it.value.name.trim().equals(n, ignoreCase = true) } }) { n ->
                 vm.act(R.string.renamed) { vm.repo.profiles.update(rid, cur.copy(name = n)) }; renaming = null
             }
         }
         if (adding) {
             var name by rememberSaveable { mutableStateOf("") }
             var kind by rememberSaveable { mutableStateOf(ProfileKind.PERSONAL) }
+            val clash = name.isNotBlank() && profiles.any { it.value.name.trim().equals(name.trim(), ignoreCase = true) }
             AlertDialog(
                 onDismissRequest = { adding = false }, title = { Text(stringResource(R.string.add_profile)) },
                 text = {
                     Column {
-                        OutlinedTextField(name, { name = it }, label = { Text(stringResource(R.string.field_name)) }, singleLine = true)
+                        OutlinedTextField(name, { name = it }, label = { Text(stringResource(R.string.field_name)) }, singleLine = true, isError = clash,
+                            supportingText = { if (clash) Text(stringResource(R.string.name_taken)) })
                         Segmented(listOf(Choice(ProfileKind.PERSONAL, stringResource(R.string.personal)), Choice(ProfileKind.BUSINESS, stringResource(R.string.business)), Choice(ProfileKind.SUPERVISED, stringResource(R.string.supervised))), kind, { kind = it })
                     }
                 },
                 confirmButton = {
-                    TextButton(enabled = name.isNotBlank(), onClick = {
+                    TextButton(enabled = name.isNotBlank() && !clash, onClick = {
                         adding = false
                         // Navigate only after the profile exists: leaving first would cancel this screen's scope mid-write.
                         vm.launch {

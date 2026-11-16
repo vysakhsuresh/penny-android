@@ -397,7 +397,8 @@ fun <T> Segmented(options: List<Choice<T>>, selected: T, onSelect: (T) -> Unit, 
     val reduce = app.penny.ui.theme.LocalPenny.current.reduceMotion
     val dark = app.penny.ui.theme.LocalPenny.current.isDark
     val track = if (dark) MaterialTheme.colorScheme.surfaceContainerHigh else MaterialTheme.colorScheme.surfaceContainerHighest
-    val thumb = if (dark) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainerLowest
+    // Neutral pill; the selected label carries the accent (in dark), so selection is clear without a purple slab.
+    val thumb = if (dark) MaterialTheme.colorScheme.surfaceContainerHighest else MaterialTheme.colorScheme.surfaceContainerLowest
     androidx.compose.foundation.layout.BoxWithConstraints(
         modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp)
             .clip(androidx.compose.foundation.shape.RoundedCornerShape(50))
@@ -430,7 +431,7 @@ fun <T> Segmented(options: List<Choice<T>>, selected: T, onSelect: (T) -> Unit, 
                     // Labels shrink a little to fit their slot (large text) instead of being cut to "Pay per…".
                     val style = MaterialTheme.typography.labelLarge.copy(
                         fontWeight = if (on) androidx.compose.ui.text.font.FontWeight.Bold else androidx.compose.ui.text.font.FontWeight.Medium,
-                        color = if (on) (if (dark) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface) else MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = if (on) (if (dark) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface) else MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                     androidx.compose.foundation.text.BasicText(
                         o.label, style = style, maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,

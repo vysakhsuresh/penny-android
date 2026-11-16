@@ -202,6 +202,7 @@ fun CategoryEditScreen(id: String, parent: String?, onBack: () -> Unit, onHistor
         var defTags by rememberSaveable { mutableStateOf(existing?.defaultTags ?: emptyList()) }
         var err by rememberSaveable { mutableStateOf<String?>(null) }
         val req = stringResource(R.string.err_name_required)
+        val takenErr = stringResource(R.string.name_taken)
         val tooDeep = stringResource(R.string.err_too_deep)
         PennyScreen(
             stringResource(if (existing == null) R.string.add_category else R.string.edit_category), onBack, large = false,
@@ -221,6 +222,8 @@ fun CategoryEditScreen(id: String, parent: String?, onBack: () -> Unit, onHistor
                 PrimaryButton(stringResource(R.string.save), {
                     if (name.isBlank()) { err = req; return@PrimaryButton }
                     if (b.depth(parentId) >= 3) { err = tooDeep; return@PrimaryButton }
+                    // Same name under the same parent would be two identical rows in every picker.
+                    if (b.categories.any { it.state.id != id && it.value.parentId == parentId && it.value.kind == kind && it.value.name.trim().equals(name.trim(), ignoreCase = true) }) { err = takenErr; return@PrimaryButton }
                     val c = (existing ?: Category(kind = kind, name = name)).copy(
                         name = name.trim(), kind = kind, parentId = parentId, excludedFromSpend = excluded, budgetable = budgetable, tax = tax,
                         defaultAccountId = defAccount, defaultTags = defTags,

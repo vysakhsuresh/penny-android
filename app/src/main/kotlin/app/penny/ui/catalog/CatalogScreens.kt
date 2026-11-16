@@ -136,7 +136,8 @@ fun TagsScreen(onBack: () -> Unit, onActivity: (String) -> Unit) {
         }
         edit?.let { id ->
             val cur = b.tags.firstOrNull { it.state.id == id }?.value
-            NameDialog(stringResource(if (cur == null) R.string.add_tag else R.string.rename), cur?.name.orEmpty(), onDismiss = { edit = null }) { name ->
+            NameDialog(stringResource(if (cur == null) R.string.add_tag else R.string.rename), cur?.name.orEmpty(), onDismiss = { edit = null },
+                taken = { n -> b.tags.any { it.state.id != id && it.value.name.trim().equals(n, ignoreCase = true) } }) { name ->
                 if (cur == null) vm.act(R.string.saved) { saveTag(it, null, Tag(name)) } else vm.act(R.string.renamed) { renameTag(it, id, name) }
                 edit = null
             }
@@ -150,12 +151,17 @@ fun TagsScreen(onBack: () -> Unit, onActivity: (String) -> Unit) {
 }
 
 @Composable
-fun NameDialog(title: String, initial: String, onDismiss: () -> Unit, onOk: (String) -> Unit) {
+fun NameDialog(title: String, initial: String, onDismiss: () -> Unit, taken: (String) -> Boolean = { false }, onOk: (String) -> Unit) {
     var name by rememberSaveable { mutableStateOf(initial) }
+    // Two things with the same name cannot be told apart in lists and pickers; say so before saving.
+    val clash = name.isNotBlank() && !name.trim().equals(initial.trim(), ignoreCase = true) && taken(name.trim())
     AlertDialog(
         onDismissRequest = onDismiss, title = { Text(title) },
-        text = { OutlinedTextField(name, { name = it }, label = { Text(stringResource(R.string.field_name)) }, singleLine = true) },
-        confirmButton = { TextButton(onClick = { onOk(name.trim()) }, enabled = name.isNotBlank()) { Text(stringResource(R.string.save)) } },
+        text = {
+            OutlinedTextField(name, { name = it }, label = { Text(stringResource(R.string.field_name)) }, singleLine = true, isError = clash,
+                supportingText = { if (clash) Text(stringResource(R.string.name_taken)) })
+        },
+        confirmButton = { TextButton(onClick = { onOk(name.trim()) }, enabled = name.isNotBlank() && !clash) { Text(stringResource(R.string.save)) } },
         dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) } },
     )
 }

@@ -129,7 +129,8 @@ fun ReviewScreen(onBack: () -> Unit, cvm: CaptureViewModel = hiltViewModel()) {
                                 DropdownMenu(menu, { menu = false }) {
                                     DropdownMenuItem({ Text(stringResource(R.string.ignore_once)) }, onClick = { menu = false; vm.act(R.string.ignored) { cvm.service.ignore(it, item, false, false) } })
                                     if (item.value.proposed.payee != null) DropdownMenuItem({ Text(stringResource(R.string.always_ignore_payee, item.value.proposed.payee!!)) }, onClick = { menu = false; vm.act(R.string.ignored) { cvm.service.ignore(it, item, false, true) } })
-                                    DropdownMenuItem({ Text(stringResource(R.string.always_ignore_source)) }, onClick = { menu = false; vm.act(R.string.ignored) { cvm.service.ignore(it, item, true, false) } })
+                                    // Only payment notifications come from an app that can be muted; shared text, email and imports do not.
+                                    if (item.value.source.startsWith("notification:")) DropdownMenuItem({ Text(stringResource(R.string.always_ignore_source)) }, onClick = { menu = false; vm.act(R.string.ignored) { cvm.service.ignore(it, item, true, false) } })
                                 }
                             }
                         }

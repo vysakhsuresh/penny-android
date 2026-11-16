@@ -121,7 +121,13 @@ object NotificationParser {
         val found = AmountText.find(text, defaultCurrency)
         val amount = found.firstOrNull { it.hadMarker } ?: return null
         val income = inAt != null && (outAt == null || inAt < outAt)
-        val payee = Regex("(?i)\\b(?:to|at|from|paid to|sent to|received from|para|a|kay|ke|an)\\s+([\\p{L}0-9&'.\\- ]{2,40}?)(?=\\s+(?:on|via|using|for|ref|upi|with|from|at)\\b|[.,\\n]|$)")
+        // UPI messages name the other side by a VPA ("to VPA swiggy@icici"): its handle is the clearest payee there is.
+        val vpa = if (Regex("(?i)\\b(upi|vpa)\\b").containsMatchIn(text))
+            Regex("(?i)\\b([a-z][a-z0-9._-]{1,40})@[a-z]{2,}\\b").find(text)?.groupValues?.get(1)
+                ?.replace(Regex("[0-9]+$"), "")?.split(Regex("[._-]+"))?.filter { it.isNotBlank() }
+                ?.joinToString(" ") { w -> w.replaceFirstChar { it.uppercase() } }?.takeIf { it.length >= 2 }
+        else null
+        val payee = vpa ?: Regex("(?i)\\b(?:to|at|from|paid to|sent to|received from|para|a|kay|ke|an)\\s+([\\p{L}0-9&'.\\- ]{2,40}?)(?=\\s+(?:on|via|using|for|ref|upi|with|from|at)\\b|[.,\\n]|$)")
             .find(text)?.groupValues?.get(1)?.trim()
         val acct = Regex("(?i)(?:a/c|acct|account|card)\\s*(?:no\\.?|ending|xx|\\*+)?\\s*([0-9xX*]{2,}[0-9]{2,4})").find(text)?.groupValues?.get(1)
         return ParsedCapture(amount.minor, amount.currency, income, payee?.takeIf { it.isNotBlank() }, acct, 60, null)

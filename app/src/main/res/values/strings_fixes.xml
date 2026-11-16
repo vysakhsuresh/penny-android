@@ -31,4 +31,6 @@
     <string name="discard_changes_body">You have changes that are not saved.</string>
     <string name="discard">Discard</string>
     <string name="keep_editing">Keep editing</string>
+    <string name="goal_closed_early">Marked complete with %1$s put aside.</string>
+    <string name="goal_paused_hint">Paused. Nothing is expected until you resume.</string>
 </resources>

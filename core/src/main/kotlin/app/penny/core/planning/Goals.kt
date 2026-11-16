@@ -49,7 +49,8 @@ object Goals {
         val onTrack = when {
             remaining == 0L -> true
             goal.due == null -> true
-            projected == null -> false
+            // Nothing put aside yet: there is no pace to judge, so a new goal is not "behind" until its date passes.
+            projected == null -> !today.isAfter(goal.due)
             else -> !projected.isAfter(goal.due)
         }
         return GoalProgress(saved, remaining, bp, onTrack, perPeriod, periodsLeft, projected, remaining == 0L || goal.status == GoalStatus.COMPLETED)
@@ -62,8 +63,10 @@ object Goals {
     fun emergencyTarget(txs: List<Transaction>, essentials: Set<String>, months: Int, today: LocalDate, lookbackMonths: Int = 6): Long {
         val end = today.withDayOfMonth(1).minusDays(1)
         val start = end.withDayOfMonth(1).minusMonths((lookbackMonths - 1).toLong())
-        val total = txs.filter { it.type == TxType.EXPENSE && it.categoryId in essentials && !it.date.isBefore(start) && !it.date.isAfter(end) }
-            .sumOf { it.amountMinor }
-        return total / lookbackMonths * months
+        val window = txs.filter { it.type == TxType.EXPENSE && !it.date.isBefore(start) && !it.date.isAfter(end) }
+        val total = window.filter { it.categoryId in essentials }.sumOf { it.amountMinor }
+        // Average over the months the book actually covers; a two-month-old book is not six months of zero spending.
+        val covered = window.map { java.time.YearMonth.from(it.date) }.distinct().size.coerceAtLeast(1)
+        return total / covered * months
     }
 }

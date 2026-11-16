@@ -1,5 +1,6 @@
 package app.penny.ui.plan
 
+import app.penny.domain.ops.isLiability
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -118,7 +119,9 @@ private fun GoalCard(ctx: Ctx, id: String, g: Goal, onClick: () -> Unit) {
             val projected = p.projectedDate
             Text(
                 when {
-                    p.completed -> stringResource(R.string.goal_reached)
+                    p.completed && p.remainingMinor == 0L -> stringResource(R.string.goal_reached)
+                    p.completed -> stringResource(R.string.goal_closed_early, ctx.money(p.savedMinor, g.currency))
+                    g.status == GoalStatus.PAUSED -> stringResource(R.string.goal_paused_hint)
                     per != null -> stringResource(if (p.onTrack) R.string.on_track_need else R.string.behind_need, ctx.money(per, g.currency))
                     projected != null -> stringResource(R.string.projected_x, shortDate(projected))
                     else -> stringResource(R.string.start_saving)
@@ -207,8 +210,11 @@ fun GoalEditScreen(id: String, onBack: () -> Unit) {
                 SelectField(stringResource(R.string.field_currency), currency, app.penny.ui.kit.currencyChoices(listOf(ctx.base)), { it?.let { c -> currency = c } })
                 if (kind == GoalKind.EMERGENCY) {
                     SelectField(stringResource(R.string.months_of_essentials), months, listOf(3, 6, 9, 12).map { Choice(it, it.toString()) }, { it?.let { m -> months = m } })
-                    val suggested = Goals.emergencyTarget(b.txList, essentials, months, b.today())
-                    TextButton(onClick = { target = ctx.fmt.editable(suggested, currency); if (name.isBlank()) name = "Emergency fund" }, modifier = Modifier.padding(horizontal = 8.dp)) {
+                    // From past essential spending; with no full month yet, from the budget for essentials.
+                    val suggested = Goals.emergencyTarget(b.txList, essentials, months, b.today()).takeIf { it > 0 }
+                        ?: b.envelopes.filter { e -> !e.value.archived && e.value.categoryIds.any { it in essentials } }.sumOf { it.value.limitMinor } * months
+                    val defaultName = stringResource(R.string.goal_emergency)
+                    TextButton(onClick = { target = ctx.fmt.editable(suggested, currency); if (name.isBlank()) name = defaultName }, modifier = Modifier.padding(horizontal = 8.dp)) {
                         Text(stringResource(R.string.use_suggested, ctx.money(suggested, currency)))
                     }
                 }
@@ -218,7 +224,8 @@ fun GoalEditScreen(id: String, onBack: () -> Unit) {
                 AmountInput(auto, { auto = it }, currency, ctx.fmt, stringResource(R.string.auto_contribution))
                 Text(stringResource(R.string.auto_contribution_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))
                 SectionHeader(stringResource(R.string.linked_accounts))
-                ChipFlow(b.activeAccounts.map { Choice(it.state.id, it.value.name) }, linked.toSet(), { a -> linked = if (a in linked) linked - a else linked + a })
+                // Money saved sits in real asset accounts: not cards or loans, and not wallets that only pass money to a bank.
+                ChipFlow(b.activeAccounts.filter { (!it.value.isLiability() && it.value.aliasOf == null) || it.state.id in linked }.map { Choice(it.state.id, it.value.name) }, linked.toSet(), { a -> linked = if (a in linked) linked - a else linked + a })
                 TextInput(notes, { notes = it }, stringResource(R.string.field_note), singleLine = false)
                 Spacer(Modifier.height(12.dp))
                 PrimaryButton(stringResource(R.string.save), {

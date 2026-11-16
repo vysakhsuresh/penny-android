@@ -131,6 +131,17 @@ class PlanningTest : FunSpec({
         found[0].schedule.next(LocalDate.of(2026, 10, 3)) shouldBe LocalDate.of(2026, 11, 3)
     }
 
+    test("emergency target averages over the months the book covers") {
+        val t = app.penny.core.model.Transaction(app.penny.core.model.TxType.EXPENSE, 20_000_00, "INR", "a", categoryId = "rent", date = LocalDate.of(2026, 10, 5), tz = "UTC")
+        Goals.emergencyTarget(listOf(t), setOf("rent"), 6, LocalDate.of(2026, 11, 16)) shouldBe 120_000_00
+    }
+
+    test("a new goal with nothing saved is not behind before its date") {
+        val g = Goal("Laptop", 60_000_00, "INR", due = LocalDate.of(2027, 4, 15))
+        Goals.progress(g, 0, emptyList(), today, CycleRule.Monthly(1)).onTrack shouldBe true
+        Goals.progress(g, 0, emptyList(), LocalDate.of(2027, 5, 1), CycleRule.Monthly(1)).onTrack shouldBe false
+    }
+
     test("goal progress and per-period need") {
         val g = Goal("Laptop", 60_000_00, "INR", due = LocalDate.of(2027, 4, 30))
         val entries = listOf(GoalEntry("g", 10_000_00, LocalDate.of(2026, 9, 1)), GoalEntry("g", -1_000_00, LocalDate.of(2026, 10, 1)))

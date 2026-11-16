@@ -100,7 +100,7 @@ fun CategoriesScreen(onBack: () -> Unit, onEdit: (String, String?) -> Unit) {
                     DropdownMenuItem({ Text(stringResource(R.string.reset_defaults)) }, onClick = { vm.act(R.string.defaults_restored) { seedCategories(it.profileId) }; overflow = false })
                 }
             },
-            floating = { ExtendedFloatingActionButton(onClick = { onEdit("new", null) }, icon = { Icon(Icons.Filled.Add, null) }, text = { Text(stringResource(R.string.add_category)) }) },
+            floating = { app.penny.ui.kit.AddFab(stringResource(R.string.add_category), { onEdit("new", null) }) },
         ) { pad ->
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 120.dp)) {
                 item { Segmented(listOf(Choice(CategoryKind.EXPENSE, stringResource(R.string.type_expense)), Choice(CategoryKind.INCOME, stringResource(R.string.type_income))), kind, { kind = it }) }

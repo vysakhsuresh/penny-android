@@ -79,7 +79,7 @@ fun GoalsScreen(onBack: () -> Unit, onOpen: (String) -> Unit, onAdd: () -> Unit)
         var showDone by rememberSaveable { mutableStateOf(false) }
         PennyScreen(
             stringResource(R.string.goals), onBack,
-            floating = { ExtendedFloatingActionButton(onClick = onAdd, icon = { Icon(Icons.Filled.Add, null) }, text = { Text(stringResource(R.string.add_goal)) }) },
+            floating = { app.penny.ui.kit.AddFab(stringResource(R.string.add_goal), onAdd) },
         ) { pad ->
             val list = b.goals.filter { showDone || it.value.status in listOf(GoalStatus.ACTIVE, GoalStatus.PAUSED) }
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 120.dp)) {

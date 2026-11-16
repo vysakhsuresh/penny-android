@@ -1,5 +1,7 @@
 package app.penny.ui.kit
 
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.ui.semantics.role
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -349,4 +351,19 @@ fun budgetStateColor(state: EnvelopeState): Color {
         EnvelopeState.NEAR, EnvelopeState.AT -> s.near
         else -> MaterialTheme.colorScheme.primary
     }
+}
+
+
+/**
+ * The screen's main "add" button. The label is set as the button's own name: the extended FAB in this Material
+ * version did not expose its text, so TalkBack announced only "Button" (found on a phone test).
+ */
+@Composable
+fun AddFab(label: String, onClick: () -> Unit) {
+    androidx.compose.material3.ExtendedFloatingActionButton(
+        onClick = onClick,
+        icon = { Icon(androidx.compose.material.icons.Icons.Filled.Add, null) },
+        text = { Text(label) },
+        modifier = Modifier.semantics { contentDescription = label; role = androidx.compose.ui.semantics.Role.Button },
+    )
 }

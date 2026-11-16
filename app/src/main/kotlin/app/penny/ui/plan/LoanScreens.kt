@@ -80,7 +80,7 @@ fun LoansScreen(onBack: () -> Unit, onOpen: (String) -> Unit, onAdd: () -> Unit)
         val plan = if (debtors.isEmpty()) null else Debt.payoff(debtors, parseAmount(extra, ctx.base, ctx.fmt) ?: 0, strategy, today)
         PennyScreen(
             stringResource(R.string.debt_loans), onBack,
-            floating = { ExtendedFloatingActionButton(onClick = onAdd, icon = { Icon(Icons.Filled.Add, null) }, text = { Text(stringResource(R.string.add_loan)) }) },
+            floating = { app.penny.ui.kit.AddFab(stringResource(R.string.add_loan), onAdd) },
         ) { pad ->
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 120.dp)) {
                 if (debtors.isEmpty()) item { EmptyState(stringResource(R.string.no_debts), stringResource(R.string.no_debts_body), icon = Icons.Outlined.CreditCard, action = stringResource(R.string.add_loan), onAction = onAdd) }

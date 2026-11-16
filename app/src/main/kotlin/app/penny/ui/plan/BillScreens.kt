@@ -102,7 +102,7 @@ fun BillsScreen(onBack: () -> Unit, onEdit: (String) -> Unit, onOpenTx: (String)
         val today = b.today()
         PennyScreen(
             stringResource(R.string.bills_subscriptions), onBack,
-            floating = { ExtendedFloatingActionButton(onClick = { onEdit("new") }, icon = { Icon(Icons.Filled.Add, null) }, text = { Text(stringResource(R.string.add_recurring)) }) },
+            floating = { app.penny.ui.kit.AddFab(stringResource(R.string.add_recurring), { onEdit("new") }) },
         ) { pad ->
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 120.dp)) {
                 item { Segmented(listOf(Choice("upcoming", stringResource(R.string.upcoming)), Choice("calendar", stringResource(R.string.calendar)), Choice("subs", stringResource(R.string.subscriptions)), Choice("all", stringResource(R.string.all))), tab, { tab = it }) }

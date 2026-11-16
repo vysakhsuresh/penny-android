@@ -108,7 +108,7 @@ fun TagsScreen(onBack: () -> Unit, onActivity: (String) -> Unit) {
         PennyScreen(
             stringResource(R.string.field_tags), onBack,
             actions = { TextButton(onClick = { showArchived = !showArchived }) { Text(stringResource(if (showArchived) R.string.hide_archived else R.string.show_archived)) } },
-            floating = { ExtendedFloatingActionButton(onClick = { edit = "new" }, icon = { Icon(Icons.Filled.Add, null) }, text = { Text(stringResource(R.string.add_tag)) }) },
+            floating = { app.penny.ui.kit.AddFab(stringResource(R.string.add_tag), { edit = "new" }) },
         ) { pad ->
             val list = b.tags.filter { showArchived || !it.value.archived }
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 120.dp)) {
@@ -266,7 +266,7 @@ fun RulesScreen(onBack: () -> Unit, onEdit: (String) -> Unit) {
         val conflicts = RuleEngine.conflicts(visible.map { it.state.id to it.value }, b.txList.takeLast(500))
         PennyScreen(
             stringResource(R.string.rules), onBack,
-            floating = { ExtendedFloatingActionButton(onClick = { onEdit("new") }, icon = { Icon(Icons.Filled.Add, null) }, text = { Text(stringResource(R.string.add_rule)) }) },
+            floating = { app.penny.ui.kit.AddFab(stringResource(R.string.add_rule), { onEdit("new") }) },
         ) { pad ->
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 120.dp)) {
                 item { Text(stringResource(R.string.rules_body), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) }

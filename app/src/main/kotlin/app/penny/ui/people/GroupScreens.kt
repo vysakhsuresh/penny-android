@@ -126,7 +126,7 @@ fun GroupScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onExpe
                 }) { Icon(Icons.Outlined.IosShare, stringResource(R.string.export)) }
                 IconButton(onClick = { onEdit(id) }) { Icon(Icons.Outlined.Edit, stringResource(R.string.edit)) }
             },
-            floating = { ExtendedFloatingActionButton(onClick = { onExpense("new", id) }, icon = { Icon(Icons.Filled.Add, null) }, text = { Text(stringResource(R.string.add_expense)) }) },
+            floating = { app.penny.ui.kit.AddFab(stringResource(R.string.add_expense), { onExpense("new", id) }) },
         ) { pad ->
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 120.dp)) {
                 item { SectionHeader(stringResource(R.string.balances)) }
@@ -388,7 +388,7 @@ fun RemittancesScreen(onBack: () -> Unit, onEdit: (String) -> Unit) {
         val byProvider = RemitCircle.byProvider(b.remittances.map { it.value })
         PennyScreen(
             stringResource(R.string.remittances), onBack,
-            floating = { ExtendedFloatingActionButton(onClick = { onEdit("new") }, icon = { Icon(Icons.Filled.Add, null) }, text = { Text(stringResource(R.string.record_remittance)) }) },
+            floating = { app.penny.ui.kit.AddFab(stringResource(R.string.record_remittance), { onEdit("new") }) },
         ) { pad ->
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 120.dp)) {
                 if (byProvider.isNotEmpty()) {

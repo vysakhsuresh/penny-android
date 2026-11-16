@@ -91,7 +91,7 @@ fun AccountsScreen(onBack: () -> Unit, onOpen: (String) -> Unit, onAdd: () -> Un
         PennyScreen(
             stringResource(R.string.accounts), onBack,
             actions = { TextButton(onClick = { reorder = !reorder }) { Text(stringResource(if (reorder) R.string.done else R.string.reorder)) } },
-            floating = { ExtendedFloatingActionButton(onClick = onAdd, icon = { Icon(Icons.Filled.Add, null) }, text = { Text(stringResource(R.string.add_account)) }) },
+            floating = { app.penny.ui.kit.AddFab(stringResource(R.string.add_account), onAdd) },
         ) { pad ->
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 120.dp)) {
                 item {

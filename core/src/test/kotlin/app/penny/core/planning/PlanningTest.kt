@@ -136,6 +136,13 @@ class PlanningTest : FunSpec({
         Goals.emergencyTarget(listOf(t), setOf("rent"), 6, LocalDate.of(2026, 11, 16)) shouldBe 120_000_00
     }
 
+    test("a prepayment on the loan start date shortens the loan and saves interest") {
+        val loan = app.penny.core.model.Loan("Bike", app.penny.core.model.LoanKind.EMI, 100_000_00, "INR", 1000, 12, LocalDate.of(2026, 11, 16))
+        val (months, saved) = Debt.prepaymentWhatIf(loan, LocalDate.of(2026, 11, 16), 20_000_00)
+        (months > 0) shouldBe true
+        (saved > 0) shouldBe true
+    }
+
     test("a new goal with nothing saved is not behind before its date") {
         val g = Goal("Laptop", 60_000_00, "INR", due = LocalDate.of(2027, 4, 15))
         Goals.progress(g, 0, emptyList(), today, CycleRule.Monthly(1)).onTrack shouldBe true

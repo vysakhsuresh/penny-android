@@ -33,4 +33,12 @@
     <string name="keep_editing">Keep editing</string>
     <string name="goal_closed_early">Marked complete with %1$s put aside.</string>
     <string name="goal_paused_hint">Paused. Nothing is expected until you resume.</string>
+    <string name="loan_emi">EMI or instalment plan</string>
+    <string name="loan_personal">Personal loan</string>
+    <string name="loan_mortgage">Home loan or mortgage</string>
+    <string name="loan_vehicle">Vehicle loan</string>
+    <string name="loan_education">Education loan</string>
+    <string name="loan_pay_later">Buy now, pay later</string>
+    <string name="loan_informal">From family or friends</string>
+    <string name="loan_card">Card balance</string>
 </resources>

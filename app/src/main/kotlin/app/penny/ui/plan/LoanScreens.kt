@@ -198,7 +198,7 @@ fun LoanEditScreen(id: String, onBack: () -> Unit) {
         PennyScreen(stringResource(if (existing == null) R.string.add_loan else R.string.edit_loan), onBack, large = false) { pad ->
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                 TextInput(name, { name = it; err = null }, stringResource(R.string.field_name), error = err)
-                SelectField(stringResource(R.string.field_type), kind, LoanKind.entries.map { Choice(it, it.name.lowercase().replace('_', ' ').replaceFirstChar(Char::uppercase)) }, { it?.let { k -> kind = k } })
+                SelectField(stringResource(R.string.field_type), kind, LoanKind.entries.map { Choice(it, stringResource(loanKindLabel(it))) }, { it?.let { k -> kind = k } })
                 SelectField(stringResource(R.string.field_currency), currency, app.penny.ui.kit.currencyChoices(listOf(ctx.base)), { it?.let { c -> currency = c } })
                 AmountInput(principal, { principal = it }, currency, ctx.fmt, stringResource(R.string.principal))
                 Row {
@@ -225,4 +225,15 @@ fun LoanEditScreen(id: String, onBack: () -> Unit) {
             }
         }
     }
+}
+
+private fun loanKindLabel(k: LoanKind): Int = when (k) {
+    LoanKind.EMI -> R.string.loan_emi
+    LoanKind.PERSONAL -> R.string.loan_personal
+    LoanKind.MORTGAGE -> R.string.loan_mortgage
+    LoanKind.VEHICLE -> R.string.loan_vehicle
+    LoanKind.EDUCATION -> R.string.loan_education
+    LoanKind.PAY_LATER -> R.string.loan_pay_later
+    LoanKind.INFORMAL -> R.string.loan_informal
+    LoanKind.CARD -> R.string.loan_card
 }

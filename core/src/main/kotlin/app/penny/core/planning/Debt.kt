@@ -48,9 +48,12 @@ object Debt {
         var bal = loan.principalMinor
         val out = mutableListOf<Installment>()
         var n = 1
+        // Each prepayment counts once, before the first instalment on or after its date (one made on the start date
+        // fell outside every window and was ignored).
+        val pending = loan.prepayments.sortedBy { it.date }.toMutableList()
         while (bal > 0 && n <= maxMonths) {
             val date = loan.start.plusMonths(n.toLong())
-            loan.prepayments.filter { !it.date.isAfter(date) && it.date.isAfter(date.minusMonths(1)) }.forEach { bal = maxOf(0, bal - it.amountMinor) }
+            while (pending.isNotEmpty() && !pending.first().date.isAfter(date)) bal = maxOf(0, bal - pending.removeAt(0).amountMinor)
             if (bal == 0L) break
             val i = interest(bal, loan.aprBp)
             var principal = minOf(bal, pay + extra - i)

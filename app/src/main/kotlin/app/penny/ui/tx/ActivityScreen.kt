@@ -199,8 +199,11 @@ fun ActivityScreen(initialFilter: String?, onBack: () -> Unit, onOpen: (String) 
                 item {
                     // In the book's currency: rows in other currencies are converted (rows without a rate are left out).
                     val spend = hits.sumOf { r ->
+                        // Same rules as Insights: money lent, savings, transfers and items left out of reports are not spending.
                         val sign = when (r.tx.type) { TxType.EXPENSE -> 1L; TxType.REFUND -> -1L; else -> 0L }
-                        if (sign == 0L) 0L else sign * (ctx.book.fx.convert(r.tx.amountMinor, r.tx.currency, ctx.base, r.tx.date) ?: 0L)
+                        val lines = if (r.tx.splits.isNotEmpty()) r.tx.splits.map { it.categoryId to it.amountMinor } else listOf(r.tx.categoryId to r.tx.amountMinor)
+                        if (sign == 0L || r.tx.excludeFromReports) 0L
+                        else sign * lines.filter { it.first == null || it.first !in ctx.book.excludedCategoryIds }.sumOf { (_, a) -> ctx.book.fx.convert(a, r.tx.currency, ctx.base, r.tx.date) ?: 0L }
                     }
                     Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 6.dp)) {
                         Text(pluralStringResource(R.plurals.results_n, hits.size, hits.size), style = MaterialTheme.typography.labelLarge, modifier = Modifier.weight(1f))

@@ -43,7 +43,8 @@ suspend fun PennyRepository.saveLending(book: Book, id: String?, e: LendingEntry
             type = if (give) TxType.EXPENSE else TxType.INCOME, amountMinor = e.amountMinor, currency = e.currency, accountId = acct,
             categoryId = if (give) catId(book.profileId, "loan.given") else null,
             payee = book.personName(e.personId), date = e.date, time = LocalTime.now(book.zone).withSecond(0).withNano(0), tz = book.profile.timezone,
-            note = e.note, excludeFromBudget = true, source = "lending",
+            // Money lent coming back is not earnings: kept out of income in reports.
+            note = e.note, excludeFromBudget = true, excludeFromReports = !give, source = "lending",
         ), g)
         entry = entry.copy(transactionId = txId)
     }
@@ -118,7 +119,7 @@ suspend fun PennyRepository.settle(book: Book, s: Settlement, accountId: String?
             type = if (paying) TxType.EXPENSE else TxType.INCOME, amountMinor = s.amountMinor, currency = s.currency, accountId = accountId,
             categoryId = catId(book.profileId, if (paying) "loan.given" else "loan.back").takeIf { paying },
             payee = book.personName(if (paying) s.toId else s.fromId), date = s.date, tz = book.profile.timezone, note = s.note,
-            excludeFromBudget = true, source = "settle",
+            excludeFromBudget = true, excludeFromReports = !paying, source = "settle",
         ), g)
         st = st.copy(transactionId = txId)
     }
@@ -196,7 +197,7 @@ suspend fun PennyRepository.recordCircle(book: Book, circleId: String, c: Circle
         transactions.create(txId, book.profileId, Transaction(
             type = if (c.payout) TxType.INCOME else TxType.EXPENSE, amountMinor = c.amountMinor, currency = circle.currency, accountId = accountId,
             categoryId = catId(book.profileId, if (c.payout) "inc.other" else "save").takeIf { !c.payout }, payee = circle.name, date = c.date,
-            tz = book.profile.timezone, excludeFromBudget = true, circleId = circleId, source = "circle",
+            tz = book.profile.timezone, excludeFromBudget = true, excludeFromReports = c.payout, circleId = circleId, source = "circle",
         ), g)
         entry = entry.copy(transactionId = txId)
     }

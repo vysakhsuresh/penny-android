@@ -297,10 +297,21 @@ private fun SafeHero(ctx: Ctx, safe: app.penny.core.budget.SafeToSpend, offset: 
             Spacer(Modifier.height(14.dp))
             Meter(usedBp, when { over -> EnvelopeState.OVER; ahead -> EnvelopeState.NEAR; else -> EnvelopeState.OK }, height = 10.dp, paceBp = if (offset == 0) elapsedBp else null)
             Spacer(Modifier.height(12.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                HeroStat(stringResource(R.string.income), ctx.money(safe.incomeMinor + safe.expectedIncomeMinor), Modifier.weight(1f))
-                HeroStat(stringResource(R.string.spent), ctx.money(safe.spentMinor), Modifier.weight(1f))
-                HeroStat(stringResource(R.string.bills_and_goals), ctx.money(safe.committedMinor + safe.savingsMinor), Modifier.weight(1f))
+            val stats = listOf(
+                stringResource(R.string.income) to ctx.money(safe.incomeMinor + safe.expectedIncomeMinor),
+                stringResource(R.string.spent) to ctx.money(safe.spentMinor),
+                stringResource(R.string.bills_and_goals) to ctx.money(safe.committedMinor + safe.savingsMinor),
+            )
+            // Three columns fit normal text; from 130% they stack as label and amount rows so nothing is cut or shrunk.
+            if (androidx.compose.ui.platform.LocalDensity.current.fontScale >= 1.3f) Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                stats.forEach { (l, v) ->
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(l, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f), modifier = Modifier.weight(1f))
+                        MoneyLabel(v, style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                    }
+                }
+            } else Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                stats.forEach { (l, v) -> HeroStat(l, v, Modifier.weight(1f)) }
             }
             if (safe.unconvertedCount > 0) {
                 Spacer(Modifier.height(8.dp))

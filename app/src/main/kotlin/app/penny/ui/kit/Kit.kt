@@ -265,11 +265,12 @@ fun Meter(usedBp: Int, state: EnvelopeState, modifier: Modifier = Modifier, heig
 @Composable
 fun Pill(text: String, modifier: Modifier = Modifier, container: Color = MaterialTheme.colorScheme.secondaryContainer, content: Color = MaterialTheme.colorScheme.onSecondaryContainer, icon: ImageVector? = null) {
     Row(
-        modifier.clip(RoundedCornerShape(50)).background(container).padding(horizontal = 10.dp, vertical = 4.dp),
+        // Large text wraps inside the pill (a 16 dp radius keeps two lines looking like a pill) instead of being cut off.
+        modifier.clip(RoundedCornerShape(16.dp)).background(container).padding(horizontal = 10.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (icon != null) { Icon(icon, null, tint = content, modifier = Modifier.size(14.dp)); Spacer(Modifier.width(4.dp)) }
-        Text(text, style = MaterialTheme.typography.labelMedium, color = content, maxLines = 1)
+        Text(text, style = MaterialTheme.typography.labelMedium, color = content)
     }
 }
 
@@ -325,7 +326,7 @@ fun PrimaryButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifi
 @Composable
 fun StatBlock(label: String, value: String, modifier: Modifier = Modifier, valueColor: Color = Color.Unspecified, emphasis: Boolean = false) {
     Column(modifier) {
-        Text(label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 2, overflow = TextOverflow.Ellipsis)
         MoneyLabel(value, color = valueColor, style = if (emphasis) MaterialTheme.typography.headlineSmall else MaterialTheme.typography.titleMedium)
     }
 }

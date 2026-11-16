@@ -336,7 +336,13 @@ private fun MainTabs(nav: NavHostController, initial: String) {
                     NavigationBarItem(
                         selected = tab == t, onClick = { tab = t },
                         icon = { Icon(if (tab == t) t.selected else t.icon, null) },
-                        label = { Text(stringResource(t.label)) },
+                        // Five labels share the width: large text is capped at 130% here and never breaks mid-word.
+                        label = {
+                            val d = androidx.compose.ui.platform.LocalDensity.current
+                            androidx.compose.runtime.CompositionLocalProvider(androidx.compose.ui.platform.LocalDensity provides androidx.compose.ui.unit.Density(d.density, minOf(d.fontScale, 1.3f))) {
+                                Text(stringResource(t.label), maxLines = 1, softWrap = false, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis)
+                            }
+                        },
                     )
                 }
             }

@@ -351,8 +351,10 @@ fun AppearanceScreen(onBack: () -> Unit) {
                 ), { it?.let { t -> set(a.copy(theme = t)) } })
                 SelectField(stringResource(R.string.accent), a.accent, listOf(Choice(0L, stringResource(R.string.accent_default)), Choice(0xFF2A5DB0, stringResource(R.string.accent_blue)), Choice(0xFF7B4FB8, stringResource(R.string.accent_violet)), Choice(0xFF1F7A86, stringResource(R.string.accent_teal)), Choice(0xFF8A5A2B, stringResource(R.string.accent_bronze))), { it?.let { c -> set(a.copy(accent = c)) } })
                 SectionHeader(stringResource(R.string.text_size))
-                Slider(a.textScale, { set(a.copy(textScale = (Math.round(it * 20) / 20f))) }, valueRange = 0.85f..2f, modifier = Modifier.padding(horizontal = 20.dp))
-                Text(stringResource(R.string.text_size_x, (a.textScale * 100).toInt()), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(horizontal = 20.dp))
+                // Applied when the finger lifts: resizing text mid-drag moved the slider away from the finger and the drag stopped.
+                var pending by androidx.compose.runtime.remember(a.textScale) { mutableStateOf(a.textScale) }
+                Slider(pending, { pending = Math.round(it * 20) / 20f }, valueRange = 0.85f..2f, onValueChangeFinished = { set(a.copy(textScale = pending)) }, modifier = Modifier.padding(horizontal = 20.dp))
+                Text(stringResource(R.string.text_size_x, Math.round(pending * 100)), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(horizontal = 20.dp))
                 SwitchRow(stringResource(R.string.dense_mode), a.dense, { set(a.copy(dense = it)) })
                 SwitchRow(stringResource(R.string.haptics), a.haptics, { set(a.copy(haptics = it)) })
                 SwitchRow(stringResource(R.string.reduce_motion), a.reduceMotion, { set(a.copy(reduceMotion = it)) })

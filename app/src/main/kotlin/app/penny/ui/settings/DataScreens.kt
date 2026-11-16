@@ -1,5 +1,9 @@
 package app.penny.ui.settings
 
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Checkbox
+import androidx.compose.ui.Alignment
 import app.penny.ui.common.safeStart
 import android.content.Intent
 import android.net.Uri
@@ -104,12 +108,32 @@ fun DataScreen(onBack: () -> Unit, go: (String) -> Unit, onWiped: () -> Unit) {
                 status = context.getString(if (ok) R.string.export_done else R.string.export_failed)
             }
         }
+        // An encrypted backup (SY-05) waits here until its recovery phrase is typed.
+        var encryptedBackup by androidx.compose.runtime.remember { mutableStateOf<ByteArray?>(null) }
+        fun restore(json: String) = scope.launch {
+            val r = withContext(Dispatchers.IO) { runCatching { vm.repo.importJson(json) } }
+            status = r.fold({ (pid, n) -> vm.prefs.setCurrentProfile(pid); context.resources.getQuantityString(R.plurals.restored_events, n, n) }, { context.getString(R.string.import_failed, it.message ?: "") })
+        }
         val jsonIn = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
             uri ?: return@rememberLauncherForActivityResult
             scope.launch {
-                val r = withContext(Dispatchers.IO) { runCatching { vm.repo.importJson(context.contentResolver.openInputStream(uri)!!.bufferedReader().readText()) } }
-                status = r.fold({ (pid, n) -> vm.prefs.setCurrentProfile(pid); context.resources.getQuantityString(R.plurals.restored_events, n, n) }, { context.getString(R.string.import_failed, it.message ?: "") })
+                val bytes = withContext(Dispatchers.IO) { runCatching { context.contentResolver.openInputStream(uri)!!.use { it.readBytes() } }.getOrNull() }
+                when {
+                    bytes == null -> status = context.getString(R.string.import_failed, "")
+                    app.penny.domain.BackupCrypto.isEncrypted(bytes) -> encryptedBackup = bytes
+                    else -> restore(bytes.toString(Charsets.UTF_8))
+                }
             }
+        }
+        // SY-05: backups leave the phone (often for a cloud folder), so they are encrypted with a recovery phrase the
+        // person writes down. Without one, backups used to be plain JSON with the whole financial history.
+        var newPhrase by rememberSaveable { mutableStateOf<List<String>?>(null) }
+        var afterPhrase by rememberSaveable { mutableStateOf<String?>(null) }
+        var lastBackup by androidx.compose.runtime.remember { mutableStateOf(vm.prefs.long("backup.last")) }
+        fun backupNow() = scope.launch {
+            val ok = app.penny.work.BackupWorker.runNow(context)
+            lastBackup = vm.prefs.long("backup.last")
+            status = context.getString(if (ok) R.string.backup_done else R.string.backup_failed)
         }
         // SY-05: backup folder chosen by the user (Drive, OneDrive, Dropbox, local) through the system picker.
         val folder = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
@@ -117,7 +141,11 @@ fun DataScreen(onBack: () -> Unit, go: (String) -> Unit, onWiped: () -> Unit) {
             context.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
             vm.prefs.setString("backup.folder", uri.toString())
             app.penny.work.BackupWorker.schedule(context)
-            scope.launch { status = context.getString(if (app.penny.work.BackupWorker.runNow(context)) R.string.backup_done else R.string.backup_failed) }
+            backupNow()
+        }
+        fun needsPhrase(then: String): Boolean {
+            if (app.penny.domain.BackupCrypto.enabled(vm.prefs)) return false
+            afterPhrase = then; newPhrase = app.penny.domain.BackupCrypto.newPhrase(); return true
         }
         PennyScreen(stringResource(R.string.data_backup), onBack) { pad ->
             Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(bottom = 48.dp)) {
@@ -131,8 +159,9 @@ fun DataScreen(onBack: () -> Unit, go: (String) -> Unit, onWiped: () -> Unit) {
                 ListRow(stringResource(R.string.restore_export), subtitle = stringResource(R.string.restore_export_sub), onClick = { jsonIn.launch(arrayOf("application/json", "*/*")) }, divider = true)
                 SectionHeader(stringResource(R.string.backup))
                 val folderSet = vm.prefs.string("backup.folder") != null
-                ListRow(stringResource(if (folderSet) R.string.backup_folder_change else R.string.backup_folder_choose), subtitle = stringResource(R.string.backup_folder_sub), onClick = { folder.launch(null) }, divider = true)
-                if (folderSet) ListRow(stringResource(R.string.backup_now), subtitle = vm.prefs.long("backup.last").takeIf { it > 0 }?.let { stringResource(R.string.last_backup, java.text.DateFormat.getDateTimeInstance().format(java.util.Date(it))) }, onClick = { scope.launch { status = context.getString(if (app.penny.work.BackupWorker.runNow(context)) R.string.backup_done else R.string.backup_failed) } }, divider = true)
+                ListRow(stringResource(if (folderSet) R.string.backup_folder_change else R.string.backup_folder_choose), subtitle = stringResource(R.string.backup_folder_sub), onClick = { if (!needsPhrase("folder")) folder.launch(null) }, divider = true)
+                if (folderSet) ListRow(stringResource(R.string.backup_now), subtitle = lastBackup.takeIf { it > 0 }?.let { stringResource(R.string.last_backup, java.text.DateFormat.getDateTimeInstance().format(java.util.Date(it))) }, onClick = { if (!needsPhrase("now")) backupNow() }, divider = true)
+                if (folderSet) Text(stringResource(if (app.penny.domain.BackupCrypto.enabled(vm.prefs)) R.string.backup_encrypted else R.string.backup_not_encrypted), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))
                 SectionHeader(stringResource(R.string.privacy))
                 var optIn by rememberSaveable { mutableStateOf(vm.prefs.analyticsOptIn) }
                 SwitchRow(stringResource(R.string.usage_counts), optIn, { optIn = it; vm.prefs.analyticsOptIn = it; if (!it) vm.telemetry.clear() }, subtitle = stringResource(R.string.usage_counts_hint))
@@ -143,6 +172,57 @@ fun DataScreen(onBack: () -> Unit, go: (String) -> Unit, onWiped: () -> Unit) {
                 SectionHeader(stringResource(R.string.danger_zone))
                 ListRow(stringResource(R.string.delete_everything), subtitle = stringResource(R.string.delete_everything_sub), onClick = { wipe = true })
             }
+        }
+        newPhrase?.let { words ->
+            var written by rememberSaveable { mutableStateOf(false) }
+            AlertDialog(
+                onDismissRequest = { newPhrase = null; afterPhrase = null },
+                title = { Text(stringResource(R.string.backup_phrase_title)) },
+                text = {
+                    Column(Modifier.verticalScroll(rememberScrollState())) {
+                        Text(stringResource(R.string.backup_phrase_body))
+                        Spacer(Modifier.height(12.dp))
+                        // Numbered so it can be copied onto paper in order.
+                        Text(words.mapIndexed { i, w -> "${i + 1}. $w" }.chunked(3).joinToString("\n") { it.joinToString("   ") }, style = MaterialTheme.typography.bodyLarge.copy(fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace))
+                        Spacer(Modifier.height(12.dp))
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Checkbox(written, { written = it })
+                            Text(stringResource(R.string.backup_phrase_written))
+                        }
+                    }
+                },
+                confirmButton = {
+                    TextButton(enabled = written, onClick = {
+                        app.penny.domain.BackupCrypto.enable(vm.prefs, words)
+                        val next = afterPhrase
+                        newPhrase = null; afterPhrase = null
+                        if (next == "folder") folder.launch(null) else backupNow()
+                    }) { Text(stringResource(R.string.backup_phrase_continue)) }
+                },
+                dismissButton = { TextButton(onClick = { newPhrase = null; afterPhrase = null }) { Text(stringResource(R.string.cancel)) } },
+            )
+        }
+        encryptedBackup?.let { bytes ->
+            var phrase by rememberSaveable { mutableStateOf("") }
+            var wrong by rememberSaveable { mutableStateOf(false) }
+            AlertDialog(
+                onDismissRequest = { encryptedBackup = null },
+                title = { Text(stringResource(R.string.backup_enter_phrase)) },
+                text = {
+                    Column {
+                        Text(stringResource(R.string.backup_enter_phrase_body))
+                        OutlinedTextField(phrase, { phrase = it; wrong = false }, minLines = 3, isError = wrong, modifier = Modifier.fillMaxWidth(),
+                            supportingText = { if (wrong) Text(stringResource(R.string.backup_phrase_wrong)) })
+                    }
+                },
+                confirmButton = {
+                    TextButton(enabled = app.penny.domain.BackupCrypto.validPhrase(phrase), onClick = {
+                        val json = runCatching { app.penny.domain.BackupCrypto.decrypt(bytes, phrase) }.getOrNull()
+                        if (json == null) wrong = true else { encryptedBackup = null; restore(json) }
+                    }) { Text(stringResource(R.string.restore_export)) }
+                },
+                dismissButton = { TextButton(onClick = { encryptedBackup = null }) { Text(stringResource(R.string.cancel)) } },
+            )
         }
         if (wipe) TypedConfirmDialog(
             stringResource(R.string.delete_everything), stringResource(R.string.delete_everything_body), ctx.book.profile.name, stringResource(R.string.delete),

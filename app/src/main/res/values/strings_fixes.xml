@@ -49,4 +49,13 @@
     <string name="use_penny_pin">Use Penny PIN</string>
     <string name="al_bill_covered_when">%1$s. Safe to spend covers it.</string>
     <string name="al_bill_short_when">%1$s. Safe to spend may not cover it.</string>
+    <string name="backup_phrase_title">Your backup recovery phrase</string>
+    <string name="backup_phrase_body">Backups are locked with these 24 words. Write them down on paper and keep them safe. You need them to restore on a new phone. Penny cannot show them again or recover them for you.</string>
+    <string name="backup_phrase_written">I have written them down</string>
+    <string name="backup_phrase_continue">Continue</string>
+    <string name="backup_encrypted">Backups are encrypted with your recovery phrase.</string>
+    <string name="backup_not_encrypted">Backups are not encrypted yet. Back up now to set up a recovery phrase.</string>
+    <string name="backup_enter_phrase">Enter your recovery phrase</string>
+    <string name="backup_enter_phrase_body">This backup is encrypted. Type the 24 words you wrote down when backups were set up.</string>
+    <string name="backup_phrase_wrong">That phrase does not open this backup.</string>
 </resources>

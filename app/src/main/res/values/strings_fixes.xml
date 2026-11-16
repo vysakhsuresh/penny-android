@@ -22,4 +22,9 @@
     <string name="op_minus">Subtract</string>
     <string name="op_times">Multiply</string>
     <string name="op_divide">Divide</string>
+    <string name="opening_owed">Amount owed</string>
+    <string name="amount_owed">Amount you owe today</string>
+    <string name="set_balance_owed_body">Enter what you owe on this account today. The difference is recorded as an adjustment you can undo.</string>
+    <string name="transfer_from">From %1$s</string>
+    <string name="account_via">%1$s via %2$s</string>
 </resources>

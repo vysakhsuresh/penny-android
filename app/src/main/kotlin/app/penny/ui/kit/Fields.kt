@@ -45,6 +45,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -170,7 +171,12 @@ fun AmountInput(
             state = state,
             label = { Text(label) },
             prefix = { Text(app.penny.core.money.CurrencySymbols.symbol(currency, fmt.spec.localeTag) + " ") },
-            modifier = Modifier.fillMaxWidth(),
+            // A prefilled zero ("0", "0.00") is a placeholder: clear it on focus so typing 5000 gives 5000, not 0.005000.
+            modifier = Modifier.fillMaxWidth().onFocusChanged { f ->
+                val s = state.text.toString()
+                if (f.isFocused && s.isNotEmpty() && s.all { it == '0' || it == '.' || it == ',' || it == ' ' || it == ' ' || it == ' ' })
+                    state.edit { replace(0, length, "") }
+            },
             lineLimits = androidx.compose.foundation.text.input.TextFieldLineLimits.SingleLine,
             isError = error != null,
             inputTransformation = {

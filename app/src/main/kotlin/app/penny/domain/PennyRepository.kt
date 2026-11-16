@@ -80,10 +80,17 @@ class PennyRepository @Inject constructor(
 ) {
     private fun <T> repo(entity: String, s: KSerializer<T>) = EventSourcedRepository(entity, s, store, prefs::actor)
 
+    private suspend fun routeViaWallet(t: Transaction): Transaction {
+        val bank = accounts.get(t.accountId)?.takeIf { it.state.deletedAt == null }?.value?.aliasOf ?: return t
+        if (bank == t.toAccountId || accounts.get(bank)?.state?.deletedAt != null) return t
+        return t.copy(accountId = bank, viaAccountId = t.viaAccountId ?: t.accountId)
+    }
+
     val profiles = repo(Entities.PROFILE, Profile.serializer())
     val accounts = repo(Entities.ACCOUNT, FinancialAccount.serializer())
     val categories = repo(Entities.CATEGORY, Category.serializer())
-    val transactions = repo(Entities.TRANSACTION, Transaction.serializer())
+    /** AC-07: a spend from a pass-through wallet (e.g. a UPI app) posts to its bank with the wallet as "via". */
+    val transactions = EventSourcedRepository(Entities.TRANSACTION, Transaction.serializer(), store, prefs::actor, normalize = { t -> routeViaWallet(t) })
     val tags = repo(Entities.TAG, Tag.serializer())
     val payees = repo(Entities.PAYEE, Payee.serializer())
     val rules = repo(Entities.RULE, Rule.serializer())

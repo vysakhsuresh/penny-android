@@ -133,23 +133,33 @@ fun TxRow(
     selected: Boolean = false,
     onLongClick: (() -> Unit)? = null,
     showDate: Boolean = false,
+    /** On an account's page: a transfer into this account reads "From …", in this account's currency, as money in. */
+    forAccount: String? = null,
 ) {
     val b = ctx.book
     val cat = b.categoryMap[t.categoryId]
-    val inflow = isInflow(t)
+    val incoming = t.type == TxType.TRANSFER && forAccount != null && forAccount == t.toAccountId
+    val outgoing = t.type == TxType.TRANSFER && forAccount != null && forAccount == t.accountId
+    val inflow = isInflow(t) || incoming
     val context = LocalContext.current
     val title = t.payee?.takeIf { it.isNotBlank() }
-        ?: if (t.type == TxType.TRANSFER) context.getString(R.string.transfer_to, b.accountName(t.toAccountId))
+        ?: if (incoming) context.getString(R.string.transfer_from, b.accountName(t.accountId))
+        else if (t.type == TxType.TRANSFER) context.getString(R.string.transfer_to, b.accountName(t.toAccountId))
         else cat?.value?.name ?: context.getString(if (t.splits.isNotEmpty()) R.string.split_tx else R.string.uncategorised)
     val parts = listOfNotNull(
         if (showDate) shortDate(t.date) else null,
         b.categoryName(t.categoryId).takeIf { it.isNotEmpty() && t.payee?.isNotBlank() == true },
         if (t.splits.isNotEmpty()) context.resources.getQuantityString(R.plurals.splits_count, t.splits.size, t.splits.size) else null,
-        b.accountName(t.accountId).takeIf { it.isNotEmpty() },
+        (if (incoming) b.accountName(t.toAccountId) else b.accountName(t.accountId)).takeIf { it.isNotEmpty() }
+            ?.let { n -> t.viaAccountId?.takeIf { !incoming }?.let { v -> context.getString(R.string.account_via, n, b.accountName(v)) } ?: n },
         if (t.status == TxStatus.PENDING) context.getString(R.string.status_pending) else null,
         if (t.date.isAfter(b.today())) context.getString(R.string.scheduled) else null,
     )
-    val amount = ctx.fmt.format(if (inflow || t.type == TxType.TRANSFER) t.amountMinor else -t.amountMinor, t.currency, signed = inflow)
+    val amount = when {
+        incoming -> ctx.fmt.format(t.toAmountMinor ?: t.amountMinor, t.toCurrency ?: t.currency, signed = true)
+        outgoing -> ctx.fmt.format(-t.amountMinor, t.currency)
+        else -> ctx.fmt.format(if (inflow || t.type == TxType.TRANSFER) t.amountMinor else -t.amountMinor, t.currency, signed = inflow)
+    }
     ListRow(
         title = title, subtitle = parts.joinToString(" · "), modifier = modifier, selected = selected,
         leading = {

@@ -248,10 +248,15 @@ fun CategorySheet(txId: String, onDismiss: () -> Unit) {
             val t = b.txMap[txId]?.value ?: run { onDismiss(); return@WithBook }
             val kind = if (t.type == TxType.INCOME) CategoryKind.INCOME else CategoryKind.EXPENSE
             Text(stringResource(R.string.change_category), style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp))
+            // A full category tree is long (60+ rows); a search box gets to any one in a couple of letters.
+            var query by androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableStateOf("") }
+            app.penny.ui.kit.TextInput(query, { query = it }, stringResource(R.string.search))
+            val q = query.trim()
+            val rows = b.categoryTree(kind, false).let { tree -> if (q.isEmpty()) tree else tree.filter { it.first.value.name.contains(q, ignoreCase = true) } }
             LazyColumn(Modifier.padding(bottom = 24.dp)) {
-                items(b.categoryTree(kind, false), key = { it.first.state.id }) { (s, d) ->
+                items(rows, key = { it.first.state.id }) { (s, d) ->
                     ListRow(
-                        title = s.value.name, modifier = Modifier.padding(start = ((d - 1) * 20).dp), selected = s.state.id == t.categoryId,
+                        title = s.value.name, modifier = Modifier.padding(start = (if (q.isEmpty()) (d - 1) * 20 else 0).dp), selected = s.state.id == t.categoryId,
                         leading = { Avatar(s.value.name, s.state.id, icon = categoryIcon(s.value.key), size = 32.dp) },
                         onClick = {
                             vm.act(R.string.updated) { book -> saveTransaction(book, txId, t.copy(categoryId = s.state.id, splits = emptyList())).group }

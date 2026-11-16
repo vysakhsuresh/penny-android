@@ -209,17 +209,21 @@ fun AccountDetailScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit
                 }
                 item { SectionHeader(stringResource(R.string.transactions)) }
                 if (txs.isEmpty()) item { EmptyState(stringResource(R.string.no_tx_title), stringResource(R.string.no_tx_account_body)) }
-                items(txs.take(300), key = { it.state.id }) { s -> TxRow(s.state.id, s.value, ctx, onOpen = { onOpenTx(s.state.id) }, showDate = true) }
+                items(txs.take(300), key = { it.state.id }) { s -> TxRow(s.state.id, s.value, ctx, onOpen = { onOpenTx(s.state.id) }, showDate = true, forAccount = id) }
             }
         }
         when (dialog) {
             "set", "count" -> AmountDialog(
                 ctx, stringResource(if (dialog == "set") R.string.set_balance else R.string.count_cash),
-                stringResource(if (dialog == "set") R.string.set_balance_body else R.string.count_cash_body), a.currency, ctx.fmt.editable(bal, a.currency),
+                stringResource(if (dialog == "count") R.string.count_cash_body else if (a.isLiability()) R.string.set_balance_owed_body else R.string.set_balance_body),
+                a.currency, ctx.fmt.editable(if (a.isLiability()) -bal else bal, a.currency),
                 onDismiss = { dialog = null },
+                label = stringResource(if (a.isLiability() && dialog == "set") R.string.amount_owed else R.string.field_amount),
             ) { v ->
                 val count = dialog == "count"
-                vm.act(R.string.balance_updated) { if (count) countCash(it, id, v) else setBalance(it, id, v) }
+                // Cards and loans: the user types what they owe; the ledger balance is the negative of that.
+                val target = if (!count && a.isLiability()) -v else v
+                vm.act(R.string.balance_updated) { if (count) countCash(it, id, target) else setBalance(it, id, target) }
                 dialog = null
             }
             "reconcile" -> AlertDialog(
@@ -264,12 +268,12 @@ private fun CardSummary(ctx: Ctx, id: String, a: FinancialAccount, c: CardFields
 }
 
 @Composable
-fun AmountDialog(ctx: Ctx, title: String, body: String, currency: String, initial: String, onDismiss: () -> Unit, onOk: (Long) -> Unit) {
+fun AmountDialog(ctx: Ctx, title: String, body: String, currency: String, initial: String, onDismiss: () -> Unit, label: String? = null, onOk: (Long) -> Unit) {
     var text by rememberSaveable { mutableStateOf(initial) }
     val v = parseAmount(text, currency, ctx.fmt)
     AlertDialog(
         onDismissRequest = onDismiss, title = { Text(title) },
-        text = { Column { Text(body); Spacer(Modifier.height(8.dp)); AmountInput(text, { text = it }, currency, ctx.fmt, stringResource(R.string.field_amount)) } },
+        text = { Column { Text(body); Spacer(Modifier.height(8.dp)); AmountInput(text, { text = it }, currency, ctx.fmt, label ?: stringResource(R.string.field_amount), allowZero = true) } },
         confirmButton = { TextButton(onClick = { v?.let(onOk) }, enabled = v != null) { Text(stringResource(R.string.save)) } },
         dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) } },
     )
@@ -311,7 +315,8 @@ fun AccountEditScreen(id: String, onBack: () -> Unit) {
         var name by rememberSaveable { mutableStateOf(existing?.name.orEmpty()) }
         var type by rememberSaveable { mutableStateOf(existing?.type ?: AccountType.BANK) }
         var currency by rememberSaveable { mutableStateOf(existing?.currency ?: ctx.base) }
-        var opening by rememberSaveable { mutableStateOf(existing?.let { ctx.fmt.editable(it.openingBalanceMinor, it.currency) } ?: "0") }
+        // Cards and loans take the amount owed as a positive number; the ledger stores it as negative.
+        var opening by rememberSaveable { mutableStateOf(existing?.let { ctx.fmt.editable(if (it.isLiability()) -it.openingBalanceMinor else it.openingBalanceMinor, it.currency) } ?: "0") }
         var openingDate by rememberSaveable { mutableStateOf((existing?.openingDate ?: b.today()).toString()) }
         var institution by rememberSaveable { mutableStateOf(existing?.institution.orEmpty()) }
         var group by rememberSaveable { mutableStateOf(existing?.group.orEmpty()) }
@@ -332,7 +337,7 @@ fun AccountEditScreen(id: String, onBack: () -> Unit) {
                 TextInput(name, { name = it; error = null }, stringResource(R.string.field_name), error = error)
                 SelectField(stringResource(R.string.field_type), type, AccountType.entries.map { Choice(it, stringResource(accountTypeLabel(it))) }, { it?.let { t -> type = t; if (t in listOf(AccountType.LOAN, AccountType.LIABILITY, AccountType.CREDIT_CARD)) budget = t == AccountType.CREDIT_CARD } })
                 SelectField(stringResource(R.string.field_currency), currency, currencyChoices(listOf(ctx.base)), { it?.let { c -> currency = c } })
-                AmountInput(opening, { opening = it }, currency, ctx.fmt, stringResource(R.string.opening_balance), allowZero = true)
+                AmountInput(opening, { opening = it }, currency, ctx.fmt, stringResource(if (isLiabilityHint(type)) R.string.opening_owed else R.string.opening_balance), allowZero = true)
                 DateInput(stringResource(R.string.opening_date), runCatching { java.time.LocalDate.parse(openingDate) }.getOrNull(), { openingDate = it.toString() }, quick = false, today = b.today())
                 TextInput(institution, { institution = it }, stringResource(R.string.institution))
                 TextInput(group, { group = it }, stringResource(R.string.account_group), supporting = stringResource(R.string.account_group_hint))
@@ -361,7 +366,7 @@ fun AccountEditScreen(id: String, onBack: () -> Unit) {
                     if (name.isBlank()) { error = nameErr; return@PrimaryButton }
                     fun bp(s: String) = s.replace(',', '.').toBigDecimalOrNull()?.multiply(java.math.BigDecimal(100))?.toInt()
                     val acct = (existing ?: FinancialAccount(name, type, currency)).copy(
-                        name = name.trim(), type = type, currency = currency, openingBalanceMinor = parseAmount(opening, currency, ctx.fmt) ?: 0,
+                        name = name.trim(), type = type, currency = currency, openingBalanceMinor = (parseAmount(opening, currency, ctx.fmt) ?: 0).let { if (isLiabilityHint(type)) -it else it },
                         openingDate = runCatching { java.time.LocalDate.parse(openingDate) }.getOrNull(), institution = institution.trim(),
                         group = group.trim().ifEmpty { null }, note = note.trim(), includeInNetWorth = netWorth, includeInBudget = budget,
                         card = if (type == AccountType.CREDIT_CARD) CardFields(parseAmount(limit, currency, ctx.fmt) ?: 0, stmt.toIntOrNull()?.coerceIn(1, 31) ?: 1, due.toIntOrNull()?.coerceIn(1, 31) ?: 20, bp(minDue) ?: 500, bp(apr) ?: 0) else null,
@@ -371,7 +376,6 @@ fun AccountEditScreen(id: String, onBack: () -> Unit) {
                 }, Modifier.padding(horizontal = 16.dp))
             }
         }
-        @Suppress("UNUSED_EXPRESSION") isLiabilityHint(type)
     }
 }
 

@@ -39,6 +39,8 @@ open class EventSourcedRepository<T>(
     protected val actor: () -> Actor,
     protected val clock: Clock = SystemClock,
     protected val ids: IdGenerator = UuidGenerator,
+    /** Applied to every value before it is written (e.g. AC-07 routes a pass-through wallet's spend to its bank). */
+    private val normalize: suspend (T) -> T = { it },
 ) {
     fun encode(value: T): JsonObject = PennyJson.encodeToJsonElement(serializer, value).jsonObject
     fun decode(data: JsonObject): T = PennyJson.decodeFromJsonElement(serializer, data)
@@ -53,20 +55,21 @@ open class EventSourcedRepository<T>(
 
     /** Returns the group id; pass it to [undo] to reverse the action. */
     suspend fun create(id: String, profileId: String, value: T, groupId: String = ids.newId(), reason: String? = null): String {
-        store.append(listOf(event(id, profileId, Op.CREATE, encode(value), null, groupId, reason)))
+        store.append(listOf(event(id, profileId, Op.CREATE, encode(normalize(value)), null, groupId, reason)))
         return groupId
     }
 
     suspend fun createAll(profileId: String, values: List<Pair<String, T>>, reason: String? = null, groupId: String = ids.newId()): String {
         val g = groupId
-        store.append(values.map { (id, v) -> event(id, profileId, Op.CREATE, encode(v), null, g, reason) })
+        val normalized = values.map { (id, v) -> id to normalize(v) }
+        store.append(normalized.map { (id, v) -> event(id, profileId, Op.CREATE, encode(v), null, g, reason) })
         return g
     }
 
     /** Writes only the fields that changed. Returns null when nothing changed (no event is written). */
     suspend fun update(id: String, value: T, reason: String? = null, groupId: String = ids.newId()): String? {
         val cur = store.current(entity, id) ?: error("No $entity $id")
-        val (patch, before) = Projector.diff(cur.data, encode(value))
+        val (patch, before) = Projector.diff(cur.data, encode(normalize(value)))
         if (patch.isEmpty()) return null
         store.append(listOf(event(id, cur.profileId, Op.UPDATE, patch, before, groupId, reason)))
         return groupId
@@ -76,7 +79,7 @@ open class EventSourcedRepository<T>(
     suspend fun updateMany(values: List<Pair<String, T>>, groupId: String = ids.newId(), reason: String? = null): String? {
         val events = values.mapNotNull { (id, v) ->
             val cur = store.current(entity, id) ?: return@mapNotNull null
-            val (patch, before) = Projector.diff(cur.data, encode(v))
+            val (patch, before) = Projector.diff(cur.data, encode(normalize(v)))
             if (patch.isEmpty()) null else event(id, cur.profileId, Op.UPDATE, patch, before, groupId, reason)
         }
         if (events.isEmpty()) return null

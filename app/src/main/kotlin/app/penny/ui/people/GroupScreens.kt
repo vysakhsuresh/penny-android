@@ -300,7 +300,28 @@ fun GroupExpenseEditScreen(id: String, groupArg: String?, onBack: () -> Unit) {
                 DateInput(stringResource(R.string.field_date), runCatching { java.time.LocalDate.parse(date) }.getOrNull(), { date = it.toString() }, today = b.today())
                 SelectField(stringResource(R.string.field_category), category, b.categoriesOf(app.penny.core.model.CategoryKind.EXPENSE).map { Choice(it.state.id, b.categoryName(it.state.id)) }, { category = it }, allowNone = true)
                 SectionHeader(stringResource(R.string.split))
-                SelectField(stringResource(R.string.split_mode), mode, SplitMode.entries.map { Choice(it, stringResource(when (it) { SplitMode.EQUAL -> R.string.split_equal; SplitMode.EXACT -> R.string.split_exact; SplitMode.PERCENT -> R.string.split_percent; SplitMode.SHARES -> R.string.split_shares; SplitMode.ITEMS -> R.string.split_items })) }, { it?.let { m -> mode = m } })
+                SelectField(stringResource(R.string.split_mode), mode, SplitMode.entries.map { Choice(it, stringResource(when (it) { SplitMode.EQUAL -> R.string.split_equal; SplitMode.EXACT -> R.string.split_exact; SplitMode.PERCENT -> R.string.split_percent; SplitMode.SHARES -> R.string.split_shares; SplitMode.ITEMS -> R.string.split_items })) }, { it?.let { m ->
+                    // Each mode starts from a sensible split: even percentages, one share each, empty exact amounts.
+                    if (m != mode) {
+                        val n = members.size.coerceAtLeast(1)
+                        val even = java.math.BigDecimal(100).divide(java.math.BigDecimal(n), 2, java.math.RoundingMode.DOWN)
+                        val last = java.math.BigDecimal(100).subtract(even.multiply(java.math.BigDecimal(n - 1)))
+                        values = members.mapIndexed { i, id -> "$id=" + when (m) {
+                            SplitMode.PERCENT -> (if (i == members.lastIndex) last else even).stripTrailingZeros().toPlainString()
+                            SplitMode.EXACT -> ""
+                            else -> "1"
+                        } }
+                    }
+                    mode = m
+                } })
+                // Live total for percent and exact splits, so a mismatch shows before Save.
+                if (mode == SplitMode.PERCENT || mode == SplitMode.EXACT) {
+                    val sum = members.sumOf { m -> if (mode == SplitMode.PERCENT) v(m).replace(',', '.').toBigDecimalOrNull()?.multiply(BigDecimal(100))?.toLong() ?: 0 else parseAmount(v(m), currency, ctx.fmt) ?: 0 }
+                    val goal = if (mode == SplitMode.PERCENT) 10_000L else (parseAmount(amount, currency, ctx.fmt) ?: 0)
+                    val shown = if (mode == SplitMode.PERCENT) stringResource(R.string.split_total_percent, BigDecimal(sum).movePointLeft(2).stripTrailingZeros().toPlainString())
+                        else stringResource(R.string.split_total_amount, ctx.money(sum, currency), ctx.money(goal, currency))
+                    Text(shown, style = MaterialTheme.typography.bodySmall, color = if (sum == goal) MaterialTheme.colorScheme.onSurfaceVariant else Penny.status.near, modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp))
+                }
                 if (mode != SplitMode.ITEMS) members.forEach { m ->
                     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 8.dp)) {
                         if (mode == SplitMode.EQUAL) {
@@ -374,7 +395,7 @@ fun RemittancesScreen(onBack: () -> Unit, onEdit: (String) -> Unit) {
                     item { SectionHeader(stringResource(R.string.provider_cost)) }
                     item {
                         PennyCard {
-                            byProvider.entries.sortedBy { it.value }.forEach { (p, bp) -> ListRow(p, trailingText = "%.2f%%".format(bp / 100.0), divider = true) }
+                            byProvider.entries.sortedBy { it.value }.forEach { (p, bp) -> ListRow(p.ifBlank { stringResource(R.string.provider_not_named) }, trailingText = "%.2f%%".format(bp / 100.0), divider = true) }
                         }
                         Text(stringResource(R.string.no_referrals), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))
                     }
@@ -384,7 +405,7 @@ fun RemittancesScreen(onBack: () -> Unit, onEdit: (String) -> Unit) {
                     val c = RemitCircle.cost(r.value)
                     ListRow(
                         if (r.value.outgoing) stringResource(R.string.to_x, r.value.receiver) else stringResource(R.string.from_x, r.value.sender),
-                        subtitle = listOfNotNull(shortDate(r.value.date), r.value.provider, c.totalBp?.let { stringResource(R.string.true_cost_x, "%.2f%%".format(it / 100.0)) }, stringResource(when (r.value.status) { app.penny.core.model.RemitStatus.SENT -> R.string.remit_status_sent; app.penny.core.model.RemitStatus.RECEIVED -> R.string.remit_status_received; app.penny.core.model.RemitStatus.CONFIRMED -> R.string.remit_status_confirmed })).joinToString(" · "),
+                        subtitle = listOfNotNull(shortDate(r.value.date), r.value.provider.takeIf { it.isNotBlank() }, c.totalBp?.let { stringResource(R.string.true_cost_x, "%.2f%%".format(it / 100.0)) }, stringResource(when (r.value.status) { app.penny.core.model.RemitStatus.SENT -> R.string.remit_status_sent; app.penny.core.model.RemitStatus.RECEIVED -> R.string.remit_status_received; app.penny.core.model.RemitStatus.CONFIRMED -> R.string.remit_status_confirmed })).joinToString(" · "),
                         trailingText = ctx.money(if (r.value.outgoing) r.value.sentMinor else r.value.receivedMinor, if (r.value.outgoing) r.value.sentCurrency else r.value.receivedCurrency),
                         onClick = { onEdit(r.state.id) }, divider = true,
                     )

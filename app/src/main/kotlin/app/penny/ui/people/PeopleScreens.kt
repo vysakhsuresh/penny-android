@@ -94,8 +94,10 @@ fun PeopleScreen(padding: PaddingValues, go: (String) -> Unit) {
     WithBook { ctx, _ ->
         val b = ctx.book
         val balances = b.lendingBalances()
-        val toReceive = balances.values.flatMap { it.entries }.filter { it.key == ctx.base && it.value > 0 }.sumOf { it.value }
-        val toGive = balances.values.flatMap { it.entries }.filter { it.key == ctx.base && it.value < 0 }.sumOf { -it.value }
+        // Lending plus your share in each group (in the main currency), so the totals match what the rows below say.
+        val mineInGroups = b.groups.filter { !it.value.archived && it.value.baseCurrency == ctx.base }.map { b.groupBalances(it.state.id)[Group.ME] ?: 0L }
+        val toReceive = balances.values.flatMap { it.entries }.filter { it.key == ctx.base && it.value > 0 }.sumOf { it.value } + mineInGroups.filter { it > 0 }.sum()
+        val toGive = balances.values.flatMap { it.entries }.filter { it.key == ctx.base && it.value < 0 }.sumOf { -it.value } + mineInGroups.filter { it < 0 }.sumOf { -it }
         LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding() + 96.dp)) {
             item { Text(stringResource(R.string.tab_people), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(start = 20.dp, top = 16.dp, bottom = 8.dp)) }
             item {
@@ -184,7 +186,8 @@ fun PersonScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onEnt
                             OutlinedButton(onClick = {
                                 // PE-04 settle the full balance: an opposite entry that closes the ledger.
                                 vm.act(R.string.settled) { book ->
-                                    val g = saveLending(book, null, LendingEntry(id, if (v > 0) LendDirection.RECEIVED else LendDirection.GAVE, kotlin.math.abs(v), cur, book.today(), settles = "all", note = context.getString(R.string.settlement)), postToAccount = false)
+                                    val g = saveLending(book, null, LendingEntry(id, if (v > 0) LendDirection.RECEIVED else LendDirection.GAVE, kotlin.math.abs(v), cur, book.today(), settles = "all", note = context.getString(R.string.settlement), closed = true), postToAccount = false)
+                                    // The settlement is closed along with what it settles; left open it read as a new debt the other way.
                                     entries.filter { !it.value.closed }.forEach { e -> lending.update(e.state.id, e.value.copy(closed = true), groupId = g) }
                                     g
                                 }

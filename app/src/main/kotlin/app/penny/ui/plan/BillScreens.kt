@@ -247,7 +247,8 @@ private fun SubscriptionRow(ctx: Ctx, id: String, r: Recurring, priceUp: Long?, 
 @Composable
 private fun OccurrenceDialog(ctx: Ctx, u: Upcoming, onDismiss: () -> Unit, onOpenTx: (String) -> Unit, onEditSeries: () -> Unit, vm: app.penny.ui.common.BookViewModel) {
     var amount by rememberSaveable { mutableStateOf(ctx.fmt.editable(u.amountMinor, u.recurring.currency)) }
-    var date by rememberSaveable { mutableStateOf(u.date.toString()) }
+    // Paying ahead of the due date happens today; a future date here pushed the payment into "scheduled".
+    var date by rememberSaveable { mutableStateOf(minOf(u.date, ctx.book.today()).toString()) }
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(u.recurring.name) },

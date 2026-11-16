@@ -184,6 +184,11 @@ data class Transaction(
     val payeeId: String? = null,
     /** AC-07: the wallet the money moved through when it posts to a real account. */
     val viaAccountId: String? = null,
+    /**
+     * AC-04: when [currency] differs from the account's currency (a foreign spend on a card, money sent abroad), the
+     * amount in the account's currency. Balances use it; without it a foreign amount was added as if it were local.
+     */
+    val accountAmountMinor: Long? = null,
     /** CP-04: capture confidence 0..100; null for manual entries. */
     val confidence: Int? = null,
     /** CP-11: ids from capture sources (notification key, bank id, import row hash) kept for dedupe. */

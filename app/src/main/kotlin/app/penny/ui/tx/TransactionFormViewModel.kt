@@ -298,6 +298,9 @@ class TransactionFormViewModel @Inject constructor(
             attachmentIds = f.attachmentIds,
             location = if (f.place.isBlank() && f.lat == null) null else GeoPoint(f.lat ?: 0.0, f.lon ?: 0.0, f.place.trim().ifEmpty { null }),
             viaAccountId = f.viaAccountId, distance = f.distance.replace(',', '.').toDoubleOrNull(),
+            // Keep the account-currency amount only while amount, currency, account and date are unchanged; otherwise
+            // the repository recomputes it at the day's rate.
+            accountAmountMinor = original?.takeIf { o -> o.amountMinor == amount && o.currency == f.currency && o.accountId == f.accountId && o.date == date }?.accountAmountMinor,
         )
         if (errs.isEmpty()) {
             TransactionValidator.validate(tx) { id -> b.accountMap[id]?.value?.currency }.forEach { e ->

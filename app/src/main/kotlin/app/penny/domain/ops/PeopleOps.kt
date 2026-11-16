@@ -145,6 +145,7 @@ suspend fun PennyRepository.saveRemittance(book: Book, id: String?, r: Remittanc
             currency = if (out) r.sentCurrency else r.receivedCurrency, accountId = accountId,
             categoryId = catId(book.profileId, if (out) "fam.remit" else "inc.remit"),
             payee = if (out) r.receiver else r.sender, date = r.date, tz = book.profile.timezone, note = r.purpose, source = "remittance",
+            accountAmountMinor = remittanceInAccount(r, book.accountMap[accountId]?.value?.currency),
         ), g)
         rem = rem.copy(transactionId = txId)
     }
@@ -155,10 +156,27 @@ suspend fun PennyRepository.saveRemittance(book: Book, id: String?, r: Remittanc
                 amountMinor = if (rem.outgoing) rem.sentMinor + rem.feeMinor else rem.receivedMinor,
                 currency = if (rem.outgoing) rem.sentCurrency else rem.receivedCurrency,
                 payee = if (rem.outgoing) rem.receiver else rem.sender, date = rem.date, note = rem.purpose,
+                accountAmountMinor = remittanceInAccount(rem, book.accountMap[it.accountId]?.value?.currency),
             )
         }
     }
     return g
+}
+
+/**
+ * A remittance recorded in an account of the other side's currency (sending AED from a rupee account) uses the
+ * transfer's own rate, so the balance moves by what actually left the account. Null when no conversion is needed.
+ */
+internal fun remittanceInAccount(r: Remittance, accountCurrency: String?): Long? {
+    if (accountCurrency == null || r.sentMinor <= 0 || r.receivedMinor <= 0) return null
+    val txCur = if (r.outgoing) r.sentCurrency else r.receivedCurrency
+    if (accountCurrency == txCur) return null
+    return when {
+        r.outgoing && accountCurrency == r.receivedCurrency ->
+            java.math.BigDecimal(r.sentMinor + r.feeMinor).multiply(java.math.BigDecimal(r.receivedMinor)).divide(java.math.BigDecimal(r.sentMinor), 0, java.math.RoundingMode.HALF_EVEN).toLong()
+        !r.outgoing && accountCurrency == r.sentCurrency -> r.sentMinor
+        else -> null
+    }
 }
 
 suspend fun PennyRepository.saveCircle(book: Book, id: String?, c: Circle): String {

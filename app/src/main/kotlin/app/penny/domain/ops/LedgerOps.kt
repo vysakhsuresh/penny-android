@@ -101,7 +101,8 @@ fun Book.fromTemplate(t: app.penny.core.model.Template): Transaction = Transacti
 
 // ------------------------------------------------------------------ Accounts (AC)
 
-fun Book.balance(id: String): Long = accountMap[id]?.let { Ledger.balance(id, it.value, txList) } ?: 0
+/** Balance as of today: future-dated (scheduled) transactions move it on their date, not before. */
+fun Book.balance(id: String): Long = accountMap[id]?.let { Ledger.balance(id, it.value, txList, today()) } ?: 0
 
 /** AC-03 "set balance today": an adjustment for the difference. Returns null when already equal. */
 suspend fun PennyRepository.setBalance(book: Book, accountId: String, target: Long, categoryKey: String = DefaultCategories.ADJUSTMENTS): String? {

@@ -41,4 +41,7 @@
     <string name="loan_pay_later">Buy now, pay later</string>
     <string name="loan_informal">From family or friends</string>
     <string name="loan_card">Card balance</string>
+    <string name="split_total_percent">Total: %1$s%% of 100%%</string>
+    <string name="split_total_amount">Total: %1$s of %2$s</string>
+    <string name="provider_not_named">Provider not named</string>
 </resources>

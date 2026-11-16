@@ -19,14 +19,17 @@ fun interface FxConverter {
 
 object Ledger {
     /** Balance effects of one transaction: (accountId, signed minor units in that account's currency). */
-    fun effects(t: Transaction): List<Pair<String, Long>> = when (t.type) {
-        TxType.EXPENSE -> listOf(t.accountId to -t.amountMinor)
-        TxType.INCOME, TxType.REFUND, TxType.OPENING_BALANCE -> listOf(t.accountId to t.amountMinor)
-        TxType.ADJUSTMENT -> listOf(t.accountId to if (t.direction == Direction.OUT) -t.amountMinor else t.amountMinor)
+    fun effects(t: Transaction): List<Pair<String, Long>> {
+        val own = t.accountAmountMinor ?: t.amountMinor
+        return when (t.type) {
+        TxType.EXPENSE -> listOf(t.accountId to -own)
+        TxType.INCOME, TxType.REFUND, TxType.OPENING_BALANCE -> listOf(t.accountId to own)
+        TxType.ADJUSTMENT -> listOf(t.accountId to if (t.direction == Direction.OUT) -own else own)
         TxType.TRANSFER -> listOfNotNull(
-            t.accountId to -t.amountMinor,
+            t.accountId to -own,
             t.toAccountId?.let { it to (t.toAmountMinor ?: t.amountMinor) },
         )
+        }
     }
 
     fun balance(accountId: String, account: FinancialAccount, txs: Iterable<Transaction>, asOf: LocalDate? = null): Long =

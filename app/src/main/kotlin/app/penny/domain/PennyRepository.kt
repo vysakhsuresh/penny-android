@@ -80,6 +80,20 @@ class PennyRepository @Inject constructor(
 ) {
     private fun <T> repo(entity: String, s: KSerializer<T>) = EventSourcedRepository(entity, s, store, prefs::actor)
 
+    /**
+     * AC-04: a transaction in another currency than its account also records the amount in the account's currency, at
+     * that day's rate (manual rates first, then reference rates), unless the writer already supplied it.
+     */
+    private suspend fun inAccountCurrency(t: Transaction): Transaction {
+        val acctCur = accounts.get(t.accountId)?.value?.currency ?: return t
+        if (acctCur == t.currency) return if (t.accountAmountMinor != null) t.copy(accountAmountMinor = null) else t
+        if (t.accountAmountMinor != null) return t // set by the writer from a known rate (e.g. a remittance)
+        val pid = currentProfileId.value
+        val manual = pid?.let { p -> fxRates.list(p).map { it.value } }.orEmpty()
+        val converted = app.penny.core.budget.FxTable(rates.rates.value + manual).convert(t.amountMinor, t.currency, acctCur, t.date)
+        return t.copy(accountAmountMinor = converted ?: t.accountAmountMinor)
+    }
+
     private suspend fun routeViaWallet(t: Transaction): Transaction {
         val bank = accounts.get(t.accountId)?.takeIf { it.state.deletedAt == null }?.value?.aliasOf ?: return t
         if (bank == t.toAccountId || accounts.get(bank)?.state?.deletedAt != null) return t
@@ -90,7 +104,7 @@ class PennyRepository @Inject constructor(
     val accounts = repo(Entities.ACCOUNT, FinancialAccount.serializer())
     val categories = repo(Entities.CATEGORY, Category.serializer())
     /** AC-07: a spend from a pass-through wallet (e.g. a UPI app) posts to its bank with the wallet as "via". */
-    val transactions = EventSourcedRepository(Entities.TRANSACTION, Transaction.serializer(), store, prefs::actor, normalize = { t -> routeViaWallet(t) })
+    val transactions = EventSourcedRepository(Entities.TRANSACTION, Transaction.serializer(), store, prefs::actor, normalize = { t -> inAccountCurrency(routeViaWallet(t)) })
     val tags = repo(Entities.TAG, Tag.serializer())
     val payees = repo(Entities.PAYEE, Payee.serializer())
     val rules = repo(Entities.RULE, Rule.serializer())

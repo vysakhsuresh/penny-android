@@ -282,15 +282,27 @@ fun <T> OptionSheet(
         val filtered = choices.filter { q.isBlank() || it.label.contains(q, ignoreCase = true) || it.supporting?.contains(q, ignoreCase = true) == true }
         LazyColumn(Modifier.fillMaxWidth().padding(bottom = 24.dp)) {
             if (allowNone && q.isBlank()) item { ChoiceRow(noneLabel, null, selected == null) { onPick(null) } }
-            items(filtered, key = { it.value.hashCode().toString() + it.label }) { c -> ChoiceRow(c.label, c.supporting, c.value == selected) { onPick(c.value) } }
+            items(filtered, key = { it.value.hashCode().toString() + it.label }) { c ->
+                // Paths like "Food and groceries › Groceries" read as a tree: the leaf name, indented under its parent.
+                // While searching, rows are not grouped, so the parent shows as a small line for context.
+                val parts = c.label.split(" › ")
+                val leaf = parts.last()
+                val parent = parts.dropLast(1).joinToString(" › ").takeIf { it.isNotEmpty() }
+                ChoiceRow(
+                    leaf, if (q.isBlank()) c.supporting else listOfNotNull(parent, c.supporting).joinToString(" · ").ifEmpty { null },
+                    c.value == selected, indent = if (q.isBlank()) (parts.size - 1) * 24 else 0,
+                    description = c.label,
+                ) { onPick(c.value) }
+            }
         }
     }
 }
 
 @Composable
-private fun ChoiceRow(label: String, supporting: String?, selected: Boolean, onClick: () -> Unit) {
+private fun ChoiceRow(label: String, supporting: String?, selected: Boolean, indent: Int = 0, description: String? = null, onClick: () -> Unit) {
     ListRow(
         title = label, subtitle = supporting, onClick = onClick,
+        modifier = Modifier.padding(start = indent.dp).then(if (description != null && description != label) Modifier.semantics { contentDescription = description } else Modifier),
         trailing = if (selected) ({ Icon(Icons.Filled.Check, stringResource(R.string.selected), tint = MaterialTheme.colorScheme.primary) }) else null,
     )
 }

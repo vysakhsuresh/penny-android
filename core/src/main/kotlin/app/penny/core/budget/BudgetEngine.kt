@@ -146,7 +146,9 @@ object BudgetEngine {
 
     /** BU-06: how much more to assign this period to meet the target. */
     fun needed(env: Envelope, period: Period, assigned: Long, carried: Long, today: LocalDate): Long {
-        val t = env.target ?: return 0
+        // No explicit target: the envelope's planned amount per period is what it needs (template envelopes, and any
+        // envelope after "Start from zero"); otherwise "Fill from targets" had nothing to fill.
+        val t = env.target ?: return maxOf(0, env.limitMinor - assigned)
         return when (t.kind) {
             TargetKind.FIXED -> maxOf(0, t.amountMinor - assigned)
             TargetKind.REFILL_UP_TO -> maxOf(0, t.amountMinor - (assigned + carried))

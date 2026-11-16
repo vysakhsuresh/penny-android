@@ -236,23 +236,33 @@ private fun YearView(ctx: Ctx, current: Period) {
     val input = b.budgetInput()
     val periods = (0 until 12).map { i -> b.period(0, current.start.withDayOfYear(1).plusMonths(i.toLong()).plusDays(14)) }.distinctBy { it.start }
     val scroll = rememberScrollState()
+    // Open on the period being viewed, not on January.
+    val density = androidx.compose.ui.platform.LocalDensity.current
+    val currentIndex = periods.indexOfFirst { it.start == current.start }.coerceAtLeast(0)
+    androidx.compose.runtime.LaunchedEffect(currentIndex) { scroll.scrollTo(with(density) { (maxOf(0, currentIndex - 1) * 96).dp.roundToPx() }) }
     PennyCard {
-        Row(Modifier.horizontalScroll(scroll).padding(12.dp)) {
+        // Names stay pinned on the left while the periods scroll.
+        Row(Modifier.padding(12.dp)) {
             Column(Modifier.width(120.dp)) {
                 Text("", style = MaterialTheme.typography.labelSmall, modifier = Modifier.height(24.dp))
                 b.envelopes.filter { !it.value.archived }.forEach { e -> Text(e.value.name, style = MaterialTheme.typography.bodySmall, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.height(40.dp)) }
             }
+            Row(Modifier.horizontalScroll(scroll)) {
             periods.forEach { p ->
                 Column(Modifier.width(96.dp), horizontalAlignment = Alignment.End) {
                     Text(app.penny.ui.common.monthDay(p.start), style = MaterialTheme.typography.labelSmall, modifier = Modifier.height(24.dp), color = if (p.start == current.start) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
                     b.envelopes.filter { !it.value.archived }.forEach { e ->
                         val s = BudgetEngine.status(e.state.id, p.start, input, b.today())
+                        // Before the envelope existed there is nothing to show (it read as money assigned in January).
+                        val started = e.value.startedOn?.let { !p.endInclusive.isBefore(it) } ?: true
+                        if (!started) { Text("—", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.height(40.dp)); return@forEach }
                         Column(Modifier.height(40.dp), horizontalAlignment = Alignment.End) {
                             MoneyLabel(ctx.money(s.spentMinor, e.value.currency), style = MaterialTheme.typography.labelMedium, color = if (s.state == EnvelopeState.OVER) Penny.status.over else MaterialTheme.colorScheme.onSurface)
                             MoneyLabel(ctx.money(s.assignedMinor, e.value.currency), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
                 }
+            }
             }
         }
     }

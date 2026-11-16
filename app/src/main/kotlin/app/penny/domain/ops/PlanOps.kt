@@ -124,7 +124,7 @@ suspend fun PennyRepository.reorderEnvelopes(book: Book, ids: List<String>) =
  * [incomeMinor]; the user edits everything after.
  */
 val BUDGET_TEMPLATES: Map<String, List<Pair<String, Int>>> = mapOf(
-    "salaried" to listOf("home" to 3000, "food" to 1500, "util" to 800, "trans" to 800, "eat" to 600, "health" to 500, "shop" to 500, "fun" to 400, "save" to 2000),
+    "salaried" to listOf("home" to 3000, "food" to 1500, "util" to 800, "trans" to 800, "eat" to 600, "health" to 500, "shop" to 500, "fun" to 400, "save" to 1900),
     "gig" to listOf("home" to 3000, "food" to 1500, "util" to 800, "trans" to 1200, "health" to 500, "save" to 1000),
     "student" to listOf("home" to 3500, "food" to 2000, "trans" to 1000, "edu" to 1500, "fun" to 800, "util" to 500),
     "household" to listOf("home" to 2800, "food" to 1800, "util" to 900, "fam" to 1200, "trans" to 800, "health" to 700, "save" to 1500),

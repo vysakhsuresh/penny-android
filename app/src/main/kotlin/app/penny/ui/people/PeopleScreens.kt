@@ -1,6 +1,7 @@
 package app.penny.ui.people
 
 import app.penny.domain.ops.deleteLending
+import app.penny.domain.ops.ensurePerson
 import app.penny.ui.common.safeStart
 import android.content.Intent
 import android.net.Uri
@@ -99,6 +100,7 @@ fun PeopleScreen(padding: PaddingValues, go: (String) -> Unit) {
         val mineInGroups = b.groups.filter { !it.value.archived && it.value.baseCurrency == ctx.base }.map { b.groupBalances(it.state.id)[Group.ME] ?: 0L }
         val toReceive = balances.values.flatMap { it.entries }.filter { it.key == ctx.base && it.value > 0 }.sumOf { it.value } + mineInGroups.filter { it > 0 }.sum()
         val toGive = balances.values.flatMap { it.entries }.filter { it.key == ctx.base && it.value < 0 }.sumOf { -it.value } + mineInGroups.filter { it < 0 }.sumOf { -it }
+        var showArchived by rememberSaveable { mutableStateOf(false) }
         LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding() + 96.dp)) {
             item {
                 Row(Modifier.fillMaxWidth().padding(start = 20.dp, end = 4.dp, top = 8.dp, bottom = 8.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -135,6 +137,11 @@ fun PeopleScreen(padding: PaddingValues, go: (String) -> Unit) {
                         ListRow(p.value.name, leading = { Avatar(p.value.name, p.state.id) }, subtitle = if (bal.size > 1) stringResource(R.string.plus_n_currencies, bal.size - 1) else null, trailingText = text, trailingColor = color, onClick = { go("person/${p.state.id}") }, divider = true)
                     }
                 }
+            }
+            val archivedPeople = b.people.filter { it.value.archived }
+            if (archivedPeople.isNotEmpty()) {
+                item { TextButton(onClick = { showArchived = !showArchived }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(if (showArchived) R.string.hide_archived else R.string.show_archived_n, archivedPeople.size)) } }
+                if (showArchived) item { PennyCard { archivedPeople.forEach { p -> ListRow(p.value.name, leading = { Avatar(p.value.name, p.state.id) }, subtitle = stringResource(R.string.archived), onClick = { go("person/${p.state.id}") }, divider = true) } } }
             }
             item { SectionHeader(stringResource(R.string.groups), action = stringResource(R.string.new_group), onAction = { go("group/new/edit") }) }
             val groups = b.groups.filter { !it.value.archived }
@@ -239,6 +246,8 @@ fun PersonEditScreen(id: String, onBack: () -> Unit) {
         var note by rememberSaveable { mutableStateOf(existing?.note.orEmpty()) }
         var err by rememberSaveable { mutableStateOf<String?>(null) }
         val req = stringResource(R.string.err_name_required)
+        val takenErr = stringResource(R.string.name_taken)
+        val inUse = ctx.book.lending.any { it.value.personId == id } || ctx.book.groups.any { id in it.value.memberIds } || ctx.book.circles.any { c -> c.value.members.any { it.personId == id } }
         PennyScreen(stringResource(if (existing == null) R.string.add_person else R.string.edit_person), onBack, large = false) { pad ->
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                 TextInput(name, { name = it; err = null }, stringResource(R.string.field_name), error = err)
@@ -249,13 +258,16 @@ fun PersonEditScreen(id: String, onBack: () -> Unit) {
                 Text(stringResource(R.string.person_privacy), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
                 PrimaryButton(stringResource(R.string.save), {
                     if (name.isBlank()) { err = req; return@PrimaryButton }
+                    if (ctx.book.people.any { it.state.id != id && it.value.name.trim().equals(name.trim(), ignoreCase = true) }) { err = takenErr; return@PrimaryButton }
                     val person = (existing ?: Person(name)).copy(name = name.trim(), phone = phone.trim(), email = email.trim(), payHandle = handle.trim(), note = note.trim())
                     vm.act(R.string.saved, after = onBack) { savePerson(it, if (existing == null) null else id, person) }
                 }, Modifier.padding(horizontal = 16.dp))
                 if (existing != null) app.penny.ui.kit.ActionStrip {
                     app.penny.ui.kit.StripAction(onClick = { vm.act(R.string.updated) { savePerson(it, id, existing.copy(archived = !existing.archived)) } }) { Text(stringResource(if (existing.archived) R.string.unarchive else R.string.archive)) }
-                    app.penny.ui.kit.StripAction(destructive = true, onClick = { vm.act(R.string.deleted, after = onBack) { people.delete(id) } }) { Text(stringResource(R.string.delete)) }
+                    // Someone with money records or group memberships is archived instead, so no balance loses its owner.
+                    if (!inUse) app.penny.ui.kit.StripAction(destructive = true, onClick = { vm.act(R.string.deleted, after = onBack) { people.delete(id) } }) { Text(stringResource(R.string.delete)) }
                 }
+                if (existing != null && inUse) Text(stringResource(R.string.person_in_use), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))
             }
         }
     }
@@ -276,10 +288,14 @@ fun LendingEditScreen(id: String, personArg: String?, onBack: () -> Unit) {
         var due by rememberSaveable { mutableStateOf(existing?.due?.toString()) }
         var interest by rememberSaveable { mutableStateOf(existing?.interestBp?.takeIf { it > 0 }?.let { (it / 100.0).toString() }.orEmpty()) }
         var note by rememberSaveable { mutableStateOf(existing?.note.orEmpty()) }
-        var account by rememberSaveable { mutableStateOf(existing?.accountId ?: b.profile.defaultAccountId) }
+        var account by rememberSaveable { mutableStateOf(if (existing != null) b.activeAccountOrNull(existing.accountId) else b.liveDefaultAccountId) }
         var post by rememberSaveable { mutableStateOf(existing == null) }
         var err by rememberSaveable { mutableStateOf<String?>(null) }
         val req = stringResource(R.string.err_person_amount)
+        val endErr = stringResource(R.string.err_end_before_start)
+        val pctErr = stringResource(R.string.err_percent)
+        val acctErr = stringResource(R.string.err_account_required)
+        var fieldErr by rememberSaveable { mutableStateOf<Map<String, String>>(emptyMap()) }
         PennyScreen(stringResource(if (existing == null) R.string.record_lending else R.string.edit_entry), onBack, large = false) { pad ->
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                 Segmented(listOf(Choice(LendDirection.GAVE, stringResource(R.string.i_gave)), Choice(LendDirection.RECEIVED, stringResource(R.string.i_received))), direction, { direction = it })
@@ -288,27 +304,39 @@ fun LendingEditScreen(id: String, personArg: String?, onBack: () -> Unit) {
                 SelectField(stringResource(R.string.field_currency), currency, app.penny.ui.kit.currencyChoices(listOf(ctx.base)), { it?.let { c -> currency = c } })
                 AmountInput(amount, { amount = it }, currency, ctx.fmt, stringResource(R.string.field_amount))
                 DateInput(stringResource(R.string.field_date), runCatching { java.time.LocalDate.parse(date) }.getOrNull(), { date = it.toString() }, today = b.today())
-                DateInput(stringResource(R.string.due_date_optional), due?.let { runCatching { java.time.LocalDate.parse(it) }.getOrNull() }, { due = it.toString() }, quick = false, today = b.today())
-                TextInput(interest, { interest = it }, stringResource(R.string.interest_simple_pct), keyboard = KeyboardType.Decimal)
+                DateInput(stringResource(R.string.due_date_optional), due?.let { runCatching { java.time.LocalDate.parse(it) }.getOrNull() }, { due = it.toString(); fieldErr = fieldErr - "due" }, quick = false, today = b.today())
+                fieldErr["due"]?.let { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 20.dp)) }
+                TextInput(interest, { interest = it; fieldErr = fieldErr - "interest" }, stringResource(R.string.interest_simple_pct), keyboard = KeyboardType.Decimal, error = fieldErr["interest"])
                 TextInput(note, { note = it }, stringResource(R.string.field_note), singleLine = false)
                 if (existing == null) {
                     SwitchRow(stringResource(R.string.post_to_account), post, { post = it }, subtitle = stringResource(R.string.post_to_account_hint))
-                    if (post) SelectField(stringResource(R.string.field_account), account, b.activeAccounts.map { Choice(it.state.id, it.value.name) }, { account = it })
+                    if (post) SelectField(stringResource(R.string.field_account), account, b.activeAccounts.map { Choice(it.state.id, it.value.name) }, { account = it; fieldErr = fieldErr - "account" }, error = fieldErr["account"])
                 }
                 Spacer(Modifier.height(12.dp))
                 PrimaryButton(stringResource(R.string.save), {
                     val a = parseAmount(amount, currency, ctx.fmt)
                     if (a == null || (personId == null && newName.isBlank())) { err = req; return@PrimaryButton }
+                    val d = java.time.LocalDate.parse(date)
+                    val dueDate = due?.let { java.time.LocalDate.parse(it) }
+                    val bp = if (interest.isBlank()) 0 else app.penny.ui.kit.parsePercentBp(interest)
+                    val errs = buildMap {
+                        if (dueDate != null && dueDate.isBefore(d)) put("due", endErr)
+                        if (bp == null) put("interest", pctErr)
+                        if (existing == null && post && b.activeAccountOrNull(account) == null) put("account", acctErr)
+                    }
+                    fieldErr = errs
+                    if (errs.isNotEmpty()) return@PrimaryButton
                     vm.act(R.string.saved, after = onBack) { book ->
                         val g = people.newGroup()
-                        val pid = personId ?: newId().also { people.create(it, book.profileId, Person(newName.trim()), g) }
+                        // A typed name that is already a person is that person, not a second one.
+                        val pid = personId ?: ensurePerson(book, newName, g)
                         val e = (existing ?: LendingEntry(pid, direction, a, currency, java.time.LocalDate.parse(date))).copy(
                             personId = pid, direction = direction, amountMinor = a, currency = currency, date = java.time.LocalDate.parse(date),
-                            due = due?.let { java.time.LocalDate.parse(it) }, note = note.trim(),
-                            interestBp = interest.replace(',', '.').toBigDecimalOrNull()?.multiply(BigDecimal(100))?.toInt() ?: 0,
-                            accountId = account.takeIf { post },
+                            due = dueDate, note = note.trim(), interestBp = bp ?: 0,
+                            accountId = if (existing == null) account.takeIf { post } else existing.accountId,
                         )
-                        saveLending(book, if (existing == null) null else id, e, post && existing == null)
+                        // One undo group: Undo removes the entry, its posted transaction and any new person together.
+                        saveLending(book, if (existing == null) null else id, e, post && existing == null, g)
                         g
                     }
                 }, Modifier.padding(horizontal = 16.dp))

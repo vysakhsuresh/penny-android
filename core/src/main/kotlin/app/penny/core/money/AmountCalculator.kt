@@ -53,10 +53,23 @@ object AmountCalculator {
     /** Strips grouping, maps the locale decimal separator and calculator glyphs to ASCII. Null if unusable. */
     internal fun normalise(input: String, spec: NumberFormatSpec): String? {
         val sb = StringBuilder()
-        for (c in input.trim()) {
+        val s = input.trim()
+        var afterDecimal = false
+        for ((i, c) in s.withIndex()) {
+            if (!c.isDigit() && c != spec.decimalSeparator && c != spec.groupSeparator && c !in IGNORED_GROUP_CHARS) afterDecimal = false
             when {
-                c == spec.decimalSeparator -> sb.append('.')
-                c == spec.groupSeparator || c in IGNORED_GROUP_CHARS -> Unit
+                c == spec.decimalSeparator -> { sb.append('.'); afterDecimal = true }
+                c == spec.groupSeparator || c in IGNORED_GROUP_CHARS -> {
+                    // A separator is grouping only between digits and before a full group: "1,500" or lakh "1,00,000".
+                    // Anything else ("1,5" in en, "12.50" in de) is a typo that would silently change the amount.
+                    if (c == spec.groupSeparator && !c.isWhitespace()) {
+                        val run = s.drop(i + 1).takeWhile { it.isDigit() }.length
+                        val next = s.getOrNull(i + 1 + run)
+                        val prevDigit = s.getOrNull(i - 1)?.isDigit() == true
+                        val ok = prevDigit && !afterDecimal && (run == 3 || (run == 2 && next == spec.groupSeparator))
+                        if (!ok) return null
+                    }
+                }
                 c == '×' || c == 'x' || c == 'X' -> sb.append('*')
                 c == '÷' -> sb.append('/')
                 c == MoneyFormatter.MINUS || c == '–' -> sb.append('-')

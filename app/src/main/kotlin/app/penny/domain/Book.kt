@@ -204,6 +204,23 @@ class Book(
 
     val rows: List<Row> by lazy { transactions.map { Row(it.state.id, it.value, it.state.createdAt) } }
 
+    /** The profile's default account while it is still active; an archived one is never posted to by default. */
+    val liveDefaultAccountId: String? get() = profile.defaultAccountId?.takeIf { accountMap[it]?.value?.archived == false }
+
+    /** Where money goes when nothing chose an account: the live default, else the first active account. */
+    val defaultActiveAccountId: String? get() = liveDefaultAccountId ?: activeAccounts.firstOrNull()?.state?.id
+
+    /** [id] when it names an active account, else null (dead or archived references never pre-fill a form). */
+    fun activeAccountOrNull(id: String?): String? = id?.takeIf { accountMap[it]?.value?.archived == false }
+
+    /**
+     * Whether a transaction made by the app itself (a bill, an auto-post, a payout) may be written: it passes the same
+     * validation as the form, and every account it touches still exists.
+     */
+    fun postable(t: app.penny.core.model.Transaction): Boolean =
+        app.penny.core.model.TransactionValidator.validate(t) { accountMap[it]?.value?.currency }.isEmpty() &&
+            accountMap.containsKey(t.accountId) && (t.toAccountId == null || accountMap.containsKey(t.toAccountId))
+
     fun accountName(id: String?) = id?.let { accountMap[it]?.value?.name }.orEmpty()
 
     fun personName(id: String?) = when (id) {

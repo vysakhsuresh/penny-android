@@ -69,7 +69,7 @@ class CaptureService @Inject constructor(
     }
 
     private suspend fun capturedLocked(source: String, detail: String, raw: String, parsed: ParsedCapture, externalId: String) {
-        val book = store.ready()?.book ?: return
+        val book = repo.intakeBook(store.ready()?.book) ?: return
         val src = book.captureSources.firstOrNull { it.value.source == "$source:$detail" }
         if (src?.value?.alwaysIgnore == true) return
         if (parsed.payee != null && src?.value?.ignoredPayees?.any { RuleEngine.normalise(it) == RuleEngine.normalise(parsed.payee!!) } == true) return

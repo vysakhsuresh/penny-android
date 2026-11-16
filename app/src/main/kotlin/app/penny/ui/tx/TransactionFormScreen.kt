@@ -176,7 +176,7 @@ fun TransactionFormScreen(
                             Text(if (rateParts != null) rateText else "", style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 20.dp))
                         }
                     } else if (f.splits.isEmpty()) {
-                        SelectField(stringResource(R.string.field_category), f.categoryId, vm.categoryChoices(b, if (f.type == TxType.INCOME) TxType.INCOME else TxType.EXPENSE), { id -> vm.update { it.copy(categoryId = id) } }, allowNone = true, noneLabel = stringResource(R.string.uncategorised))
+                        SelectField(stringResource(R.string.field_category), f.categoryId, vm.categoryChoices(b, if (f.type == TxType.INCOME) TxType.INCOME else TxType.EXPENSE), { id -> vm.selectCategory(id) }, allowNone = true, noneLabel = stringResource(R.string.uncategorised))
                     }
                     PayeeField(vm, f.payee)
                     DateInput(stringResource(R.string.field_date), runCatching { LocalDate.parse(f.date) }.getOrNull(), { d -> vm.update { it.copy(date = d.toString()) } }, today = b.today())

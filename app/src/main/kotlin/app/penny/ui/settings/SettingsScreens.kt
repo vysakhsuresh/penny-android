@@ -217,7 +217,9 @@ fun ProfileSettingsScreen(onBack: () -> Unit, onDeleted: () -> Unit, onRates: ()
                     androidx.compose.runtime.LaunchedEffect(vat) {
                         kotlinx.coroutines.delay(800)
                         val bp = vat.replace(',', '.').toBigDecimalOrNull()?.movePointRight(2)?.toInt()?.takeIf { it in 0..10_000 } ?: return@LaunchedEffect
-                        if (bp != bs.vatRateBp) save(p.copy(business = bs.copy(vatRateBp = bp)))
+                        // Built from the profile as it is now, not as it was when typing began, so a switch flipped in
+                        // the meantime is not undone by this save.
+                        if (bp != bs.vatRateBp) vm.act(R.string.updated) { book -> book.profile.business?.let { cur -> profiles.update(book.profileId, book.profile.copy(business = cur.copy(vatRateBp = bp))) } }
                     }
                 }
                 SectionHeader(stringResource(R.string.language))
@@ -399,9 +401,12 @@ fun AlertSettingsScreen(onBack: () -> Unit) {
                     else { os = true; vm.prefs.setFlag("alerts.os", true) }
                 }, subtitle = stringResource(R.string.os_notifications_hint))
                 SectionHeader(stringResource(R.string.quiet_hours))
+                // A real clock time only ("9:00" is fine, "25:00" is not); anything else says so instead of looking saved.
+                fun hhmm(s: String): String? = runCatching { java.time.LocalTime.parse(s.trim().padStart(5, '0')).toString() }.getOrNull()
+                val timeErr = stringResource(R.string.err_time)
                 Row {
-                    TextInput(qs, { qs = it; if (Regex("\\d{2}:\\d{2}").matches(it)) vm.prefs.setString("alerts.quietStart", it) }, stringResource(R.string.from), Modifier.weight(1f))
-                    TextInput(qe, { qe = it; if (Regex("\\d{2}:\\d{2}").matches(it)) vm.prefs.setString("alerts.quietEnd", it) }, stringResource(R.string.to), Modifier.weight(1f))
+                    TextInput(qs, { qs = it; hhmm(it)?.let { t -> vm.prefs.setString("alerts.quietStart", t) } }, stringResource(R.string.from), Modifier.weight(1f), error = if (qs.isNotBlank() && hhmm(qs) == null) timeErr else null)
+                    TextInput(qe, { qe = it; hhmm(it)?.let { t -> vm.prefs.setString("alerts.quietEnd", t) } }, stringResource(R.string.to), Modifier.weight(1f), error = if (qe.isNotBlank() && hhmm(qe) == null) timeErr else null)
                 }
                 SectionHeader(stringResource(R.string.which_alerts))
                 listOf("pace" to R.string.alert_pace, "bills" to R.string.alert_bills, "safe" to R.string.alert_safe_low, "large" to R.string.alert_large, "unusual" to R.string.alert_unusual, "forecast" to R.string.alert_forecast).forEach { (k, label) ->
@@ -479,11 +484,13 @@ fun SecurityScreen(onBack: () -> Unit) {
             var pin2 by rememberSaveable { mutableStateOf("") }
             // PBKDF2 is deliberately slow: check "duress equals real PIN" off the main thread, after typing pauses.
             var same by androidx.compose.runtime.remember { mutableStateOf(false) }
+            // The two PINs must differ both ways: a real PIN equal to the duress PIN would make the duress one unreachable.
+            val other = if (which == "duress") s.pinHash else s.duressPinHash
             androidx.compose.runtime.LaunchedEffect(pin, which) {
                 same = false
-                if (which != "duress" || s.pinHash.isEmpty() || pin.length < 4) return@LaunchedEffect
+                if (other.isEmpty() || pin.length < 4) return@LaunchedEffect
                 kotlinx.coroutines.delay(300)
-                same = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) { PinHasher.verify(pin, s.pinHash) }
+                same = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) { PinHasher.verify(pin, other) }
             }
             val ok = pin.length >= 4 && pin == pin2 && pin.all(Char::isDigit) && !same
             AlertDialog(
@@ -500,6 +507,12 @@ fun SecurityScreen(onBack: () -> Unit) {
                     TextButton(enabled = ok, onClick = {
                         val typed = pin
                         vm.launch {
+                            // Checked again at Save, so a quick tap before the typing pause cannot skip it.
+                            if (other.isNotEmpty() && PinHasher.verify(typed, other)) {
+                                kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) { same = true }
+                                return@launch
+                            }
+                            kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) { pinDialog = null }
                             val h = PinHasher.hash(typed)
                             if (which == "pin") { prefs.setSecurity(prefs.security.value.copy(pinHash = h, lockEnabled = true)); return@launch }
                             // SE-05: the decoy book has plausible sample data and is never listed.
@@ -508,7 +521,6 @@ fun SecurityScreen(onBack: () -> Unit) {
                             }
                             prefs.setSecurity(prefs.security.value.copy(duressPinHash = h, duressProfileId = decoy))
                         }
-                        pinDialog = null
                     }) { Text(stringResource(R.string.save)) }
                 },
                 dismissButton = { TextButton(onClick = { pinDialog = null }) { Text(stringResource(R.string.cancel)) } },

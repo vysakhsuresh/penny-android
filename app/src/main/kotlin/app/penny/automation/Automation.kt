@@ -55,9 +55,9 @@ class AutomationReceiver : BroadcastReceiver() {
         CoroutineScope(SupervisorJob() + Dispatchers.Default).launch {
             // Any app can send this once the user allows it: bad input must be ignored, never crash Penny.
             try { runCatching {
-                val b = store.ready()?.book ?: return@launch
+                val b = repo.intakeBook(store.ready()?.book) ?: return@launch
                 val acct = intent.getStringExtra("account")?.let { n -> b.activeAccounts.firstOrNull { it.value.name.equals(n, true) }?.state?.id }
-                    ?: b.profile.defaultAccountId ?: b.activeAccounts.firstOrNull()?.state?.id ?: return@launch
+                    ?: b.defaultActiveAccountId ?: return@launch
                 val currency = intent.getStringExtra("currency")?.uppercase()?.takeIf { c -> runCatching { CurrencyUnit.of(c) }.isSuccess }
                     ?: b.accountMap[acct]?.value?.currency ?: b.profile.baseCurrency
                 val amount = intent.getStringExtra("amount")?.replace(',', '.')?.toBigDecimalOrNull()?.abs()

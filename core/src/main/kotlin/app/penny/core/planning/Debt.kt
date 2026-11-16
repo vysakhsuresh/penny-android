@@ -32,7 +32,8 @@ object Debt {
     /** Standard EMI = P·r(1+r)^n / ((1+r)^n − 1); zero-rate loans split evenly. */
     fun emi(principal: Long, aprBp: Int, months: Int): Long {
         if (months <= 0) return principal
-        if (aprBp == 0) return -Math.floorDiv(-principal, months.toLong())
+        // A rate at or below zero has no meaningful annuity (and -100% divides by zero): split evenly instead.
+        if (aprBp <= 0) return -Math.floorDiv(-principal, months.toLong())
         val r = BigDecimal(aprBp).divide(BigDecimal(120_000), MC)
         val f = BigDecimal.ONE.add(r).pow(months, MC)
         val emi = BigDecimal(principal).multiply(r, MC).multiply(f, MC).divide(f.subtract(BigDecimal.ONE), MC)

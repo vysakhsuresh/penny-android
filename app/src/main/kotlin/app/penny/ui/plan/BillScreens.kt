@@ -250,28 +250,28 @@ private fun OccurrenceDialog(ctx: Ctx, u: Upcoming, onDismiss: () -> Unit, onOpe
     var amount by rememberSaveable { mutableStateOf(ctx.fmt.editable(u.amountMinor, u.recurring.currency)) }
     // Paying ahead of the due date happens today; a future date here pushed the payment into "scheduled".
     var date by rememberSaveable { mutableStateOf(minOf(u.date, ctx.book.today()).toString()) }
+    val parsed = parseAmount(amount, u.recurring.currency, ctx.fmt)
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(u.recurring.name) },
         text = {
             Column {
                 if (u.open) {
-                    AmountInput(amount, { amount = it }, u.recurring.currency, ctx.fmt, stringResource(R.string.field_amount))
+                    AmountInput(amount, { amount = it }, u.recurring.currency, ctx.fmt, stringResource(R.string.field_amount), error = if (parsed == null) stringResource(R.string.err_amount_invalid) else null)
                     DateInput(stringResource(R.string.field_date), runCatching { java.time.LocalDate.parse(date) }.getOrNull(), { date = it.toString() }, today = ctx.book.today())
                 } else Text(stringResource(if (u.status == OccurrenceStatus.PAID) R.string.paid else R.string.skipped))
                 Row {
-                    if (u.open) TextButton(onClick = {
-                        val a = parseAmount(amount, u.recurring.currency, ctx.fmt) ?: u.amountMinor
-                        vm.act(R.string.updated) { editOccurrence(it, u, a, java.time.LocalDate.parse(date)) }; onDismiss()
+                    // A typo never quietly becomes the expected amount: the actions wait for a valid one.
+                    if (u.open) TextButton(enabled = parsed != null, onClick = {
+                        vm.act(R.string.updated) { editOccurrence(it, u, parsed!!, java.time.LocalDate.parse(date)) }; onDismiss()
                     }) { Text(stringResource(R.string.edit_this_one)) }
                     TextButton(onClick = { onDismiss(); onEditSeries() }) { Text(stringResource(R.string.edit_series)) }
                 }
             }
         },
         confirmButton = {
-            if (u.open) TextButton(onClick = {
-                val a = parseAmount(amount, u.recurring.currency, ctx.fmt) ?: u.amountMinor
-                vm.act(R.string.marked_paid) { payOccurrence(it, u, a, java.time.LocalDate.parse(date)) }; onDismiss()
+            if (u.open) TextButton(enabled = parsed != null, onClick = {
+                vm.act(R.string.marked_paid) { payOccurrence(it, u, parsed!!, java.time.LocalDate.parse(date)) }; onDismiss()
             }) { Text(stringResource(if (u.recurring.type == TxType.INCOME) R.string.mark_received else R.string.mark_paid)) }
             else {
                 u.transactionId?.let { tid -> TextButton(onClick = { onDismiss(); onOpenTx(tid) }) { Text(stringResource(R.string.open_transaction)) } }
@@ -306,11 +306,12 @@ fun RecurringEditScreen(id: String, fromTx: String?, onBack: () -> Unit, onHisto
         val existing = b.recurring.firstOrNull { it.state.id == id }?.value
         val seed = fromTx?.let { b.txMap[it]?.value }
         val today = b.today()
-        val defAccount = seed?.accountId ?: b.profile.defaultAccountId ?: b.activeAccounts.firstOrNull()?.state?.id.orEmpty()
+        val defAccount = b.activeAccountOrNull(seed?.accountId) ?: b.defaultActiveAccountId.orEmpty()
         var name by rememberSaveable { mutableStateOf(existing?.name ?: seed?.payee.orEmpty()) }
         var kind by rememberSaveable { mutableStateOf(existing?.kind ?: RecurringKind.BILL) }
         var type by rememberSaveable { mutableStateOf(existing?.type ?: seed?.type ?: TxType.EXPENSE) }
-        var currency by rememberSaveable { mutableStateOf(existing?.currency ?: seed?.currency ?: ctx.base) }
+        // A new bill starts in its account's currency (a USD default account makes a USD bill).
+        var currency by rememberSaveable { mutableStateOf(existing?.currency ?: seed?.currency ?: b.accountMap[defAccount]?.value?.currency ?: ctx.base) }
         var amount by rememberSaveable { mutableStateOf((existing?.amountMinor ?: seed?.amountMinor)?.let { ctx.fmt.editable(it, currency) }.orEmpty()) }
         var amountKind by rememberSaveable { mutableStateOf(existing?.amountKind ?: AmountKind.FIXED) }
         var amountMax by rememberSaveable { mutableStateOf(existing?.amountMaxMinor?.let { ctx.fmt.editable(it, currency) }.orEmpty()) }
@@ -332,6 +333,15 @@ fun RecurringEditScreen(id: String, fromTx: String?, onBack: () -> Unit, onHisto
         var futureFrom by rememberSaveable { mutableStateOf(today.toString()) }
         var err by rememberSaveable { mutableStateOf<String?>(null) }
         val req = stringResource(R.string.err_name_amount)
+        var fieldErr by rememberSaveable { mutableStateOf<Map<String, String>>(emptyMap()) }
+        val goneErr = stringResource(R.string.err_account_gone)
+        val catGoneErr = stringResource(R.string.err_category_gone)
+        val toErr = stringResource(R.string.err_transfer_target)
+        val sameErr = stringResource(R.string.err_transfer_same)
+        val fxErr = stringResource(R.string.err_recurring_fx_transfer)
+        val endErr = stringResource(R.string.err_end_before_start)
+        val maxErr = stringResource(R.string.err_max_below_min)
+        val amountErr = stringResource(R.string.err_amount_invalid)
         PennyScreen(
             stringResource(if (existing == null) R.string.add_recurring else R.string.edit_recurring), onBack, large = false,
             actions = { if (existing != null) IconButton(onClick = { onHistory(id) }) { Icon(Icons.Outlined.History, stringResource(R.string.history)) } },
@@ -342,10 +352,10 @@ fun RecurringEditScreen(id: String, fromTx: String?, onBack: () -> Unit, onHisto
                 Segmented(listOf(TxType.EXPENSE, TxType.INCOME, TxType.TRANSFER).map { Choice(it, stringResource(typeLabel(it))) }, type, { type = it })
                 Segmented(listOf(Choice(AmountKind.FIXED, stringResource(R.string.amount_fixed)), Choice(AmountKind.VARIABLE, stringResource(R.string.amount_variable)), Choice(AmountKind.RANGE, stringResource(R.string.amount_range))), amountKind, { amountKind = it })
                 AmountInput(amount, { amount = it }, currency, ctx.fmt, stringResource(if (amountKind == AmountKind.VARIABLE) R.string.estimate else if (amountKind == AmountKind.RANGE) R.string.min else R.string.field_amount))
-                if (amountKind == AmountKind.RANGE) AmountInput(amountMax, { amountMax = it }, currency, ctx.fmt, stringResource(R.string.max))
-                SelectField(stringResource(R.string.field_account), account, b.activeAccounts.map { Choice(it.state.id, it.value.name, it.value.currency) }, { it?.let { a -> account = a; currency = b.accountMap[a]?.value?.currency ?: currency } })
-                if (type == TxType.TRANSFER) SelectField(stringResource(R.string.field_to_account), toAccount, b.activeAccounts.filter { it.state.id != account }.map { Choice(it.state.id, it.value.name) }, { toAccount = it })
-                else SelectField(stringResource(R.string.field_category), category, b.categoriesOf(if (type == TxType.INCOME) CategoryKind.INCOME else CategoryKind.EXPENSE).map { Choice(it.state.id, b.categoryName(it.state.id)) }, { category = it }, allowNone = true)
+                if (amountKind == AmountKind.RANGE) AmountInput(amountMax, { amountMax = it; fieldErr = fieldErr - "max" }, currency, ctx.fmt, stringResource(R.string.max), error = fieldErr["max"])
+                SelectField(stringResource(R.string.field_account), account, b.activeAccounts.map { Choice(it.state.id, it.value.name, it.value.currency) }, { it?.let { a -> account = a; currency = b.accountMap[a]?.value?.currency ?: currency; fieldErr = fieldErr - "account" - "to"; if (toAccount == a) toAccount = null } }, error = fieldErr["account"])
+                if (type == TxType.TRANSFER) SelectField(stringResource(R.string.field_to_account), toAccount, b.activeAccounts.filter { it.state.id != account }.map { Choice(it.state.id, it.value.name) }, { toAccount = it; fieldErr = fieldErr - "to" }, error = fieldErr["to"])
+                else SelectField(stringResource(R.string.field_category), category, b.categoriesOf(if (type == TxType.INCOME) CategoryKind.INCOME else CategoryKind.EXPENSE).map { Choice(it.state.id, b.categoryName(it.state.id)) }, { category = it; fieldErr = fieldErr - "cat" }, allowNone = true, error = fieldErr["cat"])
                 SectionHeader(stringResource(R.string.schedule))
                 Segmented(Freq.entries.map { Choice(it, stringResource(freqLabel(it))) }, freq, { freq = it })
                 TextInput(interval, { interval = it.filter(Char::isDigit).take(3) }, stringResource(R.string.every_n), keyboard = KeyboardType.Number)
@@ -354,7 +364,8 @@ fun RecurringEditScreen(id: String, fromTx: String?, onBack: () -> Unit, onHisto
                     SwitchRow(stringResource(R.string.on_last_day), lastDay, { lastDay = it; if (it) nthWeekday = false })
                     SwitchRow(stringResource(R.string.on_nth_weekday), nthWeekday, { nthWeekday = it; if (it) lastDay = false })
                 }
-                DateInput(stringResource(R.string.ends_on), until?.let { runCatching { java.time.LocalDate.parse(it) }.getOrNull() }, { until = it.toString() }, quick = false, today = today)
+                DateInput(stringResource(R.string.ends_on), until?.let { runCatching { java.time.LocalDate.parse(it) }.getOrNull() }, { until = it.toString(); fieldErr = fieldErr - "until" }, quick = false, today = today)
+                fieldErr["until"]?.let { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 20.dp)) }
                 if (until != null) TextButton(onClick = { until = null }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.no_end)) }
                 TextInput(count, { count = it.filter(Char::isDigit).take(4) }, stringResource(R.string.or_after_n_times), keyboard = KeyboardType.Number)
                 SwitchRow(stringResource(R.string.auto_post), autoPost, { autoPost = it }, subtitle = stringResource(R.string.auto_post_recurring_hint))
@@ -370,6 +381,23 @@ fun RecurringEditScreen(id: String, fromTx: String?, onBack: () -> Unit, onHisto
                     val a = parseAmount(amount, currency, ctx.fmt)
                     if (name.isBlank() || a == null || account.isEmpty()) { err = req; return@PrimaryButton }
                     val s = runCatching { java.time.LocalDate.parse(start) }.getOrDefault(today)
+                    val end = until?.let { runCatching { java.time.LocalDate.parse(it) }.getOrNull() }
+                    val maxMinor = if (amountKind == AmountKind.RANGE && amountMax.isNotBlank()) parseAmount(amountMax, currency, ctx.fmt) else null
+                    val errs = buildMap {
+                        // A bill must never post to a deleted or archived account, or into a category that is gone.
+                        if (b.activeAccountOrNull(account) == null) put("account", goneErr)
+                        if (type != TxType.TRANSFER && category != null && b.categoryMap[category] == null) put("cat", catGoneErr)
+                        if (type == TxType.TRANSFER) when {
+                            toAccount == null || b.activeAccountOrNull(toAccount) == null -> put("to", toErr)
+                            toAccount == account -> put("to", sameErr)
+                            b.accountMap[toAccount]?.value?.currency != b.accountMap[account]?.value?.currency -> put("to", fxErr)
+                        }
+                        if (end != null && end.isBefore(s)) put("until", endErr)
+                        if (amountKind == AmountKind.RANGE && amountMax.isNotBlank() && maxMinor == null) put("max", amountErr)
+                        if (maxMinor != null && maxMinor < a) put("max", maxErr)
+                    }
+                    fieldErr = errs
+                    if (errs.isNotEmpty()) return@PrimaryButton
                     val sched = Recurrence(
                         freq, interval.toIntOrNull()?.coerceAtLeast(1) ?: 1, s,
                         until = until?.let { runCatching { java.time.LocalDate.parse(it) }.getOrNull() }, count = count.toIntOrNull()?.takeIf { it > 0 },
@@ -378,7 +406,7 @@ fun RecurringEditScreen(id: String, fromTx: String?, onBack: () -> Unit, onHisto
                         setPos = if (freq == Freq.MONTHLY && nthWeekday) ((s.dayOfMonth - 1) / 7 + 1).let { if (s.plusWeeks(1).month != s.month) -1 else it } else null,
                     )
                     val r = (existing ?: Recurring(name, amountMinor = a, currency = currency, accountId = account, schedule = sched)).copy(
-                        name = name.trim(), kind = kind, type = type, amountMinor = a, amountKind = amountKind, amountMaxMinor = parseAmount(amountMax, currency, ctx.fmt),
+                        name = name.trim(), kind = kind, type = type, amountMinor = a, amountKind = amountKind, amountMaxMinor = maxMinor,
                         currency = currency, accountId = account, toAccountId = toAccount.takeIf { type == TxType.TRANSFER }, categoryId = category.takeIf { type != TxType.TRANSFER },
                         payee = name.trim(), schedule = sched, autoPost = autoPost, leadDays = lead.toIntOrNull() ?: 2, paused = paused, cancelUrl = cancelUrl.trim(),
                     )

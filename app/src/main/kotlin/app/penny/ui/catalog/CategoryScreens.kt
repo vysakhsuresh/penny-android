@@ -221,7 +221,9 @@ fun CategoryEditScreen(id: String, parent: String?, onBack: () -> Unit, onHistor
                 Spacer(Modifier.height(12.dp))
                 PrimaryButton(stringResource(R.string.save), {
                     if (name.isBlank()) { err = req; return@PrimaryButton }
-                    if (b.depth(parentId) >= 3) { err = tooDeep; return@PrimaryButton }
+                    // The moved category's own children move with it, so the whole branch must still fit in three levels.
+                    fun height(cid: String, d: Int = 0): Int = if (d > 5) 0 else 1 + (b.categories.filter { it.value.parentId == cid }.maxOfOrNull { height(it.state.id, d + 1) } ?: 0)
+                    if (b.depth(parentId) + (if (existing == null) 1 else height(id)) > 3) { err = tooDeep; return@PrimaryButton }
                     // Same name under the same parent would be two identical rows in every picker.
                     if (b.categories.any { it.state.id != id && it.value.parentId == parentId && it.value.kind == kind && it.value.name.trim().equals(name.trim(), ignoreCase = true) }) { err = takenErr; return@PrimaryButton }
                     val c = (existing ?: Category(kind = kind, name = name)).copy(

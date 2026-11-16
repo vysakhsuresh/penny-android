@@ -83,7 +83,7 @@ fun GoalsScreen(onBack: () -> Unit, onOpen: (String) -> Unit, onAdd: () -> Unit)
         ) { pad ->
             val list = b.goals.filter { showDone || it.value.status in listOf(GoalStatus.ACTIVE, GoalStatus.PAUSED) }
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 120.dp)) {
-                item { FilterChip(showDone, { showDone = !showDone }, label = { Text(stringResource(R.string.show_completed)) }, modifier = Modifier.padding(horizontal = 16.dp)) }
+                item { FilterChip(showDone, { showDone = !showDone }, label = { Text(stringResource(R.string.show_completed_archived)) }, modifier = Modifier.padding(horizontal = 16.dp)) }
                 if (list.isEmpty()) item { EmptyState(stringResource(R.string.no_goals), stringResource(R.string.no_goals_body), icon = Icons.Outlined.Flag, action = stringResource(R.string.add_goal), onAction = onAdd) }
                 items(list, key = { it.state.id }) { g -> GoalCard(ctx, g.state.id, g.value) { onOpen(g.state.id) } }
             }
@@ -159,7 +159,8 @@ fun GoalDetailScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, o
                         val s = g.value.status
                         app.penny.ui.kit.StripAction(destructive = false, onClick = { vm.act(R.string.updated) { setGoalStatus(it, id, if (s == GoalStatus.PAUSED) GoalStatus.ACTIVE else GoalStatus.PAUSED) } }) { Text(stringResource(if (s == GoalStatus.PAUSED) R.string.resume else R.string.pause)) }
                         app.penny.ui.kit.StripAction(destructive = false, onClick = { vm.act(R.string.updated) { setGoalStatus(it, id, if (s == GoalStatus.COMPLETED) GoalStatus.ACTIVE else GoalStatus.COMPLETED) } }) { Text(stringResource(if (s == GoalStatus.COMPLETED) R.string.reopen else R.string.mark_complete)) }
-                        app.penny.ui.kit.StripAction(destructive = false, onClick = { vm.act(R.string.archived_done) { setGoalStatus(it, id, GoalStatus.ARCHIVED) } }) { Text(stringResource(R.string.archive)) }
+                        if (s == GoalStatus.ARCHIVED) app.penny.ui.kit.StripAction(destructive = false, onClick = { vm.act(R.string.unarchived) { setGoalStatus(it, id, GoalStatus.ACTIVE) } }) { Text(stringResource(R.string.unarchive)) }
+                        else app.penny.ui.kit.StripAction(destructive = false, onClick = { vm.act(R.string.archived_done) { setGoalStatus(it, id, GoalStatus.ARCHIVED) } }) { Text(stringResource(R.string.archive)) }
                         app.penny.ui.kit.StripAction(destructive = true, onClick = { vm.act(R.string.deleted, after = onBack) { deleteGoal(it, id) } }) { Text(stringResource(R.string.delete)) }
                     }
                 }
@@ -202,38 +203,52 @@ fun GoalEditScreen(id: String, onBack: () -> Unit) {
         var months by rememberSaveable { mutableStateOf(existing?.months ?: 6) }
         var err by rememberSaveable { mutableStateOf<String?>(null) }
         val req = stringResource(R.string.err_name_required)
+        val takenErr = stringResource(R.string.name_taken)
+        val targetReq = stringResource(R.string.err_target_required)
+        val amountErr = stringResource(R.string.err_amount_invalid)
+        var targetErr by rememberSaveable { mutableStateOf<String?>(null) }
+        var autoErr by rememberSaveable { mutableStateOf<String?>(null) }
         val essentials = listOf("home", "util", "food", "health", "trans", "fam").map { catId(b.profileId, it) }.flatMap { p -> listOf(p) + b.categories.filter { it.value.parentId == p }.map { it.state.id } }.toSet()
         PennyScreen(stringResource(if (existing == null) R.string.add_goal else R.string.edit_goal), onBack, large = false) { pad ->
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                 ChipFlow(listOf(Choice(GoalKind.STANDARD, stringResource(R.string.goal_standard)), Choice(GoalKind.EMERGENCY, stringResource(R.string.goal_emergency))), setOf(kind), { kind = it })
                 TextInput(name, { name = it; err = null }, stringResource(R.string.field_name), error = err)
-                SelectField(stringResource(R.string.field_currency), currency, app.penny.ui.kit.currencyChoices(listOf(ctx.base)), { it?.let { c -> currency = c } })
+                // Contributions are stored without a currency of their own; changing it would re-read them all.
+                val currencyLocked = existing != null && b.goalEntries.any { it.value.goalId == id }
+                SelectField(stringResource(R.string.field_currency), currency, app.penny.ui.kit.currencyChoices(listOf(ctx.base)), { it?.let { c -> if (!currencyLocked) currency = c } })
+                if (currencyLocked) Text(stringResource(R.string.currency_locked_entries), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))
                 if (kind == GoalKind.EMERGENCY) {
                     SelectField(stringResource(R.string.months_of_essentials), months, listOf(3, 6, 9, 12).map { Choice(it, it.toString()) }, { it?.let { m -> months = m } })
                     // From past essential spending; with no full month yet, from the budget for essentials.
                     val suggested = Goals.emergencyTarget(b.txList, essentials, months, b.today()).takeIf { it > 0 }
                         ?: b.envelopes.filter { e -> !e.value.archived && e.value.categoryIds.any { it in essentials } }.sumOf { it.value.limitMinor } * months
                     val defaultName = stringResource(R.string.goal_emergency)
-                    TextButton(onClick = { target = ctx.fmt.editable(suggested, currency); if (name.isBlank()) name = defaultName }, modifier = Modifier.padding(horizontal = 8.dp)) {
+                    if (suggested > 0) TextButton(onClick = { target = ctx.fmt.editable(suggested, currency); if (name.isBlank()) name = defaultName; targetErr = null }, modifier = Modifier.padding(horizontal = 8.dp)) {
                         Text(stringResource(R.string.use_suggested, ctx.money(suggested, currency)))
                     }
                 }
-                AmountInput(target, { target = it }, currency, ctx.fmt, stringResource(R.string.field_target))
+                AmountInput(target, { target = it; targetErr = null }, currency, ctx.fmt, stringResource(R.string.field_target), error = targetErr)
                 DateInput(stringResource(R.string.target_date), due?.let { runCatching { java.time.LocalDate.parse(it) }.getOrNull() }, { due = it.toString() }, quick = false, today = b.today())
                 if (due != null) TextButton(onClick = { due = null }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.no_date)) }
-                AmountInput(auto, { auto = it }, currency, ctx.fmt, stringResource(R.string.auto_contribution))
+                AmountInput(auto, { auto = it; autoErr = null }, currency, ctx.fmt, stringResource(R.string.auto_contribution), error = autoErr)
                 Text(stringResource(R.string.auto_contribution_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))
                 SectionHeader(stringResource(R.string.linked_accounts))
                 // Money saved sits in real asset accounts: not cards or loans, and not wallets that only pass money to a bank.
-                ChipFlow(b.activeAccounts.filter { (!it.value.isLiability() && it.value.aliasOf == null) || it.state.id in linked }.map { Choice(it.state.id, it.value.name) }, linked.toSet(), { a -> linked = if (a in linked) linked - a else linked + a })
+                // Archived accounts still linked stay visible so they can be unlinked.
+                ChipFlow(b.accounts.filter { (!it.value.archived && !it.value.isLiability() && it.value.aliasOf == null) || it.state.id in linked }.map { Choice(it.state.id, it.value.name) }, linked.toSet(), { a -> linked = if (a in linked) linked - a else linked + a })
                 TextInput(notes, { notes = it }, stringResource(R.string.field_note), singleLine = false)
                 Spacer(Modifier.height(12.dp))
                 PrimaryButton(stringResource(R.string.save), {
                     val t = parseAmount(target, currency, ctx.fmt)
-                    if (name.isBlank() || t == null) { err = req; return@PrimaryButton }
+                    val autoMinor = if (auto.isBlank()) 0L else parseAmount(auto, currency, ctx.fmt, allowZero = true)
+                    if (name.isBlank()) err = req
+                    else if (b.goals.any { it.state.id != id && it.value.name.trim().equals(name.trim(), ignoreCase = true) }) err = takenErr
+                    if (t == null) targetErr = targetReq
+                    if (autoMinor == null) autoErr = amountErr
+                    if (err != null || t == null || autoMinor == null) return@PrimaryButton
                     val g = (existing ?: Goal(name, t, currency)).copy(
                         name = name.trim(), targetMinor = t, currency = currency, due = due?.let { runCatching { java.time.LocalDate.parse(it) }.getOrNull() },
-                        autoMinor = parseAmount(auto, currency, ctx.fmt)?.takeIf { it > 0 }, linkedAccountIds = linked, notes = notes.trim(), kind = kind,
+                        autoMinor = autoMinor.takeIf { it > 0 }, linkedAccountIds = linked.filter { b.accountMap.containsKey(it) }, notes = notes.trim(), kind = kind,
                         months = months.takeIf { kind == GoalKind.EMERGENCY },
                     )
                     vm.act(R.string.saved, after = onBack) { saveGoal(it, if (existing == null) null else id, g) }

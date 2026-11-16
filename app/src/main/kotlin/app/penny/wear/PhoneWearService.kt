@@ -54,7 +54,7 @@ class PhoneWearService : WearableListenerService() {
     override fun onMessageReceived(event: MessageEvent) {
         scope.launch {
             val ready = withTimeoutOrNull(5_000) { store.state.filterIsInstance<BookLoad.Ready>().first() } ?: return@launch
-            val b = ready.book
+            val b = repo.intakeBook(ready.book) ?: return@launch
             when (event.path) {
                 WearPaths.ADD_TEMPLATE -> {
                     val id = String(event.data)
@@ -69,14 +69,16 @@ class PhoneWearService : WearableListenerService() {
                     val r = VoiceGrammar(b.profile.baseCurrency, b.today(), b.categories.associate { it.value.name.lowercase() to it.state.id }, b.accounts.associate { it.value.name.lowercase() to it.state.id })
                         .parse(String(event.data))
                     val amount = r.amountMinor
-                    val acct = r.accountId ?: b.profile.defaultAccountId ?: b.activeAccounts.firstOrNull()?.state?.id
+                    val acct = r.accountId ?: b.defaultActiveAccountId
                     if (amount != null && amount > 0 && acct != null) {
                         repo.saveTransaction(b, null, Transaction(
                             type = if (r.income) TxType.INCOME else TxType.EXPENSE, amountMinor = amount, currency = r.currency, accountId = acct,
                             categoryId = r.categoryId, payee = r.payee, date = r.date, time = LocalTime.now(b.zone).withSecond(0).withNano(0),
                             tz = b.profile.timezone, note = r.note, source = "watch",
                         ))
-                        reply(event.sourceNodeId, WearPaths.ADDED, ready.fmt.format(amount, r.currency))
+                        // The watch face is public: no amount echoed while amounts are hidden or the app is locked.
+                        val quiet = repo.prefs.appearance.value.hideAmounts || repo.prefs.security.value.lockEnabled
+                        reply(event.sourceNodeId, WearPaths.ADDED, if (quiet) "✓" else ready.fmt.format(amount, r.currency))
                     } else reply(event.sourceNodeId, WearPaths.ADDED, "")
                 }
             }

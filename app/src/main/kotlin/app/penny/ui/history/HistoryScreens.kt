@@ -91,7 +91,7 @@ class ValueFormatter(private val context: Context, private val ctx: Ctx, private
         val raw = (e as? JsonPrimitive)?.content ?: return summarize(e)
         val b = ctx.book
         return when {
-            field.endsWith("Minor") -> raw.toLongOrNull()?.let { m -> ctx.fmt.format(m, currency ?: ctx.base) } ?: raw
+            field.endsWith("Minor") -> raw.toLongOrNull()?.let { m -> ctx.money(m, currency ?: ctx.base) } ?: raw
             field in setOf("accountId", "toAccountId", "viaAccountId", "defaultAccountId", "paidFromAccountId") -> b.accountMap[raw]?.value?.name ?: context.getString(R.string.deleted_item)
             field in setOf("categoryId", "parentId", "defaultCategoryId") -> b.categoryName(raw).ifEmpty { context.getString(R.string.deleted_item) }
             field in setOf("personId", "payerId", "fromId", "toId") -> b.personName(raw).ifEmpty { raw.take(8) }
@@ -269,7 +269,7 @@ fun TrashScreen(onBack: () -> Unit) {
                                 ?.let { n -> (o["date"] as? JsonPrimitive)?.content?.let { d -> runCatching { "$n · " + app.penny.ui.common.shortDate(java.time.LocalDate.parse(d)) }.getOrNull() } ?: n }
                     }.getOrNull() ?: entityLabel(context, st.entity)
                     val amount = (st.data["amountMinor"] as? JsonPrimitive)?.content?.toLongOrNull()?.let { m ->
-                        ctx.fmt.format(m, (st.data["currency"] as? JsonPrimitive)?.content ?: ctx.base)
+                        ctx.money(m, (st.data["currency"] as? JsonPrimitive)?.content ?: ctx.base)
                     }
                     val days = 30 - ((System.currentTimeMillis() - (st.deletedAt ?: 0)) / 86_400_000L).toInt()
                     PennyCard {

@@ -200,6 +200,23 @@ class TransactionFormViewModel @Inject constructor(
         update { it.copy(accountId = id, currency = cur ?: it.currency) }
     }
 
+    /**
+     * CAT-05 category defaults: on a new transaction, picking a category brings its default account (if still active)
+     * and adds its default tags. Edits keep what was recorded.
+     */
+    fun selectCategory(id: String?) {
+        val b = ready()?.book
+        val c = id?.let { b?.categoryMap?.get(it)?.value }
+        update { f ->
+            var n = f.copy(categoryId = id)
+            if (!isEdit && c != null && b != null) {
+                b.activeAccountOrNull(c.defaultAccountId)?.let { a -> n = n.copy(accountId = a, currency = b.accountMap[a]?.value?.currency ?: n.currency) }
+                if (c.defaultTags.isNotEmpty()) n = n.copy(tags = (n.tags + c.defaultTags).distinct())
+            }
+            n
+        }
+    }
+
     /** TX-15 payee memory: fills category, account and amount when they are still empty. */
     fun payeePicked(name: String) {
         val r = ready() ?: return
@@ -300,7 +317,7 @@ class TransactionFormViewModel @Inject constructor(
             excludeFromBudget = f.excludeBudget, excludeFromReports = f.excludeReports, splits = splits,
             attachmentIds = f.attachmentIds,
             location = if (f.place.isBlank() && f.lat == null) null else GeoPoint(f.lat ?: 0.0, f.lon ?: 0.0, f.place.trim().ifEmpty { null }),
-            viaAccountId = f.viaAccountId, distance = f.distance.replace(',', '.').toDoubleOrNull(),
+            viaAccountId = f.viaAccountId, distance = f.distance.replace(',', '.').toDoubleOrNull()?.takeIf { it.isFinite() && it >= 0 },
             // Keep the account-currency amount only while amount, currency, account and date are unchanged; otherwise
             // the repository recomputes it at the day's rate.
             accountAmountMinor = original?.takeIf { o -> o.amountMinor == amount && o.currency == f.currency && o.accountId == f.accountId && o.date == date }?.accountAmountMinor,

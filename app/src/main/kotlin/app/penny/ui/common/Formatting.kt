@@ -16,10 +16,14 @@ import java.time.format.FormatStyle
 import java.util.Locale
 
 /** Money display for one profile: locale separators, pack grouping (or the user's override). */
-class MoneyFmt(val spec: NumberFormatSpec) {
+class MoneyFmt(val spec: NumberFormatSpec, private val useCode: Boolean = false) {
+    // "Show currency code" (profile setting): USD 12.50 instead of $12.50, always with a space after the code.
+    private val codeSpec = spec.copy(symbolSpaced = true)
+
     /** Wrapped in a first-strong isolate so amounts with RTL symbols never break surrounding LTR text, and vice versa (LO-07). */
     fun format(minor: Long, currency: String, signed: Boolean = false): String {
-        val text = MoneyFormatter.format(minor, currency, spec, symbol = CurrencySymbols.symbol(currency, spec.localeTag), signForPositive = signed)
+        val text = if (useCode) MoneyFormatter.format(minor, currency, codeSpec, symbol = currency, signForPositive = signed)
+        else MoneyFormatter.format(minor, currency, spec, symbol = CurrencySymbols.symbol(currency, spec.localeTag), signForPositive = signed)
         return FSI + text + PDI
     }
 
@@ -31,7 +35,7 @@ class MoneyFmt(val spec: NumberFormatSpec) {
         private val PDI = Char(0x2069).toString()
 
         fun of(profile: Profile, pack: RegionalPack) =
-            MoneyFmt(NumberFormatSpec.forLocale(profile.localeTag, profile.groupingOverride ?: pack.grouping))
+            MoneyFmt(NumberFormatSpec.forLocale(profile.localeTag, profile.groupingOverride ?: pack.grouping), useCode = profile.showCurrencyCode)
 
         fun of(pack: RegionalPack) = MoneyFmt(NumberFormatSpec.forLocale(pack.primaryLocale, pack.grouping))
     }

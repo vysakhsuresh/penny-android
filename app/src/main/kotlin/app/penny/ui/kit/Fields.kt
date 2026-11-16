@@ -215,9 +215,20 @@ fun AmountInput(
     if (allowZero) Unit
 }
 
-/** Parses an amount field; null when empty or invalid. */
-fun parseAmount(text: String, currency: String, fmt: MoneyFmt): Long? = runCatching {
-    (AmountCalculator.evaluate(text, CurrencyUnit.of(currency), fmt.spec) as? AmountResult.Ok)?.minor
+/**
+ * Parses an amount field; null when empty or invalid. [allowZero] accepts 0 (resetting an assignment);
+ * [allowNegative] accepts a leading minus (opening balances of overdrafts and cards in credit).
+ */
+fun parseAmount(text: String, currency: String, fmt: MoneyFmt, allowZero: Boolean = false, allowNegative: Boolean = false): Long? = runCatching {
+    val t = text.trim()
+    val neg = allowNegative && (t.startsWith("-") || t.startsWith("−"))
+    val body = if (neg) t.drop(1) else t
+    val unit = CurrencyUnit.of(currency)
+    when (val r = AmountCalculator.evaluate(body, unit, fmt.spec)) {
+        is AmountResult.Ok -> if (neg) -r.minor else r.minor
+        is AmountResult.Invalid -> if (allowZero && r.error == app.penny.core.money.AmountError.NOT_POSITIVE &&
+            body.isNotEmpty() && body.all { it == '0' || it == fmt.spec.decimalSeparator || it == '.' }) 0L else null
+    }
 }.getOrNull()
 
 /** A tappable field that opens a searchable bottom sheet of choices (accounts, categories, currencies...). */
@@ -490,3 +501,15 @@ fun currencyChoices(first: List<String>): List<Choice<String>> {
         Choice(code, code, runCatching { java.util.Currency.getInstance(code).displayName }.getOrNull())
     }
 }
+
+/** A percentage typed by a person, as basis points; null unless it is a plain number within [min]..[max] percent. */
+fun parsePercentBp(s: String, min: Int = 0, max: Int = 100): Int? = runCatching {
+    val v = java.math.BigDecimal(s.trim().replace(',', '.'))
+    if (v < java.math.BigDecimal(min) || v > java.math.BigDecimal(max)) null else v.movePointRight(2).setScale(0, java.math.RoundingMode.HALF_EVEN).intValueExact()
+}.getOrNull()
+
+/** A day of the month, 1 to 31; null otherwise. */
+fun parseDayOfMonth(s: String): Int? = s.trim().toIntOrNull()?.takeIf { it in 1..31 }
+
+/** A finite number of zero or more (weights, distances); null otherwise, so NaN and Infinity never reach storage. */
+fun parseNonNegative(s: String): Double? = s.trim().replace(',', '.').toDoubleOrNull()?.takeIf { it.isFinite() && it >= 0 }

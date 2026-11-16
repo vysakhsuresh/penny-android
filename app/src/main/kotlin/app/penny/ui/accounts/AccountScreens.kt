@@ -80,6 +80,9 @@ import app.penny.ui.kit.TextInput
 import app.penny.ui.kit.TypedConfirmDialog
 import app.penny.ui.kit.currencyChoices
 import app.penny.ui.kit.parseAmount
+import app.penny.ui.kit.parseDayOfMonth
+import app.penny.ui.kit.parseNonNegative
+import app.penny.ui.kit.parsePercentBp
 import app.penny.ui.theme.Penny
 import java.time.temporal.ChronoUnit
 
@@ -282,7 +285,7 @@ private fun CardSummary(ctx: Ctx, id: String, a: FinancialAccount, c: CardFields
 @Composable
 fun AmountDialog(ctx: Ctx, title: String, body: String, currency: String, initial: String, onDismiss: () -> Unit, label: String? = null, onOk: (Long) -> Unit) {
     var text by rememberSaveable { mutableStateOf(initial) }
-    val v = parseAmount(text, currency, ctx.fmt)
+    val v = parseAmount(text, currency, ctx.fmt, allowZero = true)
     AlertDialog(
         onDismissRequest = onDismiss, title = { Text(title) },
         text = { Column { Text(body); Spacer(Modifier.height(8.dp)); AmountInput(text, { text = it }, currency, ctx.fmt, label ?: stringResource(R.string.field_amount), allowZero = true) } },
@@ -345,32 +348,39 @@ fun AccountEditScreen(id: String, onBack: () -> Unit) {
         var error by rememberSaveable { mutableStateOf<String?>(null) }
         val nameErr = stringResource(R.string.err_name_required)
         val takenErr = stringResource(R.string.name_taken)
+        // Per-field problems, shown under the field that has them (nothing is silently replaced by a default).
+        var fieldErr by rememberSaveable { mutableStateOf<Map<String, String>>(emptyMap()) }
+        val amountErr = stringResource(R.string.err_amount_invalid)
+        val dayErr = stringResource(R.string.err_day_of_month)
+        val pctErr = stringResource(R.string.err_percent)
+        val numErr = stringResource(R.string.err_number)
+        val lockedErr = stringResource(R.string.err_currency_locked)
         PennyScreen(stringResource(if (isNew) R.string.add_account else R.string.edit_account), onBack, large = false) { pad ->
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                 TextInput(name, { name = it; error = null }, stringResource(R.string.field_name), error = error)
                 SelectField(stringResource(R.string.field_type), type, AccountType.entries.map { Choice(it, stringResource(accountTypeLabel(it))) }, { it?.let { t -> type = t; if (t in listOf(AccountType.LOAN, AccountType.LIABILITY, AccountType.CREDIT_CARD)) budget = t == AccountType.CREDIT_CARD } })
-                SelectField(stringResource(R.string.field_currency), currency, currencyChoices(listOf(ctx.base)), { it?.let { c -> currency = c } })
-                AmountInput(opening, { opening = it }, currency, ctx.fmt, stringResource(if (isLiabilityHint(type)) R.string.opening_owed else R.string.opening_balance), allowZero = true)
+                SelectField(stringResource(R.string.field_currency), currency, currencyChoices(listOf(ctx.base)), { it?.let { c -> currency = c; fieldErr = fieldErr - "currency" } }, error = fieldErr["currency"])
+                AmountInput(opening, { opening = it; fieldErr = fieldErr - "opening" }, currency, ctx.fmt, stringResource(if (isLiabilityHint(type)) R.string.opening_owed else R.string.opening_balance), allowZero = true, error = fieldErr["opening"])
                 DateInput(stringResource(R.string.opening_date), runCatching { java.time.LocalDate.parse(openingDate) }.getOrNull(), { openingDate = it.toString() }, quick = false, today = b.today())
                 TextInput(institution, { institution = it }, stringResource(R.string.institution))
                 TextInput(group, { group = it }, stringResource(R.string.account_group), supporting = stringResource(R.string.account_group_hint))
                 if (type == AccountType.CREDIT_CARD) {
                     SectionHeader(stringResource(R.string.card_details))
-                    AmountInput(limit, { limit = it }, currency, ctx.fmt, stringResource(R.string.credit_limit))
+                    AmountInput(limit, { limit = it; fieldErr = fieldErr - "limit" }, currency, ctx.fmt, stringResource(R.string.credit_limit), error = fieldErr["limit"])
                     Row {
-                        TextInput(stmt, { stmt = it.filter(Char::isDigit).take(2) }, stringResource(R.string.statement_day), Modifier.weight(1f), keyboard = KeyboardType.Number)
-                        TextInput(due, { due = it.filter(Char::isDigit).take(2) }, stringResource(R.string.due_day), Modifier.weight(1f), keyboard = KeyboardType.Number)
+                        TextInput(stmt, { stmt = it.filter(Char::isDigit).take(2); fieldErr = fieldErr - "stmt" }, stringResource(R.string.statement_day), Modifier.weight(1f), keyboard = KeyboardType.Number, error = fieldErr["stmt"])
+                        TextInput(due, { due = it.filter(Char::isDigit).take(2); fieldErr = fieldErr - "due" }, stringResource(R.string.due_day), Modifier.weight(1f), keyboard = KeyboardType.Number, error = fieldErr["due"])
                     }
                     Row {
-                        TextInput(minDue, { minDue = it }, stringResource(R.string.minimum_due_pct), Modifier.weight(1f), keyboard = KeyboardType.Decimal)
-                        TextInput(apr, { apr = it }, stringResource(R.string.apr_pct), Modifier.weight(1f), keyboard = KeyboardType.Decimal)
+                        TextInput(minDue, { minDue = it; fieldErr = fieldErr - "minDue" }, stringResource(R.string.minimum_due_pct), Modifier.weight(1f), keyboard = KeyboardType.Decimal, error = fieldErr["minDue"])
+                        TextInput(apr, { apr = it; fieldErr = fieldErr - "apr" }, stringResource(R.string.apr_pct), Modifier.weight(1f), keyboard = KeyboardType.Decimal, error = fieldErr["apr"])
                     }
                 }
                 if (type == AccountType.E_WALLET) {
                     SelectField(stringResource(R.string.alias_of), aliasOf, b.activeAccounts.filter { it.state.id != id && it.value.type == AccountType.BANK }.map { Choice(it.state.id, it.value.name) }, { aliasOf = it }, allowNone = true)
                     Text(stringResource(R.string.alias_of_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))
                 }
-                if (type == AccountType.ASSET) TextInput(grams, { grams = it }, stringResource(R.string.weight_grams), supporting = stringResource(R.string.weight_grams_hint), keyboard = KeyboardType.Decimal)
+                if (type == AccountType.ASSET) TextInput(grams, { grams = it; fieldErr = fieldErr - "grams" }, stringResource(R.string.weight_grams), supporting = stringResource(R.string.weight_grams_hint), keyboard = KeyboardType.Decimal, error = fieldErr["grams"])
                 TextInput(note, { note = it }, stringResource(R.string.field_note), singleLine = false)
                 SwitchRow(stringResource(R.string.include_net_worth), netWorth, { netWorth = it })
                 SwitchRow(stringResource(R.string.include_budget), budget, { budget = it }, subtitle = stringResource(R.string.include_budget_hint))
@@ -379,13 +389,27 @@ fun AccountEditScreen(id: String, onBack: () -> Unit) {
                     if (name.isBlank()) { error = nameErr; return@PrimaryButton }
                     // Two accounts with one name cannot be told apart in pickers and on Home.
                     if (b.accounts.any { it.state.id != id && it.value.name.trim().equals(name.trim(), ignoreCase = true) }) { error = takenErr; return@PrimaryButton }
-                    fun bp(s: String) = s.replace(',', '.').toBigDecimalOrNull()?.multiply(java.math.BigDecimal(100))?.toInt()
+                    val card = type == AccountType.CREDIT_CARD
+                    val openMinor = if (opening.isBlank()) 0L else parseAmount(opening, currency, ctx.fmt, allowZero = true, allowNegative = true)
+                    val limitMinor = if (!card || limit.isBlank()) 0L else parseAmount(limit, currency, ctx.fmt, allowZero = true)
+                    val errs = buildMap {
+                        if (openMinor == null) put("opening", amountErr)
+                        if (card && limitMinor == null) put("limit", amountErr)
+                        if (card && parseDayOfMonth(stmt) == null) put("stmt", dayErr)
+                        if (card && parseDayOfMonth(due) == null) put("due", dayErr)
+                        if (card && parsePercentBp(minDue) == null) put("minDue", pctErr)
+                        if (card && apr.isNotBlank() && parsePercentBp(apr) == null) put("apr", pctErr)
+                        if (type == AccountType.ASSET && grams.isNotBlank() && parseNonNegative(grams) == null) put("grams", numErr)
+                        // Amounts carry the account's currency; changing it would re-read every balance in the new one.
+                        if (existing != null && currency != existing.currency && b.transactions.any { it.value.accountId == id || it.value.toAccountId == id }) put("currency", lockedErr)
+                    }
+                    if (errs.isNotEmpty()) { fieldErr = errs; return@PrimaryButton }
                     val acct = (existing ?: FinancialAccount(name, type, currency)).copy(
-                        name = name.trim(), type = type, currency = currency, openingBalanceMinor = (parseAmount(opening, currency, ctx.fmt) ?: 0).let { if (isLiabilityHint(type)) -it else it },
+                        name = name.trim(), type = type, currency = currency, openingBalanceMinor = openMinor!!.let { if (isLiabilityHint(type)) -it else it },
                         openingDate = runCatching { java.time.LocalDate.parse(openingDate) }.getOrNull(), institution = institution.trim(),
                         group = group.trim().ifEmpty { null }, note = note.trim(), includeInNetWorth = netWorth, includeInBudget = budget,
-                        card = if (type == AccountType.CREDIT_CARD) CardFields(parseAmount(limit, currency, ctx.fmt) ?: 0, stmt.toIntOrNull()?.coerceIn(1, 31) ?: 1, due.toIntOrNull()?.coerceIn(1, 31) ?: 20, bp(minDue) ?: 500, bp(apr) ?: 0) else null,
-                        aliasOf = aliasOf.takeIf { type == AccountType.E_WALLET }, weightGrams = grams.replace(',', '.').toDoubleOrNull().takeIf { type == AccountType.ASSET },
+                        card = if (card) CardFields(limitMinor!!, parseDayOfMonth(stmt)!!, parseDayOfMonth(due)!!, parsePercentBp(minDue)!!, parsePercentBp(apr) ?: 0) else null,
+                        aliasOf = aliasOf.takeIf { type == AccountType.E_WALLET }, weightGrams = parseNonNegative(grams).takeIf { type == AccountType.ASSET },
                     )
                     vm.act(if (isNew) R.string.account_added else R.string.saved, after = onBack) { saveAccount(it, if (isNew) null else id, acct) }
                 }, Modifier.padding(horizontal = 16.dp))

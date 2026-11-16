@@ -177,6 +177,16 @@ class PennyRepository @Inject constructor(
         Book(pid, profile, rows, cache, cached)
     }
 
+    /**
+     * The book that background intake (notifications, automation, the watch) writes to. It is the open book, except
+     * during a duress session: real money keeps landing in the real book, never in the decoy someone else is shown.
+     */
+    suspend fun intakeBook(current: Book?): Book? {
+        if (!prefs.inDuress()) return current
+        val real = firstRealProfileId() ?: return null
+        return observeBook(real).first()
+    }
+
     /** All profiles on this device (US-02 switcher); decoys are hidden unless [includeDecoy]. */
     /** The first real (non-decoy) book, for leaving a duress session when the earlier book was not recorded. */
     suspend fun firstRealProfileId(): String? = dao.observeAllOf(Entities.PROFILE).first().mapNotNull { r ->

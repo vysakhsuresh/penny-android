@@ -32,8 +32,8 @@ suspend fun PennyRepository.ensurePerson(book: Book, name: String, group: String
  * PE-01/PE-04: a lending entry. With an account it also posts the matching transaction in the user's ledger with
  * "Loans › Given" or "Repaid to me" (excluded from spend).
  */
-suspend fun PennyRepository.saveLending(book: Book, id: String?, e: LendingEntry, postToAccount: Boolean): String {
-    val g = lending.newGroup()
+suspend fun PennyRepository.saveLending(book: Book, id: String?, e: LendingEntry, postToAccount: Boolean, group: String? = null): String {
+    val g = group ?: lending.newGroup()
     var entry = e
     val acct = e.accountId
     if (postToAccount && acct != null && e.transactionId == null) {

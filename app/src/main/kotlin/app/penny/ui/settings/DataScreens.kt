@@ -250,7 +250,7 @@ fun ImportScreen(onBack: () -> Unit) {
         var fileName by remember { mutableStateOf("") }
         var mapping by remember { mutableStateOf<CsvMapping?>(null) }
         var preset by remember { mutableStateOf<String?>(null) }
-        var account by rememberSaveable { mutableStateOf(b.profile.defaultAccountId ?: b.activeAccounts.firstOrNull()?.state?.id) }
+        var account by rememberSaveable { mutableStateOf(b.defaultActiveAccountId) }
         var skipDupes by rememberSaveable { mutableStateOf(true) }
         var result by remember { mutableStateOf<ImportResult?>(null) }
         // Reads a file (picked here, or shared to Penny from another app) and builds the preview.

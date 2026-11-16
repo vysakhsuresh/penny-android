@@ -108,13 +108,19 @@ fun InsightsScreen(padding: PaddingValues, go: (String) -> Unit) {
             Range.PERIOD -> b.period(offset)
             Range.MONTH -> today.withDayOfMonth(1).plusMonths(offset.toLong()).let { Period(it, it.plusMonths(1).minusDays(1)) }
             Range.QUARTER -> today.withDayOfMonth(1).minusMonths(((today.monthValue - 1) % 3).toLong()).plusMonths(offset * 3L).let { Period(it, it.plusMonths(3).minusDays(1)) }
-            Range.YEAR -> today.withDayOfYear(1).plusYears(offset.toLong()).let { Period(it, it.plusYears(1).minusDays(1)) }
+            // The year follows the profile's tax year ("Tax year starts"), so the tax report covers the right months.
+            Range.YEAR -> {
+                val (m, d) = b.profile.fiscalYearStart.split('-').let { (it.getOrNull(0)?.toIntOrNull() ?: 1) to (it.getOrNull(1)?.toIntOrNull() ?: 1) }
+                val thisYear = runCatching { java.time.LocalDate.of(today.year, m, d) }.getOrDefault(today.withDayOfYear(1))
+                val start = (if (today.isBefore(thisYear)) thisYear.minusYears(1) else thisYear).plusYears(offset.toLong())
+                Period(start, start.plusYears(1).minusDays(1))
+            }
         }
         val ins = remember(b) { Insights(b.txList, ctx.base, b.excludedCategoryIds, b.fx, b::topLevel) }
         val s = ins.summary(p, b.profile.cycle, b.periodContext)
         val other = stringResource(R.string.other)
         fun drill(f: TxFilter) = go(Routes.activity(PennyJson.encodeToString(TxFilter.serializer(), f)))
-        fun label(key: String) = if (key == Insights.UNCATEGORISED) context.getString(R.string.uncategorised) else b.categoryMap[key]?.value?.name ?: key
+        fun label(key: String) = if (key == Insights.UNCATEGORISED) context.getString(R.string.uncategorised) else b.categoryMap[key]?.value?.name ?: context.getString(R.string.uncategorised)
 
         LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding() + 96.dp)) {
             item {

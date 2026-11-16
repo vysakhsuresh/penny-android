@@ -56,4 +56,16 @@ class AmountCalculatorTest : FunSpec({
         ok("1,234.5") shouldBe 123450
         ok("1 234.5") shouldBe 123450
     }
+
+    test("a misplaced group separator is rejected, not silently dropped") {
+        err("1,5") shouldBe AmountError.INVALID
+        err("12.50", spec = de) shouldBe AmountError.INVALID
+        err("1.5,2") shouldBe AmountError.INVALID
+        err(",500") shouldBe AmountError.INVALID
+        err("1,5000") shouldBe AmountError.INVALID
+        ok("1,500") shouldBe 150000
+        ok("1,500,000.25") shouldBe 150000025
+        ok("1,00,000", CurrencyUnit.of("INR")) shouldBe 10000000
+        ok("1,500+2,250") shouldBe 375000
+    }
 })

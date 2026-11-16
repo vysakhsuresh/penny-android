@@ -78,4 +78,27 @@
     <string name="info_safe_to_spend">What you can still spend until your next pay date: income for this period, minus what you have already spent, minus bills still to pay and money set aside for goals.</string>
     <string name="info_available_to_assign">Income this period that is not yet given to an envelope. Give all of it a job: assign it to envelopes until this reaches zero.</string>
     <string name="forecast_end_clear">If things carry on as usual, your everyday accounts will hold about %1$s in 90 days.</string>
+    <string name="err_day_of_month">Enter a day from 1 to 31</string>
+    <string name="err_percent">Enter a percentage from 0 to 100</string>
+    <string name="err_number">Enter a number of 0 or more</string>
+    <string name="err_end_before_start">The end date is before the start date</string>
+    <string name="err_fee_too_high">The fee must be less than the amount</string>
+    <string name="err_rate_required">Enter the exchange rate (more than 0)</string>
+    <string name="err_currency_locked">The currency can’t change once there are entries. Create a new one instead.</string>
+    <string name="err_time">Use 24-hour time, like 21:00</string>
+    <string name="err_target_required">Enter a target amount</string>
+    <string name="err_member_dup">Each member needs a different name</string>
+    <string name="err_split_item">“%1$s” has no valid amount</string>
+    <string name="err_account_gone">This account no longer exists or is archived. Choose another.</string>
+    <string name="err_category_gone">This category no longer exists. Choose another.</string>
+    <string name="err_whole_number">Enter a whole number of 1 or more</string>
+    <string name="err_max_below_min">The maximum is below the minimum</string>
+    <string name="err_tenure">Enter the number of months (1 or more)</string>
+    <string name="err_rate_pct">Enter a rate from 0 to 100 percent</string>
+    <string name="err_recurring_fx_transfer">Repeating transfers need both accounts in the same currency</string>
+    <string name="currency_locked_hint">The currency is fixed once the group has expenses.</string>
+    <string name="person_in_use">This person has money records or is in a group, so they can be archived but not deleted.</string>
+    <string name="currency_locked_entries">The currency is fixed once there are entries.</string>
+    <string name="show_completed_archived">Show completed and archived</string>
+    <string name="show_archived_n">Show archived (%1$d)</string>
 </resources>

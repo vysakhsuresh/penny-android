@@ -46,7 +46,7 @@ fun Book.payeeMemory(name: String): PayeeMemory? {
     val amounts = past.take(9).map { it.value.amountMinor }.sorted()
     return PayeeMemory(
         payee?.value?.defaultCategoryId ?: past.firstOrNull()?.value?.categoryId,
-        payee?.value?.defaultAccountId ?: past.firstOrNull()?.value?.accountId,
+        activeAccountOrNull(payee?.value?.defaultAccountId) ?: activeAccountOrNull(past.firstOrNull()?.value?.accountId),
         amounts.getOrNull(amounts.size / 2),
     )
 }
@@ -94,7 +94,7 @@ suspend fun PennyRepository.bulkDelete(ids: Collection<String>): String = transa
 
 /** TX-16: transaction from a template, dated today. */
 fun Book.fromTemplate(t: app.penny.core.model.Template): Transaction = Transaction(
-    type = t.type, amountMinor = t.amountMinor ?: 0, currency = t.currency, accountId = t.accountId ?: profile.defaultAccountId ?: activeAccounts.firstOrNull()?.state?.id.orEmpty(),
+    type = t.type, amountMinor = t.amountMinor ?: 0, currency = t.currency, accountId = activeAccountOrNull(t.accountId) ?: defaultActiveAccountId.orEmpty(),
     toAccountId = t.toAccountId, categoryId = t.categoryId, payee = t.payee, date = today(), time = LocalTime.now(zone).withSecond(0).withNano(0),
     tz = profile.timezone, note = t.note, tags = t.tags, source = "template",
 )
@@ -143,6 +143,7 @@ suspend fun PennyRepository.deleteAccount(book: Book, id: String, moveTo: String
     } else {
         transactions.deleteMany(related.map { it.state.id }, g)
     }
+    repairAccountRefs(book, id, moveTo, g)
     accounts.delete(id, g)
     if (book.profile.defaultAccountId == id) {
         profiles.update(book.profileId, book.profile.copy(defaultAccountId = moveTo ?: book.activeAccounts.firstOrNull { it.state.id != id }?.state?.id), groupId = g)
@@ -156,6 +157,10 @@ suspend fun PennyRepository.reorderAccounts(book: Book, orderedIds: List<String>
 suspend fun PennyRepository.saveAccount(book: Book, id: String?, a: FinancialAccount): String {
     val g = accounts.newGroup()
     if (id == null) accounts.create(newId(), book.profileId, a.copy(sort = book.accounts.size), g) else accounts.update(id, a, groupId = g)
+    // Archiving the default account hands "default" to another active account in the same undo step.
+    if (id != null && a.archived && book.profile.defaultAccountId == id) {
+        profiles.update(book.profileId, book.profile.copy(defaultAccountId = book.activeAccounts.firstOrNull { it.state.id != id }?.state?.id), groupId = g)
+    }
     return g
 }
 
@@ -185,6 +190,7 @@ private suspend fun PennyRepository.reassignCategory(book: Book, id: String, to:
     }, g)
     categories.updateMany(book.categories.filter { it.value.parentId == id }.map { it.state.id to it.value.copy(parentId = to?.takeIf { t -> t != it.state.id }) }, g)
     payees.updateMany(book.payees.filter { it.value.defaultCategoryId == id }.map { it.state.id to it.value.copy(defaultCategoryId = to) }, g)
+    repairCategoryRefs(book, id, to, g)
 }
 
 suspend fun PennyRepository.saveCategory(book: Book, id: String?, c: Category): String {
@@ -213,7 +219,7 @@ fun Book.depth(id: String?): Int {
 suspend fun PennyRepository.renameTag(book: Book, id: String, newName: String): String {
     val g = tags.newGroup()
     val old = book.tags.firstOrNull { it.state.id == id }?.value ?: return g
-    transactions.updateMany(book.transactions.filter { old.name in it.value.tags }.map { s -> s.state.id to s.value.copy(tags = s.value.tags.map { if (it == old.name) newName else it }.distinct()) }, g)
+    repairTagRefs(book, old.name, newName, g)
     tags.update(id, old.copy(name = newName), groupId = g)
     return g
 }
@@ -222,8 +228,17 @@ suspend fun PennyRepository.mergeTag(book: Book, fromId: String, intoId: String)
     val g = tags.newGroup()
     val from = book.tags.firstOrNull { it.state.id == fromId }?.value ?: return g
     val into = book.tags.firstOrNull { it.state.id == intoId }?.value ?: return g
-    transactions.updateMany(book.transactions.filter { from.name in it.value.tags }.map { s -> s.state.id to s.value.copy(tags = s.value.tags.map { if (it == from.name) into.name else it }.distinct()) }, g)
+    repairTagRefs(book, from.name, into.name, g)
     tags.delete(fromId, g)
+    return g
+}
+
+/** Deleting a tag also removes it from everything that carries it (one undo group), so it is not re-created from use. */
+suspend fun PennyRepository.deleteTag(book: Book, id: String): String {
+    val g = tags.newGroup()
+    val t = book.tags.firstOrNull { it.state.id == id }?.value ?: return g
+    repairTagRefs(book, t.name, null, g)
+    tags.delete(id, g)
     return g
 }
 

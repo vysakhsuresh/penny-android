@@ -154,10 +154,10 @@ fun LoanDetailScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit) {
                 }
                 item {
                     app.penny.ui.kit.ActionStrip {
-                        if (b.recurring.none { it.value.loanId == id }) app.penny.ui.kit.StripAction(destructive = false, onClick = {
+                        if (b.recurring.none { it.value.loanId == id } && b.activeAccounts.isNotEmpty()) app.penny.ui.kit.StripAction(destructive = false, onClick = {
                             vm.act(R.string.recurring_added) {
                                 saveRecurring(it, null, Recurring(l.value.name, RecurringKind.EMI, TxType.EXPENSE, s.emiMinor, currency = l.value.currency,
-                                    accountId = l.value.paidFromAccountId ?: it.profile.defaultAccountId ?: it.activeAccounts.first().state.id,
+                                    accountId = it.activeAccountOrNull(l.value.paidFromAccountId) ?: it.defaultActiveAccountId ?: error("no account"),
                                     categoryId = "${it.profileId}:loan.emi", payee = l.value.lender.ifBlank { l.value.name }, schedule = Recurrence.monthly(l.value.start.plusMonths(1)), loanId = id))
                             }
                         }) { Text(stringResource(R.string.add_emi_bill)) }
@@ -190,35 +190,48 @@ fun LoanEditScreen(id: String, onBack: () -> Unit) {
         var tenure by rememberSaveable { mutableStateOf(existing?.tenureMonths?.toString().orEmpty()) }
         var start by rememberSaveable { mutableStateOf((existing?.start ?: b.today()).toString()) }
         var lender by rememberSaveable { mutableStateOf(existing?.lender.orEmpty()) }
-        var paidFrom by rememberSaveable { mutableStateOf(existing?.paidFromAccountId) }
+        var paidFrom by rememberSaveable { mutableStateOf(b.activeAccountOrNull(existing?.paidFromAccountId)) }
         var extra by rememberSaveable { mutableStateOf(existing?.extraMinor?.takeIf { it > 0 }?.let { ctx.fmt.editable(it, currency) }.orEmpty()) }
         var penalty by rememberSaveable { mutableStateOf(existing?.penaltyNote.orEmpty()) }
         var err by rememberSaveable { mutableStateOf<String?>(null) }
         val req = stringResource(R.string.err_loan_fields)
+        val rateErr = stringResource(R.string.err_rate_pct)
+        val tenureErr = stringResource(R.string.err_tenure)
+        val amountErr = stringResource(R.string.err_amount_invalid)
+        var fieldErr by rememberSaveable { mutableStateOf<Map<String, String>>(emptyMap()) }
         PennyScreen(stringResource(if (existing == null) R.string.add_loan else R.string.edit_loan), onBack, large = false) { pad ->
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                 TextInput(name, { name = it; err = null }, stringResource(R.string.field_name), error = err)
                 SelectField(stringResource(R.string.field_type), kind, LoanKind.entries.map { Choice(it, stringResource(loanKindLabel(it))) }, { it?.let { k -> kind = k } })
                 SelectField(stringResource(R.string.field_currency), currency, app.penny.ui.kit.currencyChoices(listOf(ctx.base)), { it?.let { c -> currency = c } })
-                AmountInput(principal, { principal = it }, currency, ctx.fmt, stringResource(R.string.principal))
+                AmountInput(principal, { principal = it; fieldErr = fieldErr - "p" }, currency, ctx.fmt, stringResource(R.string.principal), error = fieldErr["p"])
                 Row {
-                    TextInput(apr, { apr = it }, stringResource(R.string.apr_pct), Modifier.weight(1f), keyboard = KeyboardType.Decimal)
-                    TextInput(tenure, { tenure = it.filter(Char::isDigit).take(4) }, stringResource(R.string.tenure_months), Modifier.weight(1f), keyboard = KeyboardType.Number)
+                    TextInput(apr, { apr = it; fieldErr = fieldErr - "apr" }, stringResource(R.string.apr_pct), Modifier.weight(1f), keyboard = KeyboardType.Decimal, error = fieldErr["apr"])
+                    TextInput(tenure, { tenure = it.filter(Char::isDigit).take(4); fieldErr = fieldErr - "n" }, stringResource(R.string.tenure_months), Modifier.weight(1f), keyboard = KeyboardType.Number, error = fieldErr["n"])
                 }
                 DateInput(stringResource(R.string.start_date), runCatching { java.time.LocalDate.parse(start) }.getOrNull(), { start = it.toString() }, quick = false, today = b.today())
                 TextInput(lender, { lender = it }, stringResource(R.string.lender))
                 SelectField(stringResource(R.string.paid_from), paidFrom, b.activeAccounts.map { Choice(it.state.id, it.value.name) }, { paidFrom = it }, allowNone = true)
-                AmountInput(extra, { extra = it }, currency, ctx.fmt, stringResource(R.string.extra_per_month))
+                AmountInput(extra, { extra = it; fieldErr = fieldErr - "extra" }, currency, ctx.fmt, stringResource(R.string.extra_per_month), error = fieldErr["extra"])
                 TextInput(penalty, { penalty = it }, stringResource(R.string.penalty_note), singleLine = false)
                 val p = parseAmount(principal, currency, ctx.fmt)
-                val aprBp = apr.replace(',', '.').toBigDecimalOrNull()?.multiply(java.math.BigDecimal(100))?.toInt()
-                val n = tenure.toIntOrNull()
+                val aprBp = app.penny.ui.kit.parsePercentBp(apr)
+                val n = tenure.toIntOrNull()?.takeIf { it in 1..1200 }
                 if (p != null && aprBp != null && n != null && n > 0) Text(stringResource(R.string.emi_preview, ctx.money(Debt.emi(p, aprBp, n), currency)), style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(20.dp))
                 PrimaryButton(stringResource(R.string.save), {
-                    if (name.isBlank() || p == null || aprBp == null || n == null || n <= 0) { err = req; return@PrimaryButton }
+                    val extraMinor = if (extra.isBlank()) 0L else parseAmount(extra, currency, ctx.fmt, allowZero = true)
+                    val errs = buildMap {
+                        if (p == null) put("p", amountErr)
+                        if (aprBp == null) put("apr", rateErr)
+                        if (n == null) put("n", tenureErr)
+                        if (extraMinor == null) put("extra", amountErr)
+                    }
+                    if (name.isBlank()) err = req
+                    fieldErr = errs
+                    if (name.isBlank() || errs.isNotEmpty() || p == null || aprBp == null || n == null) return@PrimaryButton
                     val loan = (existing ?: Loan(name, principalMinor = p, currency = currency, aprBp = aprBp, tenureMonths = n, start = java.time.LocalDate.parse(start))).copy(
                         name = name.trim(), kind = kind, principalMinor = p, currency = currency, aprBp = aprBp, tenureMonths = n, start = java.time.LocalDate.parse(start),
-                        lender = lender.trim(), paidFromAccountId = paidFrom, extraMinor = parseAmount(extra, currency, ctx.fmt) ?: 0, penaltyNote = penalty.trim(),
+                        lender = lender.trim(), paidFromAccountId = paidFrom, extraMinor = extraMinor ?: 0, penaltyNote = penalty.trim(),
                     )
                     vm.act(R.string.saved, after = onBack) { saveLoan(it, if (existing == null) null else id, loan) }
                 }, Modifier.padding(horizontal = 16.dp))

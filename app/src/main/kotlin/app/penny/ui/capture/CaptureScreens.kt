@@ -151,17 +151,24 @@ fun EditProposal(ctx: Ctx, t: Transaction, saveLabel: Int = R.string.accept, onC
     var acct by rememberSaveable { mutableStateOf(t.accountId.ifEmpty { null }) }
     var date by rememberSaveable { mutableStateOf(t.date.toString()) }
     var income by rememberSaveable { mutableStateOf(t.type == TxType.INCOME) }
+    var tried by rememberSaveable { mutableStateOf(false) }
+    val parsed = parseAmount(amount, t.currency, ctx.fmt)
     Column {
-        app.penny.ui.kit.Segmented(listOf(Choice(false, stringResource(R.string.type_expense)), Choice(true, stringResource(R.string.type_income))), income, { income = it })
-        AmountInput(amount, { amount = it }, t.currency, ctx.fmt, stringResource(R.string.field_amount))
+        // Switching between spend and income clears a category of the other kind instead of keeping it.
+        app.penny.ui.kit.Segmented(listOf(Choice(false, stringResource(R.string.type_expense)), Choice(true, stringResource(R.string.type_income))), income, { v ->
+            if (v != income) { income = v; if (cat != null && b.categoryMap[cat]?.value?.kind != (if (v) CategoryKind.INCOME else CategoryKind.EXPENSE)) cat = null }
+        })
+        AmountInput(amount, { amount = it }, t.currency, ctx.fmt, stringResource(R.string.field_amount), error = if (tried && parsed == null) stringResource(R.string.err_amount_invalid) else null)
         TextInput(payee, { payee = it }, stringResource(R.string.field_payee))
         SelectField(stringResource(R.string.field_category), cat, b.categoriesOf(if (income) CategoryKind.INCOME else CategoryKind.EXPENSE).map { Choice(it.state.id, b.categoryName(it.state.id)) }, { cat = it }, allowNone = true)
-        SelectField(stringResource(R.string.field_account), acct, b.activeAccounts.map { Choice(it.state.id, it.value.name) }, { acct = it })
+        SelectField(stringResource(R.string.field_account), acct, b.activeAccounts.map { Choice(it.state.id, it.value.name) }, { acct = it },
+            error = if (tried && b.activeAccountOrNull(acct) == null) stringResource(R.string.err_account_required) else null)
         DateInput(stringResource(R.string.field_date), runCatching { java.time.LocalDate.parse(date) }.getOrNull(), { date = it.toString() }, today = b.today())
         Row(Modifier.padding(horizontal = 8.dp)) {
             FilledTonalButton(onClick = {
-                val a = parseAmount(amount, t.currency, ctx.fmt) ?: return@FilledTonalButton
-                val ac = acct ?: return@FilledTonalButton
+                tried = true
+                val a = parsed ?: return@FilledTonalButton
+                val ac = b.activeAccountOrNull(acct) ?: return@FilledTonalButton
                 onSave(t.copy(amountMinor = a, payee = payee.ifBlank { null }, categoryId = cat, accountId = ac, date = java.time.LocalDate.parse(date), type = if (income) TxType.INCOME else TxType.EXPENSE))
             }) { Text(stringResource(saveLabel)) }
             if (onCancel != null) TextButton(onClick = onCancel) { Text(stringResource(R.string.cancel)) }
@@ -199,7 +206,7 @@ fun VoiceScreen(onBack: () -> Unit, onDone: () -> Unit) {
                     val r = g.parse(heard)
                     val tx = Transaction(
                         type = if (r.income) TxType.INCOME else TxType.EXPENSE, amountMinor = r.amountMinor ?: 0, currency = r.currency,
-                        accountId = r.accountId ?: b.profile.defaultAccountId ?: b.activeAccounts.firstOrNull()?.state?.id.orEmpty(), categoryId = r.categoryId,
+                        accountId = b.activeAccountOrNull(r.accountId) ?: b.defaultActiveAccountId.orEmpty(), categoryId = r.categoryId,
                         payee = r.payee, date = r.date, time = LocalTime.now(b.zone).withSecond(0).withNano(0), tz = b.profile.timezone, note = r.note, source = "voice",
                         tags = if (r.people.isNotEmpty()) listOf("split") else emptyList(),
                     )
@@ -256,7 +263,7 @@ fun ScanScreen(onBack: () -> Unit, onDone: () -> Unit) {
                         if (parsed.lines.isNotEmpty()) Text(stringResource(R.string.items_found, parsed.lines.size), style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 20.dp))
                         val proposal = Transaction(
                             type = TxType.EXPENSE, amountMinor = parsed.amountMinor, currency = parsed.currency,
-                            accountId = b.profile.defaultAccountId ?: b.activeAccounts.firstOrNull()?.state?.id.orEmpty(), payee = parsed.payee, date = parsed.date ?: b.today(),
+                            accountId = b.defaultActiveAccountId.orEmpty(), payee = parsed.payee, date = parsed.date ?: b.today(),
                             tz = b.profile.timezone, source = "ocr", confidence = parsed.confidence, note = parsed.lines.joinToString(", ") { it.first }.take(300),
                         )
                         androidx.compose.runtime.key(t) {

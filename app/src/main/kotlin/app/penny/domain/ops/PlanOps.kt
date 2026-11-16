@@ -186,7 +186,9 @@ suspend fun PennyRepository.saveGoal(book: Book, id: String?, goal: Goal): Strin
 suspend fun PennyRepository.payOccurrence(book: Book, u: Upcoming, amount: Long = u.amountMinor, date: LocalDate = book.today()): String {
     val g = transactions.newGroup()
     val txId = newId()
-    transactions.create(txId, book.profileId, Bills.toTransaction(u.copy(amountMinor = amount, date = date), book.profile.timezone, u.recurringId), g)
+    val tx = Bills.toTransaction(u.copy(amountMinor = amount, date = date), book.profile.timezone, u.recurringId)
+    check(book.postable(tx)) { "bill cannot be posted" }
+    transactions.create(txId, book.profileId, tx, g)
     occurrences.upsert(u.key, book.profileId, Occurrence(u.recurringId, u.due, OccurrenceStatus.PAID, txId, amount), g)
     return g
 }
@@ -242,8 +244,11 @@ suspend fun PennyRepository.runScheduled(book: Book): Int = scheduleLock.withLoc
         if (occurrences.get(u.key) != null) return@forEach // paid, skipped or reopened before: the user decides now
         val txId = "${u.key}#tx"
         if (transactions.get(txId) != null) return@forEach
+        val tx = Bills.toTransaction(u.copy(date = u.date), book.profile.timezone, u.recurringId)
+        // A bill whose account is gone or whose transfer is incomplete stays due for the person to fix, never posts.
+        if (!book.postable(tx)) return@forEach
         val g = transactions.newGroup()
-        transactions.create(txId, book.profileId, Bills.toTransaction(u.copy(date = u.date), book.profile.timezone, u.recurringId), g)
+        transactions.create(txId, book.profileId, tx, g)
         occurrences.upsert(u.key, book.profileId, Occurrence(u.recurringId, u.due, OccurrenceStatus.PAID, txId, u.amountMinor), g)
         n++
     }

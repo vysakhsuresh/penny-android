@@ -64,6 +64,7 @@ import app.penny.domain.ops.allTagNames
 import app.penny.domain.ops.applyRuleRetro
 import app.penny.domain.ops.deletePayee
 import app.penny.domain.ops.mergePayee
+import app.penny.domain.ops.deleteTag
 import app.penny.domain.ops.mergeTag
 import app.penny.domain.ops.renamePayee
 import app.penny.domain.ops.renameTag
@@ -126,7 +127,7 @@ fun TagsScreen(onBack: () -> Unit, onActivity: (String) -> Unit) {
                                 DropdownMenuItem({ Text(stringResource(R.string.rename)) }, onClick = { menu = null; edit = s.state.id })
                                 DropdownMenuItem({ Text(stringResource(R.string.merge_into)) }, onClick = { menu = null; mergeFrom = s.state.id })
                                 DropdownMenuItem({ Text(stringResource(if (s.value.archived) R.string.unarchive else R.string.archive)) }, onClick = { menu = null; vm.act(R.string.updated) { saveTag(it, s.state.id, s.value.copy(archived = !s.value.archived)) } })
-                                DropdownMenuItem({ Text(stringResource(R.string.delete)) }, onClick = { menu = null; vm.act(R.string.deleted) { tags.delete(s.state.id) } })
+                                DropdownMenuItem({ Text(stringResource(R.string.delete)) }, onClick = { menu = null; vm.act(R.string.deleted) { deleteTag(it, s.state.id) } })
                             }
                         },
                         divider = true,
@@ -248,7 +249,8 @@ fun PayeeDetailScreen(id: String, onBack: () -> Unit, onOpenTx: (String) -> Unit
             }
         }
         when (dialog) {
-            "rename" -> NameDialog(stringResource(R.string.rename), p.value.name, { dialog = null }) { n -> vm.act(R.string.renamed) { renamePayee(it, id, n) }; dialog = null }
+            "rename" -> NameDialog(stringResource(R.string.rename), p.value.name, { dialog = null },
+                taken = { n -> b.payees.any { it.state.id != id && it.value.name.trim().equals(n, ignoreCase = true) } }) { n -> vm.act(R.string.renamed) { renamePayee(it, id, n) }; dialog = null }
             "merge" -> PickDialog(stringResource(R.string.merge_into), b.payees.filter { it.state.id != id }.map { Choice(it.state.id, it.value.name) }, { dialog = null }) { into ->
                 vm.act(R.string.merged, after = onBack) { mergePayee(it, id, into) }; dialog = null
             }
@@ -336,12 +338,18 @@ fun RuleEditScreen(id: String, onBack: () -> Unit) {
                                 SelectField(stringResource(R.string.field_label), c.field, RuleField.entries.map { Choice(it, it.name.lowercase().replaceFirstChar(Char::uppercase)) }, { f -> f?.let { set(rule.copy(conditions = rule.conditions.mapIndexed { j, x -> if (j == i) x.copy(field = it) else x })) } })
                                 SelectField(stringResource(R.string.operator), c.op, RuleOp.entries.map { Choice(it, it.name.lowercase().replace('_', ' ')) }, { o -> o?.let { set(rule.copy(conditions = rule.conditions.mapIndexed { j, x -> if (j == i) x.copy(op = it) else x })) } })
                                 val isAmount = c.field == RuleField.AMOUNT
+                                // Amounts keep what is being typed; the stored value is the parsed minor units. Re-showing
+                                // the parsed value after each key turned "50" into "5.000" mid-typing.
+                                var raw1 by rememberSaveable(i, c.field) { mutableStateOf(if (isAmount) c.value.toLongOrNull()?.let { ctx.fmt.editable(it, ctx.base) } ?: c.value else c.value) }
+                                var raw2 by rememberSaveable(i, c.field) { mutableStateOf(c.value2.toLongOrNull()?.let { ctx.fmt.editable(it, ctx.base) } ?: c.value2) }
                                 TextInput(
-                                    if (isAmount) c.value.toLongOrNull()?.let { ctx.fmt.editable(it, ctx.base) } ?: c.value else c.value,
-                                    { v -> set(rule.copy(conditions = rule.conditions.mapIndexed { j, x -> if (j == i) x.copy(value = if (isAmount) (parseAmount(v, ctx.base, ctx.fmt)?.toString() ?: v) else v) else x })) },
+                                    if (isAmount) raw1 else c.value,
+                                    { v -> raw1 = v; set(rule.copy(conditions = rule.conditions.mapIndexed { j, x -> if (j == i) x.copy(value = if (isAmount) (parseAmount(v, ctx.base, ctx.fmt)?.toString() ?: "?$v") else v) else x })) },
                                     stringResource(R.string.value),
+                                    error = if (isAmount && raw1.isNotBlank() && parseAmount(raw1, ctx.base, ctx.fmt) == null) stringResource(R.string.err_amount_invalid) else null,
                                 )
-                                if (c.op == RuleOp.BETWEEN) TextInput(c.value2.toLongOrNull()?.let { ctx.fmt.editable(it, ctx.base) } ?: c.value2, { v -> set(rule.copy(conditions = rule.conditions.mapIndexed { j, x -> if (j == i) x.copy(value2 = parseAmount(v, ctx.base, ctx.fmt)?.toString() ?: v) else x })) }, stringResource(R.string.and_value))
+                                if (c.op == RuleOp.BETWEEN) TextInput(raw2, { v -> raw2 = v; set(rule.copy(conditions = rule.conditions.mapIndexed { j, x -> if (j == i) x.copy(value2 = if (isAmount) (parseAmount(v, ctx.base, ctx.fmt)?.toString() ?: "?$v") else v) else x })) }, stringResource(R.string.and_value),
+                                    error = if (isAmount && raw2.isNotBlank() && parseAmount(raw2, ctx.base, ctx.fmt) == null) stringResource(R.string.err_amount_invalid) else null)
                             }
                             if (rule.conditions.size > 1) IconButton(onClick = { set(rule.copy(conditions = rule.conditions.filterIndexed { j, _ -> j != i })) }) { Icon(Icons.Outlined.Close, stringResource(R.string.remove)) }
                         }
@@ -375,6 +383,8 @@ fun RuleEditScreen(id: String, onBack: () -> Unit) {
                 PrimaryButton(stringResource(R.string.save), {
                     val r = rule.copy(name = rule.name.ifBlank { rule.conditions.firstOrNull()?.value.orEmpty() }, learned = existing?.learned == true && rule == existing, conditions = rule.conditions.filter { it.value.isNotBlank() })
                     if (r.conditions.isEmpty()) return@PrimaryButton
+                    // An amount condition that is not a number would save a rule that can never match.
+                    if (r.conditions.any { it.field == RuleField.AMOUNT && (it.value.startsWith("?") || it.value2.startsWith("?")) }) return@PrimaryButton
                     vm.act(R.string.saved, after = onBack) { book ->
                         val g = saveRule(book, if (existing == null) null else id, r.copy(evidence = maxOf(r.evidence, if (r.learned) RuleLearner.PROMOTE_AT else 0)))
                         if (retro) applyRuleRetro(book, r)
@@ -414,8 +424,11 @@ fun TemplatesScreen(onBack: () -> Unit) {
             }
         }
         rename?.let { id ->
-            val t = b.templates.first { it.state.id == id }.value
-            NameDialog(stringResource(R.string.rename), t.name, { rename = null }) { n -> vm.act(R.string.renamed) { templates.update(id, t.copy(name = n)) }; rename = null }
+            // The template can vanish while the dialog is open (sync, undo): close instead of crashing.
+            val t = b.templates.firstOrNull { it.state.id == id }?.value
+            if (t == null) rename = null
+            else NameDialog(stringResource(R.string.rename), t.name, { rename = null },
+                taken = { n -> b.templates.any { it.state.id != id && it.value.name.trim().equals(n, ignoreCase = true) } }) { n -> vm.act(R.string.renamed) { templates.update(id, t.copy(name = n)) }; rename = null }
         }
     }
 }

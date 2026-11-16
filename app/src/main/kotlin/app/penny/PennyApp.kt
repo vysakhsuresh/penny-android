@@ -24,6 +24,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
 import java.io.File
@@ -52,6 +53,12 @@ class PennyApp : Application(), Configuration.Provider {
         app.penny.domain.RatesWorker.schedule(this)
         alerts.ensureChannel()
         shortcuts()
+        // Widgets also follow privacy and profile changes, not only data: hiding amounts, locking, or switching book
+        // (including into a duress session) must reach the home screen straight away.
+        scope.launch {
+            kotlinx.coroutines.flow.combine(repo.prefs.appearance, repo.prefs.security, repo.prefs.currentProfileId) { a, s, p -> Triple(a.hideAmounts, s.lockEnabled to s.duressProfileId, p) }
+                .distinctUntilChanged().drop(1).collect { Widgets.refresh(this@PennyApp) }
+        }
         // SY-04 sync shortly after local changes (debounced); widgets follow the same signal.
         scope.launch {
             repo.store.changes.drop(1).debounce(1_500).collect {

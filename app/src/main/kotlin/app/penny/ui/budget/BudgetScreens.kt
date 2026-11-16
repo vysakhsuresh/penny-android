@@ -116,6 +116,7 @@ fun BudgetsScreen(padding: PaddingValues, go: (String) -> Unit) {
         var editAnyway by rememberSaveable { mutableStateOf(false) }
         var assignFor by rememberSaveable { mutableStateOf<String?>(null) }
         var templateDialog by rememberSaveable { mutableStateOf(false) }
+        var showArchived by rememberSaveable { mutableStateOf(false) }
         val period = b.period(offset)
         val past = period.endInclusive.isBefore(b.today())
         val readOnly = past && !editAnyway
@@ -156,7 +157,9 @@ fun BudgetsScreen(padding: PaddingValues, go: (String) -> Unit) {
             if (yearView) {
                 item { YearView(ctx, period) }
             } else {
-                // BU-05: zero-based users see "available to assign" on top; others can hide it via profile settings.
+                // BU-05 / profile "give every unit a job": zero-based budgets show "available to assign" first;
+                // otherwise it follows the envelopes (still there when over-assigned, so the problem is visible).
+                val ataCard: androidx.compose.foundation.lazy.LazyListScope.() -> Unit = {
                 item {
                     app.penny.ui.kit.HeroCard {
                         Row(Modifier.padding(20.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -172,6 +175,8 @@ fun BudgetsScreen(padding: PaddingValues, go: (String) -> Unit) {
                         }
                     }
                 }
+                }
+                if (b.profile.zeroBased) ataCard()
                 if (statuses.isEmpty()) item {
                     EmptyState(stringResource(R.string.no_envelopes), stringResource(R.string.no_envelopes_body), icon = Icons.Outlined.PieChart, action = stringResource(R.string.use_template), onAction = { templateDialog = true },
                         secondary = stringResource(R.string.add_envelope), onSecondary = { go("envelope/new/edit") })
@@ -179,6 +184,13 @@ fun BudgetsScreen(padding: PaddingValues, go: (String) -> Unit) {
                     item { SectionHeader(stringResource(R.string.envelopes), action = stringResource(R.string.add), onAction = { go("envelope/new/edit") }) }
                     items(statuses, key = { it.id }) { s -> EnvelopeCard(ctx, s, readOnly, onOpen = { go("envelope/${s.id}") }, onAssign = { assignFor = s.id }) }
                 }
+                // Archived envelopes stay reachable, so archiving is never a one-way door.
+                val archived = b.envelopes.filter { it.value.archived }
+                if (archived.isNotEmpty()) {
+                    item { TextButton(onClick = { showArchived = !showArchived }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(if (showArchived) R.string.hide_archived else R.string.show_archived_n, archived.size)) } }
+                    if (showArchived) item { PennyCard { archived.forEach { e -> ListRow(e.value.name, subtitle = stringResource(R.string.archived), onClick = { go("envelope/${e.state.id}") }, divider = true) } } }
+                }
+                if (!b.profile.zeroBased) ataCard()
             }
             item { SectionHeader(stringResource(R.string.plan)) }
             item {
@@ -363,7 +375,9 @@ fun EnvelopeDetailScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Uni
                     item { SectionHeader(stringResource(R.string.moves)) }
                     items(moves.take(20), key = { it.state.id }) { m ->
                         val incoming = m.value.toId == id
-                        val other = (if (incoming) m.value.fromId else m.value.toId)?.let { o -> b.envelopes.firstOrNull { it.state.id == o }?.value?.name } ?: stringResource(R.string.available_to_assign)
+                        val otherId = if (incoming) m.value.fromId else m.value.toId
+                        // No id means "available to assign"; an id that is gone is a deleted envelope, named as such.
+                        val other = if (otherId == null) stringResource(R.string.available_to_assign) else b.envelopes.firstOrNull { it.state.id == otherId }?.value?.name ?: stringResource(R.string.deleted_item)
                         ListRow(
                             title = stringResource(if (incoming) R.string.from_x else R.string.to_x, other), subtitle = shortDate(m.value.periodStart),
                             trailingText = ctx.money(if (incoming) m.value.amountMinor else -m.value.amountMinor, env.value.currency), divider = true,
@@ -427,6 +441,11 @@ fun EnvelopeEditScreen(id: String, onBack: () -> Unit) {
         var smoothing by rememberSaveable { mutableStateOf(existing?.smoothingMinor?.let { ctx.fmt.editable(it, currency) }.orEmpty()) }
         var err by rememberSaveable { mutableStateOf<String?>(null) }
         val req = stringResource(R.string.err_name_required)
+        val takenErr = stringResource(R.string.name_taken)
+        val amountErr = stringResource(R.string.err_amount_invalid)
+        var fieldErr by rememberSaveable { mutableStateOf<Map<String, String>>(emptyMap()) }
+        // Assignments and moves are stored without a currency of their own; changing it would re-read them all.
+        val currencyLocked = existing != null && (b.allocations.any { it.value.envelopeId == id } || b.moves.any { it.value.fromId == id || it.value.toId == id })
         PennyScreen(stringResource(if (existing == null) R.string.add_envelope else R.string.edit_envelope), onBack, large = false) { pad ->
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                 TextInput(name, { name = it; err = null }, stringResource(R.string.field_name), error = err)
@@ -436,14 +455,15 @@ fun EnvelopeEditScreen(id: String, onBack: () -> Unit) {
                     if (name.isBlank()) name = b.categoryName(c)
                 })
                 app.penny.ui.tx.TagsEditor(tags, b.allTagNames()) { tags = it }
-                app.penny.ui.kit.SelectField(stringResource(R.string.field_currency), currency, app.penny.ui.kit.currencyChoices(listOf(ctx.base)), { it?.let { c -> currency = c } })
-                AmountInput(limit, { limit = it }, currency, ctx.fmt, stringResource(R.string.field_limit))
+                app.penny.ui.kit.SelectField(stringResource(R.string.field_currency), currency, app.penny.ui.kit.currencyChoices(listOf(ctx.base)), { it?.let { c -> if (!currencyLocked) currency = c } })
+                if (currencyLocked) Text(stringResource(R.string.currency_locked_entries), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))
+                AmountInput(limit, { limit = it; fieldErr = fieldErr - "limit" }, currency, ctx.fmt, stringResource(R.string.field_limit), error = fieldErr["limit"], allowZero = true)
                 SectionHeader(stringResource(R.string.rollover))
                 SelectField(stringResource(R.string.rollover), rollover, listOf(
                     Choice(RolloverMode.NONE, stringResource(R.string.rollover_none)), Choice(RolloverMode.POSITIVE, stringResource(R.string.rollover_positive)),
                     Choice(RolloverMode.BOTH, stringResource(R.string.rollover_both)), Choice(RolloverMode.CAPPED, stringResource(R.string.rollover_capped)),
                 ), { it?.let { r -> rollover = r } })
-                if (rollover == RolloverMode.CAPPED) AmountInput(cap, { cap = it }, currency, ctx.fmt, stringResource(R.string.rollover_cap))
+                if (rollover == RolloverMode.CAPPED) AmountInput(cap, { cap = it; fieldErr = fieldErr - "cap" }, currency, ctx.fmt, stringResource(R.string.rollover_cap), error = fieldErr["cap"], allowZero = true)
                 SelectField(stringResource(R.string.envelope_period), period, listOf(
                     Choice("profile", stringResource(R.string.same_as_budget)), Choice("monthly", stringResource(R.string.cycle_monthly_short)),
                     Choice("quarterly", stringResource(R.string.cycle_quarterly)), Choice("yearly", stringResource(R.string.cycle_yearly)),
@@ -453,7 +473,7 @@ fun EnvelopeEditScreen(id: String, onBack: () -> Unit) {
                     Choice(TargetKind.FIXED, stringResource(R.string.target_fixed)), Choice(TargetKind.SAVE_BY_DATE, stringResource(R.string.target_by_date)),
                     Choice(TargetKind.REFILL_UP_TO, stringResource(R.string.target_refill)), Choice(TargetKind.SPEND_AT_MOST, stringResource(R.string.target_at_most)),
                 ), { targetKind = it }, allowNone = true)
-                if (targetKind != null) AmountInput(targetAmount, { targetAmount = it }, currency, ctx.fmt, stringResource(R.string.target_amount))
+                if (targetKind != null) AmountInput(targetAmount, { targetAmount = it; fieldErr = fieldErr - "target" }, currency, ctx.fmt, stringResource(R.string.target_amount), error = fieldErr["target"])
                 if (targetKind == TargetKind.SAVE_BY_DATE) DateInput(stringResource(R.string.by_date), targetBy?.let { runCatching { java.time.LocalDate.parse(it) }.getOrNull() }, { targetBy = it.toString() }, quick = false, today = b.today())
                 SectionHeader(stringResource(R.string.alerts))
                 Segmented(listOf(Choice(AlertMode.OFF, stringResource(R.string.alerts_off)), Choice(AlertMode.NEAR, stringResource(R.string.alerts_near)), Choice(AlertMode.NEAR_AND_OVER, stringResource(R.string.alerts_near_over))), alert, { alert = it })
@@ -467,22 +487,37 @@ fun EnvelopeEditScreen(id: String, onBack: () -> Unit) {
                         }
                     }
                 }
-                AmountInput(smoothing, { smoothing = it }, currency, ctx.fmt, stringResource(R.string.income_smoothing))
+                AmountInput(smoothing, { smoothing = it; fieldErr = fieldErr - "smooth" }, currency, ctx.fmt, stringResource(R.string.income_smoothing), error = fieldErr["smooth"], allowZero = true)
                 Text(stringResource(R.string.income_smoothing_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))
                 Spacer(Modifier.height(12.dp))
                 PrimaryButton(stringResource(R.string.save), {
                     if (name.isBlank()) { err = req; return@PrimaryButton }
+                    if (b.envelopes.any { it.state.id != id && it.value.name.trim().equals(name.trim(), ignoreCase = true) }) { err = takenErr; return@PrimaryButton }
+                    // Nothing typed is silently replaced: a bad limit was saved as 0 and an empty cap meant "no cap".
+                    fun opt(s: String) = if (s.isBlank()) 0L else parseAmount(s, currency, ctx.fmt, allowZero = true)
+                    val limitMinor = opt(limit)
+                    val capMinor = if (rollover == RolloverMode.CAPPED) parseAmount(cap, currency, ctx.fmt, allowZero = true) else 0L
+                    val targetMinor = if (targetKind != null) parseAmount(targetAmount, currency, ctx.fmt) else 0L
+                    val smoothMinor = opt(smoothing)
+                    val errs = buildMap {
+                        if (limitMinor == null) put("limit", amountErr)
+                        if (capMinor == null) put("cap", amountErr)
+                        if (targetMinor == null) put("target", amountErr)
+                        if (smoothMinor == null) put("smooth", amountErr)
+                    }
+                    fieldErr = errs
+                    if (errs.isNotEmpty()) return@PrimaryButton
                     val e = (existing ?: Envelope(name, currency = currency)).copy(
-                        name = name.trim(), categoryIds = cats, tags = tags, currency = currency, limitMinor = parseAmount(limit, currency, ctx.fmt) ?: 0,
-                        rollover = rollover, rolloverCapMinor = parseAmount(cap, currency, ctx.fmt).takeIf { rollover == RolloverMode.CAPPED },
+                        name = name.trim(), categoryIds = cats, tags = tags, currency = currency, limitMinor = limitMinor!!,
+                        rollover = rollover, rolloverCapMinor = capMinor.takeIf { rollover == RolloverMode.CAPPED },
                         periodOverride = when (period) {
                             "monthly" -> CycleRule.Monthly(1)
                             "quarterly" -> CycleRule.Quarterly()
                             "yearly" -> CycleRule.Yearly()
                             else -> null
                         },
-                        target = targetKind?.let { k -> parseAmount(targetAmount, currency, ctx.fmt)?.let { Target(k, it, targetBy?.let { d -> runCatching { java.time.LocalDate.parse(d) }.getOrNull() }) } },
-                        alertMode = alert, festival = festival, smoothingMinor = parseAmount(smoothing, currency, ctx.fmt)?.takeIf { it > 0 },
+                        target = targetKind?.let { k -> Target(k, targetMinor!!, targetBy?.let { d -> runCatching { java.time.LocalDate.parse(d) }.getOrNull() }) },
+                        alertMode = alert, festival = festival, smoothingMinor = smoothMinor?.takeIf { it > 0 },
                     )
                     vm.act(R.string.saved, after = onBack) { saveEnvelope(it, if (existing == null) null else id, e) }
                 }, Modifier.padding(horizontal = 16.dp))

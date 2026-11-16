@@ -1,5 +1,8 @@
 package app.penny
 
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
 import android.content.Intent
 import android.os.Bundle
 import android.os.SystemClock
@@ -87,6 +90,15 @@ class MainActivity : AppCompatActivity() {
                                 // locking (say, Security settings) must not carry over into the other book.
                                 if (prefs.currentProfileId.value != profileAtLock) nav.navigate(Routes.main()) { popUpTo(0) }
                             }) }
+                        }
+                    }
+                    // Whatever switches the open book (a space, a restore, a profile, unlock into another book), the old
+                    // book's screens, filters and period offsets must not carry over: start again at Home.
+                    LaunchedEffect(Unit) {
+                        prefs.currentProfileId.filterNotNull().distinctUntilChanged().drop(1).collect {
+                            val route = nav.currentDestination?.route ?: return@collect
+                            val freshHome = route.startsWith("main") && nav.previousBackStackEntry == null
+                            if (route != Routes.ONBOARDING && !freshHome) nav.navigate(Routes.main()) { popUpTo(0) }
                         }
                     }
                     LaunchedEffect(pendingIntent) {

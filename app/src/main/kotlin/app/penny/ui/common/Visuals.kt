@@ -167,7 +167,7 @@ fun TxRow(
         incoming -> ctx.fmt.format(t.toAmountMinor ?: t.amountMinor, t.toCurrency ?: t.currency, signed = true)
         outgoing -> ctx.fmt.format(-t.amountMinor, t.currency)
         else -> ctx.fmt.format(if (inflow || t.type == TxType.TRANSFER) t.amountMinor else -t.amountMinor, t.currency, signed = inflow)
-    }
+    }.let { if (ctx.hidden) ctx.money(0) else it }
     ListRow(
         title = title, subtitle = parts.joinToString(" · "), modifier = modifier, selected = selected,
         leading = {
@@ -184,7 +184,7 @@ fun TxRow(
 /** The undo line for a deleted transaction names it, so a deletion nobody meant is noticed. */
 fun deletedMessage(context: android.content.Context, ctx: Ctx, t: Transaction): String {
     val name = t.payee?.takeIf { it.isNotBlank() } ?: ctx.book.categoryName(t.categoryId).takeIf { it.isNotBlank() } ?: context.getString(R.string.obj_transaction)
-    return context.getString(R.string.deleted_named, name, ctx.fmt.format(t.amountMinor, t.currency))
+    return context.getString(R.string.deleted_named, name, ctx.money(t.amountMinor, t.currency))
 }
 
 /**

@@ -155,12 +155,12 @@ fun GoalDetailScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, o
                         FilledTonalButton(onClick = { dialog = "add" }) { Text(stringResource(R.string.contribute)) }
                         OutlinedButton(onClick = { dialog = "take" }) { Text(stringResource(R.string.withdraw)) }
                     }
-                    Row(Modifier.padding(horizontal = 8.dp)) {
+                    app.penny.ui.kit.ActionStrip {
                         val s = g.value.status
-                        TextButton(onClick = { vm.act(R.string.updated) { setGoalStatus(it, id, if (s == GoalStatus.PAUSED) GoalStatus.ACTIVE else GoalStatus.PAUSED) } }) { Text(stringResource(if (s == GoalStatus.PAUSED) R.string.resume else R.string.pause)) }
-                        TextButton(onClick = { vm.act(R.string.updated) { setGoalStatus(it, id, if (s == GoalStatus.COMPLETED) GoalStatus.ACTIVE else GoalStatus.COMPLETED) } }) { Text(stringResource(if (s == GoalStatus.COMPLETED) R.string.reopen else R.string.mark_complete)) }
-                        TextButton(onClick = { vm.act(R.string.archived_done) { setGoalStatus(it, id, GoalStatus.ARCHIVED) } }) { Text(stringResource(R.string.archive)) }
-                        TextButton(onClick = { vm.act(R.string.deleted, after = onBack) { deleteGoal(it, id) } }) { Text(stringResource(R.string.delete)) }
+                        app.penny.ui.kit.StripAction(destructive = false, onClick = { vm.act(R.string.updated) { setGoalStatus(it, id, if (s == GoalStatus.PAUSED) GoalStatus.ACTIVE else GoalStatus.PAUSED) } }) { Text(stringResource(if (s == GoalStatus.PAUSED) R.string.resume else R.string.pause)) }
+                        app.penny.ui.kit.StripAction(destructive = false, onClick = { vm.act(R.string.updated) { setGoalStatus(it, id, if (s == GoalStatus.COMPLETED) GoalStatus.ACTIVE else GoalStatus.COMPLETED) } }) { Text(stringResource(if (s == GoalStatus.COMPLETED) R.string.reopen else R.string.mark_complete)) }
+                        app.penny.ui.kit.StripAction(destructive = false, onClick = { vm.act(R.string.archived_done) { setGoalStatus(it, id, GoalStatus.ARCHIVED) } }) { Text(stringResource(R.string.archive)) }
+                        app.penny.ui.kit.StripAction(destructive = true, onClick = { vm.act(R.string.deleted, after = onBack) { deleteGoal(it, id) } }) { Text(stringResource(R.string.delete)) }
                     }
                 }
                 item { SectionHeader(stringResource(R.string.history)) }

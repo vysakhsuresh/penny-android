@@ -58,4 +58,8 @@
     <string name="backup_enter_phrase">Enter your recovery phrase</string>
     <string name="backup_enter_phrase_body">This backup is encrypted. Type the 24 words you wrote down when backups were set up.</string>
     <string name="backup_phrase_wrong">That phrase does not open this backup.</string>
+    <string name="accent_plum">Plum and gold</string>
+    <string name="accent_green">Penny green</string>
+    <string name="manage">Manage</string>
+    <string name="delete_account_row">Delete account</string>
 </resources>

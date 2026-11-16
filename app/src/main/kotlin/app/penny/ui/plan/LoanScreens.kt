@@ -153,16 +153,16 @@ fun LoanDetailScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit) {
                     }
                 }
                 item {
-                    Row(Modifier.padding(horizontal = 8.dp)) {
-                        if (b.recurring.none { it.value.loanId == id }) TextButton(onClick = {
+                    app.penny.ui.kit.ActionStrip {
+                        if (b.recurring.none { it.value.loanId == id }) app.penny.ui.kit.StripAction(destructive = false, onClick = {
                             vm.act(R.string.recurring_added) {
                                 saveRecurring(it, null, Recurring(l.value.name, RecurringKind.EMI, TxType.EXPENSE, s.emiMinor, currency = l.value.currency,
                                     accountId = l.value.paidFromAccountId ?: it.profile.defaultAccountId ?: it.activeAccounts.first().state.id,
                                     categoryId = "${it.profileId}:loan.emi", payee = l.value.lender.ifBlank { l.value.name }, schedule = Recurrence.monthly(l.value.start.plusMonths(1)), loanId = id))
                             }
                         }) { Text(stringResource(R.string.add_emi_bill)) }
-                        TextButton(onClick = { vm.act(R.string.updated) { saveLoan(it, id, l.value.copy(closed = !l.value.closed)) } }) { Text(stringResource(if (l.value.closed) R.string.reopen else R.string.close_loan)) }
-                        TextButton(onClick = { vm.act(R.string.deleted, after = onBack) { loans.delete(id) } }) { Text(stringResource(R.string.delete)) }
+                        app.penny.ui.kit.StripAction(destructive = false, onClick = { vm.act(R.string.updated) { saveLoan(it, id, l.value.copy(closed = !l.value.closed)) } }) { Text(stringResource(if (l.value.closed) R.string.reopen else R.string.close_loan)) }
+                        app.penny.ui.kit.StripAction(destructive = true, onClick = { vm.act(R.string.deleted, after = onBack) { loans.delete(id) } }) { Text(stringResource(R.string.delete)) }
                     }
                 }
                 item { SectionHeader(stringResource(R.string.schedule)) }

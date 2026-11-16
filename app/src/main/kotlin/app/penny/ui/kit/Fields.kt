@@ -1,5 +1,14 @@
 package app.penny.ui.kit
 
+import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.background
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -365,17 +374,58 @@ fun SwitchRow(title: String, checked: Boolean, onChange: (Boolean) -> Unit, modi
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+/**
+ * Segmented choice as a sliding pill: a soft track with one raised thumb that glides to the selection. No borders or
+ * dividers between options (the bordered Material row read like a table). Same API, so every screen picks it up.
+ */
 @Composable
 fun <T> Segmented(options: List<Choice<T>>, selected: T, onSelect: (T) -> Unit, modifier: Modifier = Modifier) {
-    SingleChoiceSegmentedButtonRow(modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp)) {
-        options.forEachIndexed { i, o ->
-            SegmentedButton(
-                selected = o.value == selected, onClick = { onSelect(o.value) },
-                shape = SegmentedButtonDefaults.itemShape(i, options.size),
-                // No check icon: it squeezes labels on small screens and at large text; the fill shows the choice.
-                icon = {},
-            ) { Text(o.label, maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis) }
+    if (options.isEmpty()) return
+    val index = options.indexOfFirst { it.value == selected }.coerceAtLeast(0)
+    val reduce = app.penny.ui.theme.LocalPenny.current.reduceMotion
+    val dark = app.penny.ui.theme.LocalPenny.current.isDark
+    val track = if (dark) MaterialTheme.colorScheme.surfaceContainerHigh else MaterialTheme.colorScheme.surfaceContainerHighest
+    val thumb = if (dark) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainerLowest
+    androidx.compose.foundation.layout.BoxWithConstraints(
+        modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp)
+            .clip(androidx.compose.foundation.shape.RoundedCornerShape(50))
+            .background(track)
+            .padding(4.dp)
+            .selectableGroup(),
+    ) {
+        val segment = maxWidth / options.size
+        val offset by androidx.compose.animation.core.animateDpAsState(
+            segment * index,
+            animationSpec = if (reduce) androidx.compose.animation.core.snap() else androidx.compose.animation.core.spring(dampingRatio = 0.85f, stiffness = 500f),
+            label = "segment",
+        )
+        // The thumb: a raised pill under the chosen option.
+        Box(
+            Modifier.matchParentSize().wrapContentWidth(Alignment.Start).width(segment).offset(x = offset)
+                .shadow(if (dark) 0.dp else 2.dp, androidx.compose.foundation.shape.RoundedCornerShape(50), clip = false)
+                .clip(androidx.compose.foundation.shape.RoundedCornerShape(50))
+                .background(thumb),
+        )
+        Row(Modifier.fillMaxWidth()) {
+            options.forEachIndexed { i, o ->
+                val on = i == index
+                Box(
+                    Modifier.weight(1f).heightIn(min = 40.dp).clip(androidx.compose.foundation.shape.RoundedCornerShape(50))
+                        .selectable(selected = on, role = androidx.compose.ui.semantics.Role.Tab, onClick = { onSelect(o.value) })
+                        .padding(horizontal = 6.dp, vertical = 8.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    // Labels shrink a little to fit their slot (large text) instead of being cut to "Pay per…".
+                    val style = MaterialTheme.typography.labelLarge.copy(
+                        fontWeight = if (on) androidx.compose.ui.text.font.FontWeight.Bold else androidx.compose.ui.text.font.FontWeight.Medium,
+                        color = if (on) (if (dark) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface) else MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    androidx.compose.foundation.text.BasicText(
+                        o.label, style = style, maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                        autoSize = androidx.compose.foundation.text.TextAutoSize.StepBased(minFontSize = 10.sp, maxFontSize = style.fontSize),
+                    )
+                }
+            }
         }
     }
 }

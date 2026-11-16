@@ -38,6 +38,22 @@ class MoneyFmt(val spec: NumberFormatSpec) {
 }
 
 /** UI locale for dates follows the device language (ST-10), not the region. */
+/**
+ * A period written the way people say it, in any language: "Nov 1 – 30, 2026", "Oct 25 – Nov 24, 2026",
+ * "1–30 nov. 2026". Android's range formatter drops repeated month and year.
+ */
+fun periodRange(context: Context, start: LocalDate, end: LocalDate): String {
+    val zone = java.time.ZoneOffset.UTC
+    val a = start.atStartOfDay(zone).toInstant().toEpochMilli()
+    // The range end is exclusive: the start of the next day includes the last day itself.
+    val b = end.plusDays(1).atStartOfDay(zone).toInstant().toEpochMilli()
+    return android.text.format.DateUtils.formatDateRange(
+        context, java.util.Formatter(StringBuilder(), Locale.getDefault()), a, b,
+        android.text.format.DateUtils.FORMAT_SHOW_DATE or android.text.format.DateUtils.FORMAT_ABBREV_MONTH or android.text.format.DateUtils.FORMAT_SHOW_YEAR,
+        "UTC",
+    ).toString()
+}
+
 fun shortDate(date: LocalDate, locale: Locale = Locale.getDefault()): String =
     DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale).format(date)
 

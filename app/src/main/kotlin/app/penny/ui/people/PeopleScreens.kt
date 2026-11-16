@@ -108,14 +108,16 @@ fun PeopleScreen(padding: PaddingValues, go: (String) -> Unit) {
                     }
                 }
             }
-            item {
+            val people = b.people.filter { !it.value.archived }
+            // Quick actions only once there is something here; while empty, each section's empty state offers them
+            // (showing both read as the same buttons twice).
+            if (people.isNotEmpty() || b.groups.any { !it.value.archived }) item {
                 Row(Modifier.padding(horizontal = 16.dp, vertical = 4.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     AssistChip({ go("lending/new/edit") }, label = { Text(stringResource(R.string.record_lending)) }, leadingIcon = { Icon(Icons.Outlined.PersonAdd, null) })
                     AssistChip({ go("group/new/edit") }, label = { Text(stringResource(R.string.new_group)) }, leadingIcon = { Icon(Icons.Outlined.Groups, null) })
                 }
             }
             item { SectionHeader(stringResource(R.string.lending), action = stringResource(R.string.add_person), onAction = { go("person/new/edit") }) }
-            val people = b.people.filter { !it.value.archived }
             if (people.isEmpty()) item { EmptyState(stringResource(R.string.no_people), stringResource(R.string.no_people_body), icon = Icons.Outlined.Person, action = stringResource(R.string.record_lending), onAction = { go("lending/new/edit") }) }
             else item {
                 PennyCard {
@@ -128,7 +130,7 @@ fun PeopleScreen(padding: PaddingValues, go: (String) -> Unit) {
                     }
                 }
             }
-            item { SectionHeader(stringResource(R.string.groups), action = stringResource(R.string.add), onAction = { go("group/new/edit") }) }
+            item { SectionHeader(stringResource(R.string.groups), action = stringResource(R.string.new_group), onAction = { go("group/new/edit") }) }
             val groups = b.groups.filter { !it.value.archived }
             if (groups.isEmpty()) item { EmptyState(stringResource(R.string.no_groups), stringResource(R.string.no_groups_body), icon = Icons.Outlined.Groups, action = stringResource(R.string.new_group), onAction = { go("group/new/edit") }) }
             else item {
@@ -143,10 +145,10 @@ fun PeopleScreen(padding: PaddingValues, go: (String) -> Unit) {
             item { SectionHeader(stringResource(R.string.more_with_people)) }
             item {
                 PennyCard {
-                    ListRow(stringResource(R.string.remittances), leading = { Avatar("R", "remit", icon = Icons.Outlined.Public) }, subtitle = stringResource(R.string.remittances_sub), onClick = { go(Routes.REMITTANCES) }, divider = true)
+                    ListRow(stringResource(R.string.remittances), leading = { Avatar("R", "remit", color = androidx.compose.material3.MaterialTheme.colorScheme.primary, icon = Icons.Outlined.Public) }, subtitle = stringResource(R.string.remittances_sub), onClick = { go(Routes.REMITTANCES) }, divider = true)
                     ListRow(
                         ctx.pack.circleNames.firstOrNull() ?: stringResource(R.string.circles),
-                        leading = { Avatar("C", "circle", icon = Icons.Outlined.Savings) },
+                        leading = { Avatar("C", "circle", color = androidx.compose.material3.MaterialTheme.colorScheme.primary, icon = Icons.Outlined.Savings) },
                         subtitle = stringResource(R.string.circles_sub),
                         onClick = { go(b.circles.firstOrNull()?.let { "circle/${it.state.id}" } ?: "circle/new/edit") },
                     )
@@ -244,9 +246,9 @@ fun PersonEditScreen(id: String, onBack: () -> Unit) {
                     val person = (existing ?: Person(name)).copy(name = name.trim(), phone = phone.trim(), email = email.trim(), payHandle = handle.trim(), note = note.trim())
                     vm.act(R.string.saved, after = onBack) { savePerson(it, if (existing == null) null else id, person) }
                 }, Modifier.padding(horizontal = 16.dp))
-                if (existing != null) Row(Modifier.padding(horizontal = 8.dp)) {
-                    TextButton(onClick = { vm.act(R.string.updated) { savePerson(it, id, existing.copy(archived = !existing.archived)) } }) { Text(stringResource(if (existing.archived) R.string.unarchive else R.string.archive)) }
-                    TextButton(onClick = { vm.act(R.string.deleted, after = onBack) { people.delete(id) } }) { Text(stringResource(R.string.delete)) }
+                if (existing != null) app.penny.ui.kit.ActionStrip {
+                    app.penny.ui.kit.StripAction(onClick = { vm.act(R.string.updated) { savePerson(it, id, existing.copy(archived = !existing.archived)) } }) { Text(stringResource(if (existing.archived) R.string.unarchive else R.string.archive)) }
+                    app.penny.ui.kit.StripAction(destructive = true, onClick = { vm.act(R.string.deleted, after = onBack) { people.delete(id) } }) { Text(stringResource(R.string.delete)) }
                 }
             }
         }

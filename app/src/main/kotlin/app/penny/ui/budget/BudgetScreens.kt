@@ -141,7 +141,7 @@ fun BudgetsScreen(padding: PaddingValues, go: (String) -> Unit) {
                 Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                     IconButton(onClick = { offset-- ; editAnyway = false }) { Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, stringResource(R.string.prev_period)) }
                     Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(stringResource(R.string.period_range, shortDate(period.start), shortDate(period.endInclusive)), style = MaterialTheme.typography.titleSmall)
+                        Text(app.penny.ui.common.periodRange(androidx.compose.ui.platform.LocalContext.current, period.start, period.endInclusive), style = MaterialTheme.typography.titleSmall)
                         Text(cycleLabel(androidx.compose.ui.platform.LocalContext.current, b.profile.cycle), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                     IconButton(onClick = { offset++ ; editAnyway = false }) { Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, stringResource(R.string.next_period)) }
@@ -157,7 +157,7 @@ fun BudgetsScreen(padding: PaddingValues, go: (String) -> Unit) {
             } else {
                 // BU-05: zero-based users see "available to assign" on top; others can hide it via profile settings.
                 item {
-                    PennyCard(color = if (ata < 0) MaterialTheme.colorScheme.surfaceContainerLowest else MaterialTheme.colorScheme.primaryContainer) {
+                    PennyCard(color = if (ata < 0) app.penny.ui.theme.Penny.card else MaterialTheme.colorScheme.primaryContainer) {
                         Row(Modifier.padding(20.dp), verticalAlignment = Alignment.CenterVertically) {
                             Column(Modifier.weight(1f)) {
                                 Text(stringResource(R.string.available_to_assign), style = MaterialTheme.typography.titleSmall)
@@ -169,8 +169,8 @@ fun BudgetsScreen(padding: PaddingValues, go: (String) -> Unit) {
                     }
                 }
                 if (statuses.isEmpty()) item {
-                    EmptyState(stringResource(R.string.no_envelopes), stringResource(R.string.no_envelopes_body), icon = Icons.Outlined.PieChart, action = stringResource(R.string.use_template), onAction = { templateDialog = true })
-                    TextButton(onClick = { go("envelope/new/edit") }, modifier = Modifier.padding(horizontal = 16.dp)) { Text(stringResource(R.string.add_envelope)) }
+                    EmptyState(stringResource(R.string.no_envelopes), stringResource(R.string.no_envelopes_body), icon = Icons.Outlined.PieChart, action = stringResource(R.string.use_template), onAction = { templateDialog = true },
+                        secondary = stringResource(R.string.add_envelope), onSecondary = { go("envelope/new/edit") })
                 } else {
                     item { SectionHeader(stringResource(R.string.envelopes), action = stringResource(R.string.add), onAction = { go("envelope/new/edit") }) }
                     items(statuses, key = { it.id }) { s -> EnvelopeCard(ctx, s, readOnly, onOpen = { go("envelope/${s.id}") }, onAssign = { assignFor = s.id }) }
@@ -179,9 +179,9 @@ fun BudgetsScreen(padding: PaddingValues, go: (String) -> Unit) {
             item { SectionHeader(stringResource(R.string.plan)) }
             item {
                 PennyCard {
-                    ListRow(stringResource(R.string.goals), leading = { Avatar("G", "goals", icon = Icons.Outlined.Flag) }, subtitle = stringResource(R.string.goals_sub), onClick = { go(Routes.GOALS) }, divider = true)
-                    ListRow(stringResource(R.string.bills_subscriptions), leading = { Avatar("B", "bills", icon = Icons.Outlined.ReceiptLong) }, subtitle = stringResource(R.string.bills_sub), onClick = { go(Routes.BILLS) }, divider = true)
-                    ListRow(stringResource(R.string.debt_loans), leading = { Avatar("D", "debt", icon = Icons.Outlined.CreditCard) }, subtitle = stringResource(R.string.debt_sub), onClick = { go(Routes.LOANS) })
+                    ListRow(stringResource(R.string.goals), leading = { Avatar("G", "goals", color = androidx.compose.material3.MaterialTheme.colorScheme.primary, icon = Icons.Outlined.Flag) }, subtitle = stringResource(R.string.goals_sub), onClick = { go(Routes.GOALS) }, divider = true)
+                    ListRow(stringResource(R.string.bills_subscriptions), leading = { Avatar("B", "bills", color = androidx.compose.material3.MaterialTheme.colorScheme.primary, icon = Icons.Outlined.ReceiptLong) }, subtitle = stringResource(R.string.bills_sub), onClick = { go(Routes.BILLS) }, divider = true)
+                    ListRow(stringResource(R.string.debt_loans), leading = { Avatar("D", "debt", color = androidx.compose.material3.MaterialTheme.colorScheme.primary, icon = Icons.Outlined.CreditCard) }, subtitle = stringResource(R.string.debt_sub), onClick = { go(Routes.LOANS) })
                 }
             }
         }
@@ -316,7 +316,7 @@ fun EnvelopeDetailScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Uni
                 item {
                     Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                         IconButton(onClick = { offset-- }) { Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, stringResource(R.string.prev_period)) }
-                        Text(stringResource(R.string.period_range, shortDate(s.period.start), shortDate(s.period.endInclusive)), style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                        Text(app.penny.ui.common.periodRange(androidx.compose.ui.platform.LocalContext.current, s.period.start, s.period.endInclusive), style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
                         IconButton(onClick = { offset++ }) { Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, stringResource(R.string.next_period)) }
                     }
                 }
@@ -350,9 +350,9 @@ fun EnvelopeDetailScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Uni
                             }) { Text(stringResource(R.string.cover_from, src.envelope.name)) }
                         }
                     }
-                    Row(Modifier.padding(horizontal = 8.dp)) {
-                        TextButton(onClick = { vm.act(if (env.value.archived) R.string.unarchived else R.string.archived_done) { saveEnvelope(it, id, env.value.copy(archived = !env.value.archived)) } }) { Text(stringResource(if (env.value.archived) R.string.unarchive else R.string.archive)) }
-                        TextButton(onClick = { vm.act(R.string.deleted, after = onBack) { envelopes.delete(id) } }) { Text(stringResource(R.string.delete)) }
+                    app.penny.ui.kit.ActionStrip {
+                        app.penny.ui.kit.StripAction(destructive = false, onClick = { vm.act(if (env.value.archived) R.string.unarchived else R.string.archived_done) { saveEnvelope(it, id, env.value.copy(archived = !env.value.archived)) } }) { Text(stringResource(if (env.value.archived) R.string.unarchive else R.string.archive)) }
+                        app.penny.ui.kit.StripAction(destructive = true, onClick = { vm.act(R.string.deleted, after = onBack) { envelopes.delete(id) } }) { Text(stringResource(R.string.delete)) }
                     }
                 }
                 if (moves.isNotEmpty()) {

@@ -129,10 +129,13 @@ fun QuickAddSheet(onDismiss: () -> Unit, onMore: (TxType, Long?, String?) -> Uni
 
             Column(Modifier.fillMaxWidth().navigationBarsPadding().padding(bottom = 8.dp)) {
                 Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically) {
-                    listOf(TxType.EXPENSE, TxType.INCOME).forEach { t ->
-                        FilterChip(type == t, { type = t; category = null }, label = { Text(stringResource(typeLabel(t))) }, modifier = Modifier.padding(end = 8.dp))
+                    // Expense / income as the same sliding switch used across the app.
+                    androidx.compose.foundation.layout.Box(Modifier.weight(1f).padding(end = 8.dp)) {
+                        app.penny.ui.kit.Segmented(
+                            listOf(TxType.EXPENSE, TxType.INCOME).map { app.penny.ui.kit.Choice(it, stringResource(typeLabel(it))) }, type, { t -> type = t; category = null },
+                            modifier = Modifier.padding(start = 0.dp),
+                        )
                     }
-                    Spacer(Modifier.weight(1f))
                     IconButton(onClick = { onDismiss(); onVoice() }) { Icon(Icons.Outlined.Mic, stringResource(R.string.voice_add)) }
                     IconButton(onClick = { onDismiss(); onScan() }) { Icon(Icons.Outlined.CameraAlt, stringResource(R.string.scan_receipt)) }
                 }
@@ -150,7 +153,7 @@ fun QuickAddSheet(onDismiss: () -> Unit, onMore: (TxType, Long?, String?) -> Uni
                 }
                 if (amount.isEmpty() && ctx.pack.typicalAmountChips.isNotEmpty()) {
                     LazyRow(contentPadding = PaddingValues(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        items(ctx.pack.typicalAmountChips) { a -> AssistChip({ tick(); amount = a.toString() }, label = { Text(ctx.money(a * (unit?.let { u -> Math.pow(10.0, u.minorUnits.toDouble()).toLong() } ?: 1), currency)) }) }
+                        items(ctx.pack.typicalAmountChips) { a -> AssistChip({ tick(); amount = a.toString() }, label = { Text(ctx.money(a * (unit?.let { u -> Math.pow(10.0, u.minorUnits.toDouble()).toLong() } ?: 1), currency).let { m -> if ((unit?.minorUnits ?: 0) > 0) m.replace(Regex("[.,\u066B]0+(?=[^0-9]*$)"), "") else m }) }) }
                     }
                 }
                 // Six smart categories (TX-14) plus "All".

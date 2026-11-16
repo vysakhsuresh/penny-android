@@ -147,7 +147,7 @@ fun TransactionFormScreen(
                     if (!vm.isEdit && ready.pack.typicalAmountChips.isNotEmpty()) {
                         FlowRow(Modifier.padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             ready.pack.typicalAmountChips.forEach { a ->
-                                SuggestionChip({ vm.update { it.copy(amount = a.toString()) } }, label = { Text(a.toString()) })
+                                SuggestionChip({ vm.update { it.copy(amount = a.toString()) } }, label = { Text(app.penny.core.money.CurrencySymbols.symbol(f.currency, fmt.spec.localeTag) + a) })
                             }
                         }
                     }

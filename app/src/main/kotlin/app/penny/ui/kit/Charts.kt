@@ -76,7 +76,7 @@ fun topWithOther(data: List<Datum>, n: Int, otherLabel: String, format: (Long) -
 fun Donut(data: List<Datum>, centerTop: String, centerValue: String, modifier: Modifier = Modifier, onSelect: ((Datum) -> Unit)? = null) {
     val total = data.sumOf { it.value }.coerceAtLeast(1)
     val colors = data.mapIndexed { i, d -> seriesColor(d.key, i) }
-    val surface = MaterialTheme.colorScheme.surfaceContainerLowest
+    val surface = app.penny.ui.theme.Penny.card
     val track = LocalPenny.current.status.track
     val summary = data.joinToString { "${it.label} ${it.valueText}" }
     Row(modifier.fillMaxWidth().padding(16.dp).semantics(mergeDescendants = true) { contentDescription = summary }, verticalAlignment = Alignment.CenterVertically) {
@@ -135,7 +135,7 @@ fun Bars(
 ) {
     val accent = MaterialTheme.colorScheme.primary
     val muted = MaterialTheme.colorScheme.primary.copy(alpha = 0.35f)
-    val second = MaterialTheme.colorScheme.tertiary
+    val second = app.penny.ui.theme.Penny.gold
     val grid = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)
     val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
     var picked by remember(data) { mutableStateOf(highlight ?: data.lastIndex) }
@@ -211,7 +211,7 @@ fun LineChart(points: List<Pair<String, Long>>, format: (Long) -> String, modifi
     val grid = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)
     val ink = MaterialTheme.colorScheme.onSurface
     val near = LocalPenny.current.status.near
-    val ring = MaterialTheme.colorScheme.surfaceContainerLowest
+    val ring = app.penny.ui.theme.Penny.card
     var picked by remember(points) { mutableStateOf<Int?>(null) }
     val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
     if (points.isEmpty()) return

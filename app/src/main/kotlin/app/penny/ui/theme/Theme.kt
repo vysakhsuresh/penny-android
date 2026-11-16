@@ -60,35 +60,44 @@ data class PennyExtras(
     val isDark: Boolean,
 )
 
+/** Money-in green: a status colour (positive), no longer the brand accent. */
 private val Accent = Color(0xFF007D54)
 private val AccentDark = Color(0xFF52E0A6)
 
+/**
+ * Brand: plum with gold, matching the launcher icon. Plum carries actions and selection; gold is a sparing highlight
+ * (tertiary). Neutrals lean slightly violet so surfaces and the accent belong together. All text pairs meet AA:
+ * white on plum 9.6:1, plum on background 9.2:1; in dark, lavender on background 9.9:1.
+ */
+private val Plum = Color(0xFF5B2D8E)
+private val PlumDark = Color(0xFFD4B8FF)
+
 private val LightScheme = lightColorScheme(
-    primary = Accent, onPrimary = Color.White, primaryContainer = Color(0xFFCFF1E0), onPrimaryContainer = Color(0xFF002616),
-    secondary = Color(0xFF4A5F55), onSecondary = Color.White, secondaryContainer = Color(0xFFDDE9E2), onSecondaryContainer = Color(0xFF0B1F16),
-    tertiary = Color(0xFF3D5F7A), onTertiary = Color.White, tertiaryContainer = Color(0xFFD5E6F5), onTertiaryContainer = Color(0xFF0A1E2E),
-    background = Color(0xFFF7F6F1), onBackground = Color(0xFF16201B),
-    surface = Color(0xFFF7F6F1), onSurface = Color(0xFF16201B),
-    surfaceVariant = Color(0xFFE4E7E1), onSurfaceVariant = Color(0xFF454E48),
-    surfaceContainerLowest = Color(0xFFFFFFFF), surfaceContainerLow = Color(0xFFF2F1EB), surfaceContainer = Color(0xFFECEBE5),
-    surfaceContainerHigh = Color(0xFFE6E5DF), surfaceContainerHighest = Color(0xFFE0DFD9),
-    outline = Color(0xFF747C76), outlineVariant = Color(0xFFC7CCC6),
+    primary = Plum, onPrimary = Color.White, primaryContainer = Color(0xFFEFE4FB), onPrimaryContainer = Color(0xFF24093F),
+    secondary = Color(0xFF5E5470), onSecondary = Color.White, secondaryContainer = Color(0xFFE9E2F2), onSecondaryContainer = Color(0xFF1C1527),
+    tertiary = Color(0xFF7A5600), onTertiary = Color.White, tertiaryContainer = Color(0xFFFFE6A8), onTertiaryContainer = Color(0xFF261A00),
+    background = Color(0xFFF8F6FB), onBackground = Color(0xFF1C1724),
+    surface = Color(0xFFF8F6FB), onSurface = Color(0xFF1C1724),
+    surfaceVariant = Color(0xFFE7E1EE), onSurfaceVariant = Color(0xFF4D4659),
+    surfaceContainerLowest = Color(0xFFFFFFFF), surfaceContainerLow = Color(0xFFF3F0F8), surfaceContainer = Color(0xFFEEEAF4),
+    surfaceContainerHigh = Color(0xFFE8E3EF), surfaceContainerHighest = Color(0xFFE2DCEA),
+    outline = Color(0xFF7B7387), outlineVariant = Color(0xFFCEC6DA),
     error = Color(0xFFB3261E), onError = Color.White, errorContainer = Color(0xFFF9DEDC), onErrorContainer = Color(0xFF410E0B),
-    inverseSurface = Color(0xFF2B322E), inverseOnSurface = Color(0xFFEFF1EC), inversePrimary = AccentDark,
+    inverseSurface = Color(0xFF312B39), inverseOnSurface = Color(0xFFF3EEF8), inversePrimary = PlumDark,
 )
 
 private val DarkScheme = darkColorScheme(
-    primary = AccentDark, onPrimary = Color(0xFF003824), primaryContainer = Color(0xFF0F4E37), onPrimaryContainer = Color(0xFFB5F2D3),
-    secondary = Color(0xFFB2CBBE), onSecondary = Color(0xFF1D3429), secondaryContainer = Color(0xFF2E443A), onSecondaryContainer = Color(0xFFCFE7DA),
-    tertiary = Color(0xFFA9CAE6), onTertiary = Color(0xFF0F3249), tertiaryContainer = Color(0xFF274A62), onTertiaryContainer = Color(0xFFD3E6F7),
-    background = Color(0xFF0F1412), onBackground = Color(0xFFE3E8E4),
-    surface = Color(0xFF0F1412), onSurface = Color(0xFFE3E8E4),
-    surfaceVariant = Color(0xFF3B4540), onSurfaceVariant = Color(0xFFBEC8C1),
-    surfaceContainerLowest = Color(0xFF0A0E0C), surfaceContainerLow = Color(0xFF161C19), surfaceContainer = Color(0xFF1A211D),
-    surfaceContainerHigh = Color(0xFF242B27), surfaceContainerHighest = Color(0xFF2F3632),
-    outline = Color(0xFF89938C), outlineVariant = Color(0xFF3B4540),
+    primary = PlumDark, onPrimary = Color(0xFF3A1468), primaryContainer = Color(0xFF41206B), onPrimaryContainer = Color(0xFFEDDFFF),
+    secondary = Color(0xFFCDC1DC), onSecondary = Color(0xFF332B40), secondaryContainer = Color(0xFF3B3348), onSecondaryContainer = Color(0xFFE9DEF7),
+    tertiary = Color(0xFFF2C14E), onTertiary = Color(0xFF3D2B00), tertiaryContainer = Color(0xFF5A4200), onTertiaryContainer = Color(0xFFFFE6A8),
+    background = Color(0xFF141118), onBackground = Color(0xFFE9E3EE),
+    surface = Color(0xFF141118), onSurface = Color(0xFFE9E3EE),
+    surfaceVariant = Color(0xFF4A4352), onSurfaceVariant = Color(0xFFCBC3D3),
+    surfaceContainerLowest = Color(0xFF0F0C13), surfaceContainerLow = Color(0xFF1B1721), surfaceContainer = Color(0xFF201B26),
+    surfaceContainerHigh = Color(0xFF2A2431), surfaceContainerHighest = Color(0xFF352E3C),
+    outline = Color(0xFF958D9F), outlineVariant = Color(0xFF4A4352),
     error = Color(0xFFF2B8B5), onError = Color(0xFF601410), errorContainer = Color(0xFF8C1D18), onErrorContainer = Color(0xFFF9DEDC),
-    inverseSurface = Color(0xFFE3E8E4), inverseOnSurface = Color(0xFF2B322E), inversePrimary = Accent,
+    inverseSurface = Color(0xFFE9E3EE), inverseOnSurface = Color(0xFF312B39), inversePrimary = Plum,
 )
 
 private val BlackScheme = DarkScheme.copy(
@@ -97,8 +106,8 @@ private val BlackScheme = DarkScheme.copy(
 )
 
 private val HighContrastScheme = lightColorScheme(
-    primary = Color(0xFF00402B), onPrimary = Color.White, primaryContainer = Color(0xFF00402B), onPrimaryContainer = Color.White,
-    secondary = Color(0xFF1C2B24), onSecondary = Color.White, secondaryContainer = Color(0xFF1C2B24), onSecondaryContainer = Color.White,
+    primary = Color(0xFF34105C), onPrimary = Color.White, primaryContainer = Color(0xFF34105C), onPrimaryContainer = Color.White,
+    secondary = Color(0xFF221A2D), onSecondary = Color.White, secondaryContainer = Color(0xFF221A2D), onSecondaryContainer = Color.White,
     background = Color.White, onBackground = Color.Black, surface = Color.White, onSurface = Color.Black,
     surfaceVariant = Color(0xFFE8E8E8), onSurfaceVariant = Color(0xFF1A1A1A), outline = Color(0xFF000000), outlineVariant = Color(0xFF4A4A4A),
     surfaceContainerLowest = Color.White, surfaceContainerLow = Color.White, surfaceContainer = Color(0xFFF2F2F2),
@@ -109,12 +118,12 @@ private val HighContrastScheme = lightColorScheme(
 private val LightStatus = StatusColors(
     near = Color(0xFF7A4A00), onNear = Color.White, nearContainer = Color(0xFFFFE6BF),
     over = Color(0xFF9A3D00), onOver = Color.White, overContainer = Color(0xFFFFDCC7),
-    positive = Accent, positiveContainer = Color(0xFFCFF1E0), track = Color(0xFFE0E3DD),
+    positive = Accent, positiveContainer = Color(0xFFCFF1E0), track = Color(0xFFE4DFEB),
 )
 private val DarkStatus = StatusColors(
     near = Color(0xFFFFC46B), onNear = Color(0xFF3A2600), nearContainer = Color(0xFF4A3300),
     over = Color(0xFFFFA06A), onOver = Color(0xFF3D1600), overContainer = Color(0xFF5A2600),
-    positive = AccentDark, positiveContainer = Color(0xFF0F4E37), track = Color(0xFF2A322E),
+    positive = AccentDark, positiveContainer = Color(0xFF0F4E37), track = Color(0xFF2E2836),
 )
 private val HighContrastStatus = LightStatus.copy(near = Color(0xFF5C3700), over = Color(0xFF7A2F00), track = Color(0xFFBDBDBD))
 
@@ -146,20 +155,24 @@ val TabularNumbers = "tnum, lnum"
 
 private fun typography(): Typography {
     val base = Typography()
-    fun TextStyle.j(w: Int, size: Int? = null, line: Int? = null, track: Double? = null) = copy(
+    // Balanced line breaking everywhere: headings split evenly, paragraphs avoid a lone last word (no ragged,
+    // "programmer" wraps). Hyphenation stays off so names and amounts are never split.
+    fun TextStyle.j(w: Int, size: Int? = null, line: Int? = null, track: Double? = null, heading: Boolean = false) = copy(
         fontFamily = Jakarta, fontWeight = FontWeight(w),
         fontSize = size?.sp ?: fontSize, lineHeight = line?.sp ?: lineHeight, letterSpacing = track?.sp ?: letterSpacing,
+        lineBreak = if (heading) androidx.compose.ui.text.style.LineBreak.Heading else androidx.compose.ui.text.style.LineBreak.Paragraph,
+        hyphens = androidx.compose.ui.text.style.Hyphens.None,
     )
     return Typography(
-        displayLarge = base.displayLarge.j(700, 52, 60, -1.0),
-        displayMedium = base.displayMedium.j(700, 44, 52, -0.8),
-        displaySmall = base.displaySmall.j(700, 36, 44, -0.6),
-        headlineLarge = base.headlineLarge.j(700, 30, 38, -0.4),
-        headlineMedium = base.headlineMedium.j(700, 26, 34, -0.3),
-        headlineSmall = base.headlineSmall.j(700, 22, 30, -0.2),
-        titleLarge = base.titleLarge.j(700, 20, 28, -0.1),
-        titleMedium = base.titleMedium.j(600, 16, 24, 0.0),
-        titleSmall = base.titleSmall.j(700, 14, 20, 0.1),
+        displayLarge = base.displayLarge.j(700, 52, 60, -1.0, heading = true),
+        displayMedium = base.displayMedium.j(700, 44, 52, -0.8, heading = true),
+        displaySmall = base.displaySmall.j(700, 36, 44, -0.6, heading = true),
+        headlineLarge = base.headlineLarge.j(700, 30, 38, -0.4, heading = true),
+        headlineMedium = base.headlineMedium.j(700, 26, 34, -0.3, heading = true),
+        headlineSmall = base.headlineSmall.j(700, 22, 30, -0.2, heading = true),
+        titleLarge = base.titleLarge.j(700, 20, 28, -0.1, heading = true),
+        titleMedium = base.titleMedium.j(600, 16, 24, 0.0, heading = true),
+        titleSmall = base.titleSmall.j(700, 14, 20, 0.1, heading = true),
         bodyLarge = base.bodyLarge.j(500, 16, 24, 0.0),
         bodyMedium = base.bodyMedium.j(500, 14, 20, 0.0),
         bodySmall = base.bodySmall.j(500, 12, 16, 0.1),
@@ -192,8 +205,17 @@ fun PennyTheme(appearance: Appearance = Appearance(), content: @Composable () ->
         else -> if (dark) DarkScheme else LightScheme
     }
     if (appearance.accent != 0L && mode != ThemeMode.HIGH_CONTRAST) {
+        // A chosen accent recolours the whole family (containers too), and is lightened for dark backgrounds,
+        // so a green or blue choice never sits on plum containers or disappears on black.
         val a = Color(appearance.accent)
-        scheme = scheme.copy(primary = a)
+        val lerp = androidx.compose.ui.graphics.lerp(a, Color.White, 0f)
+        scheme = if (dark) scheme.copy(
+            primary = androidx.compose.ui.graphics.lerp(lerp, Color.White, 0.55f), onPrimary = androidx.compose.ui.graphics.lerp(a, Color.Black, 0.6f),
+            primaryContainer = androidx.compose.ui.graphics.lerp(a, Color.Black, 0.55f), onPrimaryContainer = androidx.compose.ui.graphics.lerp(a, Color.White, 0.85f),
+        ) else scheme.copy(
+            primary = a, onPrimary = Color.White,
+            primaryContainer = androidx.compose.ui.graphics.lerp(a, Color.White, 0.86f), onPrimaryContainer = androidx.compose.ui.graphics.lerp(a, Color.Black, 0.7f),
+        )
     }
     val status = when (mode) {
         ThemeMode.HIGH_CONTRAST -> HighContrastStatus
@@ -229,4 +251,8 @@ object Penny {
     val extras: PennyExtras @Composable get() = LocalPenny.current
     val status: StatusColors @Composable get() = LocalPenny.current.status
     val spacing: Spacing @Composable get() = LocalPenny.current.spacing
+    /** Gold for chart marks: the brand gold in dark, a deeper gold on light surfaces (3:1 against white). */
+    val gold: Color @Composable get() = if (LocalPenny.current.isDark) MaterialTheme.colorScheme.tertiary else Color(0xFFB38600)
+    /** Card and row surface: white on the light page, one step above the page in dark (never below it). */
+    val card: Color @Composable get() = if (LocalPenny.current.isDark) MaterialTheme.colorScheme.surfaceContainerLow else MaterialTheme.colorScheme.surfaceContainerLowest
 }

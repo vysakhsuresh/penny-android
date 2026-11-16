@@ -1,5 +1,7 @@
 package app.penny.ui.accounts
 
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Archive
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -189,7 +191,10 @@ fun AccountDetailScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit
                         val d = if (m == 0) today else today.minusMonths(m.toLong()).withDayOfMonth(1).plusMonths(1).minusDays(1)
                         shortDate(d) to NetWorth.value(id, a, b.txList, d, b.valuations.map { it.value }, ctx.pack.goldPricePerGram)
                     }
-                    if (txs.isNotEmpty()) { SectionHeader(stringResource(R.string.balance_history)); LineChart(pts, { ctx.money(it, a.currency) }) }
+                    if (txs.isNotEmpty()) {
+                        SectionHeader(stringResource(R.string.balance_history))
+                        PennyCard { androidx.compose.foundation.layout.Spacer(Modifier.height(12.dp)); LineChart(pts, { ctx.money(it, a.currency) }); androidx.compose.foundation.layout.Spacer(Modifier.height(12.dp)) }
+                    }
                 }
                 item {
                     Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)) {
@@ -201,16 +206,22 @@ fun AccountDetailScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit
                     if (a.type in listOf(AccountType.ASSET, AccountType.INVESTMENT, AccountType.RECEIVABLE)) {
                         OutlinedButton(onClick = { dialog = "value" }, modifier = Modifier.padding(horizontal = 16.dp)) { Text(stringResource(R.string.record_value)) }
                     }
-                    Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
-                        TextButton(onClick = { vm.act(if (a.archived) R.string.unarchived else R.string.archived_done) { saveAccount(it, id, a.copy(archived = !a.archived)) } }) {
-                            Text(stringResource(if (a.archived) R.string.unarchive else R.string.archive))
-                        }
-                        TextButton(onClick = { dialog = "delete" }) { Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error) }
-                    }
                 }
                 item { SectionHeader(stringResource(R.string.transactions)) }
                 if (txs.isEmpty()) item { EmptyState(stringResource(R.string.no_tx_title), stringResource(R.string.no_tx_account_body)) }
                 items(txs.take(300), key = { it.state.id }) { s -> TxRow(s.state.id, s.value, ctx, onOpen = { onOpenTx(s.state.id) }, showDate = true, forAccount = id) }
+                // Rare, account-level actions live together at the end instead of as loose links mid-screen.
+                item {
+                    SectionHeader(stringResource(R.string.manage))
+                    PennyCard {
+                        ListRow(stringResource(if (a.archived) R.string.unarchive else R.string.archive),
+                            leading = { Icon(Icons.Outlined.Archive, null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
+                            onClick = { vm.act(if (a.archived) R.string.unarchived else R.string.archived_done) { saveAccount(it, id, a.copy(archived = !a.archived)) } }, divider = true)
+                        ListRow(stringResource(R.string.delete_account_row),
+                            leading = { Icon(Icons.Outlined.Delete, null, tint = MaterialTheme.colorScheme.error) },
+                            onClick = { dialog = "delete" })
+                    }
+                }
             }
         }
         when (dialog) {

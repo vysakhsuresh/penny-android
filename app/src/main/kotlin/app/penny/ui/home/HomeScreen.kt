@@ -120,7 +120,7 @@ private fun HomeContent(ctx: Ctx, vm: BookViewModel, nav: HomeNav, padding: Padd
                 IconButton(onClick = nav.profiles) { Avatar(b.profile.name, b.profileId, size = 36.dp, modifier = Modifier.semantics { contentDescription = context.getString(R.string.settings) }) }
                 Column(Modifier.weight(1f).padding(start = 4.dp)) {
                     Text(b.profile.name, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                    Text(stringResource(R.string.period_range, shortDate(period.start), shortDate(period.endInclusive)), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(app.penny.ui.common.periodRange(androidx.compose.ui.platform.LocalContext.current, period.start, period.endInclusive), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 IconButton(onClick = { hide = !hide; vm.prefs.setAppearance(vm.prefs.appearance.value.copy(hideAmounts = hide)) }) {
                     Icon(if (hide) Icons.Outlined.VisibilityOff else Icons.Outlined.Visibility, stringResource(if (hide) R.string.show_amounts else R.string.hide_amounts))
@@ -167,7 +167,7 @@ private fun HomeContent(ctx: Ctx, vm: BookViewModel, nav: HomeNav, padding: Padd
                 LazyRow(contentPadding = PaddingValues(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     items(bills.take(10), key = { it.key }) { u ->
                         val days = ChronoUnit.DAYS.between(today, u.date).toInt()
-                        Card(onClick = nav.bills, colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest), shape = MaterialTheme.shapes.large) {
+                        Card(onClick = nav.bills, colors = CardDefaults.cardColors(containerColor = app.penny.ui.theme.Penny.card), shape = MaterialTheme.shapes.large) {
                             Column(Modifier.padding(14.dp).width(150.dp)) {
                                 Icon(Icons.Outlined.ReceiptLong, null, tint = MaterialTheme.colorScheme.primary)
                                 Spacer(Modifier.height(6.dp))
@@ -213,7 +213,7 @@ private fun HomeContent(ctx: Ctx, vm: BookViewModel, nav: HomeNav, padding: Padd
             item {
                 LazyRow(contentPadding = PaddingValues(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     items(b.activeAccounts, key = { it.state.id }) { a ->
-                        Card(onClick = { nav.account(a.state.id) }, colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest), shape = MaterialTheme.shapes.large) {
+                        Card(onClick = { nav.account(a.state.id) }, colors = CardDefaults.cardColors(containerColor = app.penny.ui.theme.Penny.card), shape = MaterialTheme.shapes.large) {
                             Column(Modifier.padding(14.dp).width(148.dp)) {
                                 Avatar(a.value.name, a.state.id, icon = accountIcon(a.value.type), size = 32.dp)
                                 Spacer(Modifier.height(8.dp))
@@ -321,10 +321,10 @@ private fun SafeHero(ctx: Ctx, safe: app.penny.core.budget.SafeToSpend, offset: 
                 Spacer(Modifier.height(10.dp))
                 // Honest states: no income yet, spent more than came in, ahead of pace, or on pace. Never red (AL-08).
                 when {
-                    noIncome -> Pill(stringResource(R.string.no_income_yet), container = MaterialTheme.colorScheme.surfaceContainerLowest, content = MaterialTheme.colorScheme.onSurface)
+                    noIncome -> Pill(stringResource(R.string.no_income_yet), container = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.12f), content = MaterialTheme.colorScheme.onPrimaryContainer)
                     over -> Pill(stringResource(R.string.spent_more_than_income), container = st.overContainer, content = MaterialTheme.colorScheme.onSurface)
                     ahead -> Pill(stringResource(R.string.ahead_of_pace), container = st.nearContainer, content = MaterialTheme.colorScheme.onSurface)
-                    else -> Pill(stringResource(R.string.on_pace), container = MaterialTheme.colorScheme.surfaceContainerLowest, content = MaterialTheme.colorScheme.onSurface)
+                    else -> Pill(stringResource(R.string.on_pace), container = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.12f), content = MaterialTheme.colorScheme.onPrimaryContainer)
                 }
             }
         }

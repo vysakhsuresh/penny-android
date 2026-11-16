@@ -112,16 +112,16 @@ fun HelpScreen(onBack: () -> Unit, go: (String) -> Unit) {
             item { SectionHeader(stringResource(R.string.guides)) }
             item {
                 PennyCard {
-                    GUIDES.take(4).forEach { g -> ListRow(stringResource(g.title), leading = { Avatar("G", g.key, icon = Icons.AutoMirrored.Outlined.LibraryBooks, size = 36.dp) }, onClick = { go(Routes.guides(g.key)) }, divider = true) }
+                    GUIDES.take(4).forEach { g -> ListRow(stringResource(g.title), leading = { Avatar("G", g.key, color = androidx.compose.material3.MaterialTheme.colorScheme.primary, icon = Icons.AutoMirrored.Outlined.LibraryBooks, size = 36.dp) }, onClick = { go(Routes.guides(g.key)) }, divider = true) }
                     TextButton(onClick = { go(Routes.guides()) }, modifier = Modifier.padding(8.dp)) { Text(stringResource(R.string.all_guides)) }
                 }
             }
             item { SectionHeader(stringResource(R.string.contact)) }
             item {
                 PennyCard {
-                    ListRow(stringResource(R.string.email_support), subtitle = stringResource(R.string.email_support_sub), leading = { Avatar("E", "email", icon = Icons.Outlined.Email, size = 36.dp) }, onClick = { email(context.getString(R.string.help_request)) }, divider = true)
-                    ListRow(stringResource(R.string.report_bug), leading = { Avatar("B", "bug", icon = Icons.Outlined.BugReport, size = 36.dp) }, onClick = { email(context.getString(R.string.bug_report)) }, divider = true)
-                    ListRow(stringResource(R.string.suggest_feature), leading = { Avatar("I", "idea", icon = Icons.Outlined.Lightbulb, size = 36.dp) }, onClick = { email(context.getString(R.string.feature_idea)) }, divider = true)
+                    ListRow(stringResource(R.string.email_support), subtitle = stringResource(R.string.email_support_sub), leading = { Avatar("E", "email", color = androidx.compose.material3.MaterialTheme.colorScheme.primary, icon = Icons.Outlined.Email, size = 36.dp) }, onClick = { email(context.getString(R.string.help_request)) }, divider = true)
+                    ListRow(stringResource(R.string.report_bug), leading = { Avatar("B", "bug", color = androidx.compose.material3.MaterialTheme.colorScheme.primary, icon = Icons.Outlined.BugReport, size = 36.dp) }, onClick = { email(context.getString(R.string.bug_report)) }, divider = true)
+                    ListRow(stringResource(R.string.suggest_feature), leading = { Avatar("I", "idea", color = androidx.compose.material3.MaterialTheme.colorScheme.primary, icon = Icons.Outlined.Lightbulb, size = 36.dp) }, onClick = { email(context.getString(R.string.feature_idea)) }, divider = true)
                     SwitchRow(stringResource(R.string.include_diagnostics), diag, { diag = it }, subtitle = stringResource(R.string.include_diagnostics_hint))
                 }
             }
@@ -171,7 +171,7 @@ fun CoffeeScreen(onBack: () -> Unit) {
     val tiers = listOf("tip_small" to R.string.tip_small, "tip_medium" to R.string.tip_medium, "tip_large" to R.string.tip_large)
     PennyScreen(stringResource(R.string.buy_coffee), onBack) { pad ->
         Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(bottom = 48.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-            Avatar("C", "coffee", icon = Icons.Outlined.Coffee, size = 88.dp)
+            Avatar("C", "coffee", color = androidx.compose.material3.MaterialTheme.colorScheme.primary, icon = Icons.Outlined.Coffee, size = 88.dp)
             Spacer(Modifier.height(16.dp))
             Text(stringResource(R.string.coffee_title), style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(horizontal = 24.dp))
             Spacer(Modifier.height(8.dp))

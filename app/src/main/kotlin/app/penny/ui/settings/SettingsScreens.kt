@@ -103,7 +103,7 @@ import java.util.Locale
 
 @Composable
 private fun Entry(title: String, icon: ImageVector, subtitle: String? = null, onClick: () -> Unit) =
-    ListRow(title, subtitle = subtitle, leading = { Avatar(title, title, icon = icon, size = 36.dp) }, onClick = onClick, divider = true)
+    ListRow(title, subtitle = subtitle, leading = { Avatar(title, title, icon = icon, size = 36.dp, color = MaterialTheme.colorScheme.primary) }, onClick = onClick, divider = true)
 
 /** Settings hub (ST-01…ST-12): everything is at most two taps from Home (UX-03). */
 @Composable
@@ -349,7 +349,7 @@ fun AppearanceScreen(onBack: () -> Unit) {
                     Choice(ThemeMode.DARK, stringResource(R.string.theme_dark)), Choice(ThemeMode.BLACK, stringResource(R.string.theme_black)),
                     Choice(ThemeMode.HIGH_CONTRAST, stringResource(R.string.theme_contrast)),
                 ), { it?.let { t -> set(a.copy(theme = t)) } })
-                SelectField(stringResource(R.string.accent), a.accent, listOf(Choice(0L, stringResource(R.string.accent_default)), Choice(0xFF2A5DB0, stringResource(R.string.accent_blue)), Choice(0xFF7B4FB8, stringResource(R.string.accent_violet)), Choice(0xFF1F7A86, stringResource(R.string.accent_teal)), Choice(0xFF8A5A2B, stringResource(R.string.accent_bronze))), { it?.let { c -> set(a.copy(accent = c)) } })
+                SelectField(stringResource(R.string.accent), a.accent, listOf(Choice(0L, stringResource(R.string.accent_plum)), Choice(0xFF007D54, stringResource(R.string.accent_green)), Choice(0xFF2A5DB0, stringResource(R.string.accent_blue)), Choice(0xFF7B4FB8, stringResource(R.string.accent_violet)), Choice(0xFF1F7A86, stringResource(R.string.accent_teal)), Choice(0xFF8A5A2B, stringResource(R.string.accent_bronze))), { it?.let { c -> set(a.copy(accent = c)) } })
                 SectionHeader(stringResource(R.string.text_size))
                 // Applied when the finger lifts: resizing text mid-drag moved the slider away from the finger and the drag stopped.
                 var pending by androidx.compose.runtime.remember(a.textScale) { mutableStateOf(a.textScale) }

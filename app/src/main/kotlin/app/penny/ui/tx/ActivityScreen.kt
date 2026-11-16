@@ -141,7 +141,7 @@ fun ActivityScreen(initialFilter: String?, onBack: () -> Unit, onOpen: (String) 
                     TopAppBar(
                         title = {
                             OutlinedTextField(
-                                query, { query = it }, placeholder = { Text(stringResource(R.string.search_hint)) }, singleLine = true,
+                                query, { query = it }, placeholder = { Text(stringResource(R.string.search_hint), maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis) }, singleLine = true,
                                 leadingIcon = { Icon(Icons.Outlined.Search, null) },
                                 trailingIcon = { if (query.isNotEmpty()) IconButton(onClick = { query = "" }) { Icon(Icons.Outlined.Close, stringResource(R.string.clear)) } },
                                 modifier = Modifier.fillMaxWidth().padding(end = 8.dp).focusRequester(searchFocus), shape = MaterialTheme.shapes.extraLarge,

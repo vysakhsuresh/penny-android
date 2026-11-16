@@ -176,10 +176,10 @@ fun GroupScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onExpe
                             }
                         }
                     }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.share_group_link)) }
-                    Row(Modifier.padding(horizontal = 8.dp)) {
-                        TextButton(onClick = { vm.act(R.string.updated) { saveGroup(it, id, g.value.copy(simplify = !g.value.simplify)) } }) { Text(stringResource(if (g.value.simplify) R.string.show_pairwise else R.string.simplify_debts)) }
-                        TextButton(onClick = { vm.act(if (g.value.archived) R.string.unarchived else R.string.archived_done) { saveGroup(it, id, g.value.copy(archived = !g.value.archived)) } }) { Text(stringResource(if (g.value.archived) R.string.unarchive else R.string.archive)) }
-                        TextButton(onClick = { vm.act(R.string.deleted, after = onBack) { groups.delete(id) } }) { Text(stringResource(R.string.delete)) }
+                    app.penny.ui.kit.ActionStrip {
+                        app.penny.ui.kit.StripAction(destructive = false, onClick = { vm.act(R.string.updated) { saveGroup(it, id, g.value.copy(simplify = !g.value.simplify)) } }) { Text(stringResource(if (g.value.simplify) R.string.show_pairwise else R.string.simplify_debts)) }
+                        app.penny.ui.kit.StripAction(destructive = false, onClick = { vm.act(if (g.value.archived) R.string.unarchived else R.string.archived_done) { saveGroup(it, id, g.value.copy(archived = !g.value.archived)) } }) { Text(stringResource(if (g.value.archived) R.string.unarchive else R.string.archive)) }
+                        app.penny.ui.kit.StripAction(destructive = true, onClick = { vm.act(R.string.deleted, after = onBack) { groups.delete(id) } }) { Text(stringResource(R.string.delete)) }
                     }
                 }
             }
@@ -540,9 +540,9 @@ fun CircleScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit) {
                     }
                 }
                 item {
-                    Row(Modifier.padding(horizontal = 8.dp)) {
-                        TextButton(onClick = { vm.act(R.string.updated) { saveCircle(it, id, c.value.copy(closed = !c.value.closed)) } }) { Text(stringResource(if (c.value.closed) R.string.reopen else R.string.close_circle)) }
-                        TextButton(onClick = { vm.act(R.string.deleted, after = onBack) { circles.delete(id) } }) { Text(stringResource(R.string.delete)) }
+                    app.penny.ui.kit.ActionStrip {
+                        app.penny.ui.kit.StripAction(destructive = false, onClick = { vm.act(R.string.updated) { saveCircle(it, id, c.value.copy(closed = !c.value.closed)) } }) { Text(stringResource(if (c.value.closed) R.string.reopen else R.string.close_circle)) }
+                        app.penny.ui.kit.StripAction(destructive = true, onClick = { vm.act(R.string.deleted, after = onBack) { circles.delete(id) } }) { Text(stringResource(R.string.delete)) }
                     }
                 }
             }

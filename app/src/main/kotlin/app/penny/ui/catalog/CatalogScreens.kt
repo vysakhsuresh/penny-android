@@ -231,10 +231,10 @@ fun PayeeDetailScreen(id: String, onBack: () -> Unit, onOpenTx: (String) -> Unit
                         vm.act(R.string.updated) { payees.update(id, p.value.copy(defaultCategoryId = c)) }
                     }, allowNone = true)
                     if (p.value.aliases.isNotEmpty()) Text(stringResource(R.string.aliases, p.value.aliases.joinToString(", ")), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))
-                    Row(Modifier.padding(horizontal = 8.dp)) {
-                        TextButton(onClick = { dialog = "rename" }) { Text(stringResource(R.string.rename)) }
-                        TextButton(onClick = { dialog = "merge" }) { Text(stringResource(R.string.merge_into)) }
-                        TextButton(onClick = { dialog = "delete" }) { Text(stringResource(R.string.delete)) }
+                    app.penny.ui.kit.ActionStrip {
+                        app.penny.ui.kit.StripAction(destructive = false, onClick = { dialog = "rename" }) { Text(stringResource(R.string.rename)) }
+                        app.penny.ui.kit.StripAction(destructive = false, onClick = { dialog = "merge" }) { Text(stringResource(R.string.merge_into)) }
+                        app.penny.ui.kit.StripAction(destructive = true, onClick = { dialog = "delete" }) { Text(stringResource(R.string.delete)) }
                     }
                 }
                 item { SectionHeader(stringResource(R.string.transactions)) }

@@ -1,5 +1,11 @@
 package app.penny.ui.insights
 
+import androidx.compose.foundation.layout.width
+import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.outlined.Edit
 import app.penny.ui.common.safeStart
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
@@ -126,15 +132,20 @@ fun InsightsScreen(padding: PaddingValues, go: (String) -> Unit) {
             item {
                 Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                     IconButton(onClick = { offset-- }) { Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, stringResource(R.string.previous)) }
-                    Text(stringResource(R.string.period_range, shortDate(p.start), shortDate(p.endInclusive)), style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                    Text(app.penny.ui.common.periodRange(androidx.compose.ui.platform.LocalContext.current, p.start, p.endInclusive), style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
                     IconButton(onClick = { offset++ }) { Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, stringResource(R.string.next)) }
                 }
             }
             // "Pay period" follows the pay cycle in the profile; say which one it is and where to change it.
             if (range == Range.PERIOD) item {
-                Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-                    Text(app.penny.ui.common.cycleLabel(LocalContext.current, ctx.book.profile.cycle), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    TextButton(onClick = { go(app.penny.Routes.PROFILE_SETTINGS) }) { Text(stringResource(R.string.change_cycle)) }
+                Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    // One tidy chip: the cycle in use, tap to change it (a sentence plus a link wrapped at large text).
+                    androidx.compose.material3.AssistChip(
+                        onClick = { go(app.penny.Routes.PROFILE_SETTINGS) },
+                        label = { Text(app.penny.ui.common.cycleLabel(LocalContext.current, ctx.book.profile.cycle), maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis) },
+                        trailingIcon = { Icon(androidx.compose.material.icons.Icons.Outlined.Edit, stringResource(R.string.change_cycle), Modifier.size(16.dp)) },
+                        shape = androidx.compose.foundation.shape.RoundedCornerShape(50),
+                    )
                 }
             }
             item {
@@ -147,7 +158,12 @@ fun InsightsScreen(padding: PaddingValues, go: (String) -> Unit) {
                         }
                         Spacer(Modifier.height(8.dp))
                         fun delta(now: Long, then: Long): String = if (then == 0L) "—" else "%+d%%".format(((now - then) * 100 / then).toInt())
-                        Text(stringResource(R.string.vs_previous, delta(s.spentMinor, s.previousSpentMinor)) + " · " + stringResource(R.string.vs_last_year, delta(s.spentMinor, s.lastYearSpentMinor)), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        // Only comparisons that exist; a row of dashes says nothing.
+                        val parts = listOfNotNull(
+                            s.previousSpentMinor.takeIf { it != 0L }?.let { stringResource(R.string.vs_previous, delta(s.spentMinor, it)) },
+                            s.lastYearSpentMinor.takeIf { it != 0L }?.let { stringResource(R.string.vs_last_year, delta(s.spentMinor, it)) },
+                        )
+                        if (parts.isNotEmpty()) Text(parts.joinToString(" · "), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }
@@ -168,9 +184,15 @@ fun InsightsScreen(padding: PaddingValues, go: (String) -> Unit) {
                     val trend = ins.trend(b.period(0, p.start), b.profile.cycle, 6, b.periodContext)
                     PennyCard {
                         Bars(trend.map { (per, spent, _) -> Datum(per.start.toString(), app.penny.ui.common.monthDay(per.start), spent, ctx.money(spent)) }, secondary = trend.map { it.third }, onSelect = { i -> drill(TxFilter(from = trend[i].first.start, to = trend[i].first.endInclusive)) })
-                        Row(Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                            app.penny.ui.kit.Pill(stringResource(R.string.spent), container = MaterialTheme.colorScheme.primary, content = MaterialTheme.colorScheme.onPrimary)
-                            app.penny.ui.kit.Pill(stringResource(R.string.income), container = MaterialTheme.colorScheme.tertiary, content = MaterialTheme.colorScheme.onTertiary)
+                        // Legend: a colour dot with plain text (identity by colour, words in text colours).
+                        Row(Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(20.dp)) {
+                            listOf(stringResource(R.string.spent) to MaterialTheme.colorScheme.primary, stringResource(R.string.income) to app.penny.ui.theme.Penny.gold).forEach { (label, c) ->
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Box(Modifier.size(10.dp).clip(androidx.compose.foundation.shape.CircleShape).background(c))
+                                    Spacer(Modifier.width(8.dp))
+                                    Text(label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                }
+                            }
                         }
                     }
                 }

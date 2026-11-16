@@ -242,7 +242,7 @@ fun SwipeableTx(key: String, onDelete: () -> Unit, onCategory: (() -> Unit)?, co
                 }
             }
         },
-    ) { Box(Modifier.background(MaterialTheme.colorScheme.surfaceContainerLowest)) { content() } }
+    ) { Box(Modifier.background(MaterialTheme.colorScheme.background)) { content() } }
 }
 
 @Composable

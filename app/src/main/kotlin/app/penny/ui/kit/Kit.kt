@@ -138,7 +138,8 @@ fun SectionHeader(title: String, modifier: Modifier = Modifier, action: String? 
 fun PennyCard(
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
-    color: Color = MaterialTheme.colorScheme.surfaceContainerLowest,
+    // Light: white cards on the tinted page. Dark: cards sit a step above the page, never below it (they read as holes).
+    color: Color = Penny.card,
     padding: PaddingValues = PaddingValues(0.dp),
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -278,21 +279,23 @@ fun Pill(text: String, modifier: Modifier = Modifier, container: Color = Materia
 
 /** UX-01 designed states, each with one next action. */
 @Composable
-fun EmptyState(title: String, body: String, modifier: Modifier = Modifier, icon: ImageVector = Icons.Outlined.Inbox, action: String? = null, onAction: (() -> Unit)? = null) {
+fun EmptyState(title: String, body: String, modifier: Modifier = Modifier, icon: ImageVector = Icons.Outlined.Inbox, action: String? = null, onAction: (() -> Unit)? = null, secondary: String? = null, onSecondary: (() -> Unit)? = null) {
     Column(
         modifier.fillMaxWidth().padding(horizontal = 32.dp, vertical = 40.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        Surface(shape = CircleShape, color = MaterialTheme.colorScheme.secondaryContainer, modifier = Modifier.size(64.dp)) {
-            Box(contentAlignment = Alignment.Center) { Icon(icon, null, tint = MaterialTheme.colorScheme.onSecondaryContainer, modifier = Modifier.size(30.dp)) }
+        Surface(shape = CircleShape, color = MaterialTheme.colorScheme.primaryContainer, modifier = Modifier.size(64.dp)) {
+            Box(contentAlignment = Alignment.Center) { Icon(icon, null, tint = MaterialTheme.colorScheme.onPrimaryContainer, modifier = Modifier.size(30.dp)) }
         }
         Text(title, style = MaterialTheme.typography.titleMedium, textAlign = TextAlign.Center)
-        Text(body, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center)
+        // A comfortable measure (~40 characters) so the explanation wraps into an even block, not a long ragged line.
+        Text(body, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center, modifier = Modifier.widthIn(max = 320.dp))
         if (action != null && onAction != null) {
             Spacer(Modifier.height(4.dp))
             FilledTonalButton(onClick = onAction) { Text(action) }
         }
+        if (secondary != null && onSecondary != null) TextButton(onClick = onSecondary) { Text(secondary) }
     }
 }
 
@@ -365,5 +368,33 @@ fun AddFab(label: String, onClick: () -> Unit) {
         icon = { Icon(androidx.compose.material.icons.Icons.Filled.Add, null) },
         text = { Text(label) },
         modifier = Modifier.semantics { contentDescription = label; role = androidx.compose.ui.semantics.Role.Button },
+    )
+}
+
+
+/**
+ * Secondary actions on a detail screen (pause, archive, delete...): pill buttons that wrap neatly onto a second line
+ * instead of a row of loose text links that ran off the edge or broke unevenly.
+ */
+@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
+@Composable
+fun ActionStrip(content: @Composable () -> Unit) {
+    androidx.compose.foundation.layout.FlowRow(
+        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) { content() }
+}
+
+@Composable
+fun StripAction(onClick: () -> Unit, destructive: Boolean = false, content: @Composable androidx.compose.foundation.layout.RowScope.() -> Unit) {
+    val c = if (destructive) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
+    androidx.compose.material3.OutlinedButton(
+        onClick = onClick,
+        shape = androidx.compose.foundation.shape.RoundedCornerShape(50),
+        border = androidx.compose.foundation.BorderStroke(1.dp, if (destructive) MaterialTheme.colorScheme.error.copy(alpha = 0.5f) else MaterialTheme.colorScheme.outlineVariant),
+        colors = androidx.compose.material3.ButtonDefaults.outlinedButtonColors(contentColor = c),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+        content = content,
     )
 }

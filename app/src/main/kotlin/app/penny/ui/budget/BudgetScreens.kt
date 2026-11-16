@@ -126,6 +126,7 @@ fun BudgetsScreen(padding: PaddingValues, go: (String) -> Unit) {
             item {
                 Row(Modifier.fillMaxWidth().padding(start = 20.dp, end = 4.dp, top = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                     Text(stringResource(R.string.tab_budgets), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.weight(1f))
+                    app.penny.ui.kit.RevealAmountsButton()
                     IconButton(onClick = { yearView = !yearView }) { Icon(if (yearView) Icons.Outlined.PieChart else Icons.Outlined.CalendarMonth, stringResource(if (yearView) R.string.period_view else R.string.year_view)) }
                     IconButton(onClick = { menu = true }) { Icon(Icons.Outlined.MoreVert, stringResource(R.string.more)) }
                     DropdownMenu(menu, { menu = false }) {

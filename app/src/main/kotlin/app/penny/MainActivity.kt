@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             val appearance by prefs.appearance.collectAsStateWithLifecycle()
             val security by prefs.security.collectAsStateWithLifecycle()
             val showLock = locked && security.lockEnabled
-            PennyTheme(appearance) {
+            PennyTheme(appearance) { androidx.compose.runtime.CompositionLocalProvider(app.penny.ui.kit.LocalHideToggle provides { prefs.setAppearance(prefs.appearance.value.copy(hideAmounts = !prefs.appearance.value.hideAmounts)) }) {
                 Surface {
                     val nav = rememberNavController()
                     Box(Modifier.fillMaxSize()) {
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
                         pendingIntent = null
                     }
                 }
-            }
+            } }
         }
     }
 

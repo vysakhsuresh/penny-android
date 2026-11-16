@@ -120,10 +120,11 @@ fun InsightsScreen(padding: PaddingValues, go: (String) -> Unit) {
             item {
                 Row(Modifier.fillMaxWidth().padding(start = 20.dp, end = 4.dp, top = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                     Text(stringResource(R.string.tab_insights), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.weight(1f))
+                    app.penny.ui.kit.RevealAmountsButton()
                     IconButton(onClick = { table = !table }) { Icon(Icons.Outlined.TableRows, stringResource(if (table) R.string.show_charts else R.string.show_table)) }
                     IconButton(onClick = {
                         // IN-09 digest: plain text summary to share with the household.
-                        val text = context.getString(R.string.digest_text, shortDate(p.start), shortDate(p.endInclusive), ctx.money(s.incomeMinor), ctx.money(s.spentMinor), s.byCategory.take(3).joinToString { label(it.key) + " " + ctx.money(it.amountMinor) })
+                        val text = context.getString(R.string.digest_text, shortDate(p.start), shortDate(p.endInclusive), ctx.fmt.format(s.incomeMinor, ctx.base), ctx.fmt.format(s.spentMinor, ctx.base), s.byCategory.take(3).joinToString { label(it.key) + " " + ctx.fmt.format(it.amountMinor, ctx.base) })
                         context.safeStart(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, text), null))
                     }) { Icon(Icons.Outlined.IosShare, stringResource(R.string.share_digest)) }
                 }
@@ -135,6 +136,9 @@ fun InsightsScreen(padding: PaddingValues, go: (String) -> Unit) {
                     Text(app.penny.ui.common.periodRange(androidx.compose.ui.platform.LocalContext.current, p.start, p.endInclusive), style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
                     IconButton(onClick = { offset++ }) { Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, stringResource(R.string.next)) }
                 }
+            }
+            if (offset != 0) item {
+                Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { TextButton(onClick = { offset = 0 }) { Text(stringResource(R.string.this_period)) } }
             }
             // "Pay period" follows the pay cycle in the profile; say which one it is and where to change it.
             if (range == Range.PERIOD) item {

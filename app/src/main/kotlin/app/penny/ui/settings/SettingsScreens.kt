@@ -1,5 +1,7 @@
 package app.penny.ui.settings
 
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material3.IconButton
 import app.penny.ui.common.safeStart
 import android.Manifest
 import android.content.pm.PackageManager
@@ -113,7 +115,7 @@ fun SettingsScreen(onBack: () -> Unit, go: (String) -> Unit) {
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 48.dp)) {
                 item {
                     PennyCard(onClick = { go(Routes.PROFILES) }) {
-                        ListRow(ctx.book.profile.name, subtitle = stringResource(R.string.switch_profile), leading = { Avatar(ctx.book.profile.name, ctx.book.profileId, size = 44.dp) })
+                        ListRow(ctx.book.profile.name, subtitle = stringResource(R.string.switch_rename_profile), leading = { Avatar(ctx.book.profile.name, ctx.book.profileId, size = 44.dp) })
                     }
                 }
                 item { SectionHeader(stringResource(R.string.set_book)) }
@@ -294,6 +296,7 @@ fun ProfilesScreen(onBack: () -> Unit, onSwitched: () -> Unit, onNone: () -> Uni
         val anyPack = vm.repo.packs.get(vm.ctx()?.book?.profile?.regionPack ?: profiles.firstOrNull()?.value?.regionPack ?: "XX")
         val baseCycle = vm.ctx()?.book?.profile?.cycle ?: anyPack.payCycleDefault
         var adding by rememberSaveable { mutableStateOf(false) }
+        var renaming by rememberSaveable { mutableStateOf<String?>(null) }
         PennyScreen(stringResource(R.string.profiles), onBack) { pad ->
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 48.dp)) {
                 item { Text(stringResource(R.string.profiles_body), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) }
@@ -301,10 +304,18 @@ fun ProfilesScreen(onBack: () -> Unit, onSwitched: () -> Unit, onNone: () -> Uni
                     ListRow(
                         p.value.name, subtitle = listOfNotNull(p.value.baseCurrency, stringResource(R.string.business_book).takeIf { p.value.business != null }, stringResource(R.string.current).takeIf { p.state.id == currentId }).joinToString(" · "),
                         leading = { Avatar(p.value.name, p.state.id) }, selected = p.state.id == currentId,
+                        // Renaming a book (the first one is called "Personal") right where books are listed.
+                        trailing = { IconButton(onClick = { renaming = p.state.id }) { Icon(Icons.Outlined.Edit, stringResource(R.string.rename_x, p.value.name)) } },
                         onClick = { vm.prefs.setCurrentProfile(p.state.id); onSwitched() }, divider = true,
                     )
                 }
                 item { TextButton(onClick = { adding = true }, modifier = Modifier.padding(8.dp)) { Text(stringResource(R.string.add_profile)) } }
+            }
+        }
+        renaming?.let { rid ->
+            val cur = profiles.firstOrNull { it.state.id == rid }?.value
+            if (cur != null) app.penny.ui.catalog.NameDialog(stringResource(R.string.rename), cur.name, { renaming = null }) { n ->
+                vm.act(R.string.renamed) { vm.repo.profiles.update(rid, cur.copy(name = n)) }; renaming = null
             }
         }
         if (adding) {

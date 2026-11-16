@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
@@ -99,7 +100,12 @@ fun PeopleScreen(padding: PaddingValues, go: (String) -> Unit) {
         val toReceive = balances.values.flatMap { it.entries }.filter { it.key == ctx.base && it.value > 0 }.sumOf { it.value } + mineInGroups.filter { it > 0 }.sum()
         val toGive = balances.values.flatMap { it.entries }.filter { it.key == ctx.base && it.value < 0 }.sumOf { -it.value } + mineInGroups.filter { it < 0 }.sumOf { -it }
         LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding() + 96.dp)) {
-            item { Text(stringResource(R.string.tab_people), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(start = 20.dp, top = 16.dp, bottom = 8.dp)) }
+            item {
+                Row(Modifier.fillMaxWidth().padding(start = 20.dp, end = 4.dp, top = 8.dp, bottom = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Text(stringResource(R.string.tab_people), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.weight(1f))
+                    app.penny.ui.kit.RevealAmountsButton()
+                }
+            }
             item {
                 PennyCard {
                     Row(Modifier.padding(16.dp)) {

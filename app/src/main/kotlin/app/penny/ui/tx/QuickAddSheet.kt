@@ -153,7 +153,7 @@ fun QuickAddSheet(onDismiss: () -> Unit, onMore: (TxType, Long?, String?) -> Uni
                 }
                 if (amount.isEmpty() && ctx.pack.typicalAmountChips.isNotEmpty()) {
                     LazyRow(contentPadding = PaddingValues(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        items(ctx.pack.typicalAmountChips) { a -> AssistChip({ tick(); amount = a.toString() }, label = { Text(ctx.money(a * (unit?.let { u -> Math.pow(10.0, u.minorUnits.toDouble()).toLong() } ?: 1), currency).let { m -> if ((unit?.minorUnits ?: 0) > 0) m.replace(Regex("[.,\u066B]0+(?=[^0-9]*$)"), "") else m }) }) }
+                        items(ctx.pack.typicalAmountChips) { a -> AssistChip({ tick(); amount = a.toString() }, label = { Text(ctx.fmt.format(a * (unit?.let { u -> Math.pow(10.0, u.minorUnits.toDouble()).toLong() } ?: 1), currency).let { m -> if ((unit?.minorUnits ?: 0) > 0) m.replace(Regex("[.,\u066B]0+(?=[^0-9]*$)"), "") else m }) }) }
                     }
                 }
                 // Six smart categories (TX-14) plus "All".

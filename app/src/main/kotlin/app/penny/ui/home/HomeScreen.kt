@@ -1,5 +1,7 @@
 package app.penny.ui.home
 
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -104,7 +106,8 @@ fun HomeScreen(nav: HomeNav, padding: PaddingValues) {
 private fun HomeContent(ctx: Ctx, vm: BookViewModel, nav: HomeNav, padding: PaddingValues) {
     val b = ctx.book
     var offset by rememberSaveable { mutableIntStateOf(0) }
-    var hide by rememberSaveable { mutableStateOf(vm.prefs.appearance.value.hideAmounts) }
+    // Read the shared setting: a local copy went stale when amounts were shown again from another screen.
+    val hide = app.penny.ui.theme.LocalPenny.current.hideAmounts
     val period = b.period(offset)
     val safe = b.safeToSpend(period)
     val today = b.today()
@@ -118,11 +121,12 @@ private fun HomeContent(ctx: Ctx, vm: BookViewModel, nav: HomeNav, padding: Padd
         item {
             Row(Modifier.fillMaxWidth().padding(start = 16.dp, end = 8.dp, top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = nav.profiles) { Avatar(b.profile.name, b.profileId, size = 36.dp, modifier = Modifier.semantics { contentDescription = context.getString(R.string.settings) }) }
-                Column(Modifier.weight(1f).padding(start = 4.dp)) {
+                // The book name opens the book list too (switch, add, rename), not only the small avatar.
+                Column(Modifier.weight(1f).clip(MaterialTheme.shapes.small).clickable(onClick = nav.profiles).padding(start = 4.dp, top = 2.dp, bottom = 2.dp)) {
                     Text(b.profile.name, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     Text(app.penny.ui.common.periodRange(androidx.compose.ui.platform.LocalContext.current, period.start, period.endInclusive), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
-                IconButton(onClick = { hide = !hide; vm.prefs.setAppearance(vm.prefs.appearance.value.copy(hideAmounts = hide)) }) {
+                IconButton(onClick = { vm.prefs.setAppearance(vm.prefs.appearance.value.copy(hideAmounts = !hide)) }) {
                     Icon(if (hide) Icons.Outlined.VisibilityOff else Icons.Outlined.Visibility, stringResource(if (hide) R.string.show_amounts else R.string.hide_amounts))
                 }
                 IconButton(onClick = nav.search) { Icon(Icons.Outlined.Search, stringResource(R.string.search)) }
@@ -284,6 +288,12 @@ private fun SafeHero(ctx: Ctx, safe: app.penny.core.budget.SafeToSpend, offset: 
                 IconButton(onClick = { onShift(-1) }) { Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, stringResource(R.string.prev_period), tint = MaterialTheme.colorScheme.onPrimaryContainer) }
                 IconButton(onClick = { onShift(1) }) { Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, stringResource(R.string.next_period), tint = MaterialTheme.colorScheme.onPrimaryContainer) }
             }
+            // Several taps back or ahead: one tap returns to now.
+            if (offset != 0) androidx.compose.material3.AssistChip(
+                onClick = { onShift(-offset) }, label = { Text(stringResource(R.string.this_period)) },
+                colors = androidx.compose.material3.AssistChipDefaults.assistChipColors(labelColor = MaterialTheme.colorScheme.onPrimaryContainer),
+                border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.3f)),
+            )
             MoneyLabel(ctx.money(safe.safeMinor), style = MaterialTheme.typography.displayMedium, color = MaterialTheme.colorScheme.onPrimaryContainer)
             Spacer(Modifier.height(2.dp))
             if (offset == 0) {

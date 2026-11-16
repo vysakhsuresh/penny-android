@@ -62,4 +62,7 @@
     <string name="accent_green">Penny green</string>
     <string name="manage">Manage</string>
     <string name="delete_account_row">Delete account</string>
+    <string name="rename_x">Rename %1$s</string>
+    <string name="alerts_open_to_see">Open Penny to see them.</string>
+    <string name="switch_rename_profile">Switch, rename or add a profile</string>
 </resources>

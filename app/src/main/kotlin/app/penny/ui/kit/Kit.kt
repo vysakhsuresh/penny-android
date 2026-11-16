@@ -1,5 +1,6 @@
 package app.penny.ui.kit
 
+import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.ui.semantics.role
 import androidx.compose.animation.animateContentSize
@@ -101,16 +102,18 @@ fun PennyScreen(
         modifier = modifier.nestedScroll(behavior.nestedScrollConnection),
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
+            // While amounts are hidden, every screen offers the way back, not only Home.
+            val withReveal: @Composable RowScope.() -> Unit = { RevealAmountsButton(); actions() }
             val nav: @Composable () -> Unit = {
                 if (onBack != null) IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back)) }
             }
             if (large) {
                 LargeTopAppBar(
                     title = { Text(title, maxLines = 2, overflow = TextOverflow.Ellipsis) },
-                    navigationIcon = nav, actions = actions, scrollBehavior = behavior, colors = colors,
+                    navigationIcon = nav, actions = withReveal, scrollBehavior = behavior, colors = colors,
                 )
             } else {
-                TopAppBar(title = { Text(title, maxLines = 1, overflow = TextOverflow.Ellipsis) }, navigationIcon = nav, actions = actions, scrollBehavior = behavior, colors = colors)
+                TopAppBar(title = { Text(title, maxLines = 1, overflow = TextOverflow.Ellipsis) }, navigationIcon = nav, actions = withReveal, scrollBehavior = behavior, colors = colors)
             }
         },
         floatingActionButton = floating,
@@ -397,4 +400,16 @@ fun StripAction(onClick: () -> Unit, destructive: Boolean = false, content: @Com
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         content = content,
     )
+}
+
+
+/** Flips "hide amounts"; provided by the activity so any screen can offer it. */
+val LocalHideToggle = androidx.compose.runtime.staticCompositionLocalOf<(() -> Unit)?> { null }
+
+/** Shown only while amounts are hidden: one tap shows them again, from whatever screen the person is on. */
+@Composable
+fun RevealAmountsButton() {
+    val toggle = LocalHideToggle.current ?: return
+    if (!LocalPenny.current.hideAmounts) return
+    IconButton(onClick = toggle) { Icon(androidx.compose.material.icons.Icons.Outlined.VisibilityOff, stringResource(R.string.show_amounts)) }
 }

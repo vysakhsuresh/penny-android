@@ -154,15 +154,28 @@ class AlertService @Inject constructor(
         ensureChannel()
         val pi = PendingIntent.getActivity(context, 0, Intent(Intent.ACTION_VIEW, Uri.parse("${Brand.DEEP_LINK_SCHEME}://home")).setPackage(context.packageName), PendingIntent.FLAG_IMMUTABLE)
         val nm = NotificationManagerCompat.from(context)
+        // Amounts stay off the lock screen: the public version only says how many alerts there are. While "hide
+        // amounts" is on, the notification itself carries no figures either.
+        val count = context.resources.getQuantityString(R.plurals.alerts_n, records.size, records.size)
+        val public = NotificationCompat.Builder(context, CHANNEL).setSmallIcon(R.drawable.ic_stat_penny).setContentTitle(Brand.NAME).setContentText(count).build()
+        if (prefs.appearance.value.hideAmounts) {
+            val quiet = NotificationCompat.Builder(context, CHANNEL).setSmallIcon(R.drawable.ic_stat_penny).setContentTitle(count)
+                .setContentText(context.getString(R.string.alerts_open_to_see)).setContentIntent(pi).setAutoCancel(true).setSilent(true)
+                .setVisibility(NotificationCompat.VISIBILITY_PRIVATE).setPublicVersion(public).build()
+            runCatching { nm.notify(NOTIFY_ID, quiet) }
+            return
+        }
         // AL-06 batching: several crossings become one notification.
         val n = if (records.size == 1) {
             NotificationCompat.Builder(context, CHANNEL).setSmallIcon(R.drawable.ic_stat_penny).setContentTitle(records[0].title).setContentText(records[0].body)
-                .setStyle(NotificationCompat.BigTextStyle().bigText(records[0].body)).setContentIntent(pi).setAutoCancel(true).setSilent(true).build()
+                .setStyle(NotificationCompat.BigTextStyle().bigText(records[0].body)).setContentIntent(pi).setAutoCancel(true).setSilent(true)
+                .setVisibility(NotificationCompat.VISIBILITY_PRIVATE).setPublicVersion(public).build()
         } else {
             val style = NotificationCompat.InboxStyle()
             records.take(6).forEach { style.addLine(it.title) }
             NotificationCompat.Builder(context, CHANNEL).setSmallIcon(R.drawable.ic_stat_penny).setContentTitle(context.resources.getQuantityString(R.plurals.alerts_n, records.size, records.size))
-                .setStyle(style).setContentIntent(pi).setAutoCancel(true).setSilent(true).build()
+                .setStyle(style).setContentIntent(pi).setAutoCancel(true).setSilent(true)
+                .setVisibility(NotificationCompat.VISIBILITY_PRIVATE).setPublicVersion(public).build()
         }
         runCatching { nm.notify(NOTIFY_ID, n) }
     }

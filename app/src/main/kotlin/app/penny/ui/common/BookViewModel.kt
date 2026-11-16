@@ -27,9 +27,12 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /** What a screen renders with: the decoded book, its regional pack and its money formatter. */
-data class Ctx(val book: Book, val pack: RegionalPack, val fmt: MoneyFmt) {
+data class Ctx(val book: Book, val pack: RegionalPack, val fmt: MoneyFmt, val hidden: Boolean = false) {
     val base: String get() = book.profile.baseCurrency
-    fun money(minor: Long, currency: String = base, signed: Boolean = false) = fmt.format(minor, currency, signed)
+    /** Every amount on screen comes through here, so "hide amounts" covers rows, charts and dialogs alike. */
+    fun money(minor: Long, currency: String = base, signed: Boolean = false) = if (hidden) HIDDEN else fmt.format(minor, currency, signed)
+
+    companion object { const val HIDDEN = "••••" }
 }
 
 /**
@@ -48,7 +51,7 @@ class BookViewModel @Inject constructor(
 ) : ViewModel() {
     val state: StateFlow<BookLoad> = store.state
 
-    fun ctx(): Ctx? = (state.value as? BookLoad.Ready)?.let { Ctx(it.book, it.pack, it.fmt) }
+    fun ctx(): Ctx? = (state.value as? BookLoad.Ready)?.let { Ctx(it.book, it.pack, it.fmt, prefs.appearance.value.hideAmounts) }
 
     /**
      * Runs [op] off the main thread; when it returns an undo group and [message] is set, shows the 5-second undo
@@ -99,6 +102,6 @@ fun WithBook(vm: BookViewModel = hiltViewModel(), modifier: Modifier = Modifier,
             androidx.compose.ui.res.stringResource(app.penny.R.string.setup_first_body), modifier,
         )
         is BookLoad.Failed -> ErrorState(modifier)
-        is BookLoad.Ready -> content(Ctx(st.book, st.pack, st.fmt), vm)
+        is BookLoad.Ready -> content(Ctx(st.book, st.pack, st.fmt, app.penny.ui.theme.LocalPenny.current.hideAmounts), vm)
     }
 }

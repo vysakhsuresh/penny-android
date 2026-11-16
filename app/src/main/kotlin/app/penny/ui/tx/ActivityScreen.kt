@@ -150,6 +150,7 @@ fun ActivityScreen(initialFilter: String?, onBack: () -> Unit, onOpen: (String) 
                             androidx.compose.runtime.LaunchedEffect(Unit) { if (focusSearch) runCatching { searchFocus.requestFocus() } }
                         },
                         navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back)) } },
+                        actions = { app.penny.ui.kit.RevealAmountsButton() },
                     )
                 }
             },

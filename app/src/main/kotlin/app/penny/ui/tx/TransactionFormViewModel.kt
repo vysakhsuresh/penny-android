@@ -114,6 +114,12 @@ class TransactionFormViewModel @Inject constructor(
     /** The form exactly as loaded from the record; equal to the current form while the user has not edited it. */
     private var loaded: TxForm? = null
 
+    /** Text typed in the tags box but not yet turned into a chip; Save keeps it rather than dropping it. */
+    var pendingTag: String = ""
+
+    /** True when leaving would lose typing: the form differs from what it opened with (or was restored after a kill). */
+    fun hasUnsavedChanges(): Boolean = _form.value.let { f -> f != null && f != loaded }
+
     init {
         viewModelScope.launch {
             val ready = store.state.filterIsInstance<BookLoad.Ready>().first()
@@ -124,7 +130,7 @@ class TransactionFormViewModel @Inject constructor(
                 when {
                     txId != null && existing == null -> { _load.value = LoadState.MISSING; return@launch }
                     existing != null -> fromTx(existing.value, ready.fmt).let { loaded = it; set(it) }
-                    else -> set(newForm(b, ready.fmt))
+                    else -> newForm(b, ready.fmt).let { loaded = it; set(it) }
                 }
             }
             _load.value = LoadState.READY
@@ -286,7 +292,7 @@ class TransactionFormViewModel @Inject constructor(
             categoryId = (f.categoryId.takeIf { f.type != TxType.TRANSFER && splits.isEmpty() })
                 ?: (if (f.type == TxType.ADJUSTMENT) "${b.profileId}:${DefaultCategories.ADJUSTMENTS}" else null),
             payee = f.payee.trim().ifEmpty { null }, date = date, time = f.time?.let { runCatching { LocalTime.parse(it) }.getOrNull() },
-            note = f.note.trim(), tags = f.tags.map { it.trim() }.filter { it.isNotEmpty() }.distinct(), status = f.status,
+            note = f.note.trim(), tags = (f.tags + pendingTag).map { it.trim() }.filter { it.isNotEmpty() }.distinct(), status = f.status,
             direction = f.direction.takeIf { f.type == TxType.ADJUSTMENT }, isPrivate = f.isPrivate,
             excludeFromBudget = f.excludeBudget, excludeFromReports = f.excludeReports, splits = splits,
             attachmentIds = f.attachmentIds,

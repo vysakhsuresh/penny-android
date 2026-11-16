@@ -98,10 +98,11 @@ fun TagsScreen(onBack: () -> Unit, onActivity: (String) -> Unit) {
         var menu by remember { mutableStateOf<String?>(null) }
         var mergeFrom by rememberSaveable { mutableStateOf<String?>(null) }
         var showArchived by rememberSaveable { mutableStateOf(false) }
-        // Tags only seen on transactions become entities on first open so every tag can be managed.
-        val missing = b.allTagNames().filter { n -> b.tags.none { it.value.name == n } }
-        if (missing.isNotEmpty()) androidx.compose.runtime.LaunchedEffect(missing) {
-            vm.launch { tags.createAll(b.profileId, missing.map { newId() to Tag(it) }) }
+        // Tags only seen on transactions become entities when the screen opens, so every tag can be managed. Only once:
+        // a rename writes the tag and its transactions in two steps, and re-running between them re-created the old name.
+        androidx.compose.runtime.LaunchedEffect(Unit) {
+            val missing = b.allTagNames().filter { n -> b.tags.none { it.value.name == n } }
+            if (missing.isNotEmpty()) vm.launch { tags.createAll(b.profileId, missing.map { newId() to Tag(it) }) }
         }
         val counts = b.txList.flatMap { it.tags }.groupingBy { it }.eachCount()
         PennyScreen(

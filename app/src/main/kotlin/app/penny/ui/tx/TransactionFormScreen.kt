@@ -89,10 +89,22 @@ fun TransactionFormScreen(
     var more by rememberSaveable { mutableStateOf(vm.isEdit) }
     var templateDialog by rememberSaveable { mutableStateOf(false) }
     var unlockReconciled by rememberSaveable { mutableStateOf(false) }
+    // Back with unsaved edits asks first; nothing typed is thrown away silently.
+    var confirmLeave by rememberSaveable { mutableStateOf(false) }
+    val dirty = formState != null && vm.hasUnsavedChanges()
+    val leave = { if (dirty) confirmLeave = true else onBack() }
+    androidx.activity.compose.BackHandler(enabled = dirty) { confirmLeave = true }
+    if (confirmLeave) androidx.compose.material3.AlertDialog(
+        onDismissRequest = { confirmLeave = false },
+        title = { Text(stringResource(R.string.discard_changes_title)) },
+        text = { Text(stringResource(R.string.discard_changes_body)) },
+        confirmButton = { androidx.compose.material3.TextButton(onClick = { confirmLeave = false; onBack() }) { Text(stringResource(R.string.discard)) } },
+        dismissButton = { androidx.compose.material3.TextButton(onClick = { confirmLeave = false }) { Text(stringResource(R.string.keep_editing)) } },
+    )
 
     PennyScreen(
         title = stringResource(if (vm.isEdit) R.string.edit_transaction else R.string.new_transaction),
-        onBack = onBack, large = false,
+        onBack = leave, large = false,
         actions = {
             if (vm.isEdit) {
                 IconButton(onClick = { vm.txId?.let(onHistory) }) { Icon(Icons.Outlined.History, stringResource(R.string.history)) }
@@ -173,7 +185,7 @@ fun TransactionFormScreen(
                     }
                     TimeInput(stringResource(R.string.field_time), f.time?.let { runCatching { LocalTime.parse(it) }.getOrNull() }, { t -> vm.update { it.copy(time = t?.toString()) } })
                     TextInput(f.note, { s -> vm.update { it.copy(note = s) } }, stringResource(R.string.field_note), singleLine = false)
-                    TagsEditor(f.tags, b.allTagNames()) { tags -> vm.update { it.copy(tags = tags) } }
+                    TagsEditor(f.tags, b.allTagNames(), onPending = { vm.pendingTag = it }) { tags -> vm.update { it.copy(tags = tags) } }
 
                     if (!more) {
                         TextButton(onClick = { more = true }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.more_options)) }
@@ -247,8 +259,10 @@ private fun PayeeField(vm: TransactionFormViewModel, payee: String) {
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun TagsEditor(tags: List<String>, known: List<String>, onChange: (List<String>) -> Unit) {
+fun TagsEditor(tags: List<String>, known: List<String>, onPending: (String) -> Unit = {}, onChange: (List<String>) -> Unit) {
     var input by rememberSaveable { mutableStateOf("") }
+    androidx.compose.runtime.LaunchedEffect(input) { onPending(input) }
+    fun commit() { val t = input.trim(); if (t.isNotEmpty()) onChange((tags + t).distinct()); input = "" }
     Column {
         OutlinedTextField(
             input, { s ->
@@ -259,8 +273,10 @@ fun TagsEditor(tags: List<String>, known: List<String>, onChange: (List<String>)
                 } else input = s
             },
             label = { Text(stringResource(R.string.field_tags)) }, supportingText = { Text(stringResource(R.string.field_tags_hint)) }, singleLine = true,
+            keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(imeAction = androidx.compose.ui.text.input.ImeAction.Done),
+            keyboardActions = androidx.compose.foundation.text.KeyboardActions(onDone = { commit() }),
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp), shape = MaterialTheme.shapes.medium,
-            trailingIcon = { if (input.isNotBlank()) TextButton(onClick = { onChange((tags + input.trim()).distinct()); input = "" }) { Text(stringResource(R.string.add)) } },
+            trailingIcon = { if (input.isNotBlank()) TextButton(onClick = { commit() }) { Text(stringResource(R.string.add)) } },
         )
         FlowRow(Modifier.padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             tags.forEach { t ->

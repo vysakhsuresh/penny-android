@@ -27,4 +27,8 @@
     <string name="set_balance_owed_body">Enter what you owe on this account today. The difference is recorded as an adjustment you can undo.</string>
     <string name="transfer_from">From %1$s</string>
     <string name="account_via">%1$s via %2$s</string>
+    <string name="discard_changes_title">Discard changes?</string>
+    <string name="discard_changes_body">You have changes that are not saved.</string>
+    <string name="discard">Discard</string>
+    <string name="keep_editing">Keep editing</string>
 </resources>

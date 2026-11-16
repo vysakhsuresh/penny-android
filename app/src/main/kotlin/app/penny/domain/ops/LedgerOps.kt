@@ -212,8 +212,8 @@ fun Book.depth(id: String?): Int {
 suspend fun PennyRepository.renameTag(book: Book, id: String, newName: String): String {
     val g = tags.newGroup()
     val old = book.tags.firstOrNull { it.state.id == id }?.value ?: return g
-    tags.update(id, old.copy(name = newName), groupId = g)
     transactions.updateMany(book.transactions.filter { old.name in it.value.tags }.map { s -> s.state.id to s.value.copy(tags = s.value.tags.map { if (it == old.name) newName else it }.distinct()) }, g)
+    tags.update(id, old.copy(name = newName), groupId = g)
     return g
 }
 

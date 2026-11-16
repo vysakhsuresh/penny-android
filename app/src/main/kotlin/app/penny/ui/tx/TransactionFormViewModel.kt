@@ -150,8 +150,11 @@ class TransactionFormViewModel @Inject constructor(
     private fun newForm(b: Book, fmt: MoneyFmt): TxForm {
         val acct = b.profile.defaultAccountId?.let { id -> b.activeAccounts.firstOrNull { it.state.id == id } } ?: b.activeAccounts.firstOrNull()
         val type = handle.get<String>(ARG_TYPE)?.let { runCatching { TxType.valueOf(it) }.getOrNull() } ?: b.profile.defaultTxType
-        val amountArg = handle.get<String>(ARG_AMOUNT)?.toLongOrNull()
         val currency = b.profile.travelCurrency ?: acct?.value?.currency ?: b.profile.baseCurrency
+        // "minor" from Penny's own screens; "amount" from links and shortcuts, written the way people write money.
+        val digits = runCatching { CurrencyUnit.of(currency).minorUnits }.getOrDefault(2)
+        val amountArg = handle.get<String>(ARG_MINOR)?.toLongOrNull()
+            ?: handle.get<String>(ARG_AMOUNT)?.replace(",", "")?.toBigDecimalOrNull()?.abs()?.movePointRight(digits)?.setScale(0, java.math.RoundingMode.HALF_EVEN)?.toLong()
         val catArg = handle.get<String>(ARG_CATEGORY)
         val payeeArg = handle.get<String>(ARG_PAYEE)
         val noteArg = handle.get<String>(ARG_NOTE)
@@ -437,6 +440,7 @@ class TransactionFormViewModel @Inject constructor(
         const val ARG_ID = "id"
         const val ARG_TYPE = "type"
         const val ARG_AMOUNT = "amount"
+        const val ARG_MINOR = "minor"
         const val ARG_CATEGORY = "category"
         const val ARG_PAYEE = "payee"
         const val ARG_NOTE = "note"

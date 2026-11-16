@@ -112,9 +112,9 @@ object Routes {
     const val ONBOARDING = "onboarding"
     const val MAIN = "main?tab={tab}"
     fun main(tab: String = "home") = "main?tab=$tab"
-    const val TX = "tx/{id}?type={type}&amount={amount}&category={category}&payee={payee}&note={note}"
+    const val TX = "tx/{id}?type={type}&amount={amount}&minor={minor}&category={category}&payee={payee}&note={note}"
     fun tx(id: String, type: TxType? = null, amountMinor: Long? = null, categoryId: String? = null): String {
-        val q = listOfNotNull(type?.let { "type=${it.name}" }, amountMinor?.let { "amount=$it" }, categoryId?.let { "category=${android.net.Uri.encode(it)}" })
+        val q = listOfNotNull(type?.let { "type=${it.name}" }, amountMinor?.let { "minor=$it" }, categoryId?.let { "category=${android.net.Uri.encode(it)}" })
         return "tx/$id" + if (q.isEmpty()) "" else q.joinToString("&", prefix = "?")
     }
     const val HISTORY = "history/{entity}/{id}"
@@ -222,10 +222,11 @@ fun PennyNavHost(nav: NavHostController, start: String, reduceMotion: Boolean) {
         ) { e -> MainTabs(nav, e.arg("tab") ?: "home") }
         composable(
             Routes.TX,
-            arguments = listOf(str("id", Routes.NEW), str("type"), str("amount"), str("category"), str("payee"), str("note")),
-            // WG-03: penny://add?amount=…&category=… (amount in minor units).
+            arguments = listOf(str("id", Routes.NEW), str("type"), str("amount"), str("minor"), str("category"), str("payee"), str("note")),
+            // WG-03: penny://add?amount=12.50&category=… takes the amount as people write it (like the automation intent);
+            // Penny's own screens and widgets pass minor=… in minor units.
             deepLinks = listOf(
-                navDeepLink { uriPattern = "${Brand.DEEP_LINK_SCHEME}://add?type={type}&amount={amount}&category={category}&payee={payee}&note={note}" },
+                navDeepLink { uriPattern = "${Brand.DEEP_LINK_SCHEME}://add?type={type}&amount={amount}&minor={minor}&category={category}&payee={payee}&note={note}" },
                 navDeepLink { uriPattern = "${Brand.DEEP_LINK_SCHEME}://tx/{id}" },
             ),
         ) {

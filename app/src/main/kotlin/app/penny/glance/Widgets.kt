@@ -134,7 +134,7 @@ class QuickAddWidget : GlanceAppWidget() {
                     d?.templates.orEmpty().forEach { (name, amount, cat) ->
                         val q = buildString {
                             append("${Brand.DEEP_LINK_SCHEME}://add?payee=").append(Uri.encode(name))
-                            amount?.let { append("&amount=").append(it) }
+                            amount?.let { append("&minor=").append(it) }
                             cat?.let { append("&category=").append(Uri.encode(it)) }
                         }
                         Text(name, style = TextStyle(color = GlanceTheme.colors.onSurface, fontSize = 14.sp),

@@ -61,7 +61,7 @@ type Options struct {
 	Pepper     []byte
 	TrustProxy bool
 	Now        func() time.Time
-	// Dev waives the Plus entitlement for bank connections.
+	// Dev turns on development-only behaviour (for example mail test hooks).
 	Dev bool
 	// Connectors is the bank-connector registry; nil means none are enabled.
 	Connectors *connectors.Registry
@@ -147,8 +147,6 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /v1/connections/{id}/sync", s.authed(s.syncConnection))
 	mux.HandleFunc("POST /v1/connections/{id}/reconsent", s.authed(s.reconsentConnection))
 	mux.HandleFunc("DELETE /v1/connections/{id}", s.authed(s.deleteConnection))
-	mux.HandleFunc("PUT /v1/entitlements/plus", s.authed(s.putPlus))
-	mux.HandleFunc("GET /v1/entitlements/plus", s.authed(s.getPlus))
 
 	mux.HandleFunc("GET /v1/mail/address", s.authed(s.getMailAddress))
 	mux.HandleFunc("POST /v1/mail/address", s.authed(s.postMailAddress))

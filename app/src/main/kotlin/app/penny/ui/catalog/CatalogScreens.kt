@@ -322,11 +322,12 @@ fun RuleEditScreen(id: String, onBack: () -> Unit) {
         val b = ctx.book
         val existing = b.rules.firstOrNull { it.state.id == id }?.value
         var json by rememberSaveable { mutableStateOf(PennyJson.encodeToString(Rule.serializer(), existing ?: Rule("", listOf(RuleCondition(RuleField.PAYEE, RuleOp.CONTAINS, "")), actions = RuleActions()))) }
+        val dirty = app.penny.ui.kit.rememberDirty(json)
         val rule = runCatching { PennyJson.decodeFromString(Rule.serializer(), json) }.getOrNull() ?: return@WithBook
         fun set(r: Rule) { json = PennyJson.encodeToString(Rule.serializer(), r) }
         var retro by rememberSaveable { mutableStateOf(false) }
         val preview = RuleEngine.preview(rule, b.transactions.map { it.state.id to it.value })
-        PennyScreen(stringResource(if (existing == null) R.string.add_rule else R.string.edit_rule), onBack, large = false) { pad ->
+        PennyScreen(stringResource(if (existing == null) R.string.add_rule else R.string.edit_rule), onBack, large = false, dirty = dirty) { pad ->
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                 TextInput(rule.name, { set(rule.copy(name = it)) }, stringResource(R.string.field_name))
                 SectionHeader(stringResource(R.string.when_label))

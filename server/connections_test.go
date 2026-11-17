@@ -158,15 +158,6 @@ func newConnEnv(t *testing.T, dev bool) *connEnv {
 	return &connEnv{testEnv: &testEnv{t: t, h: srv.Handler(), clock: clock, mail: mail, store: st}, bridge: bridge, sealer: sealer}
 }
 
-func (e *connEnv) grantPlus(tok, product string) entitlementJSON {
-	e.t.Helper()
-	r := e.do("PUT", "/v1/entitlements/plus", tok, entitlementReq{Store: "play", PurchaseToken: "gp-token-" + product, ProductID: product})
-	expect(e.t, r, http.StatusOK)
-	var out entitlementJSON
-	r.decode(e.t, &out)
-	return out
-}
-
 func (e *connEnv) connectSimpleFIN(tok, name string) connectionJSON {
 	e.t.Helper()
 	r := e.do("POST", "/v1/connections", tok, connectReq{Provider: "simplefin", Token: e.bridge.setupToken(name)})
@@ -247,7 +238,6 @@ func TestListConnectors(t *testing.T) {
 func TestSimpleFINConnectAndSync(t *testing.T) {
 	e := newConnEnv(t, false)
 	a := e.signIn("a@example.com")
-	e.grantPlus(a.Token, "penny.plus.monthly")
 	now := e.clock.Now()
 	e.bridge.add(
 		fakeTx{ID: "t1", Account: "ACT-1", Posted: now.Add(-48 * time.Hour), Amount: "-12.34"},
@@ -320,7 +310,6 @@ func TestSimpleFINConnectAndSync(t *testing.T) {
 
 	// Another account cannot see or use the connection.
 	b := e.signIn("b@example.com")
-	e.grantPlus(b.Token, "penny.plus.monthly")
 	expect(t, e.do("POST", "/v1/connections/"+c.ID+"/sync", b.Token, nil), http.StatusNotFound)
 	expect(t, e.do("DELETE", "/v1/connections/"+c.ID, b.Token, nil), http.StatusNotFound)
 }
@@ -359,62 +348,14 @@ func TestSandboxSyncReturnsOnlyNew(t *testing.T) {
 	}
 }
 
-func TestPlusRequired(t *testing.T) {
+func TestBankSyncNeedsNoPurchase(t *testing.T) {
+	// Decision 53: no payment of any kind; a signed-in account connects and syncs a bank with no entitlement.
 	e := newConnEnv(t, false)
 	a := e.signIn("a@example.com")
-	r := e.do("POST", "/v1/connections", a.Token, connectReq{Provider: "simplefin", Token: e.bridge.setupToken("p1")})
-	expect(t, r, http.StatusPaymentRequired)
-	var eb errorBody
-	r.decode(t, &eb)
-	if eb.Error != "plus_required" {
-		t.Fatalf("error %q", eb.Error)
-	}
-	if e.bridge.claimed["p1"] {
-		t.Fatal("token must not be claimed without Plus")
-	}
-	// The sandbox needs no entitlement.
-	sbx := e.connectSandbox(a.Token)
-
-	var ent entitlementJSON
-	e.do("GET", "/v1/entitlements/plus", a.Token, nil).decode(t, &ent)
-	if ent.Plus || ent.PlusUntil != nil {
-		t.Fatalf("no entitlement yet: %+v", ent)
-	}
-	ent = e.grantPlus(a.Token, "penny.plus.monthly")
-	if !ent.Plus || ent.PlusUntil == nil || *ent.PlusUntil != e.clock.Now().Add(32*24*time.Hour).UnixMilli() {
-		t.Fatalf("monthly %+v", ent)
-	}
-	c := e.connectSimpleFIN(a.Token, "p2")
-	expect(t, e.do("PUT", "/v1/entitlements/plus", a.Token, entitlementReq{Store: "appstore", PurchaseToken: "x", ProductID: "p"}), http.StatusBadRequest)
-	expect(t, e.do("PUT", "/v1/entitlements/plus", a.Token, entitlementReq{Store: "play", ProductID: "p"}), http.StatusBadRequest)
-
-	// Lapsed: sync and reconsent need Plus; list and delete stay available.
-	e.clock.Advance(33 * 24 * time.Hour)
-	expect(t, e.do("POST", "/v1/connections/"+c.ID+"/sync", a.Token, nil), http.StatusPaymentRequired)
-	expect(t, e.do("POST", "/v1/connections/"+c.ID+"/reconsent", a.Token, nil), http.StatusPaymentRequired)
-	expect(t, e.do("GET", "/v1/connections", a.Token, nil), http.StatusOK)
-	e.sync(a.Token, sbx.ID, nil)
-
-	ent = e.grantPlus(a.Token, "penny.plus.lifetime")
-	if *ent.PlusUntil != lifetimeUntil.UnixMilli() {
-		t.Fatalf("lifetime %+v", ent)
-	}
-	// A later monthly purchase never shortens a lifetime grant.
-	if ent = e.grantPlus(a.Token, "penny.plus.monthly"); *ent.PlusUntil != lifetimeUntil.UnixMilli() || ent.ProductID != "penny.plus.lifetime" {
-		t.Fatalf("shortened %+v", ent)
-	}
+	c := e.connectSimpleFIN(a.Token, "p1")
 	e.sync(a.Token, c.ID, nil)
-	expect(t, e.do("DELETE", "/v1/connections/"+c.ID, a.Token, nil), http.StatusNoContent)
-
-	// Dev mode waives the entitlement.
-	d := newConnEnv(t, true)
-	da := d.signIn("a@example.com")
-	d.connectSimpleFIN(da.Token, "dev")
-	var dent entitlementJSON
-	d.do("GET", "/v1/entitlements/plus", da.Token, nil).decode(t, &dent)
-	if !dent.Plus {
-		t.Fatal("dev mode reports plus")
-	}
+	e.clock.Advance(400 * 24 * time.Hour)
+	expect(t, e.do("GET", "/v1/connections", a.Token, nil), http.StatusOK)
 }
 
 func TestSandboxConsentLifecycle(t *testing.T) {
@@ -535,7 +476,6 @@ func TestAccountDeletionRemovesConnections(t *testing.T) {
 	e := newConnEnv(t, false)
 	a := e.signIn("a@example.com")
 	other := e.signIn("other@example.com")
-	e.grantPlus(a.Token, "penny.plus.monthly")
 	e.connectSimpleFIN(a.Token, "x1")
 	e.connectSandbox(a.Token)
 	expect(t, e.do("POST", "/v1/connections", a.Token, connectReq{Provider: "sandbox", RedirectURI: "penny://cb"}), http.StatusOK) // pending
@@ -545,9 +485,6 @@ func TestAccountDeletionRemovesConnections(t *testing.T) {
 	ctx := context.Background()
 	if cs, _ := e.store.ListConnections(ctx, a.AccountID); len(cs) != 0 {
 		t.Fatalf("connections left: %d", len(cs))
-	}
-	if _, err := e.store.GetEntitlement(ctx, a.AccountID); !errors.Is(err, ErrNotFound) {
-		t.Fatal("entitlement left")
 	}
 	e.store.mu.Lock()
 	for _, st := range e.store.states {

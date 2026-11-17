@@ -277,8 +277,6 @@
     <string name="spaces_sub">Shiriki bajeti na familia yako</string>
     <string name="sync_and_banks">Usawazishaji na benki</string>
     <string name="sync_sub">Vifaa, kifungu cha nakala rudufu, miunganisho ya benki</string>
-    <string name="plus">Penny Plus</string>
-    <string name="plus_sub">Hulipia usawazishaji wa benki na hifadhi</string>
     <string name="your_data">Data yako</string>
     <string name="data_backup">Data na nakala rudufu</string>
     <string name="data_sub">Hamisha, leta, nakala rudufu, futa</string>
@@ -485,7 +483,6 @@
     <string name="bank_sync">Miunganisho ya benki</string>
     <string name="bank_sync_body">Unganisha benki kupitia mtoa huduma aliyedhibitiwa ili kuleta miamala kiotomatiki. Taarifa zako za kuingia benki hazigusi kamwe simu hii wala seva za Penny.</string>
     <string name="providers_here">Zinapatikana katika eneo lako: %1$s</string>
-    <string name="bank_sync_needs_plus">Miunganisho ya benki inahitaji Penny Plus, ambayo hulipa ada za mtoa huduma.</string>
     <string name="advisor_links">Shiriki na mshauri</string>
     <string name="advisor_body">Unda kiungo cha kusoma tu chenye muhtasari kwa mhasibu, mshauri au mwanafamilia. Huisha chenyewe na hufunguka bila akaunti.</string>
     <string name="advisor_needs_sync">Washa usawazishaji kwanza.</string>
@@ -512,21 +509,6 @@
     <string name="role_contributor">Mchangiaji</string>
     <string name="role_viewer">Mtazamaji</string>
     <string name="role_none">Hakuna ufikiaji</string>
-    <string name="plus_active">Plus inatumika. Asante.</string>
-    <string name="plus_intro">Kila kipengele katika Penny ni bure. Plus hulipia tu gharama zinazoongezeka kwa kila mtumiaji, ili programu ibaki bure kwa kila mtu.</string>
-    <string name="plus_funds">Plus hulipia nini</string>
-    <string name="plus_f1">Miunganisho ya benki, inayotozwa kwa kila akaunti</string>
-    <string name="plus_f2">Hifadhi ya viambatisho zaidi ya GB 1</string>
-    <string name="plus_f3">Msaada wa kipaumbele</string>
-    <string name="plus_f4">Plus moja inatosha nafasi nzima ya pamoja ya hadi watu 10</string>
-    <string name="plus_always_free">Bure daima</string>
-    <string name="plus_free_body">Bajeti, kunasa, kushiriki, usawazishaji, kuhamisha, maarifa, na kila kitu kingine. Hakuna matangazo, hakuna mikopo, hakuna uuzaji wa data.</string>
-    <string name="plus_monthly">Kila mwezi</string>
-    <string name="plus_yearly" formatted="false">Kila mwaka (takriban 40% chini)</string>
-    <string name="plus_lifetime">Mara moja, maisha yote</string>
-    <string name="restore_purchases">Rejesha ununuzi</string>
-    <string name="manage_cancel">Dhibiti au ghairi</string>
-    <string name="plus_downgrade_note">Ukisimamisha Plus, hakuna kinachofutwa: akaunti zilizounganishwa na benki zinakuwa za kujaza mwenyewe tu.</string>
 
     <!-- Support -->
     <string name="search_help">Tafuta msaada</string>

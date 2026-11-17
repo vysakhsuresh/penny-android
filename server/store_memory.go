@@ -24,7 +24,6 @@ type MemoryStore struct {
 	advisor  map[string]AdvisorLink
 	conns    map[string]BankConnection
 	states   map[string]ConnectState    // by state hash
-	ents     map[string]Entitlement     // by account id
 	boxes    map[string]MailBox         // by account id
 	mail     map[string]PendingMail     // by id
 	votes    map[[3]string]MerchantVote // (region, descriptor, contributor)
@@ -36,7 +35,7 @@ func NewMemoryStore() *MemoryStore {
 		tokens: map[string]string{}, streams: map[string]Stream{}, events: map[string][]Event{},
 		keys: map[[2]string]StreamKey{}, members: map[string][]Member{}, invites: map[string]Invite{},
 		advisor: map[string]AdvisorLink{}, conns: map[string]BankConnection{}, states: map[string]ConnectState{},
-		ents: map[string]Entitlement{}, boxes: map[string]MailBox{}, mail: map[string]PendingMail{},
+		boxes: map[string]MailBox{}, mail: map[string]PendingMail{},
 		votes: map[[3]string]MerchantVote{},
 	}
 }
@@ -202,7 +201,6 @@ func (m *MemoryStore) DeleteAccount(_ context.Context, accountID string) error {
 			delete(m.states, h)
 		}
 	}
-	delete(m.ents, accountID)
 	m.deleteMailBoxLocked(accountID)
 	return nil
 }
@@ -620,25 +618,7 @@ func (m *MemoryStore) TakeConnectState(_ context.Context, stateHash, accountID s
 	return st, nil
 }
 
-func (m *MemoryStore) GetEntitlement(_ context.Context, accountID string) (Entitlement, error) {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	e, ok := m.ents[accountID]
-	if !ok {
-		return Entitlement{}, ErrNotFound
-	}
-	return e, nil
-}
 
-func (m *MemoryStore) PutEntitlement(_ context.Context, e Entitlement) error {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	if _, ok := m.accounts[e.AccountID]; !ok {
-		return ErrNotFound
-	}
-	m.ents[e.AccountID] = e
-	return nil
-}
 
 func cloneBox(b MailBox) MailBox {
 	b.PublicKey = bytes.Clone(b.PublicKey)

@@ -351,6 +351,7 @@ fun AccountEditScreen(id: String, onBack: () -> Unit) {
         var apr by rememberSaveable { mutableStateOf(existing?.card?.aprBp?.let { (it / 100.0).toString() } ?: "") }
         var aliasOf by rememberSaveable { mutableStateOf(existing?.aliasOf) }
         var grams by rememberSaveable { mutableStateOf(existing?.weightGrams?.toString().orEmpty()) }
+        val dirty = app.penny.ui.kit.rememberDirty(name, type, currency, opening, openingDate, institution, group, note, netWorth, budget, limit, stmt, due, minDue, apr, aliasOf, grams)
         var error by rememberSaveable { mutableStateOf<String?>(null) }
         val nameErr = stringResource(R.string.err_name_required)
         val takenErr = stringResource(R.string.name_taken)
@@ -361,7 +362,7 @@ fun AccountEditScreen(id: String, onBack: () -> Unit) {
         val pctErr = stringResource(R.string.err_percent)
         val numErr = stringResource(R.string.err_number)
         val lockedErr = stringResource(R.string.err_currency_locked)
-        PennyScreen(stringResource(if (isNew) R.string.add_account else R.string.edit_account), onBack, large = false) { pad ->
+        PennyScreen(stringResource(if (isNew) R.string.add_account else R.string.edit_account), onBack, large = false, dirty = dirty) { pad ->
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                 TextInput(name, { name = it; error = null }, stringResource(R.string.field_name), error = error)
                 SelectField(stringResource(R.string.field_type), type, AccountType.entries.map { Choice(it, stringResource(accountTypeLabel(it))) }, { it?.let { t -> type = t; if (t in listOf(AccountType.LOAN, AccountType.LIABILITY, AccountType.CREDIT_CARD)) budget = t == AccountType.CREDIT_CARD } })

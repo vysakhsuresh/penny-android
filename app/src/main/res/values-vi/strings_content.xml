@@ -17,7 +17,7 @@
         <item>Làm sao để xóa toàn bộ dữ liệu của tôi?</item>
     </string-array>
     <string-array name="faq_a">
-        <item>Có. Mọi tính năng đều miễn phí. Penny Plus là tùy chọn, chỉ trang trải những chi phí tăng theo từng người dùng, như phí kết nối ngân hàng và dung lượng lưu trữ thêm. Không có quảng cáo và chúng tôi không bao giờ bán dữ liệu.</item>
+        <item>Có, hoàn toàn. Mọi tính năng đều miễn phí cho tất cả mọi người: không gói đăng ký, không bản trả phí, không quảng cáo và chúng tôi không bao giờ bán dữ liệu. Nếu Penny giúp ích cho bạn, bạn có thể để lại tiền boa tùy ý qua \"Mời tôi ly cà phê\". Việc này không mở khóa gì cả, và không ai nhận ít hơn vì không đóng góp.</item>
         <item>Không. Penny không bao giờ xin quyền đọc SMS. Penny có thể đọc thông báo từ các ứng dụng thanh toán và ngân hàng mà bạn cho phép, chỉ trên điện thoại của bạn, và bạn có thể tắt bất cứ lúc nào.</item>
         <item>Trên điện thoại của bạn, đã được mã hóa. Nếu bạn bật đồng bộ, dữ liệu được mã hóa trên điện thoại trước khi gửi đi, nên máy chủ chỉ lưu dữ liệu mà nó không đọc được.</item>
         <item>Đó là số tiền bạn có thể chi từ bây giờ đến kỳ lương tới mà không lỡ hóa đơn hay mục tiêu tiết kiệm: thu nhập, trừ hóa đơn còn phải trả, trừ khoản bạn để dành, trừ khoản bạn đã chi.</item>

@@ -243,9 +243,10 @@ fun GroupEditScreen(id: String, onBack: () -> Unit) {
         var members by rememberSaveable { mutableStateOf(existing?.memberIds?.filter { it != Group.ME } ?: emptyList()) }
         var newMember by rememberSaveable { mutableStateOf("") }
         var newNames by rememberSaveable { mutableStateOf(listOf<String>()) }
+        val dirty = app.penny.ui.kit.rememberDirty(name, currency, members, newMember, newNames)
         var err by rememberSaveable { mutableStateOf<String?>(null) }
         val req = stringResource(R.string.err_group)
-        PennyScreen(stringResource(if (existing == null) R.string.new_group else R.string.edit_group), onBack, large = false) { pad ->
+        PennyScreen(stringResource(if (existing == null) R.string.new_group else R.string.edit_group), onBack, large = false, dirty = dirty) { pad ->
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                 TextInput(name, { name = it; err = null }, stringResource(R.string.field_name), error = err)
                 // Expenses in the old base currency without a rate would be re-read 1:1 in a new one.
@@ -316,6 +317,7 @@ fun GroupExpenseEditScreen(id: String, groupArg: String?, onBack: () -> Unit) {
         var disputed by rememberSaveable { mutableStateOf(existing?.disputed ?: false) }
         var disputeNote by rememberSaveable { mutableStateOf(existing?.disputeNote.orEmpty()) }
         var account by rememberSaveable { mutableStateOf(b.liveDefaultAccountId) }
+        val dirty = app.penny.ui.kit.rememberDirty(desc, payer, currency, amount, rate, date, mode, values, items, category, disputed, disputeNote, account)
         var err by rememberSaveable { mutableStateOf<String?>(null) }
         val invalid = stringResource(R.string.err_split_invalid)
         val rateErr = stringResource(R.string.err_rate_required)
@@ -323,7 +325,7 @@ fun GroupExpenseEditScreen(id: String, groupArg: String?, onBack: () -> Unit) {
         val context = androidx.compose.ui.platform.LocalContext.current
         fun v(m: String) = values.firstOrNull { it.startsWith("$m=") }?.substringAfter('=').orEmpty()
         fun setV(m: String, s: String) { values = values.filter { !it.startsWith("$m=") } + "$m=$s" }
-        PennyScreen(stringResource(if (existing == null) R.string.add_expense else R.string.edit_expense), onBack, large = false) { pad ->
+        PennyScreen(stringResource(if (existing == null) R.string.add_expense else R.string.edit_expense), onBack, large = false, dirty = dirty) { pad ->
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                 TextInput(desc, { desc = it }, stringResource(R.string.description))
                 SelectField(stringResource(R.string.field_currency), currency, app.penny.ui.kit.currencyChoices(listOf(g.baseCurrency, ctx.base)), { it?.let { c -> currency = c } })
@@ -485,10 +487,11 @@ fun RemittanceEditScreen(id: String, onBack: () -> Unit) {
         var date by rememberSaveable { mutableStateOf((existing?.date ?: b.today()).toString()) }
         var status by rememberSaveable { mutableStateOf(existing?.status ?: RemitStatus.SENT) }
         var account by rememberSaveable { mutableStateOf(b.liveDefaultAccountId) }
+        val dirty = app.penny.ui.kit.rememberDirty(outgoing, sender, receiver, sentCur, recvCur, sent, fee, received, mid, provider, purpose, date, status, account)
         var err by rememberSaveable { mutableStateOf<String?>(null) }
         val req = stringResource(R.string.err_remit)
         val feeErr = stringResource(R.string.err_fee_too_high)
-        PennyScreen(stringResource(if (existing == null) R.string.record_remittance else R.string.edit_remittance), onBack, large = false) { pad ->
+        PennyScreen(stringResource(if (existing == null) R.string.record_remittance else R.string.edit_remittance), onBack, large = false, dirty = dirty) { pad ->
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                 Segmented(listOf(Choice(true, stringResource(R.string.i_sent)), Choice(false, stringResource(R.string.i_received))), outgoing, { outgoing = it })
                 TextInput(sender, { sender = it }, stringResource(R.string.sender))
@@ -580,7 +583,7 @@ fun CircleScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit) {
                                 app.penny.ui.kit.CheckRow(m.name in r.paidBy, { on ->
                                         if (on) vm.act(R.string.recorded) { recordCircle(it, id, CircleContribution(id, r.n, m.name, c.value.contributionMinor, it.today()), account) }
                                         else b.circleContributions.firstOrNull { it.value.circleId == id && it.value.round == r.n && it.value.memberName == m.name && !it.value.payout }?.let { e -> vm.act(R.string.deleted) { deleteCircleContribution(it, e.state.id) } }
-                                    }, m.name + if (m.isMe) " (" + stringResource(R.string.you) + ")" else "")
+                                    }, m.name + if (m.isMe && m.name != stringResource(R.string.you)) " (" + stringResource(R.string.you) + ")" else "")
                             }
                             if (contribs.none { it.round == r.n && it.payout }) {
                                 Row {
@@ -619,12 +622,13 @@ fun CircleEditScreen(id: String, onBack: () -> Unit) {
         var order by rememberSaveable { mutableStateOf(existing?.payoutOrder ?: PayoutOrder.FIXED) }
         var members by rememberSaveable { mutableStateOf(existing?.members?.sortedBy { it.turn }?.map { (if (it.isMe) "*" else "") + it.name } ?: listOf("*$me")) }
         var newMember by rememberSaveable { mutableStateOf("") }
+        val dirty = app.penny.ui.kit.rememberDirty(name, local, currency, contribution, fee, freq, start, order, members, newMember)
         var err by rememberSaveable { mutableStateOf<String?>(null) }
         val req = stringResource(R.string.err_circle)
         val feeErr = stringResource(R.string.err_fee_too_high)
         val dupErr = stringResource(R.string.err_member_dup)
         val lockedErr = stringResource(R.string.err_currency_locked)
-        PennyScreen(stringResource(if (existing == null) R.string.new_circle else R.string.edit_circle), onBack, large = false) { pad ->
+        PennyScreen(stringResource(if (existing == null) R.string.new_circle else R.string.edit_circle), onBack, large = false, dirty = dirty) { pad ->
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                 TextInput(name, { name = it; err = null }, stringResource(R.string.field_name), error = err)
                 if (ctx.pack.circleNames.isNotEmpty()) SelectField(stringResource(R.string.local_name), local, ctx.pack.circleNames.map { Choice(it, it) }, { local = it ?: "" }, allowNone = true)
@@ -637,7 +641,7 @@ fun CircleEditScreen(id: String, onBack: () -> Unit) {
                 SectionHeader(stringResource(R.string.members_in_turn_order))
                 members.forEachIndexed { i, m ->
                     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 16.dp)) {
-                        Text("${i + 1}. " + m.removePrefix("*") + if (m.startsWith("*")) " (" + me + ")" else "", modifier = Modifier.weight(1f))
+                        Text("${i + 1}. " + m.removePrefix("*") + if (m.startsWith("*") && m.removePrefix("*") != me) " (" + me + ")" else "", modifier = Modifier.weight(1f))
                         if (i > 0) TextButton(onClick = { members = members.toMutableList().also { l -> l[i] = l[i - 1].also { l[i - 1] = l[i] } } }) { Text("↑") }
                         IconButton(onClick = { members = members.filterIndexed { j, _ -> j != i } }) { Icon(Icons.Outlined.Close, stringResource(R.string.remove_x, m.removePrefix("*"))) }
                     }

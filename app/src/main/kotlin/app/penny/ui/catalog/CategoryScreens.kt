@@ -202,12 +202,13 @@ fun CategoryEditScreen(id: String, parent: String?, onBack: () -> Unit, onHistor
         var tax by rememberSaveable { mutableStateOf(existing?.tax ?: false) }
         var defAccount by rememberSaveable { mutableStateOf(existing?.defaultAccountId) }
         var defTags by rememberSaveable { mutableStateOf(existing?.defaultTags ?: emptyList()) }
+        val dirty = app.penny.ui.kit.rememberDirty(name, kind, parentId, excluded, budgetable, tax, defAccount, defTags)
         var err by rememberSaveable { mutableStateOf<String?>(null) }
         val req = stringResource(R.string.err_name_required)
         val takenErr = stringResource(R.string.name_taken)
         val tooDeep = stringResource(R.string.err_too_deep)
         PennyScreen(
-            stringResource(if (existing == null) R.string.add_category else R.string.edit_category), onBack, large = false,
+            stringResource(if (existing == null) R.string.add_category else R.string.edit_category), onBack, large = false, dirty = dirty,
             actions = { if (existing != null) IconButton(onClick = { onHistory(id) }) { Icon(Icons.Outlined.History, stringResource(R.string.history)) } },
         ) { pad ->
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {

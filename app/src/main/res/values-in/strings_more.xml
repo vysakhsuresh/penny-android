@@ -277,8 +277,6 @@
     <string name="spaces_sub">Bagikan anggaran dengan keluarga serumah</string>
     <string name="sync_and_banks">Sinkronisasi dan bank</string>
     <string name="sync_sub">Perangkat, frasa cadangan, koneksi bank</string>
-    <string name="plus">Penny Plus</string>
-    <string name="plus_sub">Membiayai sinkronisasi bank dan penyimpanan</string>
     <string name="your_data">Datamu</string>
     <string name="data_backup">Data dan cadangan</string>
     <string name="data_sub">Ekspor, impor, cadangan, hapus</string>
@@ -485,7 +483,6 @@
     <string name="bank_sync">Koneksi bank</string>
     <string name="bank_sync_body">Hubungkan bank melalui penyedia resmi untuk memasukkan transaksi secara otomatis. Login bankmu tidak pernah menyentuh ponsel ini atau server Penny.</string>
     <string name="providers_here">Tersedia di wilayahmu: %1$s</string>
-    <string name="bank_sync_needs_plus">Koneksi bank memerlukan Penny Plus, yang membayar biaya penyedia.</string>
     <string name="advisor_links">Bagikan ke penasihat</string>
     <string name="advisor_body">Buat tautan hanya-baca berisi ringkasan untuk akuntan, penasihat, atau anggota keluarga. Tautan kedaluwarsa sendiri dan bisa dibuka tanpa akun.</string>
     <string name="advisor_needs_sync">Aktifkan sinkronisasi dulu.</string>
@@ -512,21 +509,6 @@
     <string name="role_contributor">Kontributor</string>
     <string name="role_viewer">Pelihat</string>
     <string name="role_none">Tanpa akses</string>
-    <string name="plus_active">Plus aktif. Terima kasih.</string>
-    <string name="plus_intro">Semua fitur di Penny gratis. Plus hanya menutup biaya yang bertambah per pengguna, agar aplikasi tetap gratis untuk semua orang.</string>
-    <string name="plus_funds">Yang dibiayai Plus</string>
-    <string name="plus_f1">Koneksi bank, yang dikenai biaya per akun</string>
-    <string name="plus_f2">Penyimpanan lampiran di atas 1 GB</string>
-    <string name="plus_f3">Dukungan prioritas</string>
-    <string name="plus_f4">Satu Plus mencakup seluruh ruang bersama hingga 10 orang</string>
-    <string name="plus_always_free">Selalu gratis</string>
-    <string name="plus_free_body">Anggaran, tangkap, berbagi, sinkronisasi, ekspor, wawasan, dan semua yang lain. Tanpa iklan, tanpa pinjaman, tanpa jual data.</string>
-    <string name="plus_monthly">Bulanan</string>
-    <string name="plus_yearly" formatted="false">Tahunan (hemat sekitar 40%)</string>
-    <string name="plus_lifetime">Sekali bayar, seumur hidup</string>
-    <string name="restore_purchases">Pulihkan pembelian</string>
-    <string name="manage_cancel">Kelola atau batalkan</string>
-    <string name="plus_downgrade_note">Jika kamu berhenti dari Plus, tidak ada yang dihapus: akun yang terhubung ke bank hanya berubah menjadi manual.</string>
 
     <!-- Support -->
     <string name="search_help">Cari bantuan</string>

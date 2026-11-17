@@ -441,6 +441,7 @@ fun EnvelopeEditScreen(id: String, onBack: () -> Unit) {
         var alert by rememberSaveable { mutableStateOf(existing?.alertMode ?: AlertMode.NEAR_AND_OVER) }
         var festival by rememberSaveable { mutableStateOf(existing?.festival) }
         var smoothing by rememberSaveable { mutableStateOf(existing?.smoothingMinor?.let { ctx.fmt.editable(it, currency) }.orEmpty()) }
+        val dirty = app.penny.ui.kit.rememberDirty(name, cats, tags, currency, limit, rollover, cap, period, targetKind, targetAmount, targetBy, alert, festival, smoothing)
         var err by rememberSaveable { mutableStateOf<String?>(null) }
         val req = stringResource(R.string.err_name_required)
         val takenErr = stringResource(R.string.name_taken)
@@ -448,7 +449,7 @@ fun EnvelopeEditScreen(id: String, onBack: () -> Unit) {
         var fieldErr by rememberSaveable { mutableStateOf<Map<String, String>>(emptyMap()) }
         // Assignments and moves are stored without a currency of their own; changing it would re-read them all.
         val currencyLocked = existing != null && (b.allocations.any { it.value.envelopeId == id } || b.moves.any { it.value.fromId == id || it.value.toId == id })
-        PennyScreen(stringResource(if (existing == null) R.string.add_envelope else R.string.edit_envelope), onBack, large = false) { pad ->
+        PennyScreen(stringResource(if (existing == null) R.string.add_envelope else R.string.edit_envelope), onBack, large = false, dirty = dirty) { pad ->
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                 TextInput(name, { name = it; err = null }, stringResource(R.string.field_name), error = err)
                 SectionHeader(stringResource(R.string.covers_categories))

@@ -67,7 +67,7 @@ import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
-class SyncViewModel @Inject constructor(val sync: SyncManager) : ViewModel() {
+class SyncViewModel @Inject constructor(val sync: SyncManager, val folder: app.penny.domain.FolderSyncManager) : ViewModel() {
     /** Recovery words live here, not in the saved-state bundle (which is written to disk): they survive rotation only. */
     val newPhrase = androidx.compose.runtime.mutableStateOf<List<String>?>(null)
     val phraseInput = androidx.compose.runtime.mutableStateOf("")
@@ -97,22 +97,19 @@ fun SyncScreen(onBack: () -> Unit, svm: SyncViewModel = hiltViewModel()) {
         PennyScreen(stringResource(R.string.sync_and_banks), onBack) { pad ->
             Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(bottom = 48.dp)) {
                 error?.let { Text(it, color = MaterialTheme.colorScheme.error, modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) }
+                // Decision 53: the free way first. Folder sync needs no account and no server.
+                FolderSyncSection(svm)
                 when (st.phase) {
                     SyncPhase.LOCAL_ONLY -> {
-                        PennyCard {
-                            Column(Modifier.padding(16.dp)) {
-                                Row { Icon(Icons.Outlined.CloudOff, null); Spacer(Modifier.padding(6.dp)); Text(stringResource(R.string.local_only), style = MaterialTheme.typography.titleMedium) }
-                                Text(stringResource(R.string.local_only_body), style = MaterialTheme.typography.bodyMedium)
-                            }
-                        }
-                        SectionHeader(stringResource(R.string.turn_on_sync))
+                        SectionHeader(stringResource(R.string.own_server_title))
+                        Text(stringResource(R.string.own_server_body), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))
                         TextInput(email, { email = it }, stringResource(R.string.email), keyboard = androidx.compose.ui.text.input.KeyboardType.Email)
                         if (!codeSent) {
-                            TextInput(relay, { relay = it }, stringResource(R.string.relay_server_optional), supporting = stringResource(R.string.relay_server_hint))
+                            TextInput(relay, { relay = it }, stringResource(R.string.relay_server), supporting = stringResource(R.string.relay_server_required), keyboard = androidx.compose.ui.text.input.KeyboardType.Uri)
                             PrimaryButton(stringResource(R.string.send_code), {
                                 busy = true; error = null
                                 scope.launch { runCatching { svm.sync.startSignIn(email, relay) }.onSuccess { codeSent = true }.onFailure { error = context.getString(R.string.sync_error, it.message ?: "") }; busy = false }
-                            }, Modifier.padding(horizontal = 16.dp), enabled = email.contains('@') && !busy)
+                            }, Modifier.padding(horizontal = 16.dp), enabled = email.contains('@') && relay.trim().startsWith("https://") && !busy)
                         } else {
                             TextInput(code, { code = it.filter(Char::isDigit).take(6) }, stringResource(R.string.code_from_email), keyboard = androidx.compose.ui.text.input.KeyboardType.Number)
                             PrimaryButton(stringResource(R.string.verify), {
@@ -167,10 +164,13 @@ fun SyncScreen(onBack: () -> Unit, svm: SyncViewModel = hiltViewModel()) {
                         TextButton(onClick = { deleteAccount = true }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.delete_sync_account), color = MaterialTheme.colorScheme.error) }
                     }
                 }
-                SectionHeader(stringResource(R.string.bank_sync))
-                BankSection(ctx)
-                SectionHeader(stringResource(R.string.advisor_links))
-                AdvisorSection(svm, ctx)
+                // Both run on a sync server; without the user's own server they cannot work, so they are not offered (decision 53).
+                if (st.phase == SyncPhase.READY || st.phase == SyncPhase.SYNCING || st.phase == SyncPhase.ERROR) {
+                    SectionHeader(stringResource(R.string.bank_sync))
+                    BankSection(ctx)
+                    SectionHeader(stringResource(R.string.advisor_links))
+                    AdvisorSection(svm, ctx)
+                }
             }
         }
         newPhrase?.let { words ->
@@ -201,13 +201,12 @@ class BankViewModel @Inject constructor(val bank: app.penny.domain.BankSync) : V
 
 /**
  * CP-10 / AC-09: connections with provider, status, last fetch and consent expiry; sync now, re-consent and
- * disconnect (which deletes credentials at the connector service). Plus pays the provider fees (NN-1).
+ * disconnect (which deletes credentials at the connector service).
  */
 @Composable
 private fun BankSection(ctx: app.penny.ui.common.Ctx, bvm: BankViewModel = hiltViewModel(), svm: SyncViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val plus by Billing.plus.collectAsStateWithLifecycle()
     val st by svm.sync.state.collectAsStateWithLifecycle()
     var providers by remember { mutableStateOf<List<app.penny.sync.ConnectorInfo>?>(null) }
     var tokenFor by rememberSaveable { mutableStateOf<String?>(null) }
@@ -244,11 +243,10 @@ private fun BankSection(ctx: app.penny.ui.common.Ctx, bvm: BankViewModel = hiltV
             if (p.kind == "token") tokenFor = p.id
             else scope.launch {
                 runCatching { bvm.bank.connect(ctx.book, p.id, null) }.onSuccess { c -> c.redirectUrl?.let { u -> context.safeStart(Intent(Intent.ACTION_VIEW, android.net.Uri.parse(u))) } }
-                    .onFailure { message = if (it.message?.contains("plus_required") == true) context.getString(R.string.bank_sync_needs_plus) else it.message }
+                    .onFailure { message = it.message }
             }
         }, divider = true)
     }
-    if (!plus) Pill(stringResource(R.string.bank_sync_needs_plus), Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
     tokenFor?.let { provider ->
         var token by rememberSaveable { mutableStateOf("") }
         AlertDialog(
@@ -259,7 +257,7 @@ private fun BankSection(ctx: app.penny.ui.common.Ctx, bvm: BankViewModel = hiltV
                     scope.launch {
                         runCatching { bvm.bank.connect(ctx.book, provider, token) }
                             .onSuccess { message = context.getString(R.string.bank_connected) }
-                            .onFailure { message = if (it.message?.contains("plus_required") == true) context.getString(R.string.bank_sync_needs_plus) else it.message }
+                            .onFailure { message = it.message }
                     }
                     tokenFor = null
                 }) { Text(stringResource(R.string.connect)) }
@@ -386,32 +384,98 @@ fun roleLabel(context: android.content.Context, r: Role): String = context.getSt
     Role.CONTRIBUTOR -> R.string.role_contributor; Role.VIEWER -> R.string.role_viewer; Role.NONE -> R.string.role_none
 })
 
-/** MO-01…MO-04 Plus: what it funds in plain words, prices from the store, restore, cancel in two taps (store page). */
-@Composable
-fun PlusScreen(onBack: () -> Unit) {
-    val context = LocalContext.current
-    val plus by Billing.plus.collectAsStateWithLifecycle()
-    LaunchedEffect(Unit) { Billing.restore(context) }
-    PennyScreen(stringResource(R.string.plus), onBack) { pad ->
-        Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(bottom = 48.dp)) {
-            if (plus) Pill(stringResource(R.string.plus_active), Modifier.padding(16.dp))
-            Text(stringResource(R.string.plus_intro), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
-            SectionHeader(stringResource(R.string.plus_funds))
-            listOf(R.string.plus_f1, R.string.plus_f2, R.string.plus_f3, R.string.plus_f4).forEach { Text("• " + stringResource(it), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp)) }
-            SectionHeader(stringResource(R.string.plus_always_free))
-            Text(stringResource(R.string.plus_free_body), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(horizontal = 20.dp))
-            Spacer(Modifier.height(16.dp))
-            if (!plus) {
-                listOf(Billing.PLUS_MONTHLY to R.string.plus_monthly, Billing.PLUS_YEARLY to R.string.plus_yearly, Billing.PLUS_LIFETIME to R.string.plus_lifetime).forEach { (sku, label) ->
-                    FilledTonalButton(onClick = { Billing.buy(context, sku) {} }, modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp)) { Text(stringResource(label)) }
-                }
-            }
-            TextButton(onClick = { Billing.restore(context) }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.restore_purchases)) }
-            TextButton(onClick = { context.safeStart(Intent(Intent.ACTION_VIEW, android.net.Uri.parse("https://play.google.com/store/account/subscriptions?package=" + context.packageName))) }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.manage_cancel)) }
-            Text(stringResource(R.string.plus_downgrade_note), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(20.dp))
-        }
-    }
-}
-
 /** Bank callback states already exchanged in this process. */
 private val handledBankStates: MutableSet<String> = java.util.Collections.synchronizedSet(mutableSetOf())
+
+/** Decision 53: sync through a folder the user keeps in step with a free tool. No account, no server, no cost. */
+@Composable
+private fun FolderSyncSection(svm: SyncViewModel) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val fs by svm.folder.state.collectAsStateWithLifecycle()
+    var picked by rememberSaveable { mutableStateOf<String?>(null) }
+    var join by rememberSaveable { mutableStateOf(false) }
+    var words by remember { mutableStateOf<List<String>?>(null) }
+    var phrase by remember { mutableStateOf("") }
+    var wrong by rememberSaveable { mutableStateOf(false) }
+    var busy by rememberSaveable { mutableStateOf(false) }
+    val chooser = androidx.activity.compose.rememberLauncherForActivityResult(androidx.activity.result.contract.ActivityResultContracts.OpenDocumentTree()) { uri ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        runCatching { context.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION) }
+        picked = uri.toString()
+        scope.launch {
+            // A folder that already has Penny files came from another device: ask for its phrase. Otherwise start fresh.
+            if (svm.folder.folderHasPenny(uri)) { join = true; wrong = false } else words = BackupCrypto.newPhrase()
+        }
+    }
+    PennyCard {
+        Column(Modifier.padding(16.dp)) {
+            Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                Icon(if (fs.on) Icons.Outlined.CloudDone else Icons.Outlined.CloudOff, null, tint = if (fs.on) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
+                Spacer(Modifier.padding(6.dp))
+                Text(stringResource(R.string.folder_sync_title), style = MaterialTheme.typography.titleMedium)
+            }
+            Spacer(Modifier.height(6.dp))
+            if (fs.on) {
+                Text(stringResource(R.string.folder_sync_on, fs.folderName.orEmpty()), style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    if (fs.syncing) stringResource(R.string.syncing) else fs.lastSync?.let { stringResource(R.string.last_synced, DateFormat.getDateTimeInstance().format(Date(it))) } ?: stringResource(R.string.not_synced_yet),
+                    style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                fs.error?.let { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall) }
+                Text(stringResource(R.string.folder_sync_keep_same), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(top = 6.dp))
+                androidx.compose.foundation.layout.FlowRow {
+                    TextButton(onClick = { scope.launch { svm.folder.syncNow() } }, enabled = !fs.syncing) { Text(stringResource(R.string.sync_now)) }
+                    TextButton(onClick = { scope.launch { svm.folder.stop() } }) { Text(stringResource(R.string.folder_sync_stop), color = MaterialTheme.colorScheme.error) }
+                }
+            } else {
+                Text(stringResource(R.string.folder_sync_body), style = MaterialTheme.typography.bodyMedium)
+                Spacer(Modifier.height(10.dp))
+                PrimaryButton(stringResource(R.string.folder_sync_choose), { chooser.launch(null) }, enabled = !busy)
+            }
+        }
+    }
+    words?.let { w ->
+        AlertDialog(
+            onDismissRequest = {},
+            title = { Text(stringResource(R.string.recovery_phrase)) },
+            text = {
+                Column {
+                    Text(stringResource(R.string.folder_sync_phrase_body))
+                    Spacer(Modifier.height(12.dp))
+                    Text(w.chunked(4).joinToString("\n") { it.joinToString("  ") }, fontFamily = FontFamily.Monospace, style = MaterialTheme.typography.bodyLarge)
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    val uri = picked?.let(android.net.Uri::parse) ?: return@TextButton
+                    words = null; busy = true
+                    scope.launch { runCatching { svm.folder.startNew(uri, w) }; busy = false }
+                }) { Text(stringResource(R.string.wrote_it_down)) }
+            },
+            dismissButton = { TextButton(onClick = { words = null }) { Text(stringResource(R.string.cancel)) } },
+        )
+    }
+    if (join) AlertDialog(
+        onDismissRequest = { join = false },
+        title = { Text(stringResource(R.string.folder_sync_join_title)) },
+        text = {
+            Column {
+                Text(stringResource(R.string.folder_sync_join_body))
+                app.penny.ui.kit.SoftField(phrase, { phrase = it; wrong = false }, label = { Text(stringResource(R.string.recovery_phrase)) }, modifier = Modifier.fillMaxWidth().padding(top = 12.dp), minLines = 3)
+                if (wrong) Text(stringResource(R.string.wrong_phrase), color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+            }
+        },
+        confirmButton = {
+            TextButton(enabled = BackupCrypto.validPhrase(phrase) && !busy, onClick = {
+                val uri = picked?.let(android.net.Uri::parse) ?: return@TextButton
+                busy = true
+                scope.launch {
+                    if (svm.folder.join(uri, phrase)) { join = false; phrase = "" } else wrong = true
+                    busy = false
+                }
+            }) { Text(stringResource(R.string.unlock)) }
+        },
+        dismissButton = { TextButton(onClick = { join = false }) { Text(stringResource(R.string.cancel)) } },
+    )
+}

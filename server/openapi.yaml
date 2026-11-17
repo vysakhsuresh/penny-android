@@ -19,10 +19,9 @@ tags:
   - name: advisor
   - name: connectors
     description: |
-      Bank connectors (Plus). Provider credentials stay on the server, sealed with AES-256-GCM;
+      Bank connectors (free; whoever runs the server covers provider costs). Provider credentials stay on the server, sealed with AES-256-GCM;
       transactions pass through in the sync response and are not stored. Money is signed integer
       minor units (negative = money out).
-  - name: entitlements
   - name: mail
     description: |
       Email forwarding (CP-06). Inbound mail is sealed to the account's mail public key during
@@ -344,7 +343,7 @@ paths:
       description: |
         Token providers (SimpleFIN) complete immediately and answer 201 with the Connection and its
         accounts. Redirect providers answer 200 with a consent URL and state; post the callback
-        parameters to /v1/connections/complete. Requires Plus except in dev mode and for `sandbox`.
+        parameters to /v1/connections/complete.
       requestBody:
         required: true
         content: { application/json: { schema: { $ref: "#/components/schemas/ConnectRequest" } } }
@@ -357,7 +356,6 @@ paths:
           content: { application/json: { schema: { $ref: "#/components/schemas/Connection" } } }
         "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Unauthorized" }
-        "402": { $ref: "#/components/responses/PlusRequired" }
         "409": { description: Consent required or access revoked at the provider, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
         "501": { description: Provider not configured, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
         "502": { description: Provider error, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
@@ -379,7 +377,6 @@ paths:
           description: Connected
           content: { application/json: { schema: { $ref: "#/components/schemas/Connection" } } }
         "400": { $ref: "#/components/responses/Error" }
-        "402": { $ref: "#/components/responses/PlusRequired" }
         "404": { description: Unknown or already used state, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
         "410": { description: Consent session expired, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
         "502": { $ref: "#/components/responses/Error" }
@@ -389,7 +386,7 @@ paths:
     delete:
       tags: [connectors]
       summary: Disconnect
-      description: Revokes access at the provider (best-effort), then deletes the sealed credentials, sync cursor and pending consents. Never requires Plus.
+      description: Revokes access at the provider (best-effort), then deletes the sealed credentials, sync cursor and pending consents.
       responses:
         "204": { description: Deleted }
         "404": { $ref: "#/components/responses/NotFound" }
@@ -412,7 +409,6 @@ paths:
           description: New transactions and current balances
           content: { application/json: { schema: { $ref: "#/components/schemas/SyncResult" } } }
         "400": { $ref: "#/components/responses/Error" }
-        "402": { $ref: "#/components/responses/PlusRequired" }
         "404": { $ref: "#/components/responses/NotFound" }
 
   /v1/connections/{id}/reconsent:
@@ -430,32 +426,7 @@ paths:
             application/json:
               schema: { oneOf: [ { $ref: "#/components/schemas/ConnectRedirect" }, { $ref: "#/components/schemas/Connection" } ] }
         "400": { $ref: "#/components/responses/Error" }
-        "402": { $ref: "#/components/responses/PlusRequired" }
         "404": { $ref: "#/components/responses/NotFound" }
-
-  /v1/entitlements/plus:
-    get:
-      tags: [entitlements]
-      summary: The caller's Plus entitlement
-      responses:
-        "200":
-          description: Entitlement (plusUntil null when none)
-          content: { application/json: { schema: { $ref: "#/components/schemas/Entitlement" } } }
-    put:
-      tags: [entitlements]
-      summary: Record a store purchase
-      description: |
-        Sets plusUntil to now + 32 days for subscriptions, 9999-12-31 for product ids containing
-        "lifetime"; never shortens an existing grant. NOT YET VERIFIED with the Google Play
-        Developer API; that must be added before launch.
-      requestBody:
-        required: true
-        content: { application/json: { schema: { $ref: "#/components/schemas/EntitlementRequest" } } }
-      responses:
-        "200":
-          description: Recorded
-          content: { application/json: { schema: { $ref: "#/components/schemas/Entitlement" } } }
-        "400": { $ref: "#/components/responses/Error" }
 
   /v1/mail/address:
     get:
@@ -594,7 +565,6 @@ components:
     Forbidden: { description: Not allowed, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
     NotFound: { description: Not found, content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
     Gone: { description: "Expired, revoked or used", content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
-    PlusRequired: { description: 'No active Plus entitlement; body is {"error":"plus_required"}', content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } } }
     RateLimited:
       description: Too many requests
       headers: { Retry-After: { schema: { type: integer } } }
@@ -759,21 +729,6 @@ components:
         accounts: { type: array, items: { $ref: "#/components/schemas/RemoteAccount" } }
         status: { $ref: "#/components/schemas/ConnectionStatus" }
         message: { type: string }
-    EntitlementRequest:
-      type: object
-      required: [store, purchaseToken, productId]
-      properties:
-        store: { type: string, enum: [play] }
-        purchaseToken: { type: string, maxLength: 4096 }
-        productId: { type: string, pattern: "^[A-Za-z0-9._:-]{1,128}$" }
-    Entitlement:
-      type: object
-      required: [plus, plusUntil]
-      properties:
-        plus: { type: boolean, description: "Active now (always true in dev mode)" }
-        plusUntil: { type: [integer, "null"], format: int64 }
-        productId: { type: string }
-        store: { type: string }
     MailAddressRequest: { type: object, properties: { rotate: { type: boolean, default: false } } }
     MailAddress:
       type: object

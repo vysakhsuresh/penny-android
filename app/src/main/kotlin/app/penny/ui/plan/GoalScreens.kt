@@ -208,6 +208,7 @@ fun GoalEditScreen(id: String, onBack: () -> Unit) {
         var linked by rememberSaveable { mutableStateOf(existing?.linkedAccountIds ?: emptyList()) }
         var notes by rememberSaveable { mutableStateOf(existing?.notes.orEmpty()) }
         var months by rememberSaveable { mutableStateOf(existing?.months ?: 6) }
+        val dirty = app.penny.ui.kit.rememberDirty(name, kind, currency, target, due, auto, linked, notes, months)
         var err by rememberSaveable { mutableStateOf<String?>(null) }
         val req = stringResource(R.string.err_name_required)
         val takenErr = stringResource(R.string.name_taken)
@@ -216,7 +217,7 @@ fun GoalEditScreen(id: String, onBack: () -> Unit) {
         var targetErr by rememberSaveable { mutableStateOf<String?>(null) }
         var autoErr by rememberSaveable { mutableStateOf<String?>(null) }
         val essentials = listOf("home", "util", "food", "health", "trans", "fam").map { catId(b.profileId, it) }.flatMap { p -> listOf(p) + b.categories.filter { it.value.parentId == p }.map { it.state.id } }.toSet()
-        PennyScreen(stringResource(if (existing == null) R.string.add_goal else R.string.edit_goal), onBack, large = false) { pad ->
+        PennyScreen(stringResource(if (existing == null) R.string.add_goal else R.string.edit_goal), onBack, large = false, dirty = dirty) { pad ->
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                 ChipFlow(listOf(Choice(GoalKind.STANDARD, stringResource(R.string.goal_standard)), Choice(GoalKind.EMERGENCY, stringResource(R.string.goal_emergency))), setOf(kind), { kind = it })
                 TextInput(name, { name = it; err = null }, stringResource(R.string.field_name), error = err)

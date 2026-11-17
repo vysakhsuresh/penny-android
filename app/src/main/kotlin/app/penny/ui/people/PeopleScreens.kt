@@ -275,11 +275,12 @@ fun PersonEditScreen(id: String, onBack: () -> Unit, onDeleted: () -> Unit = onB
         var email by rememberSaveable { mutableStateOf(existing?.email.orEmpty()) }
         var handle by rememberSaveable { mutableStateOf(existing?.payHandle.orEmpty()) }
         var note by rememberSaveable { mutableStateOf(existing?.note.orEmpty()) }
+        val dirty = app.penny.ui.kit.rememberDirty(name, phone, email, handle, note)
         var err by rememberSaveable { mutableStateOf<String?>(null) }
         val req = stringResource(R.string.err_name_required)
         val takenErr = stringResource(R.string.name_taken)
         val inUse = ctx.book.lending.any { it.value.personId == id } || ctx.book.groups.any { id in it.value.memberIds } || ctx.book.circles.any { c -> c.value.members.any { it.personId == id } }
-        PennyScreen(stringResource(if (existing == null) R.string.add_person else R.string.edit_person), onBack, large = false) { pad ->
+        PennyScreen(stringResource(if (existing == null) R.string.add_person else R.string.edit_person), onBack, large = false, dirty = dirty) { pad ->
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                 TextInput(name, { name = it; err = null }, stringResource(R.string.field_name), error = err)
                 TextInput(phone, { phone = it }, stringResource(R.string.phone), keyboard = KeyboardType.Phone)
@@ -338,13 +339,14 @@ fun LendingEditScreen(id: String, personArg: String?, onBack: () -> Unit) {
         var note by rememberSaveable { mutableStateOf(existing?.note.orEmpty()) }
         var account by rememberSaveable { mutableStateOf(if (existing != null) b.activeAccountOrNull(existing.accountId) else b.liveDefaultAccountId) }
         var post by rememberSaveable { mutableStateOf(existing == null) }
+        val dirty = app.penny.ui.kit.rememberDirty(personId, newName, direction, currency, amount, date, due, interest, note, account, post)
         var err by rememberSaveable { mutableStateOf<String?>(null) }
         val req = stringResource(R.string.err_person_amount)
         val endErr = stringResource(R.string.err_end_before_start)
         val pctErr = stringResource(R.string.err_percent)
         val acctErr = stringResource(R.string.err_account_required)
         var fieldErr by rememberSaveable { mutableStateOf<Map<String, String>>(emptyMap()) }
-        PennyScreen(stringResource(if (existing == null) R.string.record_lending else R.string.edit_entry), onBack, large = false) { pad ->
+        PennyScreen(stringResource(if (existing == null) R.string.record_lending else R.string.edit_entry), onBack, large = false, dirty = dirty) { pad ->
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                 Segmented(listOf(Choice(LendDirection.GAVE, stringResource(R.string.i_gave)), Choice(LendDirection.RECEIVED, stringResource(R.string.i_received))), direction, { direction = it })
                 SelectField(stringResource(R.string.person), personId, b.people.map { Choice(it.state.id, it.value.name) }, { personId = it }, allowNone = true, noneLabel = stringResource(R.string.new_person))

@@ -185,6 +185,7 @@ fun VoiceScreen(onBack: () -> Unit, onDone: () -> Unit) {
         val b = ctx.book
         var heard by rememberSaveable { mutableStateOf("") }
         var unavailable by rememberSaveable { mutableStateOf(false) }
+        val dirty = app.penny.ui.kit.rememberDirty(heard)
         val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { r ->
             if (r.resultCode == Activity.RESULT_OK) heard = r.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.firstOrNull().orEmpty()
         }
@@ -197,7 +198,7 @@ fun VoiceScreen(onBack: () -> Unit, onDone: () -> Unit) {
             runCatching { launcher.launch(i) }.onFailure { unavailable = true }
         }
         LaunchedEffect(Unit) { if (heard.isEmpty()) listen() }
-        PennyScreen(stringResource(R.string.voice_add), onBack, large = false) { pad ->
+        PennyScreen(stringResource(R.string.voice_add), onBack, large = false, dirty = dirty) { pad ->
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                 Text(stringResource(R.string.voice_examples), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(20.dp))
                 if (unavailable) Text(stringResource(R.string.voice_unavailable), color = MaterialTheme.colorScheme.error, modifier = Modifier.padding(horizontal = 20.dp))
@@ -231,6 +232,8 @@ fun ScanScreen(onBack: () -> Unit, onDone: () -> Unit) {
         val scope = rememberCoroutineScope()
         var text by rememberSaveable { mutableStateOf<String?>(null) }
         var image by rememberSaveable { mutableStateOf<String?>(null) }
+        // A picked or photographed receipt is work worth asking about before Back throws it away.
+        val dirty = app.penny.ui.kit.rememberDirty(image)
         // Not saveable: the OCR job dies with the composition, so a restored "busy" would spin forever.
         var busy by remember { mutableStateOf(false) }
         var failed by rememberSaveable { mutableStateOf(false) }
@@ -248,7 +251,7 @@ fun ScanScreen(onBack: () -> Unit, onDone: () -> Unit) {
         val cameraUri = remember { FileProvider.getUriForFile(context, context.packageName + ".files", cameraFile) }
         val camera = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { ok -> if (ok) read(cameraUri) }
         val gallery = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri -> uri?.let(::read) }
-        PennyScreen(stringResource(R.string.scan_receipt), onBack, large = false) { pad ->
+        PennyScreen(stringResource(R.string.scan_receipt), onBack, large = false, dirty = dirty) { pad ->
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                 Text(stringResource(R.string.scan_body), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(20.dp))
                 Row(Modifier.padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {

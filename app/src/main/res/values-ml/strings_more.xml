@@ -277,8 +277,6 @@
     <string name="spaces_sub">നിങ്ങളുടെ കുടുംബവുമായി ബജറ്റ് പങ്കിടുക</string>
     <string name="sync_and_banks">സിങ്കും ബാങ്കുകളും</string>
     <string name="sync_sub">ഉപകരണങ്ങൾ, ബാക്കപ്പ് ഫ്രേസ്, ബാങ്ക് കണക്ഷനുകൾ</string>
-    <string name="plus">Penny Plus</string>
-    <string name="plus_sub">ബാങ്ക് സിങ്കിനും സ്റ്റോറേജിനുമുള്ള ചെലവ് വഹിക്കുന്നു</string>
     <string name="your_data">നിങ്ങളുടെ ഡാറ്റ</string>
     <string name="data_backup">ഡാറ്റയും ബാക്കപ്പും</string>
     <string name="data_sub">എക്സ്പോർട്ട്, ഇംപോർട്ട്, ബാക്കപ്പ്, ഇല്ലാതാക്കൽ</string>
@@ -485,7 +483,6 @@
     <string name="bank_sync">ബാങ്ക് കണക്ഷനുകൾ</string>
     <string name="bank_sync_body">ഇടപാടുകൾ സ്വയമേവ കൊണ്ടുവരാൻ നിയന്ത്രിത ദാതാവ് വഴി ബാങ്ക് കണക്റ്റ് ചെയ്യുക. നിങ്ങളുടെ ബാങ്ക് ലോഗിൻ ഈ ഫോണിലോ Penny സെർവറുകളിലോ ഒരിക്കലും എത്തില്ല.</string>
     <string name="providers_here">നിങ്ങളുടെ പ്രദേശത്ത് ലഭ്യം: %1$s</string>
-    <string name="bank_sync_needs_plus">ബാങ്ക് കണക്ഷനുകൾക്ക് Penny Plus വേണം, അത് ദാതാവിന്റെ ഫീസ് അടയ്ക്കുന്നു.</string>
     <string name="advisor_links">ഉപദേശകനുമായി പങ്കിടുക</string>
     <string name="advisor_body">അക്കൗണ്ടന്റിനോ ഉപദേശകനോ കുടുംബാംഗത്തിനോ വേണ്ടി സംഗ്രഹത്തോടെയുള്ള, കാണാൻ മാത്രമുള്ള ലിങ്ക് സൃഷ്ടിക്കുക. അത് സ്വയം കാലഹരണപ്പെടും, അക്കൗണ്ടില്ലാതെ തുറക്കും.</string>
     <string name="advisor_needs_sync">ആദ്യം സിങ്ക് ഓണാക്കുക.</string>
@@ -512,21 +509,6 @@
     <string name="role_contributor">സംഭാവകൻ</string>
     <string name="role_viewer">കാഴ്ചക്കാരൻ</string>
     <string name="role_none">ആക്‌സസില്ല</string>
-    <string name="plus_active">Plus സജീവമാണ്. നന്ദി.</string>
-    <string name="plus_intro">Penny-യിലെ എല്ലാ ഫീച്ചറുകളും സൗജന്യമാണ്. ഓരോ ഉപയോക്താവിനൊപ്പം കൂടുന്ന ചെലവുകൾ മാത്രമേ Plus വഹിക്കുന്നുള്ളൂ, അതിനാൽ ആപ്പ് എല്ലാവർക്കും സൗജന്യമായി തുടരും.</string>
-    <string name="plus_funds">Plus എന്തിനാണ് പണം നൽകുന്നത്</string>
-    <string name="plus_f1">ഓരോ അക്കൗണ്ടിനും ഫീസ് ഈടാക്കുന്ന ബാങ്ക് കണക്ഷനുകൾ</string>
-    <string name="plus_f2">1 GB-ൽ കൂടുതലുള്ള അറ്റാച്ച്‌മെന്റുകൾക്കുള്ള സ്റ്റോറേജ്</string>
-    <string name="plus_f3">മുൻഗണനാ പിന്തുണ</string>
-    <string name="plus_f4">ഒരു Plus, 10 പേർ വരെയുള്ള ഒരു മുഴുവൻ പങ്കിട്ട സ്‌പേസിനും മതി</string>
-    <string name="plus_always_free">എപ്പോഴും സൗജന്യം</string>
-    <string name="plus_free_body">ബജറ്റുകൾ, ക്യാപ്‌ചർ, പങ്കിടൽ, സിങ്ക്, എക്സ്പോർട്ട്, ഉൾക്കാഴ്ചകൾ, മറ്റെല്ലാം. പരസ്യങ്ങളില്ല, ലോണുകളില്ല, ഡാറ്റ വിൽപ്പനയില്ല.</string>
-    <string name="plus_monthly">മാസംതോറും</string>
-    <string name="plus_yearly" formatted="false">വർഷംതോറും (ഏകദേശം 40% കുറവ്)</string>
-    <string name="plus_lifetime">ഒരിക്കൽ, ജീവിതകാലത്തേക്ക്</string>
-    <string name="restore_purchases">വാങ്ങലുകൾ പുനഃസ്ഥാപിക്കുക</string>
-    <string name="manage_cancel">മാനേജ് ചെയ്യുക അല്ലെങ്കിൽ റദ്ദാക്കുക</string>
-    <string name="plus_downgrade_note">Plus നിർത്തിയാൽ ഒന്നും ഇല്ലാതാകില്ല: ബാങ്കുമായി ലിങ്ക് ചെയ്ത അക്കൗണ്ടുകൾ മാനുവലായി മാറും.</string>
 
     <!-- Support -->
     <string name="search_help">സഹായത്തിൽ തിരയുക</string>

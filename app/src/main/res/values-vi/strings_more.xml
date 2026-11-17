@@ -277,8 +277,6 @@
     <string name="spaces_sub">Dùng chung ngân sách với gia đình</string>
     <string name="sync_and_banks">Đồng bộ và ngân hàng</string>
     <string name="sync_sub">Thiết bị, cụm từ sao lưu, kết nối ngân hàng</string>
-    <string name="plus">Penny Plus</string>
-    <string name="plus_sub">Trang trải đồng bộ ngân hàng và lưu trữ</string>
     <string name="your_data">Dữ liệu của bạn</string>
     <string name="data_backup">Dữ liệu và sao lưu</string>
     <string name="data_sub">Xuất, nhập, sao lưu, xóa</string>
@@ -485,7 +483,6 @@
     <string name="bank_sync">Kết nối ngân hàng</string>
     <string name="bank_sync_body">Kết nối ngân hàng qua một nhà cung cấp được cấp phép để tự động đưa giao dịch vào. Thông tin đăng nhập ngân hàng của bạn không bao giờ đi qua điện thoại này hay máy chủ của Penny.</string>
     <string name="providers_here">Có ở khu vực của bạn: %1$s</string>
-    <string name="bank_sync_needs_plus">Kết nối ngân hàng cần Penny Plus, để trả phí cho nhà cung cấp.</string>
     <string name="advisor_links">Chia sẻ với người tư vấn</string>
     <string name="advisor_body">Tạo một đường liên kết chỉ xem kèm bản tóm tắt cho kế toán, người tư vấn hoặc người thân. Liên kết tự hết hạn và mở được mà không cần tài khoản.</string>
     <string name="advisor_needs_sync">Hãy bật đồng bộ trước.</string>
@@ -512,21 +509,6 @@
     <string name="role_contributor">Người đóng góp</string>
     <string name="role_viewer">Người xem</string>
     <string name="role_none">Không có quyền</string>
-    <string name="plus_active">Plus đang hoạt động. Cảm ơn bạn.</string>
-    <string name="plus_intro">Mọi tính năng trong Penny đều miễn phí. Plus chỉ trang trải những chi phí tăng theo từng người dùng, để ứng dụng có thể miễn phí cho mọi người.</string>
-    <string name="plus_funds">Plus trang trải cho</string>
-    <string name="plus_f1">Kết nối ngân hàng, vốn tính phí theo từng tài khoản</string>
-    <string name="plus_f2">Lưu trữ tệp đính kèm trên 1 GB</string>
-    <string name="plus_f3">Hỗ trợ ưu tiên</string>
-    <string name="plus_f4">Một gói Plus dùng cho cả không gian chung tối đa 10 người</string>
-    <string name="plus_always_free">Luôn miễn phí</string>
-    <string name="plus_free_body">Ngân sách, ghi nhận, chia sẻ, đồng bộ, xuất dữ liệu, phân tích, và mọi thứ khác. Không quảng cáo, không cho vay, không bán dữ liệu.</string>
-    <string name="plus_monthly">Hằng tháng</string>
-    <string name="plus_yearly" formatted="false">Hằng năm (rẻ hơn khoảng 40%)</string>
-    <string name="plus_lifetime">Một lần, dùng trọn đời</string>
-    <string name="restore_purchases">Khôi phục giao dịch mua</string>
-    <string name="manage_cancel">Quản lý hoặc hủy</string>
-    <string name="plus_downgrade_note">Nếu bạn ngừng Plus, không gì bị xóa: các tài khoản liên kết ngân hàng chỉ chuyển sang nhập tay.</string>
 
     <!-- Support -->
     <string name="search_help">Tìm trợ giúp</string>

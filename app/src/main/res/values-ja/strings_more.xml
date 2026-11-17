@@ -277,8 +277,6 @@
     <string name="spaces_sub">家族と予算を共有</string>
     <string name="sync_and_banks">同期と銀行</string>
     <string name="sync_sub">端末、バックアップフレーズ、銀行接続</string>
-    <string name="plus">Penny Plus</string>
-    <string name="plus_sub">銀行の同期とストレージの費用に充てられます</string>
     <string name="your_data">あなたのデータ</string>
     <string name="data_backup">データとバックアップ</string>
     <string name="data_sub">エクスポート、インポート、バックアップ、削除</string>
@@ -485,7 +483,6 @@
     <string name="bank_sync">銀行接続</string>
     <string name="bank_sync_body">規制を受けたプロバイダ経由で銀行と接続すると、取引を自動で取り込めます。銀行のログイン情報がこの端末や Penny のサーバーに触れることはありません。</string>
     <string name="providers_here">お住まいの地域で利用可能：%1$s</string>
-    <string name="bank_sync_needs_plus">銀行接続には、プロバイダの手数料をまかなう Penny Plus が必要です。</string>
     <string name="advisor_links">アドバイザーと共有</string>
     <string name="advisor_body">会計士、アドバイザー、家族向けに、概要を含む閲覧専用のリンクを作成します。リンクは自動で失効し、アカウントなしで開けます。</string>
     <string name="advisor_needs_sync">先に同期をオンにしてください。</string>
@@ -512,21 +509,6 @@
     <string name="role_contributor">投稿者</string>
     <string name="role_viewer">閲覧者</string>
     <string name="role_none">アクセス権なし</string>
-    <string name="plus_active">Plus は有効です。ありがとうございます。</string>
-    <string name="plus_intro">Penny のすべての機能は無料です。Plus はユーザーごとに増える費用だけをまかない、誰もが無料で使い続けられるようにします。</string>
-    <string name="plus_funds">Plus の使い道</string>
-    <string name="plus_f1">口座ごとに料金がかかる銀行接続</string>
-    <string name="plus_f2">1 GB を超える添付ファイルのストレージ</string>
-    <string name="plus_f3">優先サポート</string>
-    <string name="plus_f4">1つの Plus で最大10人の共有スペース全体をカバー</string>
-    <string name="plus_always_free">ずっと無料</string>
-    <string name="plus_free_body">予算、取り込み、共有、同期、エクスポート、分析など、その他すべて。広告、ローン、データ販売はありません。</string>
-    <string name="plus_monthly">月額</string>
-    <string name="plus_yearly" formatted="false">年額（約40%お得）</string>
-    <string name="plus_lifetime">買い切り</string>
-    <string name="restore_purchases">購入を復元</string>
-    <string name="manage_cancel">管理または解約</string>
-    <string name="plus_downgrade_note">Plus をやめても何も削除されません。銀行と連携した口座が手動管理になるだけです。</string>
 
     <!-- Support -->
     <string name="search_help">ヘルプを検索</string>

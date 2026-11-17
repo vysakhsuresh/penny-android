@@ -17,7 +17,7 @@
         <item>Jak usunąć wszystkie moje dane?</item>
     </string-array>
     <string-array name="faq_a">
-        <item>Tak. Wszystkie funkcje są bezpłatne. Opcjonalny Penny Plus pokrywa tylko koszty rosnące z każdym użytkownikiem, takie jak opłaty za połączenia z bankami i dodatkowe miejsce. Nie ma reklam i nigdy nie sprzedajemy danych.</item>
+        <item>Tak, całkowicie. Wszystkie funkcje są bezpłatne dla wszystkich: bez subskrypcji, bez płatnej wersji, bez reklam i nigdy nie sprzedajemy danych. Jeśli Penny Ci pomaga, możesz zostawić dobrowolny napiwek przez „Postaw mi kawę”. Niczego to nie odblokowuje, a nikt nie dostaje mniej, jeśli nic nie da.</item>
         <item>Nie. Penny nigdy nie prosi o uprawnienia do SMS-ów. Może czytać powiadomienia z aplikacji płatniczych i bankowych, na które pozwolisz, tylko na Twoim telefonie, i w każdej chwili możesz to wyłączyć.</item>
         <item>Na Twoim telefonie, zaszyfrowane. Jeśli włączysz synchronizację, dane są szyfrowane na telefonie, zanim go opuszczą, więc serwer przechowuje dane, których nie może odczytać.</item>
         <item>To pieniądze, które możesz wydać od teraz do następnego okresu wypłaty, nie zaniedbując rachunków ani celów oszczędnościowych: przychody minus rachunki do zapłacenia, minus to, co odkładasz, minus to, co już wydano.</item>

@@ -277,8 +277,6 @@
     <string name="spaces_sub">Ibahagi ang budget sa sambahayan mo</string>
     <string name="sync_and_banks">Sync at mga bangko</string>
     <string name="sync_sub">Mga device, backup phrase, bank connection</string>
-    <string name="plus">Penny Plus</string>
-    <string name="plus_sub">Pambayad sa bank sync at storage</string>
     <string name="your_data">Ang data mo</string>
     <string name="data_backup">Data at backup</string>
     <string name="data_sub">Export, import, backup, pagbura</string>
@@ -485,7 +483,6 @@
     <string name="bank_sync">Mga bank connection</string>
     <string name="bank_sync_body">Ikonekta ang bangko sa pamamagitan ng regulated na provider para awtomatikong pumasok ang mga transaksyon. Hindi kailanman dumadaan ang bank login mo sa phone na ito o sa mga server ng Penny.</string>
     <string name="providers_here">Available sa rehiyon mo: %1$s</string>
-    <string name="bank_sync_needs_plus">Kailangan ng Penny Plus ang mga bank connection, na pambayad sa fee ng provider.</string>
     <string name="advisor_links">Ibahagi sa isang adviser</string>
     <string name="advisor_body">Gumawa ng read-only na link na may buod para sa accountant, adviser o kapamilya. Kusa itong mag-e-expire at nabubuksan kahit walang account.</string>
     <string name="advisor_needs_sync">I-on muna ang sync.</string>
@@ -512,21 +509,6 @@
     <string name="role_contributor">Contributor</string>
     <string name="role_viewer">Viewer</string>
     <string name="role_none">Walang access</string>
-    <string name="plus_active">Aktibo ang Plus. Salamat.</string>
-    <string name="plus_intro">Libre ang bawat feature sa Penny. Ang Plus ay pambayad lang sa mga gastos na lumalaki sa bawat user, para manatiling libre ang app para sa lahat.</string>
-    <string name="plus_funds">Ano ang binabayaran ng Plus</string>
-    <string name="plus_f1">Mga bank connection, na naniningil bawat account</string>
-    <string name="plus_f2">Storage na lampas sa 1 GB ng attachment</string>
-    <string name="plus_f3">Priority na suporta</string>
-    <string name="plus_f4">Sakop ng isang Plus ang buong shared space na hanggang 10 tao</string>
-    <string name="plus_always_free">Laging libre</string>
-    <string name="plus_free_body">Budget, capture, pagbabahagi, sync, export, insights, at lahat ng iba pa. Walang ads, walang pautang, walang pagbebenta ng data.</string>
-    <string name="plus_monthly">Buwanan</string>
-    <string name="plus_yearly" formatted="false">Taunan (mga 40% mas mura)</string>
-    <string name="plus_lifetime">Isang bayad, panghabambuhay</string>
-    <string name="restore_purchases">I-restore ang mga binili</string>
-    <string name="manage_cancel">Pamahalaan o kanselahin</string>
-    <string name="plus_downgrade_note">Kapag itinigil mo ang Plus, walang mabubura: magiging manual lang ang mga account na naka-link sa bangko.</string>
 
     <!-- Support -->
     <string name="search_help">Maghanap ng tulong</string>

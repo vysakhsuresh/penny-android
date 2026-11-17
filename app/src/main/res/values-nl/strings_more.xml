@@ -277,8 +277,6 @@
     <string name="spaces_sub">Deel een budget met je huishouden</string>
     <string name="sync_and_banks">Synchronisatie en banken</string>
     <string name="sync_sub">Apparaten, herstelzin, bankkoppelingen</string>
-    <string name="plus">Penny Plus</string>
-    <string name="plus_sub">Betaalt voor banksynchronisatie en opslag</string>
     <string name="your_data">Je gegevens</string>
     <string name="data_backup">Gegevens en back-up</string>
     <string name="data_sub">Exporteren, importeren, back-up, verwijderen</string>
@@ -485,7 +483,6 @@
     <string name="bank_sync">Bankkoppelingen</string>
     <string name="bank_sync_body">Koppel een bank via een gereguleerde aanbieder om transacties automatisch binnen te halen. Je bankgegevens om in te loggen komen nooit op deze telefoon of op de servers van Penny.</string>
     <string name="providers_here">Beschikbaar in je regio: %1$s</string>
-    <string name="bank_sync_needs_plus">Bankkoppelingen vereisen Penny Plus, dat de kosten van de aanbieder betaalt.</string>
     <string name="advisor_links">Delen met een adviseur</string>
     <string name="advisor_body">Maak een link met een overzicht (alleen lezen) voor een boekhouder, adviseur of familielid. Hij verloopt vanzelf en opent zonder account.</string>
     <string name="advisor_needs_sync">Zet eerst synchronisatie aan.</string>
@@ -512,21 +509,6 @@
     <string name="role_contributor">Bijdrager</string>
     <string name="role_viewer">Kijker</string>
     <string name="role_none">Geen toegang</string>
-    <string name="plus_active">Plus is actief. Bedankt.</string>
-    <string name="plus_intro">Elke functie in Penny is gratis. Plus dekt alleen kosten die met elke gebruiker groeien, zodat de app voor iedereen gratis kan blijven.</string>
-    <string name="plus_funds">Waar Plus voor betaalt</string>
-    <string name="plus_f1">Bankkoppelingen, die per rekening kosten</string>
-    <string name="plus_f2">Opslag boven 1 GB aan bijlagen</string>
-    <string name="plus_f3">Ondersteuning met voorrang</string>
-    <string name="plus_f4">Eén Plus dekt een hele gedeelde ruimte van maximaal 10 personen</string>
-    <string name="plus_always_free">Altijd gratis</string>
-    <string name="plus_free_body">Budgetten, vastleggen, delen, synchronisatie, exporteren, inzichten, al het andere. Geen advertenties, geen leningen, geen verkoop van gegevens.</string>
-    <string name="plus_monthly">Maandelijks</string>
-    <string name="plus_yearly" formatted="false">Jaarlijks (ongeveer 40% minder)</string>
-    <string name="plus_lifetime">Eenmalig, voor altijd</string>
-    <string name="restore_purchases">Aankopen herstellen</string>
-    <string name="manage_cancel">Beheren of opzeggen</string>
-    <string name="plus_downgrade_note">Als je stopt met Plus, wordt er niets verwijderd: aan de bank gekoppelde rekeningen worden gewoon handmatig.</string>
 
     <!-- Support -->
     <string name="search_help">Hulp doorzoeken</string>

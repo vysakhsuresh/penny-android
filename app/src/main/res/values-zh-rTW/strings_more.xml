@@ -277,8 +277,6 @@
     <string name="spaces_sub">與家人共用預算</string>
     <string name="sync_and_banks">同步與銀行</string>
     <string name="sync_sub">裝置、備份詞組、銀行連結</string>
-    <string name="plus">Penny Plus</string>
-    <string name="plus_sub">用於支付銀行同步和儲存空間費用</string>
     <string name="your_data">你的資料</string>
     <string name="data_backup">資料與備份</string>
     <string name="data_sub">匯出、匯入、備份、刪除</string>
@@ -485,7 +483,6 @@
     <string name="bank_sync">銀行連結</string>
     <string name="bank_sync_body">透過受監管的服務供應商連結銀行，自動匯入交易。你的銀行登入資訊絕不會經過這支手機或 Penny 的伺服器。</string>
     <string name="providers_here">你所在地區可用：%1$s</string>
-    <string name="bank_sync_needs_plus">銀行連結需要 Penny Plus，用來支付服務供應商的費用。</string>
     <string name="advisor_links">與顧問分享</string>
     <string name="advisor_body">為會計師、顧問或家人建立含摘要的唯讀連結。連結會自動失效，不需要帳號就能開啟。</string>
     <string name="advisor_needs_sync">請先開啟同步。</string>
@@ -512,21 +509,6 @@
     <string name="role_contributor">貢獻者</string>
     <string name="role_viewer">檢視者</string>
     <string name="role_none">無存取權</string>
-    <string name="plus_active">Plus 已啟用。謝謝你。</string>
-    <string name="plus_intro">Penny 的所有功能都免費。Plus 只支付隨使用者增加的成本，讓 App 能對所有人維持免費。</string>
-    <string name="plus_funds">Plus 用於支付</string>
-    <string name="plus_f1">依帳戶收費的銀行連結</string>
-    <string name="plus_f2">超過 1 GB 的附件儲存空間</string>
-    <string name="plus_f3">優先支援</string>
-    <string name="plus_f4">一份 Plus 涵蓋最多 10 人的整個共用空間</string>
-    <string name="plus_always_free">永久免費</string>
-    <string name="plus_free_body">預算、自動記錄、共用、同步、匯出、分析以及其他所有功能。沒有廣告、沒有貸款，也不販售資料。</string>
-    <string name="plus_monthly">按月</string>
-    <string name="plus_yearly" formatted="false">按年（約省 40%）</string>
-    <string name="plus_lifetime">一次購買，終身使用</string>
-    <string name="restore_purchases">還原購買項目</string>
-    <string name="manage_cancel">管理或取消</string>
-    <string name="plus_downgrade_note">停用 Plus 不會刪除任何內容：與銀行連結的帳戶只會改為手動管理。</string>
 
     <!-- Support -->
     <string name="search_help">搜尋說明</string>

@@ -26,13 +26,13 @@ Penny is a personal and household money tracker for the whole world. It captures
 **Platforms:** Android and iOS (phones and tablets), web app, watch tiles. Desktop via web. Offline-first everywhere.
 
 **Non-negotiables**
-- NN-1 Every feature is free. The only paid tier (Penny Plus) is cost pass-through: bank auto-sync fees, storage beyond 1 GB, priority support.
+- NN-1 Every feature is free for everyone, including the premium features other apps charge for. There is no subscription, no paid tier and nothing to buy (owner rule, 2026-11-17). Nothing may cost the owner or users money to run: features that need a server must work without one (folder sync) or run on a server the user hosts.
 - NN-2 Everything works offline; sync is additive.
 - NN-3 Every write is undoable for at least 5 seconds and recoverable from history for 30 days.
 - NN-4 No ads, no loans, no credit scores, no savings accounts, no cashback, no data sale. Stated in-app and in store listings.
 - NN-5 Global by data, not by code: locale, currency, cycle, rails and language are configuration.
 - NN-6 Accessibility WCAG 2.2 AA on all platforms.
-- NN-7 Nothing is hidden behind a paywall surprise; Plus screens are visible and explained.
+- NN-7 There is no paywall anywhere.
 
 ---
 
@@ -256,7 +256,7 @@ Each module lists requirements and acceptance criteria. "Object" rows in §10.2 
 - CP-07 OCR: on-device model; extracts total, tax, date, merchant, line items; multi-currency receipts; free, unlimited.
 - CP-08 Voice: on-device speech where available; grammar handles amount, payee, category, account, date, split with people, in the user's languages including mixed speech.
 - CP-09 Imports: CSV with column mapper and saved bank presets, OFX, QIF, QFX, MT940, CAMT.053, PDF statements (tabular extraction), and migration importers for YNAB, Monarch, Mint archive, Money Manager, Spendee, Wallet, Splitwise, Bluecoins, Toshl, Goodbudget, EveryDollar, PocketGuard, Actual, Firefly III. Importer preview with duplicate handling.
-- CP-10 Bank sync (Plus): regional providers behind one connector interface: Plaid (US/CA/UK/EU), MX/Finicity (US), TrueLayer/Yapily/GoCardless/Tink/Salt Edge (UK/EU), Basiq (AU CDR), Akahu (NZ), Account Aggregator via a TSP (IN), BSP Open Finance partners (PH), Belvo/Pluggy (LATAM, Open Finance Brazil), Mono/Okra/Stitch (Africa), SGFinDex (SG), Finverse/Brankas (SEA), SimpleFIN (self-serve). Consent screens, expiry, re-consent, per-account toggle, delete-on-disconnect.
+- CP-10 Bank sync (free; on a sync server the user hosts): regional providers behind one connector interface: Plaid (US/CA/UK/EU), MX/Finicity (US), TrueLayer/Yapily/GoCardless/Tink/Salt Edge (UK/EU), Basiq (AU CDR), Akahu (NZ), Account Aggregator via a TSP (IN), BSP Open Finance partners (PH), Belvo/Pluggy (LATAM, Open Finance Brazil), Mono/Okra/Stitch (Africa), SGFinDex (SG), Finverse/Brankas (SEA), SimpleFIN (self-serve). Consent screens, expiry, re-consent, per-account toggle, delete-on-disconnect.
 - CP-11 Dedupe across sources (notification + bank + manual): amount, time window, account, payee similarity; merged items keep all sources in history.
 - CP-12 Location (optional, on-device): suggest payee from nearby previous spends.
 
@@ -316,7 +316,7 @@ Each module lists requirements and acceptance criteria. "Object" rows in §10.2 
 - ST-08 Security: app lock (biometric/PIN), auto-lock timer, duress PIN (opens decoy book), screenshot blocking toggle, sessions and devices with remote sign-out, recovery kit.
 - ST-09 Data: export (CSV per table, JSON full, encrypted archive), import, backup to user's cloud folder, restore, trash, delete profile, delete account.
 - ST-10 Language: app language independent of region; RTL mirrors layout.
-- ST-11 Penny Plus: status, manage, restore purchase, invoices.
+- ST-11 (Removed: there is no paid tier.)
 - ST-12 About: trust page (what we never do), privacy policy, open-source licences, changelog, feedback with optional diagnostics.
 
 ### 4.18 Security and privacy (SE)
@@ -351,11 +351,8 @@ Each module lists requirements and acceptance criteria. "Object" rows in §10.2 
 - WG-04 Keyboard shortcuts on web; command palette.
 
 ### 4.21 Monetization (MO)
-- MO-01 Penny Plus: bank auto-sync, storage beyond 1 GB, priority support, early access, supporter badge; one Plus covers a Space (up to 10 members).
-- MO-02 Regional price points stored as data; monthly, yearly (~40% off), lifetime in launch and festival windows; store billing (Play, App Store) and web billing (Stripe/Paddle) with cross-platform entitlement.
-- MO-03 Restore purchases; family sharing where the store supports it; grace periods; downgrade keeps all data and features except sync (accounts turn manual, nothing deleted).
-- MO-04 Plus sheet shows what it funds in plain words; no countdown timers, no dark patterns, cancel in two taps.
-- MO-05 Voluntary tip jar MAY exist; never gates features.
+- MO-01…MO-04 (Removed: Penny has no subscription or paid tier; every feature is free.)
+- MO-05 "Buy me a coffee": a voluntary tip; it never unlocks or gates anything, and nobody gets less for not giving.
 
 ### 4.22 History and trash (HS)
 - HS-01 Global History screen: every change in the profile/space, filterable by object, actor, date; revert any change where safe (creates a new compensating event).
@@ -383,7 +380,7 @@ Each module lists requirements and acceptance criteria. "Object" rows in §10.2 
 
 Entities (fields abbreviated; all carry `id`, `profile_id` or `space_id`, `created_at`, `updated_at`, `deleted_at`, `version`, `actor_id`):
 
-- `Account(login)`: auth identities, residency region, devices, plus_entitlement.
+- `Account(login)`: auth identities, residency region, devices.
 - `Profile`: name, type (personal, business, supervised), base_currency, timezone, cycle_rule, settings_json, supervisor_account_id.
 - `Space`: name, owner_account_id, base_currency, settings; `SpaceMember`: role, per_object_overrides.
 - `Group`: name, base_currency; `GroupMember` (account or external contact).
@@ -526,7 +523,7 @@ Android 9–16 on 4 GB and 8 GB devices (one budget, one mid, one flagship), tab
 | M2 People and sync (weeks 15–22) | Accounts/login, profiles, spaces, roles, invites, audit log, groups, lending, E2EE sync, backup/restore, devices, history and trash | Two-device conflict suite green; §2 items 3, 4, 17, 24, 25, 39 closed; closed beta 2,000 users across 5 regions |
 | M3 Capture (weeks 23–30) | Notification parsers for top 30 apps across packs, share sheet, email forwarding, OCR, voice, importers incl. migration from 12 apps, rules engine with learning, review queue | ≥ 70% of beta users' transactions captured without typing; parser accuracy ≥ 95% on fixtures |
 | M4 Alerts, remittances, circles, debt, subscriptions, widgets, watch, web app, 30 languages, all launch packs | §4.7–4.10, 4.13, 4.20 | Public launch in 10 regions; D30 retention ≥ 30% |
-| M5 Plus and bank sync | Connector service with 6 providers, consent UX, Plus billing on store and web, advisor links, business book | Sync live in US, UK/EU, IN, AU, BR, PH; conversion ≥ 2% |
+| M5 Bank sync | Connector service with 6 providers, consent UX, advisor links, business book | Sync live in US, UK/EU, IN, AU, BR, PH; conversion ≥ 2% |
 | M6 Depth | Coach, Sankey/forecast scenarios, investments, tax reports, API and webhooks, Shortcuts/Tasker, community merchant map | Feature benchmark tab fully green |
 
 ---

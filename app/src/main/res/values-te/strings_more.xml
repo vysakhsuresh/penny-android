@@ -277,8 +277,6 @@
     <string name="spaces_sub">మీ కుటుంబంతో బడ్జెట్‌ను షేర్ చేయండి</string>
     <string name="sync_and_banks">సింక్ మరియు బ్యాంకులు</string>
     <string name="sync_sub">పరికరాలు, బ్యాకప్ ఫ్రేజ్, బ్యాంక్ కనెక్షన్‌లు</string>
-    <string name="plus">Penny Plus</string>
-    <string name="plus_sub">బ్యాంక్ సింక్, స్టోరేజ్ కోసం చెల్లిస్తుంది</string>
     <string name="your_data">మీ డేటా</string>
     <string name="data_backup">డేటా మరియు బ్యాకప్</string>
     <string name="data_sub">ఎక్స్‌పోర్ట్, ఇంపోర్ట్, బ్యాకప్, తొలగింపు</string>
@@ -485,7 +483,6 @@
     <string name="bank_sync">బ్యాంక్ కనెక్షన్‌లు</string>
     <string name="bank_sync_body">లావాదేవీలను ఆటోమేటిక్‌గా తెచ్చుకోవడానికి నియంత్రిత ప్రొవైడర్ ద్వారా బ్యాంక్‌ను కనెక్ట్ చేయండి. మీ బ్యాంక్ లాగిన్ ఈ ఫోన్‌ను గానీ Penny సర్వర్‌లను గానీ ఎప్పుడూ తాకదు.</string>
     <string name="providers_here">మీ ప్రాంతంలో అందుబాటులో ఉన్నవి: %1$s</string>
-    <string name="bank_sync_needs_plus">బ్యాంక్ కనెక్షన్‌లకు Penny Plus కావాలి, అది ప్రొవైడర్ ఫీజులను చెల్లిస్తుంది.</string>
     <string name="advisor_links">సలహాదారుతో షేర్ చేయండి</string>
     <string name="advisor_body">అకౌంటెంట్, సలహాదారు లేదా కుటుంబ సభ్యుల కోసం సారాంశంతో చూడటానికి మాత్రమే లింక్ సృష్టించండి. అది దానంతట అదే గడువు ముగుస్తుంది, ఖాతా లేకుండానే తెరుచుకుంటుంది.</string>
     <string name="advisor_needs_sync">ముందుగా సింక్ ఆన్ చేయండి.</string>
@@ -512,21 +509,6 @@
     <string name="role_contributor">కంట్రిబ్యూటర్</string>
     <string name="role_viewer">వీక్షకుడు</string>
     <string name="role_none">యాక్సెస్ లేదు</string>
-    <string name="plus_active">Plus యాక్టివ్‌గా ఉంది. ధన్యవాదాలు.</string>
-    <string name="plus_intro">Pennyలో ప్రతి ఫీచర్ ఉచితం. ప్రతి యూజర్‌తో పెరిగే ఖర్చులను మాత్రమే Plus భరిస్తుంది, తద్వారా యాప్ అందరికీ ఉచితంగా ఉంటుంది.</string>
-    <string name="plus_funds">Plus దేనికి చెల్లిస్తుంది</string>
-    <string name="plus_f1">ప్రతి ఖాతాకు ఛార్జ్ చేసే బ్యాంక్ కనెక్షన్‌లు</string>
-    <string name="plus_f2">1 GB కంటే ఎక్కువ అటాచ్‌మెంట్‌ల స్టోరేజ్</string>
-    <string name="plus_f3">ప్రాధాన్య మద్దతు</string>
-    <string name="plus_f4">ఒక Plus, 10 మంది వరకు ఉన్న మొత్తం షేర్ చేసిన స్పేస్‌ను కవర్ చేస్తుంది</string>
-    <string name="plus_always_free">ఎప్పుడూ ఉచితం</string>
-    <string name="plus_free_body">బడ్జెట్‌లు, క్యాప్చర్, షేరింగ్, సింక్, ఎక్స్‌పోర్ట్, అంతర్దృష్టులు, మిగతా అంతా. ప్రకటనలు లేవు, లోన్‌లు లేవు, డేటా అమ్మకం లేదు.</string>
-    <string name="plus_monthly">నెలవారీ</string>
-    <string name="plus_yearly" formatted="false">సంవత్సరానికి (దాదాపు 40% తక్కువ)</string>
-    <string name="plus_lifetime">ఒక్కసారి, జీవితకాలం</string>
-    <string name="restore_purchases">కొనుగోళ్లను పునరుద్ధరించండి</string>
-    <string name="manage_cancel">నిర్వహించండి లేదా రద్దు చేయండి</string>
-    <string name="plus_downgrade_note">Plus ఆపినా ఏదీ తొలగించబడదు: బ్యాంక్‌కు లింక్ చేసిన ఖాతాలు మాన్యువల్‌గా మారతాయి.</string>
 
     <!-- Support -->
     <string name="search_help">సహాయంలో వెతకండి</string>

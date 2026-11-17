@@ -62,10 +62,6 @@ class SyncManager @Inject constructor(
     private val relay get() = RelayClient(relayUrl, { vault.string("token") })
     fun relayClient(): RelayClient = relay
 
-    /** MO-03: tells the relay about a store purchase so Plus-only services (bank sync) work on every device. */
-    suspend fun reportPurchase(token: String, productId: String) = runCatching {
-        relay.putEntitlement(app.penny.sync.EntitlementBody("play", token, productId))
-    }
     val signedIn: Boolean get() = prefs.string("sync.accountId") != null
 
     suspend fun startSignIn(email: String, relayOverride: String?) {

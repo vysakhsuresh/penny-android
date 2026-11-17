@@ -175,7 +175,7 @@ func (p *PostgresStore) RevokeDevice(ctx context.Context, accountID, deviceID st
 func (p *PostgresStore) DeleteAccount(ctx context.Context, accountID string) error {
 	// Foreign keys cascade to devices, tokens, personal streams (and their events and keys),
 	// stream keys, memberships, invites created by the account, advisor links, bank connections
-	// (sealed credentials and cursors), connect states, the entitlement, the mail box and pending
+	// (sealed credentials and cursors), connect states, the mail box and pending
 	// mail. Merchant votes have no account reference and stay.
 	return p.tx(ctx, func(tx pgx.Tx) error {
 		if _, err := tx.Exec(ctx, `DELETE FROM auth_codes WHERE email_hash IN (SELECT email_hash FROM accounts WHERE id=$1)`, accountID); err != nil {
@@ -583,25 +583,7 @@ func (p *PostgresStore) TakeConnectState(ctx context.Context, stateHash, account
 	return st, pgErr(err)
 }
 
-func (p *PostgresStore) GetEntitlement(ctx context.Context, accountID string) (Entitlement, error) {
-	e := Entitlement{AccountID: accountID}
-	err := p.pool.QueryRow(ctx, `SELECT store, product_id, token_hash, plus_until, updated_at FROM entitlements WHERE account_id=$1`, accountID).
-		Scan(&e.Store, &e.ProductID, &e.TokenHash, &e.PlusUntil, &e.UpdatedAt)
-	return e, pgErr(err)
-}
 
-func (p *PostgresStore) PutEntitlement(ctx context.Context, e Entitlement) error {
-	_, err := p.pool.Exec(ctx, `INSERT INTO entitlements(account_id, store, product_id, token_hash, plus_until, updated_at)
-		VALUES($1,$2,$3,$4,$5,$6)
-		ON CONFLICT (account_id) DO UPDATE SET store=EXCLUDED.store, product_id=EXCLUDED.product_id,
-		token_hash=EXCLUDED.token_hash, plus_until=EXCLUDED.plus_until, updated_at=EXCLUDED.updated_at`,
-		e.AccountID, e.Store, e.ProductID, e.TokenHash, e.PlusUntil, e.UpdatedAt)
-	var pe *pgconn.PgError
-	if errors.As(err, &pe) && pe.Code == "23503" {
-		return ErrNotFound
-	}
-	return err
-}
 
 func isFKViolation(err error) bool {
 	var pe *pgconn.PgError

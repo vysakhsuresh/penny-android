@@ -17,7 +17,7 @@
         <item>Como excluo todos os meus dados?</item>
     </string-array>
     <string-array name="faq_a">
-        <item>Sim. Todos os recursos são gratuitos. O Penny Plus, opcional, só cobre custos que crescem por usuário, como tarifas de conexão bancária e armazenamento extra. Não há anúncios e nunca vendemos dados.</item>
+        <item>Sim, totalmente. Todos os recursos são gratuitos para todos: sem assinatura, sem versão paga, sem anúncios, e nunca vendemos dados. Se o Penny ajuda você, você pode deixar uma gorjeta opcional com \"Me pague um café\". Ela não desbloqueia nada, e ninguém recebe menos por não contribuir.</item>
         <item>Não. O Penny nunca pede permissão de SMS. Ele pode ler notificações dos apps de pagamento e de banco que você permitir, só no seu celular, e você pode desativar isso quando quiser.</item>
         <item>No seu celular, com criptografia. Se você ativar a sincronização, eles são criptografados no seu celular antes de sair, e o servidor guarda dados que não consegue ler.</item>
         <item>É o dinheiro que você pode gastar de agora até o próximo período de pagamento sem deixar de pagar contas ou de cumprir suas metas: receitas, menos contas ainda a vencer, menos o que você separou, menos o que já gastou.</item>

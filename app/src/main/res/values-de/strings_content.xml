@@ -17,7 +17,7 @@
         <item>Wie lösche ich alle meine Daten?</item>
     </string-array>
     <string-array name="faq_a">
-        <item>Ja. Alle Funktionen sind kostenlos. Das optionale Penny Plus deckt nur Kosten, die pro Person wachsen, etwa Gebühren für Bankverbindungen und zusätzlichen Speicher. Es gibt keine Werbung und wir verkaufen nie Daten.</item>
+        <item>Ja, komplett. Alle Funktionen sind für alle kostenlos: kein Abo, keine Bezahlversion, keine Werbung, und wir verkaufen nie Daten. Wenn dir Penny hilft, kannst du mit „Spendier mir einen Kaffee“ freiwillig etwas geben. Das schaltet nichts frei, und wer nichts gibt, bekommt nicht weniger.</item>
         <item>Nein. Penny fragt nie nach der SMS-Berechtigung. Es kann Benachrichtigungen von Zahlungs- und Bank-Apps lesen, die du erlaubst, nur auf deinem Handy, und du kannst das jederzeit ausschalten.</item>
         <item>Verschlüsselt auf deinem Handy. Wenn du die Synchronisierung einschaltest, wird alles auf deinem Handy verschlüsselt, bevor es das Gerät verlässt. Der Server speichert also Daten, die er nicht lesen kann.</item>
         <item>Das ist das Geld, das du bis zum nächsten Zahlungszeitraum ausgeben kannst, ohne Rechnungen oder Sparziele zu gefährden: Einnahmen minus offene Rechnungen minus Zurückgelegtes minus bereits Ausgegebenes.</item>

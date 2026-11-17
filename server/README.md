@@ -3,7 +3,7 @@
 A small Go service that stores and forwards end-to-end encrypted event blobs between a
 person's devices and the members of a shared space. It is a dumb relay: it never receives
 keys or plaintext, and it cannot read anyone's money data. The one exception is the optional
-bank-connector service (Plus), which fetches from a bank-data provider on the person's behalf
+bank-connector service (free), which fetches from a bank-data provider on the person's behalf
 and passes the result straight through without storing it (see Privacy below). Forwarded
 receipt emails are sealed to the person's device key the moment they arrive, so the stored
 copy is ciphertext too.
@@ -84,14 +84,12 @@ All bodies are JSON with camelCase fields. Binary values are base64url without p
 | GET | `/v1/advisor/{id}/blob` | – (CORS) | `{blob, expiresAt}`; 404 after expiry |
 | GET | `/a/{id}#<key>` | – | Read-only advisor page; decrypts in the browser |
 | GET | `/v1/connectors` | Bearer | `[{id, name, kind, regions, enabled}]`; `kind` is `redirect` or `token` |
-| POST | `/v1/connections` | Bearer (Plus¹) | `{provider, redirectUri, token?}` → token kind: 201 `Connection` with `accounts`; redirect kind: 200 `{redirectUrl, state}` |
-| POST | `/v1/connections/complete` | Bearer (Plus¹) | `{state, params}` (callback query params) → 201 `Connection` (200 when renewing). State is single use, 30 min |
+| POST | `/v1/connections` | Bearer | `{provider, redirectUri, token?}` → token kind: 201 `Connection` with `accounts`; redirect kind: 200 `{redirectUrl, state}` |
+| POST | `/v1/connections/complete` | Bearer | `{state, params}` (callback query params) → 201 `Connection` (200 when renewing). State is single use, 30 min |
 | GET | `/v1/connections` | Bearer | `[Connection]` (no `accounts`) |
-| POST | `/v1/connections/{id}/sync` | Bearer (Plus¹) | `{accounts?, since?, full?}` → `{transactions, accounts, status, message?}`; only transactions not delivered before |
-| POST | `/v1/connections/{id}/reconsent` | Bearer (Plus¹) | Same body and answers as `POST /v1/connections` (provider taken from the connection); renews the same id |
+| POST | `/v1/connections/{id}/sync` | Bearer | `{accounts?, since?, full?}` → `{transactions, accounts, status, message?}`; only transactions not delivered before |
+| POST | `/v1/connections/{id}/reconsent` | Bearer | Same body and answers as `POST /v1/connections` (provider taken from the connection); renews the same id |
 | DELETE | `/v1/connections/{id}` | Bearer | Revoke at the provider (best-effort), delete credentials and cursor → 204 |
-| PUT | `/v1/entitlements/plus` | Bearer | `{store:"play", purchaseToken, productId}` → `{plus, plusUntil, productId, store}` |
-| GET | `/v1/entitlements/plus` | Bearer | `{plus, plusUntil, productId?, store?}` (`plusUntil` null when none) |
 | GET | `/v1/mail/address` | Bearer | `{address, keyAlg}`; 404 if none issued |
 | POST | `/v1/mail/address` | Bearer | `{rotate?}` (body optional) → `{address, keyAlg}`; creates on first call, same address after; `rotate:true` issues a new one (old stops at once) |
 | DELETE | `/v1/mail/address` | Bearer | Turn forwarding off: delete address, key and pending mail → 204 |
@@ -102,9 +100,8 @@ All bodies are JSON with camelCase fields. Binary values are base64url without p
 | POST | `/v1/merchants/suggest` | Bearer | `{region, descriptors:[≤200]}` → `[{descriptor, name, categoryKey, confidence}]` (known ones only) |
 | POST | `/v1/merchants/contribute` | Bearer | `{region, items:[{descriptor, name, categoryKey}] (1–100)}` → `{accepted}`; 100 items/day/account |
 
-¹ `402 {"error":"plus_required"}` without an active entitlement, except in `-dev` mode and for
-the `sandbox` provider. Listing and deleting connections never need Plus, so a lapsed
-subscription can always disconnect.
+Bank connections need no payment of any kind: Penny charges nobody, and whoever runs this
+server covers the providers' costs.
 
 ### Access rules
 
@@ -137,7 +134,7 @@ never through `float64`.
 | Adapter | State |
 |---|---|
 | `simplefin` | Real. SimpleFIN Bridge protocol: the person pastes a Setup Token (kind `token`); the server base64-decodes the claim URL, POSTs to claim the Access URL, then `GET {access}/accounts?start-date=…&pending=1&account=…` with basic auth. Claim URLs must be `https` and the HTTP client only dials public IPs (the URL is user input). The protocol has no revoke call, so disconnect deletes the sealed Access URL; the person can also revoke it at their bridge |
-| `sandbox` | Deterministic fake provider (kind `redirect`): `redirectUrl` is the app's `redirectUri` with `state` and `code=sandbox-consent`; two accounts (USD checking, JPY savings), 90-day consent, transactions generated per day. No Plus needed |
+| `sandbox` | Deterministic fake provider (kind `redirect`): `redirectUrl` is the app's `redirectUri` with `state` and `code=sandbox-consent`; two accounts (USD checking, JPY savings), 90-day consent, transactions generated per day |
 | `plaid`, `mx`, `truelayer`, `gocardless`, `tink`, `saltedge`, `basiq`, `akahu`, `belvo`, `pluggy`, `mono`, `okra`, `stitch`, `brankas`, `finverse`, `aa_setu`, `sgfindex` | Stubs: listed with `enabled:false`; every call returns `ErrNotConfigured` naming the env vars it will need. Each has a doc comment with the provider API it will call (`connectors/stubs.go`) |
 
 Flows for the client:
@@ -158,22 +155,9 @@ Flows for the client:
   `disconnected` when the provider revoked access; the server drops the credentials and cursor.
   `broken` for other provider failures; the next good sync sets `active` again. `GET
   /v1/connections` reports `needs_consent` as soon as `consentExpiry` passes.
-- **Errors on connect**: 400 bad token/params or provider not enabled, 402 `plus_required`,
+- **Errors on connect**: 400 bad token/params or provider not enabled,
   404/410 unknown or expired `state`, 409 consent required/revoked, 501 provider not configured,
   502 provider error, 504 provider timeout.
-
-### Plus entitlement
-
-`PUT /v1/entitlements/plus {store:"play", purchaseToken, productId}` records `plus_until`:
-32 days from now for subscriptions, far future (9999-12-31) when `productId` contains
-`lifetime`. A grant is never shortened. Only SHA-256 of the purchase token is stored.
-
-> **Before launch:** the purchase is **not verified** yet; any token is accepted. Replace
-> `verifyPlayPurchase` in `connections.go` with a Google Play Developer API check
-> (`purchases.subscriptionsv2.get` / `purchases.products.get` with a service account, env
-> `PLAY_PACKAGE_NAME` and `PLAY_SERVICE_ACCOUNT_JSON`), use the returned expiry, reject
-> pending/refunded purchases, acknowledge the purchase, bind a token to one account, and handle
-> Real-time Developer Notifications for renewals and revocations.
 
 ### Email forwarding (CP-06)
 
@@ -279,7 +263,6 @@ produced on the device.
   only to avoid re-delivering). No amounts, payees, descriptions or balances.
 - Pending redirect consents store a SHA-256 of the `state`, the redirect URI and an expiry
   (30 minutes; purged by the janitor).
-- Plus: product id, store, `plus_until` and a SHA-256 of the purchase token.
 - **Delete-on-disconnect:** `DELETE /v1/connections/{id}` revokes access at the provider where
   the provider supports it, then deletes the credentials, cursor and pending states. A provider
   revocation detected during sync deletes the credentials and cursor at once.
@@ -321,7 +304,7 @@ testing only.
 
 **Deletion:** `DELETE /v1/account` removes the account, devices, tokens, personal streams and
 their events, keys, memberships, invites it created, advisor links, bank connections (after
-revoking each at its provider, best-effort), connect states, the Plus entitlement, the mail
+revoking each at its provider, best-effort), connect states, the mail
 forwarding address and key, and pending mail in the same request. Anonymous merchant votes
 stay (see above). Expired codes, advisor links, connect states and pending mail older than 14
 days are purged every 10 minutes.
@@ -354,7 +337,7 @@ days are purged every 10 minutes.
 | `store.go` | `Store` interface and models |
 | `store_memory.go` | In-memory store |
 | `store_postgres.go` | Postgres store and migration runner |
-| `connections.go` | Bank connector and Plus entitlement endpoints, sync cursor |
+| `connections.go` | Bank connector endpoints, sync cursor |
 | `sealer.go` | AES-256-GCM sealing of connector credentials |
 | `mail.go` | Email forwarding: addresses, mail key, inbound webhook, `penny-mail-v1` sealing, HTML stripping |
 | `merchants.go` | Community merchant map: normalisation, validation, votes, k-anonymous suggestions |

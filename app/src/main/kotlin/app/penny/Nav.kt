@@ -101,7 +101,6 @@ import app.penny.ui.settings.DataScreen
 import app.penny.ui.settings.GuidesScreen
 import app.penny.ui.settings.HelpScreen
 import app.penny.ui.settings.ImportScreen
-import app.penny.ui.settings.PlusScreen
 import app.penny.ui.settings.ProfileSettingsScreen
 import app.penny.ui.settings.ProfilesScreen
 import app.penny.ui.settings.SecurityScreen
@@ -174,7 +173,6 @@ object Routes {
     const val IMPORT = "settings/import"
     const val SPACES = "settings/spaces?token={token}"
     const val SYNC = "settings/sync"
-    const val PLUS = "settings/plus"
     const val RATES = "settings/rates"
     const val AUTOMATION = "settings/automation"
     const val ABOUT = "settings/about"
@@ -303,7 +301,6 @@ fun PennyNavHost(nav: NavHostController, start: String, reduceMotion: Boolean) {
             deepLinks = listOf(navDeepLink { uriPattern = "${Brand.DEEP_LINK_SCHEME}://invite/{token}" }),
         ) { e -> SpacesScreen(back, initialToken = e.arg("token")) }
         composable(Routes.SYNC) { SyncScreen(back) }
-        composable(Routes.PLUS) { PlusScreen(back) }
         composable(Routes.RATES) { app.penny.ui.settings.RatesScreen(back) }
         composable(Routes.AUTOMATION) { app.penny.ui.settings.AutomationScreen(back) }
         composable(

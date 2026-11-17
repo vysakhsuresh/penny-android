@@ -129,6 +129,9 @@ interface PennyDao {
     @Query("DELETE FROM kv WHERE `key` = :key")
     suspend fun deleteKv(key: String)
 
+    @Query("DELETE FROM kv WHERE `key` LIKE :prefix || '%'")
+    suspend fun deleteKvPrefix(prefix: String)
+
     @Query("DELETE FROM entities")
     suspend fun clearEntities()
 

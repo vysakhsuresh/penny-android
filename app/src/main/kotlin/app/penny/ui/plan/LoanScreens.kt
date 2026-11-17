@@ -198,13 +198,14 @@ fun LoanEditScreen(id: String, onBack: () -> Unit) {
         var paidFrom by rememberSaveable { mutableStateOf(b.activeAccountOrNull(existing?.paidFromAccountId)) }
         var extra by rememberSaveable { mutableStateOf(existing?.extraMinor?.takeIf { it > 0 }?.let { ctx.fmt.editable(it, currency) }.orEmpty()) }
         var penalty by rememberSaveable { mutableStateOf(existing?.penaltyNote.orEmpty()) }
+        val dirty = app.penny.ui.kit.rememberDirty(name, kind, currency, principal, apr, tenure, start, lender, paidFrom, extra, penalty)
         var err by rememberSaveable { mutableStateOf<String?>(null) }
         val req = stringResource(R.string.err_loan_fields)
         val rateErr = stringResource(R.string.err_rate_pct)
         val tenureErr = stringResource(R.string.err_tenure)
         val amountErr = stringResource(R.string.err_amount_invalid)
         var fieldErr by rememberSaveable { mutableStateOf<Map<String, String>>(emptyMap()) }
-        PennyScreen(stringResource(if (existing == null) R.string.add_loan else R.string.edit_loan), onBack, large = false) { pad ->
+        PennyScreen(stringResource(if (existing == null) R.string.add_loan else R.string.edit_loan), onBack, large = false, dirty = dirty) { pad ->
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                 TextInput(name, { name = it; err = null }, stringResource(R.string.field_name), error = err)
                 SelectField(stringResource(R.string.field_type), kind, LoanKind.entries.map { Choice(it, stringResource(loanKindLabel(it))) }, { it?.let { k -> kind = k } })

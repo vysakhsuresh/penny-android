@@ -277,8 +277,6 @@
     <string name="spaces_sub">Ipaambit ang budget sa imong panimalay</string>
     <string name="sync_and_banks">Sync ug mga bangko</string>
     <string name="sync_sub">Mga device, backup phrase, koneksyon sa bangko</string>
-    <string name="plus">Penny Plus</string>
-    <string name="plus_sub">Mobayad sa bank sync ug storage</string>
     <string name="your_data">Imong data</string>
     <string name="data_backup">Data ug backup</string>
     <string name="data_sub">Export, import, backup, papas</string>
@@ -485,7 +483,6 @@
     <string name="bank_sync">Koneksyon sa bangko</string>
     <string name="bank_sync_body">Ikonekta ang bangko pinaagi sa regulated provider aron kusa nga moabot ang mga transaksyon. Ang imong bank login dili gyud moagi niining telepono o sa mga server sa Penny.</string>
     <string name="providers_here">Magamit sa imong rehiyon: %1$s</string>
-    <string name="bank_sync_needs_plus">Ang koneksyon sa bangko nanginahanglan og Penny Plus, nga mobayad sa fee sa provider.</string>
     <string name="advisor_links">Ipaambit sa adviser</string>
     <string name="advisor_body">Paghimo og link nga basa ra nga adunay summary para sa accountant, adviser o miyembro sa pamilya. Kusa kining mo-expire ug maablihan bisan walay account.</string>
     <string name="advisor_needs_sync">I-on una ang sync.</string>
@@ -512,21 +509,6 @@
     <string name="role_contributor">Contributor</string>
     <string name="role_viewer">Tigtan-aw</string>
     <string name="role_none">Walay access</string>
-    <string name="plus_active">Aktibo ang Plus. Salamat.</string>
-    <string name="plus_intro">Libre ang tanang feature sa Penny. Ang Plus mobayad ra sa mga gasto nga motubo matag user, aron magpabiling libre ang app para sa tanan.</string>
-    <string name="plus_funds">Unsa ang gibayran sa Plus</string>
-    <string name="plus_f1">Koneksyon sa bangko, nga naningil matag account</string>
-    <string name="plus_f2">Storage labaw sa 1 GB nga attachment</string>
-    <string name="plus_f3">Una nga suporta</string>
-    <string name="plus_f4">Usa ka Plus para sa tibuok gipaambit nga space hangtod 10 ka tawo</string>
-    <string name="plus_always_free">Libre kanunay</string>
-    <string name="plus_free_body">Budget, capture, pagpaambit, sync, export, obserbasyon, ug ang tanan pa. Walay ads, walay utang, walay pagbaligya sa data.</string>
-    <string name="plus_monthly">Binulan</string>
-    <string name="plus_yearly" formatted="false">Tinuig (mga 40% mas barato)</string>
-    <string name="plus_lifetime">Kausa, hangtod sa kahangturan</string>
-    <string name="restore_purchases">Ibalik ang mga napalit</string>
-    <string name="manage_cancel">Dumalaha o kanselaha</string>
-    <string name="plus_downgrade_note">Kung hunongon nimo ang Plus, walay mapapas: ang mga account nga konektado sa bangko mahimong manual.</string>
 
     <!-- Support -->
     <string name="search_help">Pangita og tabang</string>

@@ -277,8 +277,6 @@
     <string name="spaces_sub">Общий бюджет с семьёй</string>
     <string name="sync_and_banks">Синхронизация и банки</string>
     <string name="sync_sub">Устройства, фраза восстановления, подключения к банкам</string>
-    <string name="plus">Penny Plus</string>
-    <string name="plus_sub">Оплачивает синхронизацию с банками и хранилище</string>
     <string name="your_data">Ваши данные</string>
     <string name="data_backup">Данные и резервные копии</string>
     <string name="data_sub">Экспорт, импорт, резервное копирование, удаление</string>
@@ -485,7 +483,6 @@
     <string name="bank_sync">Подключения к банкам</string>
     <string name="bank_sync_body">Подключите банк через регулируемого провайдера, чтобы операции поступали автоматически. Ваши банковские учётные данные никогда не попадают на этот телефон или серверы Penny.</string>
     <string name="providers_here">Доступно в вашем регионе: %1$s</string>
-    <string name="bank_sync_needs_plus">Для подключения к банкам нужен Penny Plus — он оплачивает комиссии провайдера.</string>
     <string name="advisor_links">Поделиться с консультантом</string>
     <string name="advisor_body">Создайте ссылку только для просмотра со сводкой для бухгалтера, консультанта или члена семьи. Срок её действия истекает сам, и она открывается без аккаунта.</string>
     <string name="advisor_needs_sync">Сначала включите синхронизацию.</string>
@@ -512,21 +509,6 @@
     <string name="role_contributor">Участник</string>
     <string name="role_viewer">Наблюдатель</string>
     <string name="role_none">Нет доступа</string>
-    <string name="plus_active">Plus активен. Спасибо.</string>
-    <string name="plus_intro">Все функции Penny бесплатны. Plus покрывает только расходы, которые растут с каждым пользователем, чтобы приложение оставалось бесплатным для всех.</string>
-    <string name="plus_funds">За что платит Plus</string>
-    <string name="plus_f1">Подключения к банкам, за которые взимается плата за каждый счёт</string>
-    <string name="plus_f2">Хранилище для вложений сверх 1 ГБ</string>
-    <string name="plus_f3">Приоритетная поддержка</string>
-    <string name="plus_f4">Один Plus покрывает всё общее пространство до 10 человек</string>
-    <string name="plus_always_free">Всегда бесплатно</string>
-    <string name="plus_free_body">Бюджеты, захват, совместный доступ, синхронизация, экспорт, аналитика и всё остальное. Без рекламы, кредитов и продажи данных.</string>
-    <string name="plus_monthly">Ежемесячно</string>
-    <string name="plus_yearly" formatted="false">Ежегодно (примерно на 40% дешевле)</string>
-    <string name="plus_lifetime">Один раз, навсегда</string>
-    <string name="restore_purchases">Восстановить покупки</string>
-    <string name="manage_cancel">Управлять или отменить</string>
-    <string name="plus_downgrade_note">Если вы отключите Plus, ничего не удалится: счета, связанные с банком, просто станут ручными.</string>
 
     <!-- Support -->
     <string name="search_help">Поиск по справке</string>

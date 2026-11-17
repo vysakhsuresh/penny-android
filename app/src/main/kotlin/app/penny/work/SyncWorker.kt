@@ -27,9 +27,12 @@ class SyncWorker @AssistedInject constructor(
     private val bank: app.penny.domain.BankSync,
     private val store: app.penny.domain.BookStore,
     private val mail: app.penny.domain.MailService,
+    private val folder: app.penny.domain.FolderSyncManager,
 ) : CoroutineWorker(context, params) {
     override suspend fun doWork(): Result {
-        if (!sync.signedIn) return Result.success()
+        // Free folder sync (decision 53) runs on the same triggers; it needs no account.
+        if (folder.on) runCatching { folder.syncNow() }
+        if (!sync.signedIn) { Widgets.refresh(applicationContext); return Result.success() }
         val before = sync.state.value.error
         sync.syncNow()
         // Bank connections fetch new transactions on the same schedule (CP-10).

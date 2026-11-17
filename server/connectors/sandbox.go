@@ -13,8 +13,8 @@ const SandboxCode = "sandbox-consent"
 
 const sandboxMaxDays = 90
 
-// Sandbox is a deterministic fake provider for development and tests. It needs no
-// entitlement. Consent "happens" immediately: Start returns redirectURI with state and code.
+// Sandbox is a deterministic fake provider for development and tests.
+// Consent "happens" immediately: Start returns redirectURI with state and code.
 // It has two accounts and generates the same transactions for the same dates every time.
 type Sandbox struct {
 	Now func() time.Time

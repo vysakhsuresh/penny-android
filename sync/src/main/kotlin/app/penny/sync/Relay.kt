@@ -43,7 +43,6 @@ import java.util.concurrent.TimeUnit
 @Serializable data class CompleteBody(val state: String, val params: Map<String, String>)
 @Serializable data class SyncBody(val accounts: List<String>? = null, val since: Long? = null, val full: Boolean = false)
 @Serializable data class SyncOut(val transactions: List<RemoteTx> = emptyList(), val accounts: List<RemoteAccount> = emptyList(), val status: String = "active", val message: String? = null)
-@Serializable data class EntitlementBody(val store: String, val purchaseToken: String, val productId: String)
 @Serializable data class MailAddress(val address: String, val keyAlg: String = "")
 @Serializable data class MailKey(val p256: String)
 @Serializable data class RotateBody(val rotate: Boolean)
@@ -52,7 +51,6 @@ import java.util.concurrent.TimeUnit
 @Serializable data class MerchantSuggestion(val descriptor: String, val name: String, val categoryKey: String, val confidence: Double)
 @Serializable data class MerchantItem(val descriptor: String, val name: String, val categoryKey: String)
 @Serializable data class MerchantContribute(val region: String, val items: List<MerchantItem>)
-@Serializable data class Entitlement(val plus: Boolean = false, val plusUntil: Long? = null, val productId: String? = null, val store: String? = null)
 
 class RelayException(val code: Int, message: String) : IOException(message)
 
@@ -117,7 +115,6 @@ class RelayClient(
     suspend fun syncConnection(id: String, b: SyncBody): SyncOut = call("POST", "/v1/connections/$id/sync", enc(SyncBody.serializer(), b), SyncOut.serializer())!!
     suspend fun reconsent(id: String, b: ConnectBody): Connection = call("POST", "/v1/connections/$id/reconsent", enc(ConnectBody.serializer(), b), Connection.serializer())!!
     suspend fun disconnect(id: String) { call<Unit>("DELETE", "/v1/connections/$id", null, null) }
-    suspend fun putEntitlement(b: EntitlementBody): Entitlement = call("PUT", "/v1/entitlements/plus", enc(EntitlementBody.serializer(), b), Entitlement.serializer())!!
     // CP-06 email forwarding: the relay encrypts each forwarded mail to our P-256 key before storing it.
     suspend fun mailAddress(rotate: Boolean = false): MailAddress = call("POST", "/v1/mail/address", enc(RotateBody.serializer(), RotateBody(rotate)), MailAddress.serializer())!!
     suspend fun deleteMailAddress() { call<Unit>("DELETE", "/v1/mail/address", null, null) }
@@ -132,5 +129,4 @@ class RelayClient(
         call<Unit>("POST", "/v1/merchants/contribute", enc(MerchantContribute.serializer(), MerchantContribute(region, items)), null)
     }
 
-    suspend fun entitlement(): Entitlement = call("GET", "/v1/entitlements/plus", null, Entitlement.serializer()) ?: Entitlement()
 }

@@ -17,7 +17,7 @@
         <item>Comment supprimer toutes mes données ?</item>
     </string-array>
     <string-array name="faq_a">
-        <item>Oui. Toutes les fonctions sont gratuites. L’option Penny Plus couvre uniquement les coûts qui augmentent avec chaque utilisateur, comme les frais de connexion bancaire et le stockage supplémentaire. Il n’y a pas de pub et nous ne vendons jamais de données.</item>
+        <item>Oui, entièrement. Toutes les fonctions sont gratuites pour tout le monde : pas d’abonnement, pas de version payante, pas de pub, et nous ne vendons jamais de données. Si Penny vous aide, vous pouvez laisser un pourboire facultatif avec « Offrez-moi un café ». Cela ne débloque rien, et personne n’a moins pour ne pas avoir donné.</item>
         <item>Non. Penny ne demande jamais l’autorisation SMS. Il peut lire les notifications des apps de paiement et bancaires que vous autorisez, uniquement sur votre téléphone, et vous pouvez désactiver cela à tout moment.</item>
         <item>Sur votre téléphone, chiffrées. Si vous activez la synchronisation, elles sont chiffrées sur votre téléphone avant de partir : le serveur stocke des données qu’il ne peut pas lire.</item>
         <item>C’est l’argent que vous pouvez dépenser d’ici votre prochaine période de paie sans manquer vos factures ni vos objectifs d’épargne : revenus, moins les factures encore à payer, moins ce que vous mettez de côté, moins ce que vous avez déjà dépensé.</item>

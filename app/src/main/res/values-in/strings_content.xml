@@ -17,7 +17,7 @@
         <item>Bagaimana cara menghapus semua data saya?</item>
     </string-array>
     <string-array name="faq_a">
-        <item>Ya. Semua fitur gratis. Penny Plus yang opsional hanya menutup biaya yang bertambah per pengguna, seperti biaya koneksi bank dan penyimpanan tambahan. Tidak ada iklan dan kami tidak pernah menjual data.</item>
+        <item>Ya, sepenuhnya. Semua fitur gratis untuk semua orang: tanpa langganan, tanpa versi berbayar, tanpa iklan, dan kami tidak pernah menjual data. Jika Penny membantu Anda, Anda bisa memberi tip opsional lewat \"Traktir saya kopi\". Tip ini tidak membuka apa pun, dan tidak ada yang mendapat lebih sedikit karena tidak memberi.</item>
         <item>Tidak. Penny tidak pernah meminta izin SMS. Penny bisa membaca notifikasi dari aplikasi pembayaran dan bank yang kamu izinkan, hanya di ponselmu, dan kamu bisa mematikannya kapan saja.</item>
         <item>Di ponselmu, dalam keadaan terenkripsi. Jika sinkronisasi aktif, data dienkripsi di ponselmu sebelum dikirim, jadi server menyimpan data yang tidak bisa dibacanya.</item>
         <item>Ini adalah uang yang bisa kamu belanjakan dari sekarang sampai periode gaji berikutnya tanpa melewatkan tagihan atau target tabungan: pemasukan, dikurangi tagihan yang belum dibayar, dikurangi yang kamu sisihkan, dikurangi yang sudah kamu belanjakan.</item>

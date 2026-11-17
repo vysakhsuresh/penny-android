@@ -17,7 +17,7 @@
         <item>Unsaon nako pagpapas sa tanan nakong data?</item>
     </string-array>
     <string-array name="faq_a">
-        <item>Oo. Libre ang tanang feature. Ang opsyonal nga Penny Plus mobayad ra sa mga gasto nga motubo matag user, sama sa fee sa koneksyon sa bangko ug dugang storage. Walay ads ug dili gyud kami mobaligya og data.</item>
+        <item>Oo, hingpit. Libre ang tanang feature para sa tanan: walay subscription, walay bayad nga bersyon, walay ads, ug dili gyud kami mobaligya og data. Kung natabangan ka sa Penny, mahimo kang mohatag og opsyonal nga tip pinaagi sa \"Paliti ko og kape\". Wala kini gi-unlock nga bisan unsa, ug walay makadawat og gamay tungod kay wala mohatag.</item>
         <item>Dili. Dili gyud mangayo ang Penny og SMS permission. Mabasa niini ang notification gikan sa payment ug bank app nga imong gitugotan, sa imong telepono ra, ug mapalong nimo kini bisan kanus-a.</item>
         <item>Sa imong telepono, naka-encrypt. Kung i-on nimo ang sync, i-encrypt kini sa imong telepono sa dili pa mogawas, mao nga ang server magtipig og data nga dili niini mabasa.</item>
         <item>Kini ang kwarta nga mahimo nimong gastohon gikan karon hangtod sa sunod nimong pay period nga dili malapasan ang bayronon o ang imong tumong sa pagtigom: kita, kuhaan sa bayronon nga wala pa mabayri, kuhaan sa imong gitabi, kuhaan sa imong nagasto na.</item>

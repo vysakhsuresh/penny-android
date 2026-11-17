@@ -358,6 +358,7 @@ fun RecurringEditScreen(id: String, fromTx: String?, onBack: () -> Unit, onHisto
         var lead by rememberSaveable { mutableStateOf((existing?.leadDays ?: 2).toString()) }
         var paused by rememberSaveable { mutableStateOf(existing?.paused ?: false) }
         var cancelUrl by rememberSaveable { mutableStateOf(existing?.cancelUrl.orEmpty()) }
+        val dirty = app.penny.ui.kit.rememberDirty(name, kind, type, currency, amount, amountKind, amountMax, account, toAccount, category, freq, interval, start, until, count, lastDay, nthWeekday, autoPost, lead, paused, cancelUrl)
         var future by rememberSaveable { mutableStateOf(false) }
         var futureFrom by rememberSaveable { mutableStateOf(today.toString()) }
         var err by rememberSaveable { mutableStateOf<String?>(null) }
@@ -372,7 +373,7 @@ fun RecurringEditScreen(id: String, fromTx: String?, onBack: () -> Unit, onHisto
         val maxErr = stringResource(R.string.err_max_below_min)
         val amountErr = stringResource(R.string.err_amount_invalid)
         PennyScreen(
-            stringResource(if (existing == null) R.string.add_recurring else R.string.edit_recurring), onBack, large = false,
+            stringResource(if (existing == null) R.string.add_recurring else R.string.edit_recurring), onBack, large = false, dirty = dirty,
             actions = { if (existing != null) IconButton(onClick = { onHistory(id) }) { Icon(Icons.Outlined.History, stringResource(R.string.history)) } },
         ) { pad ->
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {

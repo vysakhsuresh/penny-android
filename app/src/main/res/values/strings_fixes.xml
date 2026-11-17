@@ -154,4 +154,22 @@
     <string name="tx_from_settlement">This came from settling up in a group. Undo or change it in the group.</string>
     <string name="tx_from_lending">This came from a lending record. Change it in People, so what you are owed stays right.</string>
     <string name="tx_from_people">This came from a record in People. Change it there to keep it in step.</string>
+    <string name="folder_sync_title">Sync through a folder (free)</string>
+    <string name="folder_sync_body">No account and no server. Penny saves your changes, encrypted, in a folder you choose. Keep that folder the same on your other phones and tablets with a free sync app such as Syncthing, or a Google Drive or OneDrive folder-sync app. Only your recovery phrase can open the files.</string>
+    <string name="folder_sync_choose">Choose a folder</string>
+    <string name="folder_sync_on">Syncing through the folder “%1$s”.</string>
+    <string name="folder_sync_keep_same">On another device, install Penny, open Sync, choose the same folder and type your recovery phrase.</string>
+    <string name="folder_sync_stop">Stop syncing on this device</string>
+    <string name="folder_sync_phrase_body">Write these 24 words down and keep them safe. You need them to open this folder on another device, and to restore an encrypted backup. Penny cannot show them again.</string>
+    <string name="folder_sync_join_title">Open this folder</string>
+    <string name="folder_sync_join_body">This folder already has Penny data from another device. Type the 24-word recovery phrase you wrote down there.</string>
+    <string name="folder_sync_failed">Could not open the folder. Check that it still exists, or choose it again.</string>
+    <string name="folder_sync_partial">Some changes are still being copied into the folder. Penny will try again shortly.</string>
+    <string name="own_server_title">Your own sync server (advanced)</string>
+    <string name="own_server_body">Only for people who run Penny’s open-source sync server themselves. Most people should use folder sync above.</string>
+    <string name="ob_join_folder">I use Penny on another device</string>
+    <string name="folder_sync_not_penny">That folder has no Penny sync files yet. Choose the folder your other device syncs to.</string>
+    <string name="folder_sync_empty">The folder opened, but no book has arrived yet. Wait for your sync app to finish copying, then try again.</string>
+    <string name="relay_server_required">Your server’s address, for example https://sync.example.com</string>
+    <string name="relay_server">Sync server address</string>
 </resources>

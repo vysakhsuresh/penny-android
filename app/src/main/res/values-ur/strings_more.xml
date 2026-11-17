@@ -277,8 +277,6 @@
     <string name="spaces_sub">گھر والوں کے ساتھ بجٹ شیئر کریں</string>
     <string name="sync_and_banks">سنک اور بینک</string>
     <string name="sync_sub">آلات، بیک اپ جملہ، بینک کنکشنز</string>
-    <string name="plus">Penny Plus</string>
-    <string name="plus_sub">بینک سنک اور اسٹوریج کا خرچ اٹھاتا ہے</string>
     <string name="your_data">آپ کا ڈیٹا</string>
     <string name="data_backup">ڈیٹا اور بیک اپ</string>
     <string name="data_sub">ایکسپورٹ، امپورٹ، بیک اپ، حذف</string>
@@ -485,7 +483,6 @@
     <string name="bank_sync">بینک کنکشنز</string>
     <string name="bank_sync_body">لین دین خودکار طور پر لانے کے لیے کسی منظور شدہ فراہم کنندہ کے ذریعے بینک جوڑیں۔ آپ کا بینک لاگ ان کبھی اس فون یا Penny کے سرورز سے نہیں گزرتا۔</string>
     <string name="providers_here">آپ کے علاقے میں دستیاب: %1$s</string>
-    <string name="bank_sync_needs_plus">بینک کنکشنز کے لیے Penny Plus درکار ہے، جو فراہم کنندہ کی فیس ادا کرتا ہے۔</string>
     <string name="advisor_links">مشیر کے ساتھ شیئر کریں</string>
     <string name="advisor_body">اکاؤنٹنٹ، مشیر یا خاندان کے کسی فرد کے لیے خلاصے کے ساتھ صرف پڑھنے والا لنک بنائیں۔ یہ خود ختم ہو جاتا ہے اور اکاؤنٹ کے بغیر کھلتا ہے۔</string>
     <string name="advisor_needs_sync">پہلے سنک آن کریں۔</string>
@@ -512,21 +509,6 @@
     <string name="role_contributor">معاون</string>
     <string name="role_viewer">ناظر</string>
     <string name="role_none">کوئی رسائی نہیں</string>
-    <string name="plus_active">Plus فعال ہے۔ شکریہ۔</string>
-    <string name="plus_intro">Penny کی ہر خصوصیت مفت ہے۔ Plus صرف وہ اخراجات پورے کرتا ہے جو ہر صارف کے ساتھ بڑھتے ہیں، تاکہ ایپ سب کے لیے مفت رہے۔</string>
-    <string name="plus_funds">Plus کس چیز کا خرچ اٹھاتا ہے</string>
-    <string name="plus_f1">بینک کنکشنز، جن کی فیس فی اکاؤنٹ ہوتی ہے</string>
-    <string name="plus_f2">1 GB سے زیادہ منسلکات کی اسٹوریج</string>
-    <string name="plus_f3">ترجیحی سپورٹ</string>
-    <string name="plus_f4">ایک Plus پوری مشترکہ اسپیس کا احاطہ کرتا ہے، 10 لوگوں تک</string>
-    <string name="plus_always_free">ہمیشہ مفت</string>
-    <string name="plus_free_body">بجٹ، کیپچر، شیئرنگ، سنک، ایکسپورٹ، جائزے، باقی سب کچھ۔ نہ اشتہارات، نہ قرض، نہ ڈیٹا کی فروخت۔</string>
-    <string name="plus_monthly">ماہانہ</string>
-    <string name="plus_yearly" formatted="false">سالانہ (تقریباً 40% کم)</string>
-    <string name="plus_lifetime">ایک بار، زندگی بھر کے لیے</string>
-    <string name="restore_purchases">خریداریاں بحال کریں</string>
-    <string name="manage_cancel">منظم یا منسوخ کریں</string>
-    <string name="plus_downgrade_note">اگر آپ Plus بند کریں تو کچھ حذف نہیں ہوتا: بینک سے جڑے اکاؤنٹس بس دستی ہو جاتے ہیں۔</string>
 
     <!-- Support -->
     <string name="search_help">مدد میں تلاش کریں</string>

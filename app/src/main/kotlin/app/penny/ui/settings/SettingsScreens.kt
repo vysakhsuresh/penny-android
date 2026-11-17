@@ -146,7 +146,6 @@ fun SettingsScreen(onBack: () -> Unit, go: (String) -> Unit) {
                     PennyCard {
                         Entry(stringResource(R.string.spaces), Icons.Outlined.Groups, stringResource(R.string.spaces_sub)) { go("settings/spaces") }
                         Entry(stringResource(R.string.sync_and_banks), Icons.Outlined.CloudSync, stringResource(R.string.sync_sub)) { go(Routes.SYNC) }
-                        Entry(stringResource(R.string.plus), Icons.Outlined.WorkspacePremium, stringResource(R.string.plus_sub)) { go(Routes.PLUS) }
                     }
                 }
                 item { SectionHeader(stringResource(R.string.your_data)) }

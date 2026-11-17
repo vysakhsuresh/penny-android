@@ -104,9 +104,21 @@ fun PennyScreen(
     floating: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     large: Boolean = true,
+    /** True while a form has edits that are not saved: Back (pill or system) asks before throwing them away. */
+    dirty: Boolean = false,
     content: @Composable (PaddingValues) -> Unit,
 ) {
-    val behavior = if (large) TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState()) else TopAppBarDefaults.pinnedScrollBehavior()
+    var confirmLeave by androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableStateOf(false) }
+    val guardedBack: (() -> Unit)? = onBack?.let { back -> { if (dirty) confirmLeave = true else back() } }
+    androidx.activity.compose.BackHandler(enabled = dirty && onBack != null) { confirmLeave = true }
+    if (confirmLeave && onBack != null) androidx.compose.material3.AlertDialog(
+        onDismissRequest = { confirmLeave = false },
+        title = { Text(androidx.compose.ui.res.stringResource(app.penny.R.string.discard_changes_title)) },
+        text = { Text(androidx.compose.ui.res.stringResource(app.penny.R.string.discard_changes_body)) },
+        confirmButton = { androidx.compose.material3.TextButton(onClick = { confirmLeave = false; onBack() }) { Text(androidx.compose.ui.res.stringResource(app.penny.R.string.discard)) } },
+        dismissButton = { androidx.compose.material3.TextButton(onClick = { confirmLeave = false }) { Text(androidx.compose.ui.res.stringResource(app.penny.R.string.keep_editing)) } },
+    )
+    val behavior =if (large) TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState()) else TopAppBarDefaults.pinnedScrollBehavior()
     val colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background, scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer)
     Scaffold(
         modifier = modifier.nestedScroll(behavior.nestedScrollConnection),
@@ -115,7 +127,7 @@ fun PennyScreen(
             // While amounts are hidden, every screen offers the way back, not only Home.
             val withReveal: @Composable RowScope.() -> Unit = { RevealAmountsButton(); actions() }
             val nav: @Composable () -> Unit = {
-                if (onBack != null) BackPill(onBack)
+                if (guardedBack != null) BackPill(guardedBack)
             }
             if (large) {
                 LargeTopAppBar(
@@ -564,4 +576,15 @@ fun ProfileBadge(name: String, modifier: Modifier = Modifier, size: Dp = 40.dp) 
             fontWeight = FontWeight.Bold,
         )
     }
+}
+
+/**
+ * True once any of [values] differs from what it was when the form opened. Pass every field the form edits; the
+ * starting values survive rotation and process death, so a restored form still knows what is unsaved.
+ */
+@Composable
+fun rememberDirty(vararg values: Any?): Boolean {
+    val now = values.map { it.toString() }
+    val initial = androidx.compose.runtime.saveable.rememberSaveable { ArrayList(now) }
+    return now != initial
 }

@@ -277,8 +277,6 @@
     <string name="spaces_sub">Ведіть бюджет разом із домочадцями</string>
     <string name="sync_and_banks">Синхронізація та банки</string>
     <string name="sync_sub">Пристрої, фраза відновлення, підключення до банків</string>
-    <string name="plus">Penny Plus</string>
-    <string name="plus_sub">Оплачує синхронізацію з банками та сховище</string>
     <string name="your_data">Ваші дані</string>
     <string name="data_backup">Дані та резервне копіювання</string>
     <string name="data_sub">Експорт, імпорт, резервна копія, видалення</string>
@@ -485,7 +483,6 @@
     <string name="bank_sync">Підключення до банків</string>
     <string name="bank_sync_body">Підключіть банк через регульованого провайдера, щоб операції надходили автоматично. Ваші дані для входу в банк ніколи не потрапляють на цей телефон чи сервери Penny.</string>
     <string name="providers_here">Доступно у вашому регіоні: %1$s</string>
-    <string name="bank_sync_needs_plus">Для підключення до банків потрібен Penny Plus, який оплачує комісії провайдера.</string>
     <string name="advisor_links">Поділитися з консультантом</string>
     <string name="advisor_body">Створіть посилання лише для перегляду з підсумком для бухгалтера, консультанта чи члена родини. Воно діє обмежений час і відкривається без облікового запису.</string>
     <string name="advisor_needs_sync">Спершу ввімкніть синхронізацію.</string>
@@ -512,21 +509,6 @@
     <string name="role_contributor">Учасник</string>
     <string name="role_viewer">Глядач</string>
     <string name="role_none">Немає доступу</string>
-    <string name="plus_active">Plus активний. Дякуємо.</string>
-    <string name="plus_intro">Усі функції Penny безкоштовні. Plus покриває лише витрати, що зростають із кожним користувачем, щоб застосунок залишався безкоштовним для всіх.</string>
-    <string name="plus_funds">За що платить Plus</string>
-    <string name="plus_f1">Підключення до банків, які тарифікуються за кожен рахунок</string>
-    <string name="plus_f2">Сховище для вкладень понад 1 ГБ</string>
-    <string name="plus_f3">Пріоритетна підтримка</string>
-    <string name="plus_f4">Один Plus покриває весь спільний простір до 10 людей</string>
-    <string name="plus_always_free">Завжди безкоштовно</string>
-    <string name="plus_free_body">Бюджети, автозбір, спільний доступ, синхронізація, експорт, аналітика та все інше. Без реклами, без кредитів, без продажу даних.</string>
-    <string name="plus_monthly">Щомісяця</string>
-    <string name="plus_yearly" formatted="false">Щороку (приблизно на 40% дешевше)</string>
-    <string name="plus_lifetime">Одноразово, назавжди</string>
-    <string name="restore_purchases">Відновити покупки</string>
-    <string name="manage_cancel">Керувати або скасувати</string>
-    <string name="plus_downgrade_note">Якщо ви припините Plus, нічого не буде видалено: рахунки, пов’язані з банком, просто стануть ручними.</string>
 
     <!-- Support -->
     <string name="search_help">Пошук у довідці</string>

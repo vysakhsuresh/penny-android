@@ -144,15 +144,6 @@ type ConnectState struct {
 	ExpiresAt    time.Time
 }
 
-// Entitlement records a Plus purchase. Only a hash of the store purchase token is kept.
-type Entitlement struct {
-	AccountID string
-	Store     string
-	ProductID string
-	TokenHash string
-	PlusUntil time.Time
-	UpdatedAt time.Time
-}
 
 // Mail key algorithms (see mail.go for the sealing scheme).
 const (
@@ -221,7 +212,7 @@ type Store interface {
 	RevokeDevice(ctx context.Context, accountID, deviceID string) error
 	// DeleteAccount removes the account, its devices, tokens, keys, personal streams, membership
 	// rows, invites it created, advisor links, bank connections (with their sealed credentials
-	// and cursors), connect states, entitlement, mail box (address and key) and pending mail.
+	// and cursors), connect states, mail box (address and key) and pending mail.
 	// Anonymous merchant votes stay. It is idempotent.
 	DeleteAccount(ctx context.Context, accountID string) error
 
@@ -267,9 +258,6 @@ type Store interface {
 	// TakeConnectState returns and deletes the state if it belongs to accountID (ErrNotFound otherwise).
 	PutConnectState(ctx context.Context, st ConnectState) error
 	TakeConnectState(ctx context.Context, stateHash, accountID string) (ConnectState, error)
-
-	GetEntitlement(ctx context.Context, accountID string) (Entitlement, error)
-	PutEntitlement(ctx context.Context, e Entitlement) error
 
 	// Mail forwarding. SetMailAddress and SetMailKey create the account's box if needed;
 	// SetMailAddress returns ErrConflict if another box uses local. DeleteMailBox also deletes

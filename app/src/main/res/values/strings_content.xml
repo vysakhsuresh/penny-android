@@ -17,7 +17,7 @@
         <item>How do I delete all my data?</item>
     </string-array>
     <string-array name="faq_a">
-        <item>Yes. Every feature is free. The optional Penny Plus only covers costs that grow per user, like bank connection fees and extra storage. There are no ads and we never sell data.</item>
+        <item>Yes, completely. Every feature is free for everyone: no subscription, no paid version, no ads, and we never sell data. If Penny helps you, you can leave an optional tip with Buy me a coffee. It unlocks nothing, and nobody gets less for not giving.</item>
         <item>No. Penny never asks for SMS permission. It can read notifications from payment and bank apps you allow, on your phone only, and you can turn that off any time.</item>
         <item>On your phone, encrypted. If you turn on sync, it is encrypted on your phone before it leaves, so the server stores data it cannot read.</item>
         <item>It is the money you can spend from now until your next pay period without missing bills or your savings goals: income, minus bills still due, minus what you set aside, minus what you already spent.</item>

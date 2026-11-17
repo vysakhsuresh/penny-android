@@ -277,8 +277,6 @@
     <string name="spaces_sub">شارك ميزانية مع أسرتك</string>
     <string name="sync_and_banks">المزامنة والبنوك</string>
     <string name="sync_sub">الأجهزة وعبارة الاسترداد والاتصالات البنكية</string>
-    <string name="plus">Penny Plus</string>
-    <string name="plus_sub">يغطي تكلفة مزامنة البنوك والتخزين</string>
     <string name="your_data">بياناتك</string>
     <string name="data_backup">البيانات والنسخ الاحتياطي</string>
     <string name="data_sub">التصدير والاستيراد والنسخ الاحتياطي والحذف</string>
@@ -485,7 +483,6 @@
     <string name="bank_sync">الاتصالات البنكية</string>
     <string name="bank_sync_body">اربط بنكًا عبر مزوّد خاضع للتنظيم لجلب المعاملات تلقائيًا. بيانات دخولك إلى البنك لا تمر أبدًا عبر هذا الهاتف أو خوادم Penny.</string>
     <string name="providers_here">متاح في منطقتك: %1$s</string>
-    <string name="bank_sync_needs_plus">تتطلب الاتصالات البنكية Penny Plus، الذي يغطي رسوم المزوّد.</string>
     <string name="advisor_links">المشاركة مع مستشار</string>
     <string name="advisor_body">أنشئ رابطًا للقراءة فقط مع ملخص لمحاسب أو مستشار أو أحد أفراد العائلة. تنتهي صلاحيته تلقائيًا ويُفتح دون حساب.</string>
     <string name="advisor_needs_sync">فعّل المزامنة أولًا.</string>
@@ -512,21 +509,6 @@
     <string name="role_contributor">المساهم</string>
     <string name="role_viewer">المُشاهد</string>
     <string name="role_none">بلا وصول</string>
-    <string name="plus_active">Plus مفعّل. شكرًا لك.</string>
-    <string name="plus_intro">كل ميزة في Penny مجانية. يغطي Plus فقط التكاليف التي تزداد مع كل مستخدم، ليبقى التطبيق مجانيًا للجميع.</string>
-    <string name="plus_funds">ما الذي يغطيه Plus</string>
-    <string name="plus_f1">الاتصالات البنكية، التي تُحتسب رسومها لكل حساب</string>
-    <string name="plus_f2">تخزين يتجاوز 1 GB من المرفقات</string>
-    <string name="plus_f3">دعم ذو أولوية</string>
-    <string name="plus_f4">اشتراك Plus واحد يغطي مساحة مشتركة كاملة حتى 10 أشخاص</string>
-    <string name="plus_always_free">مجاني دائمًا</string>
-    <string name="plus_free_body">الميزانيات والالتقاط والمشاركة والمزامنة والتصدير والرؤى وكل شيء آخر. بلا إعلانات ولا قروض ولا بيع للبيانات.</string>
-    <string name="plus_monthly">شهريًا</string>
-    <string name="plus_yearly" formatted="false">سنويًا (أقل بنحو 40%)</string>
-    <string name="plus_lifetime">مرة واحدة، مدى الحياة</string>
-    <string name="restore_purchases">استعادة المشتريات</string>
-    <string name="manage_cancel">الإدارة أو الإلغاء</string>
-    <string name="plus_downgrade_note">إذا أوقفت Plus، لا يُحذف شيء: تتحول الحسابات المرتبطة بالبنك إلى يدوية فقط.</string>
 
     <!-- Support -->
     <string name="search_help">البحث في المساعدة</string>

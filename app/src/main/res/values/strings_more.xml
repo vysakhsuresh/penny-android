@@ -276,9 +276,7 @@
     <string name="spaces">Shared spaces</string>
     <string name="spaces_sub">Share a budget with your household</string>
     <string name="sync_and_banks">Sync and banks</string>
-    <string name="sync_sub">Devices, backup phrase, bank connections</string>
-    <string name="plus">Penny Plus</string>
-    <string name="plus_sub">Pays for bank sync and storage</string>
+    <string name="sync_sub">Free sync between your devices through a folder</string>
     <string name="your_data">Your data</string>
     <string name="data_backup">Data and backup</string>
     <string name="data_sub">Export, import, backup, delete</string>
@@ -485,7 +483,6 @@
     <string name="bank_sync">Bank connections</string>
     <string name="bank_sync_body">Connect a bank through a regulated provider to bring in transactions automatically. Your bank login never touches this phone or Penny’s servers.</string>
     <string name="providers_here">Available in your region: %1$s</string>
-    <string name="bank_sync_needs_plus">Bank connections need Penny Plus, which pays the provider’s fees.</string>
     <string name="advisor_links">Share with an adviser</string>
     <string name="advisor_body">Create a read-only link with a summary for an accountant, adviser or family member. It expires on its own and opens without an account.</string>
     <string name="advisor_needs_sync">Turn on sync first.</string>
@@ -512,21 +509,6 @@
     <string name="role_contributor">Contributor</string>
     <string name="role_viewer">Viewer</string>
     <string name="role_none">No access</string>
-    <string name="plus_active">Plus is active. Thank you.</string>
-    <string name="plus_intro">Every feature in Penny is free. Plus only covers costs that grow with each user, so the app can stay free for everyone.</string>
-    <string name="plus_funds">What Plus pays for</string>
-    <string name="plus_f1">Bank connections, which charge per account</string>
-    <string name="plus_f2">Storage beyond 1 GB of attachments</string>
-    <string name="plus_f3">Priority support</string>
-    <string name="plus_f4">One Plus covers a whole shared space of up to 10 people</string>
-    <string name="plus_always_free">Always free</string>
-    <string name="plus_free_body">Budgets, capture, sharing, sync, export, insights, everything else. No ads, no loans, no data sale.</string>
-    <string name="plus_monthly">Monthly</string>
-    <string name="plus_yearly" formatted="false">Yearly (about 40% less)</string>
-    <string name="plus_lifetime">Once, for life</string>
-    <string name="restore_purchases">Restore purchases</string>
-    <string name="manage_cancel">Manage or cancel</string>
-    <string name="plus_downgrade_note">If you stop Plus, nothing is deleted: bank-linked accounts simply turn manual.</string>
 
     <!-- Support -->
     <string name="search_help">Search help</string>

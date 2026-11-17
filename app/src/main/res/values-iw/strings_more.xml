@@ -277,8 +277,6 @@
     <string name="spaces_sub">שיתוף תקציב עם בני הבית</string>
     <string name="sync_and_banks">סנכרון ובנקים</string>
     <string name="sync_sub">מכשירים, ביטוי שחזור, חיבורי בנק</string>
-    <string name="plus">Penny Plus</string>
-    <string name="plus_sub">מממן סנכרון בנקים ואחסון</string>
     <string name="your_data">הנתונים שלך</string>
     <string name="data_backup">נתונים וגיבוי</string>
     <string name="data_sub">ייצוא, ייבוא, גיבוי, מחיקה</string>
@@ -485,7 +483,6 @@
     <string name="bank_sync">חיבורי בנק</string>
     <string name="bank_sync_body">חיבור בנק דרך ספק מפוקח מביא תנועות באופן אוטומטי. פרטי הכניסה לבנק אף פעם לא עוברים בטלפון הזה או בשרתים של Penny.</string>
     <string name="providers_here">זמין באזור שלך: %1$s</string>
-    <string name="bank_sync_needs_plus">חיבורי בנק דורשים Penny Plus, שמממן את העמלות של הספק.</string>
     <string name="advisor_links">שיתוף עם יועץ</string>
     <string name="advisor_body">יצירת קישור לקריאה בלבד עם סיכום לרואה חשבון, ליועץ או לבן משפחה. תוקפו פג מעצמו והוא נפתח בלי חשבון.</string>
     <string name="advisor_needs_sync">יש להפעיל סנכרון קודם.</string>
@@ -512,21 +509,6 @@
     <string name="role_contributor">משתתף</string>
     <string name="role_viewer">צופה</string>
     <string name="role_none">ללא גישה</string>
-    <string name="plus_active">Plus פעיל. תודה.</string>
-    <string name="plus_intro">כל התכונות ב־Penny בחינם. Plus מכסה רק עלויות שגדלות עם כל משתמש, כדי שהאפליקציה תישאר בחינם לכולם.</string>
-    <string name="plus_funds">על מה Plus משלם</string>
-    <string name="plus_f1">חיבורי בנק, שגובים תשלום לכל חשבון</string>
-    <string name="plus_f2">אחסון מעבר ל־1 GB של קבצים מצורפים</string>
-    <string name="plus_f3">תמיכה בעדיפות</string>
-    <string name="plus_f4">מינוי Plus אחד מכסה מרחב משותף שלם של עד 10 אנשים</string>
-    <string name="plus_always_free">תמיד בחינם</string>
-    <string name="plus_free_body">תקציבים, קליטה, שיתוף, סנכרון, ייצוא, תובנות וכל השאר. בלי פרסומות, בלי הלוואות, בלי מכירת נתונים.</string>
-    <string name="plus_monthly">חודשי</string>
-    <string name="plus_yearly" formatted="false">שנתי (בערך 40% פחות)</string>
-    <string name="plus_lifetime">פעם אחת, לכל החיים</string>
-    <string name="restore_purchases">שחזור רכישות</string>
-    <string name="manage_cancel">ניהול או ביטול</string>
-    <string name="plus_downgrade_note">אם מפסיקים את Plus, שום דבר לא נמחק: חשבונות שמקושרים לבנק פשוט הופכים לידניים.</string>
 
     <!-- Support -->
     <string name="search_help">חיפוש בעזרה</string>

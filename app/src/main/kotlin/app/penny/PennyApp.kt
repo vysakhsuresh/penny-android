@@ -37,6 +37,7 @@ class PennyApp : Application(), Configuration.Provider {
     @Inject lateinit var capture: CaptureService
     @Inject lateinit var repo: PennyRepository
     @Inject lateinit var sync: SyncManager
+    @Inject lateinit var folderSync: app.penny.domain.FolderSyncManager
     @Inject lateinit var alerts: AlertService
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
@@ -66,16 +67,13 @@ class PennyApp : Application(), Configuration.Provider {
         // SY-04 sync shortly after local changes (debounced); widgets follow the same signal.
         scope.launch {
             repo.store.changes.drop(1).debounce(1_500).collect {
-                if (sync.signedIn) SyncWorker.soon(this@PennyApp)
+                if (sync.signedIn || folderSync.on) SyncWorker.soon(this@PennyApp)
                 Widgets.refresh(this@PennyApp)
                 // M6 webhooks: only to the user's own https endpoint, only when they set one.
                 repo.currentProfileId.value?.let { pid -> runCatching { app.penny.automation.Webhooks.deliver(repo, repo.prefs, pid) } }
             }
         }
-        scope.launch { if (sync.signedIn) runCatching { SyncWorker.soon(this@PennyApp, 1) } }
-        scope.launch {
-            app.penny.billing.Billing.lastPurchase.collect { p -> if (p != null && sync.signedIn) sync.reportPurchase(p.first, p.second) }
-        }
+        scope.launch { if (sync.signedIn || folderSync.on) runCatching { SyncWorker.soon(this@PennyApp, 1) } }
     }
 
     /** WG-03 launcher shortcuts, built in code so they follow the build's application id. */

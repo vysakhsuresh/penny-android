@@ -273,8 +273,6 @@
     <string name="spaces_sub">แชร์งบประมาณกับคนในบ้าน</string>
     <string name="sync_and_banks">ซิงค์และธนาคาร</string>
     <string name="sync_sub">อุปกรณ์ วลีสำรอง การเชื่อมต่อธนาคาร</string>
-    <string name="plus">Penny Plus</string>
-    <string name="plus_sub">ช่วยจ่ายค่าซิงค์ธนาคารและพื้นที่เก็บข้อมูล</string>
     <string name="your_data">ข้อมูลของคุณ</string>
     <string name="data_backup">ข้อมูลและการสำรอง</string>
     <string name="data_sub">ส่งออก นำเข้า สำรอง ลบ</string>
@@ -475,7 +473,6 @@
     <string name="bank_sync">การเชื่อมต่อธนาคาร</string>
     <string name="bank_sync_body">เชื่อมต่อธนาคารผ่านผู้ให้บริการที่อยู่ภายใต้การกำกับดูแลเพื่อดึงรายการเข้ามาอัตโนมัติ ข้อมูลเข้าสู่ระบบธนาคารของคุณไม่ผ่านโทรศัพท์เครื่องนี้หรือเซิร์ฟเวอร์ของ Penny</string>
     <string name="providers_here">มีให้บริการในภูมิภาคของคุณ: %1$s</string>
-    <string name="bank_sync_needs_plus">การเชื่อมต่อธนาคารต้องใช้ Penny Plus ซึ่งใช้จ่ายค่าธรรมเนียมของผู้ให้บริการ</string>
     <string name="advisor_links">แชร์กับที่ปรึกษา</string>
     <string name="advisor_body">สร้างลิงก์แบบอ่านอย่างเดียวพร้อมสรุปสำหรับนักบัญชี ที่ปรึกษา หรือคนในครอบครัว ลิงก์หมดอายุเองและเปิดได้โดยไม่ต้องมีบัญชี</string>
     <string name="advisor_needs_sync">เปิดการซิงค์ก่อน</string>
@@ -502,21 +499,6 @@
     <string name="role_contributor">ผู้ร่วมบันทึก</string>
     <string name="role_viewer">ผู้ดู</string>
     <string name="role_none">ไม่มีสิทธิ์เข้าถึง</string>
-    <string name="plus_active">Plus ใช้งานอยู่ ขอบคุณ</string>
-    <string name="plus_intro">ทุกฟีเจอร์ใน Penny ใช้ฟรี Plus ครอบคลุมเฉพาะค่าใช้จ่ายที่เพิ่มตามผู้ใช้แต่ละคน เพื่อให้แอปใช้ฟรีสำหรับทุกคนต่อไป</string>
-    <string name="plus_funds">Plus ใช้จ่ายค่าอะไร</string>
-    <string name="plus_f1">การเชื่อมต่อธนาคาร ซึ่งคิดค่าบริการต่อบัญชี</string>
-    <string name="plus_f2">พื้นที่เก็บไฟล์แนบเกิน 1 GB</string>
-    <string name="plus_f3">การสนับสนุนแบบเร่งด่วน</string>
-    <string name="plus_f4">Plus หนึ่งรายการครอบคลุมพื้นที่ที่แชร์ทั้งหมดสูงสุด 10 คน</string>
-    <string name="plus_always_free">ฟรีเสมอ</string>
-    <string name="plus_free_body">งบประมาณ การบันทึกอัตโนมัติ การแชร์ การซิงค์ การส่งออก ข้อมูลเชิงลึก และทุกอย่างที่เหลือ ไม่มีโฆษณา ไม่มีสินเชื่อ ไม่ขายข้อมูล</string>
-    <string name="plus_monthly">รายเดือน</string>
-    <string name="plus_yearly" formatted="false">รายปี (ถูกลงประมาณ 40%)</string>
-    <string name="plus_lifetime">จ่ายครั้งเดียวตลอดชีพ</string>
-    <string name="restore_purchases">กู้คืนการซื้อ</string>
-    <string name="manage_cancel">จัดการหรือยกเลิก</string>
-    <string name="plus_downgrade_note">หากหยุด Plus จะไม่มีอะไรถูกลบ บัญชีที่เชื่อมกับธนาคารจะเปลี่ยนเป็นแบบบันทึกเอง</string>
 
     <string name="search_help">ค้นหาความช่วยเหลือ</string>
     <string name="faq">คำถามที่พบบ่อย</string>

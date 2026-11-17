@@ -10,7 +10,8 @@
 - Insights: summary, categories, trend, heatmap, money flow, net worth, forecast with what-ifs, on-device coach.
 - Capture: payment notifications (never SMS), share sheet, email forwarding, review queue, 15+ import formats and apps.
 - End-to-end encrypted sync, shared spaces with roles and invites, recovery phrase, encrypted folder backups.
-- Bank connections (Plus), Plus and tip jar through store billing, exchange rates, 44 regional packs.
+- Free sync through a folder you choose (no account, no server); bank connections on your own sync server; an optional "Buy me a coffee" tip that unlocks nothing; exchange rates, 44 regional packs.
+- Every feature is free for everyone: no subscription, no paid tier, no ads.
 - App lock with PIN, biometrics and duress PIN; screenshot blocking; delete everything.
 - Widgets, Quick Settings tile, shortcuts, Wear OS app with tile and complication, automation intents and webhooks.
 - Help, guides, buy me a coffee, about and trust pages; 30 languages (machine drafts).

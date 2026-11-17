@@ -277,8 +277,6 @@
     <string name="spaces_sub">Kongsi bajet dengan isi rumah anda</string>
     <string name="sync_and_banks">Penyegerakan dan bank</string>
     <string name="sync_sub">Peranti, frasa sandaran, sambungan bank</string>
-    <string name="plus">Penny Plus</string>
-    <string name="plus_sub">Membayar untuk penyegerakan bank dan storan</string>
     <string name="your_data">Data anda</string>
     <string name="data_backup">Data dan sandaran</string>
     <string name="data_sub">Eksport, import, sandaran, padam</string>
@@ -485,7 +483,6 @@
     <string name="bank_sync">Sambungan bank</string>
     <string name="bank_sync_body">Sambungkan bank melalui penyedia yang dikawal selia untuk membawa masuk transaksi secara automatik. Log masuk bank anda tidak pernah menyentuh telefon ini atau pelayan Penny.</string>
     <string name="providers_here">Tersedia di wilayah anda: %1$s</string>
-    <string name="bank_sync_needs_plus">Sambungan bank memerlukan Penny Plus, yang membayar yuran penyedia.</string>
     <string name="advisor_links">Kongsi dengan penasihat</string>
     <string name="advisor_body">Cipta pautan baca sahaja dengan ringkasan untuk akauntan, penasihat atau ahli keluarga. Ia tamat tempoh dengan sendiri dan dibuka tanpa akaun.</string>
     <string name="advisor_needs_sync">Hidupkan penyegerakan dahulu.</string>
@@ -512,21 +509,6 @@
     <string name="role_contributor">Penyumbang</string>
     <string name="role_viewer">Pelihat</string>
     <string name="role_none">Tiada akses</string>
-    <string name="plus_active">Plus aktif. Terima kasih.</string>
-    <string name="plus_intro">Setiap ciri dalam Penny adalah percuma. Plus hanya menampung kos yang meningkat bagi setiap pengguna, supaya aplikasi ini kekal percuma untuk semua.</string>
-    <string name="plus_funds">Apa yang dibayar oleh Plus</string>
-    <string name="plus_f1">Sambungan bank, yang mengenakan caj bagi setiap akaun</string>
-    <string name="plus_f2">Storan melebihi 1 GB lampiran</string>
-    <string name="plus_f3">Sokongan keutamaan</string>
-    <string name="plus_f4">Satu Plus meliputi seluruh ruang kongsi sehingga 10 orang</string>
-    <string name="plus_always_free">Sentiasa percuma</string>
-    <string name="plus_free_body">Bajet, tangkapan, perkongsian, penyegerakan, eksport, wawasan, semua yang lain. Tiada iklan, tiada pinjaman, tiada penjualan data.</string>
-    <string name="plus_monthly">Bulanan</string>
-    <string name="plus_yearly" formatted="false">Tahunan (kira-kira 40% lebih murah)</string>
-    <string name="plus_lifetime">Sekali, seumur hidup</string>
-    <string name="restore_purchases">Pulihkan pembelian</string>
-    <string name="manage_cancel">Urus atau batalkan</string>
-    <string name="plus_downgrade_note">Jika anda berhenti Plus, tiada apa yang dipadam: akaun yang dipautkan ke bank hanya bertukar menjadi manual.</string>
 
     <!-- Support -->
     <string name="search_help">Cari bantuan</string>

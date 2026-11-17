@@ -277,8 +277,6 @@
     <string name="spaces_sub">உங்கள் குடும்பத்துடன் பட்ஜெட்டைப் பகிரவும்</string>
     <string name="sync_and_banks">ஒத்திசைவும் வங்கிகளும்</string>
     <string name="sync_sub">சாதனங்கள், காப்புச் சொற்றொடர், வங்கி இணைப்புகள்</string>
-    <string name="plus">Penny Plus</string>
-    <string name="plus_sub">வங்கி ஒத்திசைவுக்கும் சேமிப்பிடத்துக்கும் செலுத்துகிறது</string>
     <string name="your_data">உங்கள் தரவு</string>
     <string name="data_backup">தரவும் காப்புப்பிரதியும்</string>
     <string name="data_sub">ஏற்றுமதி, இறக்குமதி, காப்புப்பிரதி, நீக்குதல்</string>
@@ -485,7 +483,6 @@
     <string name="bank_sync">வங்கி இணைப்புகள்</string>
     <string name="bank_sync_body">பரிவர்த்தனைகளைத் தானாகக் கொண்டுவர, ஒழுங்குமுறைக்கு உட்பட்ட வழங்குநர் மூலம் வங்கியை இணைக்கவும். உங்கள் வங்கி உள்நுழைவு இந்த ஃபோனையோ Penny சர்வர்களையோ ஒருபோதும் தொடாது.</string>
     <string name="providers_here">உங்கள் பகுதியில் கிடைப்பவை: %1$s</string>
-    <string name="bank_sync_needs_plus">வங்கி இணைப்புகளுக்கு Penny Plus தேவை; அது வழங்குநரின் கட்டணத்தைச் செலுத்துகிறது.</string>
     <string name="advisor_links">ஆலோசகருடன் பகிர்</string>
     <string name="advisor_body">கணக்காளர், ஆலோசகர் அல்லது குடும்பத்தினருக்காக, சுருக்கத்துடன் கூடிய பார்க்க மட்டுமான இணைப்பை உருவாக்கவும். அது தானாகக் காலாவதியாகும், கணக்கு இல்லாமலேயே திறக்கும்.</string>
     <string name="advisor_needs_sync">முதலில் ஒத்திசைவை இயக்கவும்.</string>
@@ -512,21 +509,6 @@
     <string name="role_contributor">பங்களிப்பவர்</string>
     <string name="role_viewer">பார்வையாளர்</string>
     <string name="role_none">அணுகல் இல்லை</string>
-    <string name="plus_active">Plus இயக்கத்தில் உள்ளது. நன்றி.</string>
-    <string name="plus_intro">Penny-இன் எல்லா அம்சங்களும் இலவசம். ஒவ்வொரு பயனருடனும் கூடும் செலவுகளை மட்டுமே Plus ஈடுசெய்கிறது; அதனால் ஆப் அனைவருக்கும் இலவசமாக இருக்கும்.</string>
-    <string name="plus_funds">Plus எதற்குச் செலுத்துகிறது</string>
-    <string name="plus_f1">ஒவ்வொரு கணக்குக்கும் கட்டணம் வசூலிக்கும் வங்கி இணைப்புகள்</string>
-    <string name="plus_f2">1 GB-க்கு மேற்பட்ட இணைப்புகளுக்கான சேமிப்பிடம்</string>
-    <string name="plus_f3">முன்னுரிமை ஆதரவு</string>
-    <string name="plus_f4">ஒரு Plus, 10 பேர் வரை உள்ள முழுப் பகிரப்பட்ட இடத்தையும் உள்ளடக்கும்</string>
-    <string name="plus_always_free">எப்போதும் இலவசம்</string>
-    <string name="plus_free_body">பட்ஜெட்டுகள், பதிவுசெய்தல், பகிர்வு, ஒத்திசைவு, ஏற்றுமதி, நுண்ணறிவுகள், மற்ற அனைத்தும். விளம்பரங்கள் இல்லை, கடன்கள் இல்லை, தரவு விற்பனை இல்லை.</string>
-    <string name="plus_monthly">மாதாந்திரம்</string>
-    <string name="plus_yearly" formatted="false">ஆண்டுக்கு (சுமார் 40% குறைவு)</string>
-    <string name="plus_lifetime">ஒருமுறை, வாழ்நாள் முழுவதும்</string>
-    <string name="restore_purchases">வாங்கியவற்றை மீட்டமை</string>
-    <string name="manage_cancel">நிர்வகி அல்லது ரத்துசெய்</string>
-    <string name="plus_downgrade_note">Plus-ஐ நிறுத்தினால் எதுவும் நீக்கப்படாது: வங்கியுடன் இணைந்த கணக்குகள் கைமுறையாக மாறும்.</string>
 
     <!-- Support -->
     <string name="search_help">உதவியில் தேடு</string>

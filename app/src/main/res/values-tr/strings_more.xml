@@ -277,8 +277,6 @@
     <string name="spaces_sub">Bir bütçeyi hanenle paylaş</string>
     <string name="sync_and_banks">Eşitleme ve bankalar</string>
     <string name="sync_sub">Cihazlar, yedekleme ifadesi, banka bağlantıları</string>
-    <string name="plus">Penny Plus</string>
-    <string name="plus_sub">Banka eşitlemesi ve depolama masraflarını karşılar</string>
     <string name="your_data">Verilerin</string>
     <string name="data_backup">Veri ve yedekleme</string>
     <string name="data_sub">Dışa aktar, içe aktar, yedekle, sil</string>
@@ -485,7 +483,6 @@
     <string name="bank_sync">Banka bağlantıları</string>
     <string name="bank_sync_body">İşlemleri otomatik getirmek için bir bankayı lisanslı bir sağlayıcı aracılığıyla bağla. Banka giriş bilgilerin asla bu telefona veya Penny’nin sunucularına ulaşmaz.</string>
     <string name="providers_here">Bölgende kullanılabilir: %1$s</string>
-    <string name="bank_sync_needs_plus">Banka bağlantıları, sağlayıcı ücretlerini karşılayan Penny Plus gerektirir.</string>
     <string name="advisor_links">Bir danışmanla paylaş</string>
     <string name="advisor_body">Bir muhasebeci, danışman veya aile üyesi için özet içeren salt okunur bir bağlantı oluştur. Bağlantı kendiliğinden sona erer ve hesap olmadan açılır.</string>
     <string name="advisor_needs_sync">Önce eşitlemeyi aç.</string>
@@ -512,21 +509,6 @@
     <string name="role_contributor">Katkıda bulunan</string>
     <string name="role_viewer">Görüntüleyici</string>
     <string name="role_none">Erişim yok</string>
-    <string name="plus_active">Plus etkin. Teşekkürler.</string>
-    <string name="plus_intro">Penny’deki tüm özellikler ücretsiz. Plus yalnızca her kullanıcıyla artan maliyetleri karşılar; böylece uygulama herkes için ücretsiz kalabilir.</string>
-    <string name="plus_funds">Plus neyi karşılar</string>
-    <string name="plus_f1">Hesap başına ücret alan banka bağlantıları</string>
-    <string name="plus_f2">1 GB’ı aşan ek depolama</string>
-    <string name="plus_f3">Öncelikli destek</string>
-    <string name="plus_f4">Tek bir Plus, 10 kişiye kadar bütün bir paylaşılan alanı kapsar</string>
-    <string name="plus_always_free">Her zaman ücretsiz</string>
-    <string name="plus_free_body">Bütçeler, yakalama, paylaşım, eşitleme, dışa aktarma, içgörüler ve diğer her şey. Reklam yok, kredi yok, veri satışı yok.</string>
-    <string name="plus_monthly">Aylık</string>
-    <string name="plus_yearly" formatted="false">Yıllık (yaklaşık yüzde 40 daha az)</string>
-    <string name="plus_lifetime">Tek seferlik, ömür boyu</string>
-    <string name="restore_purchases">Satın alımları geri yükle</string>
-    <string name="manage_cancel">Yönet veya iptal et</string>
-    <string name="plus_downgrade_note">Plus’ı bırakırsan hiçbir şey silinmez: bankaya bağlı hesaplar yalnızca manuel hale gelir.</string>
 
     <!-- Support -->
     <string name="search_help">Yardımda ara</string>

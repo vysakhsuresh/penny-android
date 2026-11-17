@@ -277,8 +277,6 @@
     <string name="spaces_sub">Condividi un budget con chi vive con te</string>
     <string name="sync_and_banks">Sincronizzazione e banche</string>
     <string name="sync_sub">Dispositivi, frase di recupero, collegamenti bancari</string>
-    <string name="plus">Penny Plus</string>
-    <string name="plus_sub">Copre sincronizzazione bancaria e spazio</string>
     <string name="your_data">I tuoi dati</string>
     <string name="data_backup">Dati e backup</string>
     <string name="data_sub">Esporta, importa, backup, elimina</string>
@@ -485,7 +483,6 @@
     <string name="bank_sync">Collegamenti bancari</string>
     <string name="bank_sync_body">Collega una banca tramite un fornitore regolamentato per importare i movimenti in automatico. Le credenziali della banca non passano mai da questo telefono né dai server di Penny.</string>
     <string name="providers_here">Disponibili nella tua regione: %1$s</string>
-    <string name="bank_sync_needs_plus">I collegamenti bancari richiedono Penny Plus, che copre le commissioni del fornitore.</string>
     <string name="advisor_links">Condividi con un consulente</string>
     <string name="advisor_body">Crea un link di sola lettura con un riepilogo per un commercialista, un consulente o un familiare. Scade da solo e si apre senza account.</string>
     <string name="advisor_needs_sync">Prima attiva la sincronizzazione.</string>
@@ -512,21 +509,6 @@
     <string name="role_contributor">Collaboratore</string>
     <string name="role_viewer">Lettore</string>
     <string name="role_none">Nessun accesso</string>
-    <string name="plus_active">Plus è attivo. Grazie.</string>
-    <string name="plus_intro">Ogni funzione di Penny è gratis. Plus copre solo i costi che crescono con ogni utente, così l’app può restare gratis per tutti.</string>
-    <string name="plus_funds">Cosa copre Plus</string>
-    <string name="plus_f1">Collegamenti bancari, che costano per ogni conto</string>
-    <string name="plus_f2">Spazio oltre 1 GB di allegati</string>
-    <string name="plus_f3">Assistenza prioritaria</string>
-    <string name="plus_f4">Un solo Plus copre un intero spazio condiviso fino a 10 persone</string>
-    <string name="plus_always_free">Sempre gratis</string>
-    <string name="plus_free_body">Budget, acquisizione, condivisione, sincronizzazione, esportazione, analisi e tutto il resto. Niente pubblicità, niente prestiti, nessuna vendita di dati.</string>
-    <string name="plus_monthly">Mensile</string>
-    <string name="plus_yearly" formatted="false">Annuale (circa il 40% in meno)</string>
-    <string name="plus_lifetime">Una volta, per sempre</string>
-    <string name="restore_purchases">Ripristina acquisti</string>
-    <string name="manage_cancel">Gestisci o annulla</string>
-    <string name="plus_downgrade_note">Se interrompi Plus, non viene eliminato nulla: i conti collegati alla banca diventano semplicemente manuali.</string>
 
     <!-- Support -->
     <string name="search_help">Cerca nella guida</string>

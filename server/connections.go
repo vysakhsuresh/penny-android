@@ -35,15 +35,8 @@ const (
 	maxCompleteParams  = 32
 	maxRedirectURI     = 2048
 	maxConnectorToken  = 4096
-	plusSubscription   = 32 * 24 * time.Hour
 	sandboxProvider    = "sandbox"
-	entitlementStoreGP = "play"
 )
-
-// lifetimeUntil is the plusUntil recorded for lifetime purchases.
-var lifetimeUntil = time.Date(9999, 12, 31, 0, 0, 0, 0, time.UTC)
-
-var errPlusRequired = apiError{http.StatusPaymentRequired, "plus_required"}
 
 // ---- JSON shapes ----
 
@@ -113,18 +106,6 @@ type syncResp struct {
 	Message      string              `json:"message,omitempty"`
 }
 
-type entitlementReq struct {
-	Store         string `json:"store"`
-	PurchaseToken string `json:"purchaseToken"`
-	ProductID     string `json:"productId"`
-}
-
-type entitlementJSON struct {
-	Plus      bool   `json:"plus"`
-	PlusUntil *int64 `json:"plusUntil"`
-	ProductID string `json:"productId,omitempty"`
-	Store     string `json:"store,omitempty"`
-}
 
 func msPtr(t *time.Time) *int64 {
 	if t == nil {
@@ -195,22 +176,6 @@ func (s *Server) connector(id string) (connectors.Connector, error) {
 	return c, nil
 }
 
-// requirePlus gates bank sync behind Plus, except in dev mode and for the sandbox.
-func (s *Server) requirePlus(ctx context.Context, accountID, provider string) error {
-	if s.dev || provider == sandboxProvider {
-		return nil
-	}
-	e, err := s.store.GetEntitlement(ctx, accountID)
-	if errors.Is(err, ErrNotFound) {
-		return errPlusRequired
-	} else if err != nil {
-		return err
-	}
-	if !s.now().Before(e.PlusUntil) {
-		return errPlusRequired
-	}
-	return nil
-}
 
 // safeErr renders a provider error without request URLs, which can carry one-time claim tokens.
 func safeErr(err error) string {
@@ -335,10 +300,6 @@ func (s *Server) createConnection(w http.ResponseWriter, r *http.Request, c call
 		s.fail(w, r, err)
 		return
 	}
-	if err := s.requirePlus(r.Context(), c.AccountID, conn.ID()); err != nil {
-		s.fail(w, r, err)
-		return
-	}
 	s.beginConnect(w, r, c, conn, req, nil)
 }
 
@@ -366,10 +327,6 @@ func (s *Server) reconsentConnection(w http.ResponseWriter, r *http.Request, c c
 	}
 	conn, err := s.connector(bc.Provider)
 	if err != nil {
-		s.fail(w, r, err)
-		return
-	}
-	if err := s.requirePlus(r.Context(), c.AccountID, conn.ID()); err != nil {
 		s.fail(w, r, err)
 		return
 	}
@@ -445,10 +402,6 @@ func (s *Server) completeConnection(w http.ResponseWriter, r *http.Request, c ca
 	}
 	conn, err := s.connector(st.Provider)
 	if err != nil {
-		s.fail(w, r, err)
-		return
-	}
-	if err := s.requirePlus(ctx, c.AccountID, conn.ID()); err != nil {
 		s.fail(w, r, err)
 		return
 	}
@@ -690,10 +643,6 @@ func (s *Server) syncConnection(w http.ResponseWriter, r *http.Request, c caller
 		s.fail(w, r, err)
 		return
 	}
-	if err := s.requirePlus(ctx, c.AccountID, conn.ID()); err != nil {
-		s.fail(w, r, err)
-		return
-	}
 	now := s.now()
 	if bc.Status == ConnDisconnected || bc.Secret == nil {
 		writeJSON(w, http.StatusOK, syncResp{Transactions: []remoteTxJSON{}, Accounts: []remoteAccountJSON{},
@@ -786,78 +735,7 @@ func (s *Server) syncConnection(w http.ResponseWriter, r *http.Request, c caller
 	writeJSON(w, http.StatusOK, syncResp{Transactions: txs, Accounts: toAccountsJSON(accts), Status: ConnActive})
 }
 
-// ---- entitlements ----
 
-// verifyPlayPurchase decides until when a purchase grants Plus.
-//
-// TODO(before launch): this accepts any token. Replace it with a Google Play Developer API
-// check: purchases.subscriptionsv2.get (subscriptions) or purchases.products.get (lifetime)
-// for PLAY_PACKAGE_NAME with a service account (PLAY_SERVICE_ACCOUNT_JSON); use the returned
-// expiry, reject pending/cancelled/refunded purchases, acknowledge the purchase, bind the
-// token hash to one account, and handle Real-time Developer Notifications for revocations.
-func verifyPlayPurchase(_ context.Context, productID, _ string, now time.Time) (time.Time, error) {
-	if strings.Contains(strings.ToLower(productID), "lifetime") {
-		return lifetimeUntil, nil
-	}
-	return now.Add(plusSubscription), nil
-}
 
-func (s *Server) entitlementJSON(e *Entitlement) entitlementJSON {
-	out := entitlementJSON{Plus: s.dev}
-	if e != nil {
-		until := e.PlusUntil
-		out.PlusUntil, out.ProductID, out.Store = msPtr(&until), e.ProductID, e.Store
-		out.Plus = out.Plus || s.now().Before(e.PlusUntil)
-	}
-	return out
-}
 
-func (s *Server) putPlus(w http.ResponseWriter, r *http.Request, c caller) {
-	var req entitlementReq
-	if !decodeJSON(w, r, &req, smallBody) {
-		return
-	}
-	switch {
-	case req.Store != entitlementStoreGP:
-		writeErr(w, http.StatusBadRequest, "store must be play")
-		return
-	case req.PurchaseToken == "" || len(req.PurchaseToken) > maxConnectorToken:
-		writeErr(w, http.StatusBadRequest, "purchaseToken must be 1 to 4096 characters")
-		return
-	case !idRe.MatchString(req.ProductID):
-		writeErr(w, http.StatusBadRequest, "invalid productId")
-		return
-	}
-	ctx := r.Context()
-	now := s.now()
-	until, err := verifyPlayPurchase(ctx, req.ProductID, req.PurchaseToken, now)
-	if err != nil {
-		writeErr(w, http.StatusPaymentRequired, "purchase could not be verified")
-		return
-	}
-	e := Entitlement{AccountID: c.AccountID, Store: req.Store, ProductID: req.ProductID, TokenHash: sha256Hex(req.PurchaseToken),
-		PlusUntil: until, UpdatedAt: now}
-	if old, err := s.store.GetEntitlement(ctx, c.AccountID); err == nil && old.PlusUntil.After(until) {
-		e.PlusUntil, e.ProductID = old.PlusUntil, old.ProductID // never shorten an existing grant
-	} else if err != nil && !errors.Is(err, ErrNotFound) {
-		s.fail(w, r, err)
-		return
-	}
-	if err := s.store.PutEntitlement(ctx, e); err != nil {
-		s.fail(w, r, err)
-		return
-	}
-	writeJSON(w, http.StatusOK, s.entitlementJSON(&e))
-}
 
-func (s *Server) getPlus(w http.ResponseWriter, r *http.Request, c caller) {
-	e, err := s.store.GetEntitlement(r.Context(), c.AccountID)
-	if errors.Is(err, ErrNotFound) {
-		writeJSON(w, http.StatusOK, s.entitlementJSON(nil))
-		return
-	} else if err != nil {
-		s.fail(w, r, err)
-		return
-	}
-	writeJSON(w, http.StatusOK, s.entitlementJSON(&e))
-}

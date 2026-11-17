@@ -17,7 +17,7 @@
         <item>Paano burahin ang lahat ng data ko?</item>
     </string-array>
     <string-array name="faq_a">
-        <item>Oo. Libre ang bawat feature. Ang opsyonal na Penny Plus ay pambayad lang sa mga gastos na lumalaki bawat user, gaya ng bayad sa bank connection at dagdag na storage. Walang ads at hindi kami kailanman nagbebenta ng data.</item>
+        <item>Oo, buong-buo. Libre ang bawat feature para sa lahat: walang subscription, walang bayad na bersyon, walang ads, at hindi kami kailanman nagbebenta ng data. Kung natutulungan ka ng Penny, puwede kang mag-iwan ng opsyonal na tip sa \"Ilibre mo ako ng kape\". Wala itong ina-unlock, at walang nababawasan sa hindi nagbibigay.</item>
         <item>Hindi. Hindi kailanman humihingi ng SMS permission ang Penny. Puwede nitong basahin ang mga notification mula sa payment at bank app na pinapayagan mo, sa phone mo lang, at puwede mo itong i-off anumang oras.</item>
         <item>Sa phone mo, naka-encrypt. Kapag in-on mo ang sync, naka-encrypt ito sa phone mo bago umalis, kaya ang server ay nag-iimbak ng data na hindi nito mababasa.</item>
         <item>Ito ang perang puwede mong gastusin mula ngayon hanggang sa susunod na pay period nang hindi nalalampasan ang mga bayarin o savings goal mo: kita, bawas ang mga bayaring dapat pang bayaran, bawas ang itinabi mo, bawas ang nagastos mo na.</item>

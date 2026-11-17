@@ -70,6 +70,7 @@ import app.penny.ui.common.MoneyFmt
 import app.penny.ui.common.cycleLabel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.first
 import app.penny.domain.ops.importJson
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -82,6 +83,7 @@ import javax.inject.Inject
 class OnboardingViewModel @Inject constructor(
     private val repo: PennyRepository,
     @dagger.hilt.android.qualifiers.ApplicationContext private val context: android.content.Context,
+    private val folderSync: app.penny.domain.FolderSyncManager,
 ) : ViewModel() {
     val packs: List<RegionalPack> = repo.packs.all()
 
@@ -136,6 +138,22 @@ class OnboardingViewModel @Inject constructor(
                     restoreError.value = context.getString(R.string.import_failed, e.message ?: ""); busy.value = false
                 }
         }
+    }
+
+    /** Decision 53: a new phone joins the user's sync folder; the first synced book becomes the current one. */
+    suspend fun folderHasPenny(uri: android.net.Uri) = runCatching { folderSync.folderHasPenny(uri) }.getOrDefault(false)
+
+    /** Returns false for a wrong phrase. On success the books from the folder are on this phone and setup is done. */
+    suspend fun joinFolder(uri: android.net.Uri, phrase: String): Boolean {
+        if (!busy.compareAndSet(false, true)) return false
+        val ok = runCatching { folderSync.join(uri, phrase) }.getOrDefault(false)
+        val pid = if (ok) repo.observeProfiles().first().firstOrNull()?.state?.id else null
+        if (pid != null) { repo.prefs.setCurrentProfile(pid); done.value = "main" }
+        else {
+            busy.value = false
+            if (ok) restoreError.value = context.getString(R.string.folder_sync_empty)
+        }
+        return ok
     }
 
     fun finish(pack: RegionalPack, cycle: CycleRule, cashName: String, cashText: String, sample: Boolean = false, target: String = "main") {
@@ -265,7 +283,36 @@ fun OnboardingScreen(vm: OnboardingViewModel, onImport: () -> Unit, onDone: () -
             Button(onClick = { step = 1 }, modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp)) { Text(stringResource(R.string.ob_get_started), style = MaterialTheme.typography.titleMedium) }
             TextButton(onClick = { finish(sample = true) }, enabled = !busy, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.ob_sample)) }
             TextButton(onClick = { vm.restoreError.value = null; pick.launch(arrayOf("application/json", "application/octet-stream", "*/*")) }, enabled = !busy, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.ob_restore)) }
+            // Decision 53: already using Penny on another device? Open the same sync folder with the recovery phrase.
+            var joinUri by rememberSaveable { mutableStateOf<String?>(null) }
+            val pickFolder = androidx.activity.compose.rememberLauncherForActivityResult(androidx.activity.result.contract.ActivityResultContracts.OpenDocumentTree()) { uri ->
+                uri ?: return@rememberLauncherForActivityResult
+                runCatching { context.contentResolver.takePersistableUriPermission(uri, android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION or android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION) }
+                scope.launch { if (vm.folderHasPenny(uri)) joinUri = uri.toString() else vm.restoreError.value = context.getString(R.string.folder_sync_not_penny) }
+            }
+            TextButton(onClick = { vm.restoreError.value = null; pickFolder.launch(null) }, enabled = !busy, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.ob_join_folder)) }
             restoreError?.let { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall, modifier = Modifier.fillMaxWidth().padding(top = 4.dp)) }
+            joinUri?.let { u ->
+                var phrase by rememberSaveable { mutableStateOf("") }
+                var wrong by rememberSaveable { mutableStateOf(false) }
+                androidx.compose.material3.AlertDialog(
+                    onDismissRequest = { joinUri = null },
+                    title = { Text(stringResource(R.string.folder_sync_join_title)) },
+                    text = {
+                        Column {
+                            Text(stringResource(R.string.folder_sync_join_body))
+                            app.penny.ui.kit.SoftField(phrase, { phrase = it; wrong = false }, minLines = 3, isError = wrong, modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                                supportingText = { if (wrong) Text(stringResource(R.string.wrong_phrase)) })
+                        }
+                    },
+                    confirmButton = {
+                        androidx.compose.material3.TextButton(enabled = app.penny.domain.BackupCrypto.validPhrase(phrase) && !busy, onClick = {
+                            scope.launch { if (vm.joinFolder(android.net.Uri.parse(u), phrase)) joinUri = null else wrong = true }
+                        }) { Text(stringResource(R.string.unlock)) }
+                    },
+                    dismissButton = { androidx.compose.material3.TextButton(onClick = { joinUri = null }) { Text(stringResource(R.string.cancel)) } },
+                )
+            }
             encrypted?.let { bytes ->
                 var phrase by rememberSaveable { mutableStateOf("") }
                 var wrong by rememberSaveable { mutableStateOf(false) }

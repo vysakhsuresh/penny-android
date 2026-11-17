@@ -17,7 +17,7 @@
         <item>Tüm verilerimi nasıl silerim?</item>
     </string-array>
     <string-array name="faq_a">
-        <item>Evet. Tüm özellikler ücretsiz. İsteğe bağlı Penny Plus yalnızca kullanıcı başına artan maliyetleri, örneğin banka bağlantı ücretlerini ve ek depolamayı karşılar. Reklam yoktur ve verileri asla satmayız.</item>
+        <item>Evet, tamamen. Tüm özellikler herkes için ücretsiz: abonelik yok, ücretli sürüm yok, reklam yok ve verileri asla satmayız. Penny işine yarıyorsa, \"Bana bir kahve ısmarla\" ile isteğe bağlı bahşiş bırakabilirsin. Bu hiçbir şeyin kilidini açmaz ve vermeyen kimse daha azını almaz.</item>
         <item>Hayır. Penny asla SMS izni istemez. İzin verdiğin ödeme ve banka uygulamalarının bildirimlerini yalnızca telefonunda okuyabilir; bunu istediğin zaman kapatabilirsin.</item>
         <item>Telefonunda, şifreli olarak. Eşitlemeyi açarsan veriler telefondan çıkmadan önce şifrelenir, böylece sunucu okuyamadığı verileri saklar.</item>
         <item>Faturaları veya birikim hedeflerini aksatmadan şu andan bir sonraki maaş dönemine kadar harcayabileceğin paradır: gelir, eksi hâlâ ödenecek faturalar, eksi ayırdığın tutar, eksi zaten harcadığın tutar.</item>

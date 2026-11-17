@@ -10,12 +10,16 @@ object Brand {
     const val DEEP_LINK_SCHEME = "penny"
     const val EXPORT_APP_ID = "penny"
 
-    /** Placeholders on the reserved .example domain until the real ones exist (see DECISIONS.md, 2026-11-15). */
-    const val SUPPORT_EMAIL = "support@penny.example"
+    /** Company contact, the same as every Layerbit app (taken from LayerLink's BrandLinks, see DECISIONS.md). */
+    const val SUPPORT_EMAIL = "ceo@layerbit.co.in"
     /** Support on WhatsApp, international digits without "+" (e.g. "919800000000"). Empty hides the option. */
     const val SUPPORT_WHATSAPP = "916282595823"
-    const val PRIVACY_URL = "https://penny.example/privacy"
-    const val WEB_URL = "https://penny.example"
-    /** Relay base URL per residency region (SE-11); configurable at build time for self-hosting. */
+    /** Layerbit's site-wide policy for now; switch to layerbit.co.in/penny-app-privacy.html once that page is live. */
+    const val PRIVACY_URL = "https://layerbit.co.in/privacy.html"
+    const val WEB_URL = "https://layerbit.co.in"
+    /**
+     * Relay base URL per residency region (SE-11); configurable at build time for self-hosting. Still a placeholder:
+     * the relay service is not deployed yet.
+     */
     const val RELAY_URL = "https://relay.penny.example"
 }

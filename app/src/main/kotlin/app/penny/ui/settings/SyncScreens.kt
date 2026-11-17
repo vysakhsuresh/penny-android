@@ -351,7 +351,7 @@ fun SpacesScreen(onBack: () -> Unit, initialToken: String? = null, svm: SyncView
                     members.forEach { m ->
                         ListRow(m.accountId.take(8), subtitle = m.role.lowercase() + if (m.left) " · " + stringResource(R.string.ex_member) else "", leading = { Avatar(m.accountId, m.accountId) },
                             trailing = {
-                                if (!m.left && m.role != "OWNER") TextButton(onClick = { scope.launch { runCatching { svm.sync.removeMember(ctx.book.profileId, m.accountId) }.onFailure { error = it.message }; members = runCatching { svm.sync.members(ctx.book.profileId) }.getOrDefault(members) } }) { Text(stringResource(R.string.remove)) }
+                                if (!m.left && m.role != "OWNER") app.penny.ui.kit.DangerTextButton(stringResource(R.string.remove)) { scope.launch { runCatching { svm.sync.removeMember(ctx.book.profileId, m.accountId) }.onFailure { error = it.message }; members = runCatching { svm.sync.members(ctx.book.profileId) }.getOrDefault(members) } }
                             }, divider = true)
                     }
                     SelectField(stringResource(R.string.invite_as), inviteRole, listOf(Role.ADMIN, Role.EDITOR, Role.CONTRIBUTOR, Role.VIEWER).map { Choice(it, roleLabel(context, it)) }, { it?.let { r -> inviteRole = r } })

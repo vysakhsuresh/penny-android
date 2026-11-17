@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -104,7 +106,7 @@ fun BillsScreen(onBack: () -> Unit, onEdit: (String) -> Unit, onOpenTx: (String)
             stringResource(R.string.bills_subscriptions), onBack,
             floating = { app.penny.ui.kit.AddFab(stringResource(R.string.add_recurring), { onEdit("new") }) },
         ) { pad ->
-            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 100.dp)) {
+            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = pad.calculateBottomPadding() + 100.dp)) {
                 item { Segmented(listOf(Choice("upcoming", stringResource(R.string.upcoming)), Choice("calendar", stringResource(R.string.calendar)), Choice("subs", stringResource(R.string.subscriptions)), Choice("all", stringResource(R.string.all))), tab, { tab = it }) }
                 when (tab) {
                     "upcoming" -> {
@@ -130,12 +132,12 @@ fun BillsScreen(onBack: () -> Unit, onEdit: (String) -> Unit, onOpenTx: (String)
                         }
                         if (overdue.isNotEmpty()) {
                             item { SectionHeader(stringResource(R.string.overdue)) }
-                            items(overdue, key = { "o" + it.key }) { u -> OccurrenceRow(ctx, u) { act = u.key } }
+                            item { OccurrenceCard(ctx, overdue) { act = it } }
                         }
                         item { SectionHeader(stringResource(R.string.next_45_days)) }
                         // No button here: the floating "Add bill or income" is always on screen, and both read as a duplicate.
                         if (next.isEmpty()) item { EmptyState(stringResource(R.string.no_bills), stringResource(R.string.no_bills_body), icon = Icons.Outlined.ReceiptLong) }
-                        items(next, key = { it.key }) { u -> OccurrenceRow(ctx, u) { act = u.key } }
+                        else item { OccurrenceCard(ctx, next) { act = it } }
                     }
                     "calendar" -> {
                         val ym = YearMonth.from(today).plusMonths(monthOffset.toLong())
@@ -159,7 +161,7 @@ fun BillsScreen(onBack: () -> Unit, onEdit: (String) -> Unit, onOpenTx: (String)
                             val safe = b.safeToSpend(b.period())
                             Text(stringResource(if (safe.safeMinor >= 0) R.string.bills_covered else R.string.bills_short, ctx.money(kotlin.math.abs(safe.safeMinor))), style = MaterialTheme.typography.bodyMedium, color = if (safe.safeMinor >= 0) MaterialTheme.colorScheme.onSurfaceVariant else Penny.status.near, modifier = Modifier.padding(16.dp))
                         }
-                        items(up, key = { it.key }) { u -> OccurrenceRow(ctx, u) { act = u.key } }
+                        if (up.isNotEmpty()) item { OccurrenceCard(ctx, up) { act = it } }
                     }
                     "subs" -> {
                         val subs = b.recurring.filter { it.value.kind == RecurringKind.SUBSCRIPTION && !it.value.paused }
@@ -181,13 +183,20 @@ fun BillsScreen(onBack: () -> Unit, onEdit: (String) -> Unit, onOpenTx: (String)
                         }
                     }
                     else -> {
-                        if (b.recurring.isEmpty()) item { EmptyState(stringResource(R.string.no_bills), stringResource(R.string.no_bills_body), action = stringResource(R.string.add_recurring), onAction = { onEdit("new") }) }
-                        items(b.recurring, key = { it.state.id }) { r ->
-                            ListRow(
-                                title = r.value.name,
-                                subtitle = listOfNotNull(scheduleText(r.value.schedule), stringResource(R.string.paused).takeIf { r.value.paused }, stringResource(R.string.auto_post).takeIf { r.value.autoPost }).joinToString(" · "),
-                                trailingText = ctx.money(r.value.amountMinor, r.value.currency), onClick = { onEdit(r.state.id) }, divider = true,
-                            )
+                        if (b.recurring.isEmpty()) item { EmptyState(stringResource(R.string.no_bills), stringResource(R.string.no_bills_body), icon = Icons.Outlined.ReceiptLong) }
+                        else item {
+                            app.penny.ui.kit.PennyCard {
+                                b.recurring.forEachIndexed { i, r ->
+                                    ListRow(
+                                        title = r.value.name,
+                                        subtitle = listOfNotNull(scheduleText(r.value.schedule), stringResource(R.string.paused).takeIf { r.value.paused }, stringResource(R.string.auto_post).takeIf { r.value.autoPost }).joinToString(" · "),
+                                        leading = { Avatar(r.value.name, r.state.id, icon = Icons.Outlined.ReceiptLong) },
+                                        trailingText = ctx.money(r.value.amountMinor, r.value.currency),
+                                        trailingColor = if (r.value.type == TxType.INCOME) Penny.status.positive else androidx.compose.ui.graphics.Color.Unspecified,
+                                        onClick = { onEdit(r.state.id) }, divider = i < b.recurring.lastIndex,
+                                    )
+                                }
+                            }
                         }
                     }
                 }
@@ -200,8 +209,16 @@ fun BillsScreen(onBack: () -> Unit, onEdit: (String) -> Unit, onOpenTx: (String)
     }
 }
 
+/** A run of bill occurrences in one card, so dividers stay inside it like every other list. */
 @Composable
-private fun OccurrenceRow(ctx: Ctx, u: Upcoming, onClick: () -> Unit) {
+private fun OccurrenceCard(ctx: Ctx, list: List<Upcoming>, onClick: (String) -> Unit) {
+    app.penny.ui.kit.PennyCard {
+        list.forEachIndexed { i, u -> OccurrenceRow(ctx, u, divider = i < list.lastIndex) { onClick(u.key) } }
+    }
+}
+
+@Composable
+private fun OccurrenceRow(ctx: Ctx, u: Upcoming, divider: Boolean = true, onClick: () -> Unit) {
     val today = ctx.book.today()
     val days = java.time.temporal.ChronoUnit.DAYS.between(today, u.date).toInt()
     ListRow(
@@ -219,7 +236,7 @@ private fun OccurrenceRow(ctx: Ctx, u: Upcoming, onClick: () -> Unit) {
         },
         leading = { Avatar(u.recurring.name, u.recurringId, icon = Icons.Outlined.ReceiptLong) },
         trailingText = ctx.money(u.amountMinor, u.recurring.currency), trailingColor = if (u.recurring.type == TxType.INCOME) Penny.status.positive else androidx.compose.ui.graphics.Color.Unspecified,
-        onClick = onClick, divider = true,
+        onClick = onClick, divider = divider,
     )
 }
 
@@ -265,8 +282,16 @@ private fun OccurrenceDialog(ctx: Ctx, u: Upcoming, onDismiss: () -> Unit, onOpe
                     AmountInput(amount, { amount = it }, u.recurring.currency, ctx.fmt, stringResource(R.string.field_amount), error = if (parsed == null) stringResource(R.string.err_amount_invalid) else null)
                     DateInput(stringResource(R.string.field_date), runCatching { java.time.LocalDate.parse(date) }.getOrNull(), { date = it.toString() }, today = ctx.book.today())
                 } else Text(stringResource(if (u.status == OccurrenceStatus.PAID) R.string.paid else R.string.skipped))
-                Row {
+                // The main action is one clear filled button; the rest wrap below it instead of squeezing into a row
+                // where "Edit the series" broke over two lines.
+                if (u.open) androidx.compose.material3.Button(
+                    enabled = parsed != null,
+                    onClick = { vm.act(R.string.marked_paid) { payOccurrence(it, u, parsed!!, java.time.LocalDate.parse(date)) }; onDismiss() },
+                    modifier = Modifier.fillMaxWidth().padding(top = 12.dp).heightIn(min = 48.dp),
+                ) { Text(stringResource(if (u.recurring.type == TxType.INCOME) R.string.mark_received else R.string.mark_paid), style = MaterialTheme.typography.titleSmall) }
+                androidx.compose.foundation.layout.FlowRow(Modifier.fillMaxWidth().padding(top = 4.dp)) {
                     // A typo never quietly becomes the expected amount: the actions wait for a valid one.
+                    if (u.open) TextButton(onClick = { vm.act(R.string.skipped) { skipOccurrence(it, u) }; onDismiss() }) { Text(stringResource(R.string.skip)) }
                     if (u.open) TextButton(enabled = parsed != null, onClick = {
                         vm.act(R.string.updated) { editOccurrence(it, u, parsed!!, java.time.LocalDate.parse(date)) }; onDismiss()
                     }) { Text(stringResource(R.string.edit_this_one)) }
@@ -275,15 +300,12 @@ private fun OccurrenceDialog(ctx: Ctx, u: Upcoming, onDismiss: () -> Unit, onOpe
             }
         },
         confirmButton = {
-            if (u.open) TextButton(enabled = parsed != null, onClick = {
-                vm.act(R.string.marked_paid) { payOccurrence(it, u, parsed!!, java.time.LocalDate.parse(date)) }; onDismiss()
-            }) { Text(stringResource(if (u.recurring.type == TxType.INCOME) R.string.mark_received else R.string.mark_paid)) }
+            if (u.open) TextButton(onClick = onDismiss) { Text(stringResource(R.string.close)) }
             else {
                 u.transactionId?.let { tid -> TextButton(onClick = { onDismiss(); onOpenTx(tid) }) { Text(stringResource(R.string.open_transaction)) } }
                 TextButton(onClick = { vm.act(R.string.reopened) { reopenOccurrence(it, u) }; onDismiss() }) { Text(stringResource(if (u.status == OccurrenceStatus.SKIPPED) R.string.unskip else R.string.mark_unpaid)) }
             }
         },
-        dismissButton = { if (u.open) TextButton(onClick = { vm.act(R.string.skipped) { skipOccurrence(it, u) }; onDismiss() }) { Text(stringResource(R.string.skip)) } },
     )
 }
 
@@ -295,7 +317,9 @@ fun scheduleText(r: Recurrence): String {
         Freq.WEEKLY -> pluralStringResource(R.plurals.every_n_weeks, r.interval, r.interval) + if (r.byWeekday.isNotEmpty()) " · " + r.byWeekday.joinToString { it.getDisplayName(TextStyle.SHORT, Locale.getDefault()) } else ""
         Freq.MONTHLY -> pluralStringResource(R.plurals.every_n_months, r.interval, r.interval) + when {
             r.setPos != null && r.byWeekday.isNotEmpty() -> " · " + stringResource(R.string.nth_weekday, if (r.setPos == -1) stringResource(R.string.last) else r.setPos.toString(), r.byWeekday.first().getDisplayName(TextStyle.FULL, Locale.getDefault()))
-            r.byMonthDay.isNotEmpty() -> " · " + r.byMonthDay.joinToString { if (it == -1) lastDay else it.toString() }
+            // "Every month · on day 17" rather than a bare "· 17".
+            r.byMonthDay == listOf(-1) -> " · $lastDay"
+            r.byMonthDay.isNotEmpty() -> " · " + stringResource(R.string.day_of_month_x, r.byMonthDay.joinToString { if (it == -1) lastDay else it.toString() })
             else -> ""
         }
         Freq.YEARLY -> pluralStringResource(R.plurals.every_n_years, r.interval, r.interval)
@@ -433,7 +457,9 @@ fun RecurringEditScreen(id: String, fromTx: String?, onBack: () -> Unit, onHisto
                         g
                     }
                 }, Modifier.padding(horizontal = 16.dp))
-                if (existing != null) TextButton(onClick = { vm.act(R.string.deleted, after = onBack) { recurring.delete(id) } }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.delete)) }
+                if (existing != null) app.penny.ui.kit.ActionStrip {
+                    app.penny.ui.kit.StripAction(destructive = true, onClick = { vm.act(R.string.deleted, after = onBack) { recurring.delete(id) } }) { Text(stringResource(R.string.delete)) }
+                }
             }
         }
     }

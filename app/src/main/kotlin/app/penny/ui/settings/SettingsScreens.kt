@@ -418,7 +418,7 @@ fun AlertSettingsScreen(onBack: () -> Unit) {
                 if (ctx.book.watchlists.isEmpty()) Text(stringResource(R.string.watchlists_hint), style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 20.dp))
                 ctx.book.watchlists.forEach { w ->
                     ListRow(w.value.value, subtitle = stringResource(watchTargetLabel(w.value.target)), trailingText = ctx.money(w.value.limitMinor, w.value.currency),
-                        trailing = { TextButton(onClick = { vm.act(R.string.deleted) { watchlists.delete(w.state.id) } }) { Text(stringResource(R.string.delete)) } }, divider = true)
+                        trailing = { app.penny.ui.kit.DangerTextButton(stringResource(R.string.delete)) { vm.act(R.string.deleted) { watchlists.delete(w.state.id) } } }, divider = true)
                 }
             }
         }

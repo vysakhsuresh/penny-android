@@ -195,7 +195,12 @@ fun QuickAddSheet(onDismiss: () -> Unit, onMore: (TxType, Long?, String?) -> Uni
                 }
             }
             if (pickAccount) OptionSheet(stringResource(R.string.field_account), account, b.activeAccounts.map { Choice(it.state.id, it.value.name, it.value.currency) }, false, "", false, { pickAccount = false }) { account = it ?: account; pickAccount = false }
-            if (pickCategory) OptionSheet(stringResource(R.string.field_category), category, b.categoriesOf(if (type == TxType.INCOME) CategoryKind.INCOME else CategoryKind.EXPENSE).map { Choice(it.state.id, b.categoryName(it.state.id)) }, true, stringResource(R.string.uncategorised), true, { pickCategory = false }) { category = it; pickCategory = false }
+            // Type a name that is not there and add it on the spot, like every other category picker.
+            if (pickCategory) OptionSheet(
+                stringResource(R.string.field_category), category, b.categoriesOf(if (type == TxType.INCOME) CategoryKind.INCOME else CategoryKind.EXPENSE).map { Choice(it.state.id, b.categoryName(it.state.id)) },
+                true, stringResource(R.string.uncategorised), true, { pickCategory = false },
+                onAddNew = { name -> vm.addCategory(b, name, if (type == TxType.INCOME) CategoryKind.INCOME else CategoryKind.EXPENSE) { category = it }; pickCategory = false },
+            ) { category = it; pickCategory = false }
         }
     }
 }

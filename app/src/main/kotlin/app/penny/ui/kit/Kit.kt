@@ -200,9 +200,14 @@ fun PennyCard(
     val edge = androidx.compose.foundation.BorderStroke(1.dp, if (Penny.extras.isDark) Color.White.copy(alpha = 0.06f) else Color.Black.copy(alpha = 0.06f))
     // The last row's divider would sit on the card edge; trim that 1 dp hairline here instead of at every call site.
     val inner = Modifier.padding(padding).trimBottomHairline().animateContentSize()
-    if (onClick != null) Card(onClick = onClick, modifier = m, colors = colors, shape = MaterialTheme.shapes.large, border = edge) { Column(inner, content = content) }
-    else Card(modifier = m, colors = colors, shape = MaterialTheme.shapes.large, border = edge) { Column(inner, content = content) }
+    androidx.compose.runtime.CompositionLocalProvider(LocalInCard provides true) {
+        if (onClick != null) Card(onClick = onClick, modifier = m, colors = colors, shape = MaterialTheme.shapes.large, border = edge) { Column(inner, content = content) }
+        else Card(modifier = m, colors = colors, shape = MaterialTheme.shapes.large, border = edge) { Column(inner, content = content) }
+    }
 }
+
+/** True inside a [PennyCard]: row dividers there run to the card edge; on the open page they stop short of it. */
+val LocalInCard = androidx.compose.runtime.compositionLocalOf { false }
 
 private fun Modifier.trimBottomHairline(): Modifier = this.clipToBounds().layout { measurable, constraints ->
     val p = measurable.measure(constraints)
@@ -228,6 +233,7 @@ fun ListRow(
     divider: Boolean = false,
     titleMaxLines: Int = 1,
     subtitleColor: Color = Color.Unspecified,
+    titleWeight: FontWeight = FontWeight.SemiBold,
 ) {
     val haptic = LocalHapticFeedback.current
     val haptics = LocalPenny.current.haptics
@@ -245,7 +251,7 @@ fun ListRow(
         ) {
             if (leading != null) { leading(); Spacer(Modifier.width(14.dp)) }
             Column(Modifier.weight(1f)) {
-                Text(title, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold, maxLines = titleMaxLines, overflow = TextOverflow.Ellipsis)
+                Text(title, style = MaterialTheme.typography.bodyLarge, fontWeight = titleWeight, maxLines = titleMaxLines, overflow = TextOverflow.Ellipsis)
                 if (!subtitle.isNullOrEmpty()) {
                     Text(subtitle, style = MaterialTheme.typography.bodySmall, color = subtitleColor.takeOrElse { MaterialTheme.colorScheme.onSurfaceVariant }, maxLines = 2, overflow = TextOverflow.Ellipsis)
                 }
@@ -259,7 +265,7 @@ fun ListRow(
             }
             trailing?.invoke()
         }
-        if (divider) HorizontalDivider(Modifier.padding(start = if (leading != null) 70.dp else 16.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+        if (divider) HorizontalDivider(Modifier.padding(start = if (leading != null) 70.dp else 16.dp, end = if (LocalInCard.current) 0.dp else 16.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
     }
 }
 
@@ -453,6 +459,15 @@ fun StripAction(onClick: () -> Unit, destructive: Boolean = false, content: @Com
     )
 }
 
+
+/** A compact destructive action for list rows and dialogs (Delete, Remove): text in the muted error colour. */
+@Composable
+fun DangerTextButton(text: String, onClick: () -> Unit) {
+    androidx.compose.material3.TextButton(
+        onClick = onClick,
+        colors = androidx.compose.material3.ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
+    ) { Text(text) }
+}
 
 /** Flips "hide amounts"; provided by the activity so any screen can offer it. */
 val LocalHideToggle = androidx.compose.runtime.staticCompositionLocalOf<(() -> Unit)?> { null }

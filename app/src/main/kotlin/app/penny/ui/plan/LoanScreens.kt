@@ -82,7 +82,7 @@ fun LoansScreen(onBack: () -> Unit, onOpen: (String) -> Unit, onAdd: () -> Unit)
             stringResource(R.string.debt_loans), onBack,
             floating = { app.penny.ui.kit.AddFab(stringResource(R.string.add_loan), onAdd) },
         ) { pad ->
-            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 100.dp)) {
+            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = pad.calculateBottomPadding() + 100.dp)) {
                 if (debtors.isEmpty()) item { EmptyState(stringResource(R.string.no_debts), stringResource(R.string.no_debts_body), icon = Icons.Outlined.CreditCard, action = stringResource(R.string.add_loan), onAction = onAdd) }
                 if (plan != null) {
                     item {
@@ -101,14 +101,19 @@ fun LoansScreen(onBack: () -> Unit, onOpen: (String) -> Unit, onAdd: () -> Unit)
                     }
                     item { SectionHeader(stringResource(R.string.projection)); LineChart(plan.balances.mapIndexed { i, v -> shortDate(today.plusMonths(i + 1L)) to v }, { ctx.money(it) }) }
                     item { SectionHeader(stringResource(R.string.payoff_order)) }
-                    items(plan.payoffOrder.mapNotNull { id -> debtors.firstOrNull { it.id == id } }, key = { "o" + it.id }) { d ->
-                        ListRow(d.name, subtitle = stringResource(R.string.apr_x, d.aprBp / 100.0), trailingText = ctx.money(d.balanceMinor), onClick = { if (loans.any { it.state.id == d.id }) onOpen(d.id) }, divider = true)
+                    item {
+                        val order = plan.payoffOrder.mapNotNull { id -> debtors.firstOrNull { it.id == id } }
+                        PennyCard {
+                            order.forEachIndexed { i, d ->
+                                ListRow(d.name, subtitle = stringResource(R.string.apr_x, d.aprBp / 100.0), trailingText = ctx.money(d.balanceMinor), onClick = { if (loans.any { it.state.id == d.id }) onOpen(d.id) }, divider = i < order.lastIndex)
+                            }
+                        }
                     }
                 }
                 val closed = b.loans.filter { it.value.closed }
                 if (closed.isNotEmpty()) {
                     item { SectionHeader(stringResource(R.string.closed)) }
-                    items(closed, key = { it.state.id }) { l -> ListRow(l.value.name, subtitle = l.value.lender, onClick = { onOpen(l.state.id) }, divider = true) }
+                    item { PennyCard { closed.forEachIndexed { i, l -> ListRow(l.value.name, subtitle = l.value.lender, onClick = { onOpen(l.state.id) }, divider = i < closed.lastIndex) } } }
                 }
             }
         }

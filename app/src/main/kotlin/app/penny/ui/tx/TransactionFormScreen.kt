@@ -131,7 +131,8 @@ fun TransactionFormScreen(
                     }
                     Segmented(
                         listOf(TxType.EXPENSE, TxType.INCOME, TxType.TRANSFER).map { Choice(it, stringResource(typeLabel(it))) },
-                        if (f.type in listOf(TxType.EXPENSE, TxType.INCOME, TxType.TRANSFER)) f.type else TxType.EXPENSE,
+                        // A refund, adjustment or opening balance is chosen in the row below; this row then shows none.
+                        f.type,
                         { t -> vm.update { it.copy(type = t, categoryId = null) } },
                     )
                     if (more || f.type in listOf(TxType.REFUND, TxType.ADJUSTMENT, TxType.OPENING_BALANCE)) {

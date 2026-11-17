@@ -341,6 +341,8 @@ private fun ChoiceRow(label: String, supporting: String?, selected: Boolean, ind
         title = label, subtitle = supporting, onClick = onClick,
         modifier = Modifier.padding(start = indent.dp).then(if (description != null && description != label) Modifier.semantics { contentDescription = description } else Modifier),
         trailing = if (selected) ({ Icon(Icons.Filled.Check, stringResource(R.string.selected), tint = MaterialTheme.colorScheme.primary) }) else null,
+        // Parents stay bold and their sub-categories regular, so the tree reads at a glance.
+        titleWeight = if (indent > 0) androidx.compose.ui.text.font.FontWeight.Normal else androidx.compose.ui.text.font.FontWeight.SemiBold,
     )
 }
 
@@ -424,7 +426,9 @@ fun SwitchRow(title: String, checked: Boolean, onChange: (Boolean) -> Unit, modi
 @Composable
 fun <T> Segmented(options: List<Choice<T>>, selected: T, onSelect: (T) -> Unit, modifier: Modifier = Modifier) {
     if (options.isEmpty()) return
-    val index = options.indexOfFirst { it.value == selected }.coerceAtLeast(0)
+    // -1 when the value is none of the options: nothing is highlighted. Coercing to 0 showed the first option as chosen
+    // (a plain expense read as "Refund" in the extra-types row).
+    val index = options.indexOfFirst { it.value == selected }
     val reduce = app.penny.ui.theme.LocalPenny.current.reduceMotion
     val dark = app.penny.ui.theme.LocalPenny.current.isDark
     val track = if (dark) MaterialTheme.colorScheme.surfaceContainerHigh else MaterialTheme.colorScheme.surfaceContainerHighest
@@ -439,12 +443,12 @@ fun <T> Segmented(options: List<Choice<T>>, selected: T, onSelect: (T) -> Unit, 
     ) {
         val segment = maxWidth / options.size
         val offset by androidx.compose.animation.core.animateDpAsState(
-            segment * index,
+            segment * index.coerceAtLeast(0),
             animationSpec = if (reduce) androidx.compose.animation.core.snap() else androidx.compose.animation.core.spring(dampingRatio = 0.85f, stiffness = 500f),
             label = "segment",
         )
         // The thumb: a raised pill under the chosen option.
-        Box(
+        if (index >= 0) Box(
             Modifier.matchParentSize().wrapContentWidth(Alignment.Start).width(segment).offset(x = offset)
                 .shadow(if (dark) 0.dp else 2.dp, androidx.compose.foundation.shape.RoundedCornerShape(50), clip = false)
                 .clip(androidx.compose.foundation.shape.RoundedCornerShape(50))

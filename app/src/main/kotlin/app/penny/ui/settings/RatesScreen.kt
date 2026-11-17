@@ -70,7 +70,7 @@ fun RatesScreen(onBack: () -> Unit) {
                 items(b.fxRates.sortedByDescending { it.value.date }, key = { it.state.id }) { r ->
                     ListRow(
                         "1 ${r.value.from} = ${r.value.rate} ${r.value.to}", subtitle = shortDate(r.value.date),
-                        trailing = { TextButton(onClick = { vm.act(R.string.deleted) { fxRates.delete(r.state.id) } }) { Text(stringResource(R.string.delete)) } }, divider = true,
+                        trailing = { app.penny.ui.kit.DangerTextButton(stringResource(R.string.delete)) { vm.act(R.string.deleted) { fxRates.delete(r.state.id) } } }, divider = true,
                     )
                 }
             }

@@ -231,7 +231,7 @@ fun PersonScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onEnt
                 }
                 if (groups.isNotEmpty()) {
                     item { SectionHeader(stringResource(R.string.shared_groups)) }
-                    items(groups, key = { "g" + it.state.id }) { g -> ListRow(g.value.name, leading = { Avatar(g.value.name, g.state.id, icon = Icons.Outlined.Groups) }, onClick = { onGroup(g.state.id) }, divider = true) }
+                    item { PennyCard { groups.forEachIndexed { i, g -> ListRow(g.value.name, leading = { Avatar(g.value.name, g.state.id, icon = Icons.Outlined.Groups) }, onClick = { onGroup(g.state.id) }, divider = i < groups.lastIndex) } } }
                 }
                 item { SectionHeader(stringResource(R.string.history)) }
                 if (entries.isEmpty()) item { EmptyState(stringResource(R.string.no_entries), stringResource(R.string.no_entries_body)) }

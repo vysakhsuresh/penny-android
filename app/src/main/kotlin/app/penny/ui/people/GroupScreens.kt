@@ -128,7 +128,7 @@ fun GroupScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onExpe
             },
             floating = { app.penny.ui.kit.AddFab(stringResource(R.string.add_expense), { onExpense("new", id) }) },
         ) { pad ->
-            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 100.dp)) {
+            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = pad.calculateBottomPadding() + 100.dp)) {
                 item { SectionHeader(stringResource(R.string.balances)) }
                 item {
                     PennyCard {
@@ -401,7 +401,9 @@ fun GroupExpenseEditScreen(id: String, groupArg: String?, onBack: () -> Unit) {
                     if (!Splitting.validate(e)) { err = invalid; return@PrimaryButton }
                     vm.act(R.string.saved, after = onBack) { saveGroupExpense(it, if (existing == null) null else id, e, account.takeIf { existing == null && payer == Group.ME }) }
                 }, Modifier.padding(horizontal = 16.dp))
-                if (existing != null) TextButton(onClick = { vm.act(R.string.deleted, after = onBack) { deleteGroupExpense(it, id) } }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.delete)) }
+                if (existing != null) app.penny.ui.kit.ActionStrip {
+                    app.penny.ui.kit.StripAction(destructive = true, onClick = { vm.act(R.string.deleted, after = onBack) { deleteGroupExpense(it, id) } }) { Text(stringResource(R.string.delete)) }
+                }
             }
         }
     }
@@ -418,7 +420,7 @@ fun RemittancesScreen(onBack: () -> Unit, onEdit: (String) -> Unit) {
             stringResource(R.string.remittances), onBack,
             floating = { app.penny.ui.kit.AddFab(stringResource(R.string.record_remittance), { onEdit("new") }) },
         ) { pad ->
-            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 100.dp)) {
+            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = pad.calculateBottomPadding() + 100.dp)) {
                 if (byProvider.isNotEmpty()) {
                     item { SectionHeader(stringResource(R.string.provider_cost)) }
                     item {
@@ -508,7 +510,9 @@ fun RemittanceEditScreen(id: String, onBack: () -> Unit) {
                         midRate = mid.replace(',', '.').ifBlank { null }, provider = provider.trim(), purpose = purpose.trim(), date = java.time.LocalDate.parse(date), status = status, outgoing = outgoing, transactionId = existing?.transactionId)
                     vm.act(R.string.saved, after = onBack) { saveRemittance(it, if (existing == null) null else id, rem, account.takeIf { existing == null }) }
                 }, Modifier.padding(horizontal = 16.dp))
-                if (existing != null) TextButton(onClick = { vm.act(R.string.deleted, after = onBack) { deleteRemittance(it, id) } }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.delete)) }
+                if (existing != null) app.penny.ui.kit.ActionStrip {
+                    app.penny.ui.kit.StripAction(destructive = true, onClick = { vm.act(R.string.deleted, after = onBack) { deleteRemittance(it, id) } }) { Text(stringResource(R.string.delete)) }
+                }
             }
         }
     }

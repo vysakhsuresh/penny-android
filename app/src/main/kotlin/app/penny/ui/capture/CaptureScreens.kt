@@ -160,7 +160,9 @@ fun EditProposal(ctx: Ctx, t: Transaction, saveLabel: Int = R.string.accept, onC
         })
         AmountInput(amount, { amount = it }, t.currency, ctx.fmt, stringResource(R.string.field_amount), error = if (tried && parsed == null) stringResource(R.string.err_amount_invalid) else null)
         TextInput(payee, { payee = it }, stringResource(R.string.field_payee))
-        SelectField(stringResource(R.string.field_category), cat, b.categoriesOf(if (income) CategoryKind.INCOME else CategoryKind.EXPENSE).map { Choice(it.state.id, b.categoryName(it.state.id)) }, { cat = it }, allowNone = true)
+        val bookVm: app.penny.ui.common.BookViewModel = androidx.hilt.navigation.compose.hiltViewModel()
+        SelectField(stringResource(R.string.field_category), cat, b.categoriesOf(if (income) CategoryKind.INCOME else CategoryKind.EXPENSE).map { Choice(it.state.id, b.categoryName(it.state.id)) }, { cat = it }, allowNone = true,
+            onAddNew = { name -> bookVm.addCategory(b, name, if (income) CategoryKind.INCOME else CategoryKind.EXPENSE) { cat = it } })
         SelectField(stringResource(R.string.field_account), acct, b.activeAccounts.map { Choice(it.state.id, it.value.name) }, { acct = it },
             error = if (tried && b.activeAccountOrNull(acct) == null) stringResource(R.string.err_account_required) else null)
         DateInput(stringResource(R.string.field_date), runCatching { java.time.LocalDate.parse(date) }.getOrNull(), { date = it.toString() }, today = b.today())

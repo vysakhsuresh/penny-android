@@ -91,6 +91,7 @@ fun CategoriesScreen(onBack: () -> Unit, onEdit: (String, String?) -> Unit) {
         var overflow by remember { mutableStateOf(false) }
         val tree = b.categoryTree(kind, showArchived)
         val counts = b.txList.groupingBy { it.categoryId }.eachCount()
+        val uncategorisedCount = b.txList.count { it.categoryId == null && it.type == (if (kind == CategoryKind.INCOME) app.penny.core.model.TxType.INCOME else app.penny.core.model.TxType.EXPENSE) }
         PennyScreen(
             stringResource(R.string.categories), onBack,
             actions = {
@@ -102,12 +103,13 @@ fun CategoriesScreen(onBack: () -> Unit, onEdit: (String, String?) -> Unit) {
             },
             floating = { app.penny.ui.kit.AddFab(stringResource(R.string.add_category), { onEdit("new", null) }) },
         ) { pad ->
-            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 100.dp)) {
+            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = pad.calculateBottomPadding() + 100.dp)) {
                 item { Segmented(listOf(Choice(CategoryKind.EXPENSE, stringResource(R.string.type_expense)), Choice(CategoryKind.INCOME, stringResource(R.string.type_income))), kind, { kind = it }) }
                 if (tree.isEmpty()) item { EmptyState(stringResource(R.string.no_categories), stringResource(R.string.no_categories_body), action = stringResource(R.string.reset_defaults), onAction = { vm.act(R.string.defaults_restored) { seedCategories(it.profileId) } }) }
                 items(tree, key = { it.first.state.id }) { (s, d) ->
                     val c = s.value
-                    val n = counts[s.state.id] ?: 0
+                    // Transactions with no category show as "Uncategorised", so they count there too.
+                    val n = (counts[s.state.id] ?: 0) + if (c.key == app.penny.core.model.DefaultCategories.UNCATEGORISED) uncategorisedCount else 0
                     Column {
                         ListRow(
                             title = c.name, modifier = Modifier.padding(start = ((d - 1) * 24).dp),

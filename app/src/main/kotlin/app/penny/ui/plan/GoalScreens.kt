@@ -82,7 +82,7 @@ fun GoalsScreen(onBack: () -> Unit, onOpen: (String) -> Unit, onAdd: () -> Unit)
             floating = { app.penny.ui.kit.AddFab(stringResource(R.string.add_goal), onAdd) },
         ) { pad ->
             val list = b.goals.filter { showDone || it.value.status in listOf(GoalStatus.ACTIVE, GoalStatus.PAUSED) }
-            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 100.dp)) {
+            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = pad.calculateBottomPadding() + 100.dp)) {
                 item { FilterChip(showDone, { showDone = !showDone }, label = { Text(stringResource(R.string.show_completed_archived)) }, modifier = Modifier.padding(horizontal = 16.dp)) }
                 if (list.isEmpty()) item { EmptyState(stringResource(R.string.no_goals), stringResource(R.string.no_goals_body), icon = Icons.Outlined.Flag, action = stringResource(R.string.add_goal), onAction = onAdd) }
                 items(list, key = { it.state.id }) { g -> GoalCard(ctx, g.state.id, g.value) { onOpen(g.state.id) } }
@@ -171,7 +171,7 @@ fun GoalDetailScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, o
                         title = stringResource(if (e.value.amountMinor >= 0) R.string.contribution else R.string.withdrawal),
                         subtitle = shortDate(e.value.date) + (e.value.note.takeIf { it.isNotBlank() && !it.startsWith("auto:") }?.let { " · $it" } ?: if (e.value.note.startsWith("auto:")) " · " + stringResource(R.string.automatic) else ""),
                         trailingText = ctx.money(e.value.amountMinor, g.value.currency, signed = e.value.amountMinor > 0),
-                        trailing = { TextButton(onClick = { vm.act(R.string.deleted) { goalEntries.delete(e.state.id) } }) { Text(stringResource(R.string.delete)) } },
+                        trailing = { app.penny.ui.kit.DangerTextButton(stringResource(R.string.delete)) { vm.act(R.string.deleted) { goalEntries.delete(e.state.id) } } },
                         divider = true,
                     )
                 }

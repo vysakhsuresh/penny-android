@@ -70,6 +70,7 @@ import app.penny.ui.common.MoneyFmt
 import app.penny.ui.common.cycleLabel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import app.penny.domain.ops.importJson
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import java.time.DayOfWeek
@@ -117,6 +118,25 @@ class OnboardingViewModel @Inject constructor(
     val busy = kotlinx.coroutines.flow.MutableStateFlow(false)
     /** null while working; "main" or "import" when the profile exists and the screen should leave. */
     val done = kotlinx.coroutines.flow.MutableStateFlow<String?>(null)
+
+    /** Shown under the welcome buttons when a restore fails (not a Penny file, wrong phrase handled by its dialog). */
+    val restoreError = kotlinx.coroutines.flow.MutableStateFlow<String?>(null)
+
+    /**
+     * SY-08 on a new phone: restore a Penny export or backup instead of setting up a book that would sit empty beside the
+     * restored one. The restored profile becomes the current one.
+     */
+    fun restore(json: String) {
+        if (!busy.compareAndSet(false, true)) return
+        viewModelScope.launch {
+            val r = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) { runCatching { repo.importJson(json) } }
+            r.onSuccess { (pid, _) -> repo.prefs.setCurrentProfile(pid); done.value = "main" }
+                .onFailure { e ->
+                    if (e is kotlinx.coroutines.CancellationException) throw e
+                    restoreError.value = context.getString(R.string.import_failed, e.message ?: ""); busy.value = false
+                }
+        }
+    }
 
     fun finish(pack: RegionalPack, cycle: CycleRule, cashName: String, cashText: String, sample: Boolean = false, target: String = "main") {
         if (!busy.compareAndSet(false, true)) return
@@ -228,8 +248,46 @@ fun OnboardingScreen(vm: OnboardingViewModel, onImport: () -> Unit, onDone: () -
             }
         }
         if (step == 0) {
+            val scope = androidx.compose.runtime.rememberCoroutineScope()
+            var encrypted by androidx.compose.runtime.remember { mutableStateOf<ByteArray?>(null) }
+            val restoreError by vm.restoreError.collectAsState()
+            val pick = androidx.activity.compose.rememberLauncherForActivityResult(androidx.activity.result.contract.ActivityResultContracts.OpenDocument()) { uri ->
+                uri ?: return@rememberLauncherForActivityResult
+                scope.launch {
+                    val bytes = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) { runCatching { context.contentResolver.openInputStream(uri)!!.use { it.readBytes() } }.getOrNull() }
+                    when {
+                        bytes == null -> vm.restoreError.value = context.getString(R.string.import_failed, "")
+                        app.penny.domain.BackupCrypto.isEncrypted(bytes) -> encrypted = bytes
+                        else -> vm.restore(bytes.toString(Charsets.UTF_8))
+                    }
+                }
+            }
             Button(onClick = { step = 1 }, modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp)) { Text(stringResource(R.string.ob_get_started), style = MaterialTheme.typography.titleMedium) }
             TextButton(onClick = { finish(sample = true) }, enabled = !busy, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.ob_sample)) }
+            TextButton(onClick = { vm.restoreError.value = null; pick.launch(arrayOf("application/json", "application/octet-stream", "*/*")) }, enabled = !busy, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.ob_restore)) }
+            restoreError?.let { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall, modifier = Modifier.fillMaxWidth().padding(top = 4.dp)) }
+            encrypted?.let { bytes ->
+                var phrase by rememberSaveable { mutableStateOf("") }
+                var wrong by rememberSaveable { mutableStateOf(false) }
+                androidx.compose.material3.AlertDialog(
+                    onDismissRequest = { encrypted = null },
+                    title = { Text(stringResource(R.string.backup_enter_phrase)) },
+                    text = {
+                        Column {
+                            Text(stringResource(R.string.backup_enter_phrase_body))
+                            app.penny.ui.kit.SoftField(phrase, { phrase = it; wrong = false }, minLines = 3, isError = wrong, modifier = Modifier.fillMaxWidth(),
+                                supportingText = { if (wrong) Text(stringResource(R.string.backup_phrase_wrong)) })
+                        }
+                    },
+                    confirmButton = {
+                        androidx.compose.material3.TextButton(enabled = app.penny.domain.BackupCrypto.validPhrase(phrase), onClick = {
+                            val json = runCatching { app.penny.domain.BackupCrypto.decrypt(bytes, phrase) }.getOrNull()
+                            if (json == null) wrong = true else { encrypted = null; vm.restore(json) }
+                        }) { Text(stringResource(R.string.restore_export)) }
+                    },
+                    dismissButton = { androidx.compose.material3.TextButton(onClick = { encrypted = null }) { Text(stringResource(R.string.cancel)) } },
+                )
+            }
         } else {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                 TextButton(onClick = { if (step > 1) step-- else step = 0 }, enabled = !busy) { Text(stringResource(R.string.back)) }

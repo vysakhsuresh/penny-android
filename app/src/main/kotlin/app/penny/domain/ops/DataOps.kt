@@ -22,19 +22,26 @@ import kotlinx.serialization.builtins.ListSerializer
 import java.math.BigDecimal
 
 /** SY-07: full export with schema version; the event log is included so import restores history too (SY-08). */
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
 @Serializable
 data class FullExport(
-    val app: String = Brand.EXPORT_APP_ID,
-    val schema: Int = SCHEMA,
+    // Always written (the shared Json omits defaults): a file must say what it is and which version wrote it.
+    @kotlinx.serialization.EncodeDefault val app: String = Brand.EXPORT_APP_ID,
+    // Files written before the version was always included are version 2; a missing value must keep meaning 2 after
+    // SCHEMA moves on, so the default is that fixed number and new exports pass SCHEMA explicitly.
+    @kotlinx.serialization.EncodeDefault val schema: Int = UNVERSIONED_SCHEMA,
     val exportedAt: Long,
     val profileId: String,
     val events: List<Event>,
 ) {
-    companion object { const val SCHEMA = 2 }
+    companion object {
+        const val SCHEMA = 2
+        const val UNVERSIONED_SCHEMA = 2
+    }
 }
 
 suspend fun PennyRepository.exportJson(profileId: String): String =
-    PennyJson.encodeToString(FullExport.serializer(), FullExport(exportedAt = System.currentTimeMillis(), profileId = profileId, events = store.allEventsFor(profileId)))
+    PennyJson.encodeToString(FullExport.serializer(), FullExport(schema = FullExport.SCHEMA, exportedAt = System.currentTimeMillis(), profileId = profileId, events = store.allEventsFor(profileId)))
 
 /**
  * SY-08 import of own export: events are ingested (idempotent: known ids are skipped), so importing twice is safe and

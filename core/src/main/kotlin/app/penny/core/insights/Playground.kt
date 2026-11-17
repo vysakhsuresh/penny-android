@@ -26,13 +26,13 @@ object Playground {
         val n = days.size
         val total = days.values.sum()
         val biggest = days.entries.filter { it.value > 0 }.maxByOrNull { it.value }
-        val byWeekday = days.entries.groupBy { it.key.dayOfWeek }.mapValues { (_, l) -> l.sumOf { it.value } / l.size }
+        val byWeekday = days.entries.groupBy { it.key.dayOfWeek }.mapValues { (_, l) -> avg(l.sumOf { it.value }, l.size) }
         var best = 0
         var run = 0
         days.values.forEach { v -> if (v <= 0) { run++; best = maxOf(best, run) } else run = 0 }
         return FunFacts(
             daysCounted = n,
-            avgPerDayMinor = if (n == 0) 0 else total / n,
+            avgPerDayMinor = avg(total, n),
             biggestDay = biggest?.key,
             biggestDayMinor = biggest?.value ?: 0,
             weekdayAvgMinor = byWeekday,
@@ -58,6 +58,10 @@ object Playground {
             Period(p.start.minusDays(len), p.start.minusDays(1))
         }
     }
+
+    /** [total] / [n] rounded half-even to the minor unit (plain Long division truncated 66.666 to 66.66). */
+    internal fun avg(total: Long, n: Int): Long =
+        if (n == 0) 0 else java.math.BigDecimal(total).divide(java.math.BigDecimal(n), 0, java.math.RoundingMode.HALF_EVEN).toLong()
 
     /** What putting aside [perDayMinor] every day adds up to over [days] days (no interest assumed). */
     fun setAside(perDayMinor: Long, days: Int): Long = perDayMinor * days

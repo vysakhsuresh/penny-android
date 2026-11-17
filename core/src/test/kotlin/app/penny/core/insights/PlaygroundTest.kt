@@ -38,6 +38,15 @@ class PlaygroundTest : FunSpec({
         Playground.previous(Period(LocalDate.of(2026, 11, 2), LocalDate.of(2026, 11, 8))) shouldBe Period(LocalDate.of(2026, 10, 26), LocalDate.of(2026, 11, 1))
     }
 
+    test("averages round to the nearest minor unit instead of truncating") {
+        // Three Sundays (1, 8, 15 Nov 2026) with 200.00 spent on one: 20000 / 3 = 6666.67 -> 6667.
+        val daily = mapOf(d(1) to 0L, d(8) to 0L, d(15) to 20_000L)
+        Playground.facts(daily, d(15)).weekdayAvgMinor[DayOfWeek.SUNDAY] shouldBe 6_667L
+        Playground.avg(2, 4) shouldBe 0L // 0.5 rounds half-even to 0
+        Playground.avg(6, 4) shouldBe 2L // 1.5 -> 2
+        Playground.avg(-20_000, 3) shouldBe -6_667L
+    }
+
     test("setting a little aside each day") {
         Playground.setAside(5_000, 365) shouldBe 1_825_000
     }

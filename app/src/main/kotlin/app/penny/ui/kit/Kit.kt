@@ -490,7 +490,9 @@ fun HeroCard(modifier: Modifier = Modifier, onClick: (() -> Unit)? = null, conte
         .background(androidx.compose.ui.graphics.Brush.linearGradient(listOf(top, mid, end)))
         .drawBehind {
             // Light sheen from the top left, and a faint gold coin ring bleeding off the top right corner.
-            drawCircle(androidx.compose.ui.graphics.Brush.radialGradient(listOf(Color.White.copy(alpha = 0.16f), Color.Transparent), center = Offset(size.width * 0.15f, 0f), radius = size.width * 0.75f))
+            // drawRect, not drawCircle: the gradient carries its own centre and radius, and drawCircle's defaults put a
+            // hard-edged disc in the middle of the card (it showed through as a blob on short cards).
+            drawRect(androidx.compose.ui.graphics.Brush.radialGradient(listOf(Color.White.copy(alpha = 0.16f), Color.Transparent), center = Offset(size.width * 0.15f, 0f), radius = size.width * 0.75f))
             val r = size.minDimension * 0.55f
             val c = Offset(size.width * 0.98f, size.height * 0.02f)
             drawCircle(gold.copy(alpha = 0.10f), radius = r, center = c, style = androidx.compose.ui.graphics.drawscope.Stroke(width = r * 0.16f))

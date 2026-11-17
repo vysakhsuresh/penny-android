@@ -4,9 +4,14 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
@@ -267,7 +272,8 @@ fun PennyNavHost(nav: NavHostController, start: String, reduceMotion: Boolean) {
         composable(Routes.PERSON, arguments = listOf(str("id", ""))) { e ->
             PersonScreen(e.arg("id")!!, back, onEdit = { nav.navigate("person/$it/edit") }, onEntry = { id, p -> nav.navigate("lending/$id/edit?person=$p") }, onGroup = { nav.navigate("group/$it") })
         }
-        composable(Routes.PERSON_EDIT, arguments = listOf(str("id", Routes.NEW))) { e -> PersonEditScreen(e.arg("id")!!, back) }
+        // After a delete, leave the person's page too; going back to it would only show "no longer exists".
+        composable(Routes.PERSON_EDIT, arguments = listOf(str("id", Routes.NEW))) { e -> PersonEditScreen(e.arg("id")!!, back, onDeleted = { if (!nav.popBackStack(Routes.PERSON, inclusive = true)) back() }) }
         composable(Routes.LENDING_EDIT, arguments = listOf(str("id", Routes.NEW), str("person"))) { e -> LendingEditScreen(e.arg("id")!!, e.arg("person"), back) }
         composable(Routes.GROUP, arguments = listOf(str("id", ""))) { e ->
             GroupScreen(e.arg("id")!!, back, onEdit = { nav.navigate("group/$it/edit") }, onExpense = { id, g -> nav.navigate("groupexpense/$id?group=$g") })
@@ -353,6 +359,7 @@ private fun MainTabs(nav: NavHostController, initial: String) {
             }
         },
     ) { pad: PaddingValues ->
+      Box(Modifier.fillMaxSize()) {
         when (tab) {
             Tab.HOME -> HomeScreen(
                 HomeNav(
@@ -368,6 +375,12 @@ private fun MainTabs(nav: NavHostController, initial: String) {
             Tab.PEOPLE -> PeopleScreen(pad, go = { nav.navigate(it) })
             Tab.INSIGHTS -> InsightsScreen(pad, go = { nav.navigate(it) })
         }
+        // Edge to edge, the tab lists scrolled up under the clock and icons; this strip keeps the status bar clear.
+        Box(
+            Modifier.fillMaxWidth().windowInsetsTopHeight(androidx.compose.foundation.layout.WindowInsets.statusBars)
+                .background(MaterialTheme.colorScheme.background),
+        )
+      }
     }
     if (quickAdd) {
         QuickAddSheet(

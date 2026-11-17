@@ -123,10 +123,11 @@ fun PeopleScreen(padding: PaddingValues, go: (String) -> Unit) {
             val people = b.people.filter { !it.value.archived }
             // Quick actions only once there is something here; while empty, each section's empty state offers them
             // (showing both read as the same buttons twice).
-            if (people.isNotEmpty() || b.groups.any { !it.value.archived }) item {
+            // "New group" lives only on the Groups section (header once there are groups, the empty state before), so it
+            // never shows twice or three times on one screen.
+            if (people.isNotEmpty()) item {
                 Row(Modifier.padding(horizontal = 16.dp, vertical = 4.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     AssistChip({ go("lending/new/edit") }, label = { Text(stringResource(R.string.record_lending)) }, leadingIcon = { Icon(Icons.Outlined.PersonAdd, null) })
-                    AssistChip({ go("group/new/edit") }, label = { Text(stringResource(R.string.new_group)) }, leadingIcon = { Icon(Icons.Outlined.Groups, null) })
                 }
             }
             item { SectionHeader(stringResource(R.string.lending), action = stringResource(R.string.add_person), onAction = { go("person/new/edit") }) }
@@ -147,8 +148,8 @@ fun PeopleScreen(padding: PaddingValues, go: (String) -> Unit) {
                 item { TextButton(onClick = { showArchived = !showArchived }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(if (showArchived) R.string.hide_archived else R.string.show_archived_n, archivedPeople.size)) } }
                 if (showArchived) item { PennyCard { archivedPeople.forEach { p -> ListRow(p.value.name, leading = { Avatar(p.value.name, p.state.id) }, subtitle = stringResource(R.string.archived), onClick = { go("person/${p.state.id}") }, divider = true) } } }
             }
-            item { SectionHeader(stringResource(R.string.groups), action = stringResource(R.string.new_group), onAction = { go("group/new/edit") }) }
             val groups = b.groups.filter { !it.value.archived }
+            item { SectionHeader(stringResource(R.string.groups), action = if (groups.isEmpty()) null else stringResource(R.string.new_group), onAction = { go("group/new/edit") }) }
             if (groups.isEmpty()) item { EmptyState(stringResource(R.string.no_groups), stringResource(R.string.no_groups_body), icon = Icons.Outlined.Groups, action = stringResource(R.string.new_group), onAction = { go("group/new/edit") }) }
             else item {
                 PennyCard {
@@ -234,14 +235,19 @@ fun PersonScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onEnt
                 }
                 item { SectionHeader(stringResource(R.string.history)) }
                 if (entries.isEmpty()) item { EmptyState(stringResource(R.string.no_entries), stringResource(R.string.no_entries_body)) }
-                items(entries, key = { it.state.id }) { e ->
-                    val gave = e.value.direction == LendDirection.GAVE
-                    ListRow(
-                        stringResource(if (gave) R.string.you_gave else R.string.you_received),
-                        subtitle = listOfNotNull(shortDate(e.value.date), e.value.note.ifBlank { null }, e.value.due?.let { stringResource(R.string.due_x, shortDate(it)) }, stringResource(R.string.settled).takeIf { e.value.closed }, (e.value.interestBp.takeIf { it > 0 }?.let { stringResource(R.string.interest_pct, it / 100.0) })).joinToString(" · "),
-                        trailingText = ctx.money(e.value.amountMinor, e.value.currency), trailingColor = if (gave) Color.Unspecified else Penny.status.positive,
-                        onClick = { onEntry(e.state.id, id) }, divider = true,
-                    )
+                // In a card like every other list, so row dividers stop at the card edge instead of the screen edge.
+                else item {
+                    PennyCard {
+                        entries.forEachIndexed { i, e ->
+                            val gave = e.value.direction == LendDirection.GAVE
+                            ListRow(
+                                stringResource(if (gave) R.string.you_gave else R.string.you_received),
+                                subtitle = listOfNotNull(shortDate(e.value.date), e.value.note.ifBlank { null }, e.value.due?.let { stringResource(R.string.due_x, shortDate(it)) }, stringResource(R.string.settled).takeIf { e.value.closed }, (e.value.interestBp.takeIf { it > 0 }?.let { stringResource(R.string.interest_pct, it / 100.0) })).joinToString(" · "),
+                                trailingText = ctx.money(e.value.amountMinor, e.value.currency), trailingColor = if (gave) Color.Unspecified else Penny.status.positive,
+                                onClick = { onEntry(e.state.id, id) }, divider = i < entries.lastIndex,
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -261,7 +267,7 @@ fun whatsAppLink(phone: String, region: String, text: String): String? {
 }
 
 @Composable
-fun PersonEditScreen(id: String, onBack: () -> Unit) {
+fun PersonEditScreen(id: String, onBack: () -> Unit, onDeleted: () -> Unit = onBack) {
     WithBook { ctx, vm ->
         val existing = ctx.book.peopleMap[id]?.value
         var name by rememberSaveable { mutableStateOf(existing?.name.orEmpty()) }
@@ -295,7 +301,7 @@ fun PersonEditScreen(id: String, onBack: () -> Unit) {
                     Icon(Icons.Outlined.Contacts, null, modifier = Modifier.size(18.dp)); Spacer(Modifier.width(6.dp)); Text(stringResource(R.string.pick_from_contacts))
                 }
                 TextInput(email, { email = it }, stringResource(R.string.email), keyboard = KeyboardType.Email)
-                TextInput(handle, { handle = it }, stringResource(R.string.pay_handle), supporting = stringResource(R.string.pay_handle_hint, ctx.pack.settlementSchemes.joinToString().ifBlank { "PayPal" }))
+                TextInput(handle, { handle = it }, stringResource(R.string.pay_handle), supporting = stringResource(R.string.pay_handle_hint, ctx.pack.settlementSchemes.joinToString { Splitting.schemeLabel(it) }.ifBlank { "PayPal" }))
                 TextInput(note, { note = it }, stringResource(R.string.field_note), singleLine = false)
                 Text(stringResource(R.string.person_privacy), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
                 PrimaryButton(stringResource(R.string.save), {
@@ -307,7 +313,7 @@ fun PersonEditScreen(id: String, onBack: () -> Unit) {
                 if (existing != null) app.penny.ui.kit.ActionStrip {
                     app.penny.ui.kit.StripAction(onClick = { vm.act(R.string.updated) { savePerson(it, id, existing.copy(archived = !existing.archived)) } }) { Text(stringResource(if (existing.archived) R.string.unarchive else R.string.archive)) }
                     // Someone with money records or group memberships is archived instead, so no balance loses its owner.
-                    if (!inUse) app.penny.ui.kit.StripAction(destructive = true, onClick = { vm.act(R.string.deleted, after = onBack) { people.delete(id) } }) { Text(stringResource(R.string.delete)) }
+                    if (!inUse) app.penny.ui.kit.StripAction(destructive = true, onClick = { vm.act(R.string.deleted, after = onDeleted) { people.delete(id) } }) { Text(stringResource(R.string.delete)) }
                 }
                 if (existing != null && inUse) Text(stringResource(R.string.person_in_use), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))
             }
@@ -382,7 +388,9 @@ fun LendingEditScreen(id: String, personArg: String?, onBack: () -> Unit) {
                         g
                     }
                 }, Modifier.padding(horizontal = 16.dp))
-                if (existing != null) TextButton(onClick = { vm.act(R.string.deleted, after = onBack) { deleteLending(it, id) } }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.delete)) }
+                if (existing != null) app.penny.ui.kit.ActionStrip {
+                    app.penny.ui.kit.StripAction(destructive = true, onClick = { vm.act(R.string.deleted, after = onBack) { deleteLending(it, id) } }) { Text(stringResource(R.string.delete)) }
+                }
             }
         }
     }

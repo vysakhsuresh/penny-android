@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
@@ -208,8 +209,17 @@ fun AmountInput(
             // Number keyboards have no + × ÷ keys, so the calculator operators are offered here.
             listOf("+" to R.string.op_plus, "−" to R.string.op_minus, "×" to R.string.op_times, "÷" to R.string.op_divide).forEach { (op, desc) ->
                 val d = stringResource(desc)
-                TextButton(onClick = { insert(op) }, modifier = Modifier.clearAndSetSemantics { contentDescription = d; role = Role.Button; onClick { insert(op); true } }) {
-                    Text(op, style = MaterialTheme.typography.titleMedium)
+                // Small tonal keys grouped at the end (48 dp touch target, 40×32 visible) instead of wide text buttons
+                // that spread across the row and read as stray symbols.
+                androidx.compose.foundation.layout.Box(
+                    Modifier.size(48.dp).clip(androidx.compose.foundation.shape.RoundedCornerShape(12.dp)).clickable { insert(op) }
+                        .clearAndSetSemantics { contentDescription = d; role = Role.Button; onClick { insert(op); true } },
+                    contentAlignment = Alignment.Center,
+                ) {
+                    androidx.compose.foundation.layout.Box(
+                        Modifier.size(width = 40.dp, height = 32.dp).background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.07f), androidx.compose.foundation.shape.RoundedCornerShape(10.dp)),
+                        contentAlignment = Alignment.Center,
+                    ) { Text(op, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary) }
                 }
             }
         }
@@ -531,7 +541,10 @@ fun parseNonNegative(s: String): Double? = s.trim().replace(',', '.').toDoubleOr
 @Composable
 fun pennyFieldColors(error: Boolean = false): androidx.compose.material3.TextFieldColors {
     val cs = MaterialTheme.colorScheme
-    val fill = cs.surfaceContainerHigh
+    // A translucent tint, not a fixed surface colour: a fixed surfaceContainerHigh fill matched the dialog container
+    // exactly, so fields inside dialogs were invisible. The tint reads the same on the screen background and stays
+    // distinct on dialogs and cards.
+    val fill = cs.onSurface.copy(alpha = if (app.penny.ui.theme.LocalPenny.current.isDark) 0.10f else 0.07f)
     return androidx.compose.material3.TextFieldDefaults.colors(
         focusedContainerColor = fill, unfocusedContainerColor = fill, disabledContainerColor = fill, errorContainerColor = fill,
         focusedIndicatorColor = cs.primary, unfocusedIndicatorColor = Color.Transparent,

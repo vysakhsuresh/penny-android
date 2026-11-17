@@ -108,6 +108,9 @@ class PlanningTest : FunSpec({
 
     test("settle links: UPI includes payee, amount and currency") {
         Splitting.settleLink("upi", "ana@okaxis", "Ana", "250.00", "INR", "Goa trip")!!.startsWith("upi://pay?pa=ana%40okaxis") shouldBe true
+        Splitting.schemeLabel("upi") shouldBe "UPI"
+        Splitting.schemeLabel("cashapp") shouldBe "Cash App"
+        Splitting.schemeLabel("Pix") shouldBe "Pix"
         Splitting.settleLink("unknown", "x", "y", "1", "USD", "") shouldBe null
     }
 

@@ -151,6 +151,17 @@ object Splitting {
      * US-10 / PE-03 settle-up deep link from pack schemes. Supported: upi, gcash/maya (copy), paynow, pix, paypal,
      * venmo, sepa. Unknown schemes return null and the UI offers "mark as paid" and share-sheet text instead.
      */
+    /** How a pack's settlement scheme is written for people: the lowercase link keys get their proper names. */
+    fun schemeLabel(scheme: String): String = when (scheme.lowercase()) {
+        "upi" -> "UPI"
+        "paypal" -> "PayPal"
+        "venmo" -> "Venmo"
+        "cashapp" -> "Cash App"
+        "revolut" -> "Revolut"
+        "monzo" -> "Monzo"
+        else -> scheme
+    }
+
     fun settleLink(scheme: String, handle: String, name: String, amountMajor: String, currency: String, note: String): String? {
         fun enc(s: String) = java.net.URLEncoder.encode(s, "UTF-8").replace("+", "%20")
         if (handle.isBlank()) return null

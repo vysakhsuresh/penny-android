@@ -49,7 +49,7 @@
     <string name="new_person">Someone new</string>
     <string name="new_person_name">Their name</string>
     <string name="due_date_optional">Due date (optional)</string>
-    <string name="interest_simple_pct">Simple interest per year (%) (optional)</string>
+    <string name="interest_simple_pct">Yearly interest, % (optional)</string>
     <string name="post_to_account">Record in my accounts</string>
     <string name="post_to_account_hint">Adds a matching transaction so your balance is right. It does not count as spending.</string>
     <string name="err_person_amount">Choose a person and enter an amount</string>

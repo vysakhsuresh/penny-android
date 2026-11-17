@@ -133,7 +133,8 @@ fun BillsScreen(onBack: () -> Unit, onEdit: (String) -> Unit, onOpenTx: (String)
                             items(overdue, key = { "o" + it.key }) { u -> OccurrenceRow(ctx, u) { act = u.key } }
                         }
                         item { SectionHeader(stringResource(R.string.next_45_days)) }
-                        if (next.isEmpty()) item { EmptyState(stringResource(R.string.no_bills), stringResource(R.string.no_bills_body), icon = Icons.Outlined.ReceiptLong, action = stringResource(R.string.add_recurring), onAction = { onEdit("new") }) }
+                        // No button here: the floating "Add bill or income" is always on screen, and both read as a duplicate.
+                        if (next.isEmpty()) item { EmptyState(stringResource(R.string.no_bills), stringResource(R.string.no_bills_body), icon = Icons.Outlined.ReceiptLong) }
                         items(next, key = { it.key }) { u -> OccurrenceRow(ctx, u) { act = u.key } }
                     }
                     "calendar" -> {

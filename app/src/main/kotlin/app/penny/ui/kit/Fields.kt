@@ -438,7 +438,9 @@ fun <T> Segmented(options: List<Choice<T>>, selected: T, onSelect: (T) -> Unit, 
     // same surfaceContainerHigh the track used, which made it vanish there).
     val track = MaterialTheme.colorScheme.onSurface.copy(alpha = if (dark) 0.08f else 0.07f)
     // Neutral pill; the selected label carries the accent (in dark), so selection is clear without a purple slab.
-    val thumb = if (dark) MaterialTheme.colorScheme.surfaceContainerHighest else MaterialTheme.colorScheme.surfaceContainerLowest
+    // Dark: a light layer over the track, so the chosen pill is always lighter than its track on any background
+    // (a fixed surface colour came out darker than the track inside dialogs).
+    val thumb = if (dark) Color.White.copy(alpha = 0.12f) else MaterialTheme.colorScheme.surfaceContainerLowest
     androidx.compose.foundation.layout.BoxWithConstraints(
         modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp)
             .clip(pillShape)

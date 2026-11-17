@@ -65,12 +65,22 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) { prefs.security.collect { applySecureFlag(it) } }
         }
-        // No book selected but books exist (an interrupted switch): open the first real one instead of setup.
-        if (prefs.currentProfileId.value == null) {
-            kotlinx.coroutines.runBlocking(kotlinx.coroutines.Dispatchers.IO) { repo.firstRealProfileId() }?.let { prefs.setCurrentProfile(it) }
+        // No book selected but books exist (an interrupted switch): open the first real one instead of setup. Decided off
+        // the main thread: on a first install this opens (creates) the encrypted database, which blocked the main
+        // thread long enough to show "Penny isn't responding" on slower phones.
+        var startRoute by androidx.compose.runtime.mutableStateOf(if (prefs.currentProfileId.value != null) Routes.main() else null)
+        if (startRoute == null) lifecycleScope.launch {
+            val id = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) { runCatching { repo.firstRealProfileId() }.getOrNull() }
+            id?.let { prefs.setCurrentProfile(it) }
+            startRoute = if (id == null) Routes.ONBOARDING else Routes.main()
         }
-        val start = if (prefs.currentProfileId.value == null) Routes.ONBOARDING else Routes.main()
         setContent {
+            val start = startRoute
+            if (start == null) {
+                // A plain frame in the theme's background for the moment the database takes to open.
+                PennyTheme(prefs.appearance.collectAsStateWithLifecycle().value) { Surface(Modifier.fillMaxSize()) {} }
+                return@setContent
+            }
             val appearance by prefs.appearance.collectAsStateWithLifecycle()
             val security by prefs.security.collectAsStateWithLifecycle()
             val showLock = locked && security.lockEnabled

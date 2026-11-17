@@ -32,7 +32,7 @@
     <!-- Cycles -->
     <string name="cycle_monthly">Monthly, from day %1$d</string>
     <string name="cycle_monthly_last">Monthly, from the last day</string>
-    <string name="cycle_semimonthly">Twice a month, on the %1$d and the last day</string>
+    <string name="cycle_semimonthly">Twice a month, on day %1$d and the last day</string>
     <string name="cycle_weekly">Weekly</string>
     <string name="cycle_biweekly">Every two weeks</string>
     <string name="cycle_fourweekly">Every four weeks</string>

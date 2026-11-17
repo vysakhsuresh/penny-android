@@ -177,9 +177,19 @@ fun OnboardingScreen(vm: OnboardingViewModel, onImport: () -> Unit, onDone: () -
                     )
                     // The device's region first, then everything else alphabetically.
                     val ordered = listOf(vm.devicePack) + vm.packs.filter { it.id != vm.devicePack.id }
+                    // Countries are listed by their own name ("日本", "Deutschland"); search also matches the name in the
+                    // phone's language and in English, the country code and the currency, so "Japan" or "Germany" works.
+                    fun local(p: app.penny.packs.RegionalPack, l: java.util.Locale) = java.util.Locale("", p.id.uppercase()).getDisplayCountry(l)
+                    val q = query.trim()
+                    val shown = ordered.filter { p ->
+                        q.isBlank() || listOf(p.name, p.currency, p.id, local(p, java.util.Locale.getDefault()), local(p, java.util.Locale.ENGLISH)).any { it.contains(q, ignoreCase = true) }
+                    }
+                    if (shown.isEmpty()) Text(stringResource(R.string.ob_region_none), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(vertical = 16.dp))
                     LazyColumn(Modifier.selectableGroup()) {
-                        items(ordered.filter { query.isBlank() || it.name.contains(query, true) || it.currency.contains(query, true) }, key = { it.id }) { p ->
-                            OptionRow(p.id == packId, p.name, "${p.currency} · ${MoneyFmt.of(p).format(123456789, p.currency)}") { packId = p.id; cycleIndex = 0 }
+                        items(shown, key = { it.id }) { p ->
+                            // The phone-language name next to the native one when they differ ("日本 · Japan").
+                            val here = local(p, java.util.Locale.getDefault()).takeIf { it.isNotBlank() && !it.equals(p.name, true) && !it.equals(p.id, true) }
+                            OptionRow(p.id == packId, listOfNotNull(p.name, here).joinToString(" · "), "${p.currency} · ${MoneyFmt.of(p).format(123456789, p.currency)}") { packId = p.id; cycleIndex = 0 }
                         }
                     }
                 }
@@ -203,7 +213,8 @@ fun OnboardingScreen(vm: OnboardingViewModel, onImport: () -> Unit, onDone: () -
                 else -> Column {
                     Header(R.string.ob_account_title, R.string.ob_account_body)
                     app.penny.ui.kit.SoftField(
-                        value = cash, onValueChange = { cash = it }, label = { Text(stringResource(R.string.field_amount)) },
+                        // The label names the currency: the ¥ / ₹ prefix only shows once the field is focused.
+                        value = cash, onValueChange = { cash = it }, label = { Text(stringResource(R.string.field_amount) + " (" + pack.currency + ")") },
                         prefix = { Text(app.penny.core.money.CurrencySymbols.symbol(pack.currency, pack.primaryLocale) + " ") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), singleLine = true,
                         modifier = Modifier.fillMaxWidth(), textStyle = MaterialTheme.typography.headlineSmall, shape = MaterialTheme.shapes.medium,

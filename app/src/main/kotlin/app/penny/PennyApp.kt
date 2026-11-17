@@ -48,11 +48,15 @@ class PennyApp : Application(), Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
         CaptureRegistry.sink = capture
-        DailyWorker.schedule(this)
-        SyncWorker.schedulePeriodic(this)
-        app.penny.domain.RatesWorker.schedule(this)
-        alerts.ensureChannel()
-        shortcuts()
+        // Off the main thread: the first WorkManager call opens its database, and on a cold first launch on a slow
+        // device that (with the channel and shortcuts) pushed startup past the "isn't responding" limit.
+        scope.launch {
+            runCatching { DailyWorker.schedule(this@PennyApp) }
+            runCatching { SyncWorker.schedulePeriodic(this@PennyApp) }
+            runCatching { app.penny.domain.RatesWorker.schedule(this@PennyApp) }
+            runCatching { alerts.ensureChannel() }
+            runCatching { shortcuts() }
+        }
         // Widgets also follow privacy and profile changes, not only data: hiding amounts, locking, or switching book
         // (including into a duress session) must reach the home screen straight away.
         scope.launch {
@@ -68,7 +72,7 @@ class PennyApp : Application(), Configuration.Provider {
                 repo.currentProfileId.value?.let { pid -> runCatching { app.penny.automation.Webhooks.deliver(repo, repo.prefs, pid) } }
             }
         }
-        if (sync.signedIn) SyncWorker.soon(this, 1)
+        scope.launch { if (sync.signedIn) runCatching { SyncWorker.soon(this@PennyApp, 1) } }
         scope.launch {
             app.penny.billing.Billing.lastPurchase.collect { p -> if (p != null && sync.signedIn) sync.reportPurchase(p.first, p.second) }
         }

@@ -14,8 +14,8 @@ object Brand {
     const val SUPPORT_EMAIL = "ceo@layerbit.co.in"
     /** Support on WhatsApp, international digits without "+" (e.g. "919800000000"). Empty hides the option. */
     const val SUPPORT_WHATSAPP = "916282595823"
-    /** Layerbit's site-wide policy for now; switch to layerbit.co.in/penny-app-privacy.html once that page is live. */
-    const val PRIVACY_URL = "https://layerbit.co.in/privacy.html"
+    /** Penny's own policy on the Layerbit site (layerbit-site: src/pages/penny-app-privacy.*), like the other apps'. */
+    const val PRIVACY_URL = "https://layerbit.co.in/penny/privacy"
     const val WEB_URL = "https://layerbit.co.in"
     /**
      * Relay base URL per residency region (SE-11); configurable at build time for self-hosting. Still a placeholder:

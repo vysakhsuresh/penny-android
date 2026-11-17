@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">Walang account at walang server. Sine-save ng Penny ang mga pagbabago mo, naka-encrypt, sa folder na pipiliin mo. Panatilihing pareho ang folder na iyon sa iba mo pang phone at tablet gamit ang libreng sync app gaya ng Syncthing, o isang folder-sync app ng Google Drive o OneDrive. Ang recovery phrase mo lang ang makakapagbukas ng mga file.</string>
+    <string name="folder_sync_choose">Pumili ng folder</string>
+    <string name="folder_sync_empty">Nabuksan ang folder, pero wala pang dumating na talaan. Hintaying matapos ang pagkopya ng sync app mo, saka subukang muli.</string>
+    <string name="folder_sync_failed">Hindi mabuksan ang folder. Tingnan kung naroon pa ito, o piliin itong muli.</string>
+    <string name="folder_sync_join_body">May Penny data na mula sa ibang device ang folder na ito. I-type ang 24-word recovery phrase na isinulat mo roon.</string>
+    <string name="folder_sync_join_title">Buksan ang folder na ito</string>
+    <string name="folder_sync_keep_same">Sa ibang device, i-install ang Penny, buksan ang Sync, piliin ang parehong folder at i-type ang recovery phrase mo.</string>
+    <string name="folder_sync_not_penny">Wala pang Penny sync file ang folder na iyon. Piliin ang folder na sini-sync ng iba mong device.</string>
+    <string name="folder_sync_on">Nagsi-sync sa folder na “%1$s”.</string>
+    <string name="folder_sync_partial">Kinokopya pa sa folder ang ilang pagbabago. Susubukan ulit ng Penny maya-maya.</string>
+    <string name="folder_sync_phrase_body">Isulat ang 24 na salitang ito at itago nang ligtas. Kailangan mo ang mga ito para buksan ang folder na ito sa ibang device, at para i-restore ang naka-encrypt na backup. Hindi na ito maipapakita ulit ng Penny.</string>
+    <string name="folder_sync_stop">Ihinto ang pag-sync sa device na ito</string>
+    <string name="folder_sync_title">Mag-sync gamit ang folder (libre)</string>
+    <string name="ob_join_folder">Gumagamit ako ng Penny sa ibang device</string>
+    <string name="own_server_body">Para lang sa mga nagpapatakbo mismo ng open-source sync server ng Penny. Ang karamihan ay dapat gumamit ng folder sync sa itaas.</string>
+    <string name="own_server_title">Sariling sync server (advanced)</string>
+    <string name="quick_add_needs_account">Magdagdag muna ng account (Settings › Mga account), saka i-save. Kailangang malaman ng Penny kung saan galing ang pera.</string>
+    <string name="relay_server">Address ng sync server</string>
+    <string name="relay_server_required">Address ng server mo, halimbawa https://sync.example.com</string>
+    <string name="share_choose_folder">Pumili ng walang lamang folder na ibabahagi</string>
+    <string name="share_code_body">Ibigay lang ang 24 na salitang ito sa mga kasama mo sa talaang ito. Sinumang may folder at mga salitang ito ay makakabasa at makakapagbago nito. Hindi ito ang personal mong recovery phrase.</string>
+    <string name="share_code_title">Share code</string>
+    <string name="share_folder_not_empty">May mga Penny file na ang folder na iyon. Pumili ng bago at walang lamang folder para lang sa talaang ito.</string>
+    <string name="share_free_body">Walang account at walang server. Itinatago ng Penny ang talaang ito, naka-encrypt, sa sarili nitong folder na ibinabahagi mo sa iba, halimbawa isang Syncthing folder o isang shared na Google Drive o OneDrive folder na pinapanatiling naka-sync ng isang app. Makakakuha ka ng 24-word share code na ibibigay mo sa kanila.</string>
+    <string name="share_free_how_others">Para magdagdag ng tao: ibahagi sa kanila ang folder, saka ibigay ang share code nang personal o sa mensahe. Sa phone nila, bubuksan nila ang Shared spaces at ita-tap ang Sumali sa shared na talaan. Lahat ng may code ay makakabasa at makakapagbago ng talaang ito.</string>
+    <string name="share_free_on">Ibinabahagi sa folder na “%1$s”.</string>
+    <string name="share_free_title">Ibahagi ang talaang ito (libre)</string>
+    <string name="share_join_body">May nagbahagi sa iyo ng talaan? Piliin ang shared folder na pinapanatili ng sync app sa phone na ito, saka i-type ang share code na ibinigay nila sa iyo.</string>
+    <string name="share_join_choose">Sumali sa shared na talaan</string>
+    <string name="share_only_you">Ikaw pa lang sa ngayon.</string>
+    <string name="share_show_code">Ipakita ang share code</string>
+    <string name="share_start">Simulan ang pagbabahagi</string>
+    <string name="share_stop">Ihinto ang pagbabahagi sa phone na ito</string>
+    <string name="share_your_name">Pangalan mo, ayon sa makikita ng iba</string>
+</resources>

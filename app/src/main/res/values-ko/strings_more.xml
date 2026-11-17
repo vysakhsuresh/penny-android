@@ -133,6 +133,8 @@
     <string name="recipient_x">받는 사람: %1$s</string>
     <string name="not_decided">미정</string>
     <string name="payout_to">%1$s님에게 지급됨</string>
+    <string name="recipient_you">내가 받음</string>
+    <string name="payout_to_you">나에게 지급됨</string>
     <string name="paid_out">지급됨</string>
     <string name="close_circle">계모임 종료</string>
     <string name="edit_circle">계모임 수정</string>
@@ -276,7 +278,7 @@
     <string name="spaces">공유 스페이스</string>
     <string name="spaces_sub">가족과 예산 공유</string>
     <string name="sync_and_banks">동기화 및 은행</string>
-    <string name="sync_sub">기기, 백업 문구, 은행 연결</string>
+    <string name="sync_sub">폴더를 통한 기기 간 무료 동기화</string>
     <string name="your_data">내 데이터</string>
     <string name="data_backup">데이터 및 백업</string>
     <string name="data_sub">내보내기, 가져오기, 백업, 삭제</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">먼저 동기화를 켜세요.</string>
     <string name="link_lasts">링크 유효 기간</string>
     <string name="create_advisor_link">링크 만들기</string>
-    <string name="spaces_body">공유 스페이스는 다른 사람과 함께 쓰는 예산이에요. 각자 자기 로그인과 역할이 있어요. 안의 모든 내용은 종단 간 암호화돼요.</string>
+    <string name="spaces_body">공유 스페이스는 가족이나 친구와 함께 쓰는 가계부예요. 암호화되어 있고, 공유 코드가 있는 사람만 열 수 있어요.</string>
     <string name="spaces_need_sync">공유 스페이스를 쓰려면 동기화를 켜야 해요.</string>
     <string name="your_spaces">내 스페이스</string>
     <string name="no_spaces">아직 참여한 공유 스페이스가 없어요.</string>

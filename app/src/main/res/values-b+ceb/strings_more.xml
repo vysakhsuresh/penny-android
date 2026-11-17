@@ -133,6 +133,8 @@
     <string name="recipient_x">Moadto kang %1$s</string>
     <string name="not_decided">wala pa matino</string>
     <string name="payout_to">Gihatag kang %1$s</string>
+    <string name="recipient_you">Para nimo</string>
+    <string name="payout_to_you">Gibayad kanimo</string>
     <string name="paid_out">Nahatag na</string>
     <string name="close_circle">Sirad-i ang paluwagan</string>
     <string name="edit_circle">Usba ang paluwagan</string>
@@ -276,7 +278,7 @@
     <string name="spaces">Gipaambit nga mga space</string>
     <string name="spaces_sub">Ipaambit ang budget sa imong panimalay</string>
     <string name="sync_and_banks">Sync ug mga bangko</string>
-    <string name="sync_sub">Mga device, backup phrase, koneksyon sa bangko</string>
+    <string name="sync_sub">Libreng sync tali sa imong mga device pinaagi sa usa ka folder</string>
     <string name="your_data">Imong data</string>
     <string name="data_backup">Data ug backup</string>
     <string name="data_sub">Export, import, backup, papas</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">I-on una ang sync.</string>
     <string name="link_lasts">Gidugayon sa link</string>
     <string name="create_advisor_link">Paghimo og link</string>
-    <string name="spaces_body">Ang gipaambit nga space usa ka budget nga imong gipaambit sa uban, matag usa adunay kaugalingong login ug papel. Ang tanan niini end-to-end encrypted.</string>
+    <string name="spaces_body">Ang gipaambit nga space usa ka libro nga imong gipaambit sa pamilya o mga higala. Naka-encrypt kini, ug ang mga tawo ra nga adunay share code niini ang makaabli.</string>
     <string name="spaces_need_sync">Ang gipaambit nga mga space nanginahanglan og naka-on nga sync.</string>
     <string name="your_spaces">Imong mga space</string>
     <string name="no_spaces">Wala ka pa sa bisan unsang gipaambit nga space.</string>

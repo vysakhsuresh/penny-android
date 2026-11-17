@@ -171,8 +171,12 @@ class SyncManager @Inject constructor(
         if (signedIn) relay.createSpace(id)
         vault.put("sk.$id", StreamCrypto.newKey())
         val g = repo.profiles.newGroup()
-        repo.profiles.create(id, id, base.copy(name = name, decoy = false, defaultAccountId = null), g)
+        // A shared book starts with a shared cash account, like a new profile does: without one nothing can be added.
+        val cashId = repo.newId()
+        repo.profiles.create(id, id, base.copy(name = name, decoy = false, defaultAccountId = cashId), g)
         repo.seedCategories(id)
+        repo.accounts.create(cashId, id, app.penny.core.model.FinancialAccount(context.getString(app.penny.R.string.ob_cash_name), app.penny.core.model.AccountType.CASH,
+            base.baseCurrency, 0, java.time.LocalDate.now(java.time.ZoneId.of(base.timezone))), g)
         repo.spaces.create(id, id, Space(name, me, base.baseCurrency, base.cycle, base.timezone), g)
         repo.members.create(repo.newId(), id, Member(id, me, prefs.string("sync.email") ?: base.name, Role.OWNER, publicKey = device.publicKey()), g)
         if (signedIn) runCatching { syncNow() }

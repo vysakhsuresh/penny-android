@@ -190,6 +190,9 @@ fun QuickAddSheet(onDismiss: () -> Unit, onMore: (TxType, Long?, String?) -> Uni
                     }
                 }
                 Keypad(ctx.fmt.spec.decimalSeparator, (unit?.minorUnits ?: 2) == 0, ::key)
+                // Save stays off without an account: say why instead of leaving a grey button unexplained.
+                if (account == null && b.activeAccounts.isEmpty()) Text(stringResource(R.string.quick_add_needs_account), style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))
                 Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                     TextButton(onClick = { onDismiss(); onMore(type, ok?.minor, category) /* keep what was typed */ }) { Text(stringResource(R.string.more)) }
                     Spacer(Modifier.weight(1f))

@@ -133,6 +133,8 @@
     <string name="recipient_x">עובר אל %1$s</string>
     <string name="not_decided">לא נקבע</string>
     <string name="payout_to">שולם ל־%1$s</string>
+    <string name="recipient_you">הולך אליך</string>
+    <string name="payout_to_you">שולם לך</string>
     <string name="paid_out">שולם</string>
     <string name="close_circle">סגירת הקבוצה</string>
     <string name="edit_circle">עריכת הקבוצה</string>
@@ -276,7 +278,7 @@
     <string name="spaces">מרחבים משותפים</string>
     <string name="spaces_sub">שיתוף תקציב עם בני הבית</string>
     <string name="sync_and_banks">סנכרון ובנקים</string>
-    <string name="sync_sub">מכשירים, ביטוי שחזור, חיבורי בנק</string>
+    <string name="sync_sub">סנכרון חינמי בין המכשירים שלך דרך תיקייה</string>
     <string name="your_data">הנתונים שלך</string>
     <string name="data_backup">נתונים וגיבוי</string>
     <string name="data_sub">ייצוא, ייבוא, גיבוי, מחיקה</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">יש להפעיל סנכרון קודם.</string>
     <string name="link_lasts">תוקף הקישור</string>
     <string name="create_advisor_link">יצירת קישור</string>
-    <string name="spaces_body">מרחב משותף הוא תקציב שמשתפים עם אחרים, לכל אחד כניסה ותפקיד משלו. כל מה שבו מוצפן מקצה לקצה.</string>
+    <string name="spaces_body">מרחב משותף הוא פנקס שמשתפים עם המשפחה או עם חברים. הוא מוצפן, ורק מי שיש לו את קוד השיתוף שלו יכול לפתוח אותו.</string>
     <string name="spaces_need_sync">מרחבים משותפים דורשים סנכרון פעיל.</string>
     <string name="your_spaces">המרחבים שלך</string>
     <string name="no_spaces">עדיין אין לך מרחב משותף.</string>

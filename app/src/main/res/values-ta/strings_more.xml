@@ -133,6 +133,8 @@
     <string name="recipient_x">%1$s-க்குச் செல்லும்</string>
     <string name="not_decided">தீர்மானிக்கப்படவில்லை</string>
     <string name="payout_to">%1$s-க்கு வழங்கப்பட்டது</string>
+    <string name="recipient_you">உங்களுக்கு</string>
+    <string name="payout_to_you">உங்களுக்குச் செலுத்தப்பட்டது</string>
     <string name="paid_out">வழங்கப்பட்டது</string>
     <string name="close_circle">சீட்டை முடி</string>
     <string name="edit_circle">சீட்டைத் திருத்து</string>
@@ -276,7 +278,7 @@
     <string name="spaces">பகிரப்பட்ட இடங்கள்</string>
     <string name="spaces_sub">உங்கள் குடும்பத்துடன் பட்ஜெட்டைப் பகிரவும்</string>
     <string name="sync_and_banks">ஒத்திசைவும் வங்கிகளும்</string>
-    <string name="sync_sub">சாதனங்கள், காப்புச் சொற்றொடர், வங்கி இணைப்புகள்</string>
+    <string name="sync_sub">கோப்புறை வழியாக உங்கள் சாதனங்களுக்கு இடையே இலவச ஒத்திசைவு</string>
     <string name="your_data">உங்கள் தரவு</string>
     <string name="data_backup">தரவும் காப்புப்பிரதியும்</string>
     <string name="data_sub">ஏற்றுமதி, இறக்குமதி, காப்புப்பிரதி, நீக்குதல்</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">முதலில் ஒத்திசைவை இயக்கவும்.</string>
     <string name="link_lasts">இணைப்பின் காலம்</string>
     <string name="create_advisor_link">இணைப்பை உருவாக்கு</string>
-    <string name="spaces_body">பகிரப்பட்ட இடம் என்பது மற்றவர்களுடன் பகிரும் பட்ஜெட்; ஒவ்வொருவருக்கும் தனி உள்நுழைவும் பங்கும் உண்டு. அதில் உள்ள அனைத்தும் முழுமையாக என்க்ரிப்ட் செய்யப்பட்டது.</string>
+    <string name="spaces_body">பகிரப்பட்ட இடம் என்பது குடும்பத்தினருடனோ நண்பர்களுடனோ பகிரும் கணக்குப் புத்தகம். அது என்க்ரிப்ட் செய்யப்பட்டது; அதன் பகிர்வுக் குறியீடு உள்ளவர்கள் மட்டுமே அதைத் திறக்க முடியும்.</string>
     <string name="spaces_need_sync">பகிரப்பட்ட இடங்களுக்கு ஒத்திசைவு இயக்கத்தில் இருக்க வேண்டும்.</string>
     <string name="your_spaces">உங்கள் இடங்கள்</string>
     <string name="no_spaces">நீங்கள் இன்னும் எந்தப் பகிரப்பட்ட இடத்திலும் இல்லை.</string>

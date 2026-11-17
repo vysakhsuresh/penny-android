@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">בלי חשבון ובלי שרת. Penny שומר את השינויים שלך, מוצפנים, בתיקייה שבחרת. אפשר לשמור על התיקייה זהה בטלפונים ובטאבלטים האחרים שלך בעזרת אפליקציית סנכרון חינמית כמו Syncthing, או אפליקציה לסנכרון תיקיות של Google Drive או OneDrive. רק ביטוי השחזור שלך יכול לפתוח את הקבצים.</string>
+    <string name="folder_sync_choose">בחירת תיקייה</string>
+    <string name="folder_sync_empty">התיקייה נפתחה, אבל עוד לא הגיע אליה פנקס. כדאי לחכות שאפליקציית הסנכרון תסיים להעתיק, ואז לנסות שוב.</string>
+    <string name="folder_sync_failed">לא ניתן לפתוח את התיקייה. כדאי לבדוק שהיא עדיין קיימת, או לבחור אותה שוב.</string>
+    <string name="folder_sync_join_body">בתיקייה הזו כבר יש נתוני Penny ממכשיר אחר. יש להקליד את ביטוי השחזור בן 24 המילים שרשמת שם.</string>
+    <string name="folder_sync_join_title">פתיחת התיקייה הזו</string>
+    <string name="folder_sync_keep_same">במכשיר אחר: מתקינים את Penny, פותחים את הסנכרון, בוחרים את אותה תיקייה ומקלידים את ביטוי השחזור שלך.</string>
+    <string name="folder_sync_not_penny">בתיקייה הזו עדיין אין קובצי סנכרון של Penny. יש לבחור את התיקייה שהמכשיר האחר שלך מסנכרן אליה.</string>
+    <string name="folder_sync_on">מסנכרן דרך התיקייה ״%1$s״.</string>
+    <string name="folder_sync_partial">חלק מהשינויים עדיין מועתקים לתיקייה. Penny ינסה שוב בקרוב.</string>
+    <string name="folder_sync_phrase_body">כדאי לרשום את 24 המילים האלה ולשמור אותן במקום בטוח. הן נחוצות כדי לפתוח את התיקייה הזו במכשיר אחר, וכדי לשחזר גיבוי מוצפן. Penny לא יוכל להציג אותן שוב.</string>
+    <string name="folder_sync_stop">הפסקת הסנכרון במכשיר הזה</string>
+    <string name="folder_sync_title">סנכרון דרך תיקייה (בחינם)</string>
+    <string name="ob_join_folder">אני משתמש/ת ב־Penny במכשיר אחר</string>
+    <string name="own_server_body">רק למי שמפעיל בעצמו את שרת הסנכרון בקוד פתוח של Penny. לרוב האנשים עדיף להשתמש בסנכרון דרך תיקייה שלמעלה.</string>
+    <string name="own_server_title">שרת סנכרון משלך (מתקדם)</string>
+    <string name="quick_add_needs_account">קודם צריך להוסיף חשבון (הגדרות › חשבונות), ואז לשמור. Penny צריך לדעת מאיפה הגיע הכסף.</string>
+    <string name="relay_server">כתובת שרת הסנכרון</string>
+    <string name="relay_server_required">הכתובת של השרת שלך, לדוגמה https://sync.example.com</string>
+    <string name="share_choose_folder">בחירת תיקייה ריקה לשיתוף</string>
+    <string name="share_code_body">את 24 המילים האלה נותנים רק לאנשים שאיתם משתפים את הפנקס הזה. כל מי שיש לו את התיקייה ואת המילים האלה יכול לקרוא ולשנות אותו. זה לא ביטוי השחזור האישי שלך.</string>
+    <string name="share_code_title">קוד שיתוף</string>
+    <string name="share_folder_not_empty">בתיקייה הזו כבר יש קובצי Penny. יש לבחור תיקייה חדשה וריקה רק בשביל הפנקס הזה.</string>
+    <string name="share_free_body">בלי חשבון ובלי שרת. Penny שומר את הפנקס הזה, מוצפן, בתיקייה משלו שמשתפים עם האחרים, למשל תיקיית Syncthing או תיקייה משותפת ב־Google Drive או ב־OneDrive שאפליקציה שומרת מסונכרנת. מקבלים קוד שיתוף בן 24 מילים כדי לתת להם.</string>
+    <string name="share_free_how_others">כדי להוסיף מישהו: משתפים איתו את התיקייה, ואז נותנים לו את קוד השיתוף פנים אל פנים או בהודעה. בטלפון שלו הוא פותח את ״מרחבים משותפים״ ומקיש על ״הצטרפות לפנקס משותף״. כל מי שיש לו את הקוד יכול לקרוא ולשנות את הפנקס הזה.</string>
+    <string name="share_free_on">משותף דרך התיקייה ״%1$s״.</string>
+    <string name="share_free_title">שיתוף הפנקס הזה (בחינם)</string>
+    <string name="share_join_body">מישהו שיתף איתך פנקס? יש לבחור את התיקייה המשותפת שאפליקציית הסנכרון שומרת בטלפון הזה, ואז להקליד את קוד השיתוף שקיבלת.</string>
+    <string name="share_join_choose">הצטרפות לפנקס משותף</string>
+    <string name="share_only_you">בינתיים רק את/ה.</string>
+    <string name="share_show_code">הצגת קוד השיתוף</string>
+    <string name="share_start">התחלת שיתוף</string>
+    <string name="share_stop">הפסקת השיתוף בטלפון הזה</string>
+    <string name="share_your_name">השם שלך, כפי שהאחרים יראו אותו</string>
+</resources>

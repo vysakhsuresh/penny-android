@@ -133,6 +133,8 @@
     <string name="recipient_x">Inaenda kwa %1$s</string>
     <string name="not_decided">haijaamuliwa</string>
     <string name="payout_to">Imelipwa kwa %1$s</string>
+    <string name="recipient_you">Kwako</string>
+    <string name="payout_to_you">Umelipwa wewe</string>
     <string name="paid_out">Imelipwa</string>
     <string name="close_circle">Funga kikundi</string>
     <string name="edit_circle">Hariri kikundi cha akiba</string>
@@ -276,7 +278,7 @@
     <string name="spaces">Nafasi za pamoja</string>
     <string name="spaces_sub">Shiriki bajeti na familia yako</string>
     <string name="sync_and_banks">Usawazishaji na benki</string>
-    <string name="sync_sub">Vifaa, kifungu cha nakala rudufu, miunganisho ya benki</string>
+    <string name="sync_sub">Usawazishaji wa bure kati ya vifaa vyako kupitia folda</string>
     <string name="your_data">Data yako</string>
     <string name="data_backup">Data na nakala rudufu</string>
     <string name="data_sub">Hamisha, leta, nakala rudufu, futa</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">Washa usawazishaji kwanza.</string>
     <string name="link_lasts">Kiungo kinadumu</string>
     <string name="create_advisor_link">Unda kiungo</string>
-    <string name="spaces_body">Nafasi ya pamoja ni bajeti unayoshiriki na wengine, kila mmoja akiwa na kuingia kwake na jukumu lake. Kila kitu ndani yake kimesimbwa mwanzo hadi mwisho.</string>
+    <string name="spaces_body">Nafasi ya pamoja ni daftari unaloshiriki na familia au marafiki. Limesimbwa, na ni watu walio na msimbo wake wa kushiriki pekee wanaoweza kulifungua.</string>
     <string name="spaces_need_sync">Nafasi za pamoja zinahitaji usawazishaji uwe umewashwa.</string>
     <string name="your_spaces">Nafasi zako</string>
     <string name="no_spaces">Bado hauko kwenye nafasi yoyote ya pamoja.</string>

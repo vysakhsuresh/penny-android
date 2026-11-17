@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">Walay account ug walay server. Gitipigan sa Penny ang imong mga kausaban, naka-encrypt, sa folder nga imong pilion. Ipabilin nga parehas kana nga folder sa imong ubang mga phone ug tablet gamit ang libreng sync app sama sa Syncthing, o usa ka folder-sync app sa Google Drive o OneDrive. Ang imong recovery phrase ra ang makaabli sa mga file.</string>
+    <string name="folder_sync_choose">Pagpili og folder</string>
+    <string name="folder_sync_empty">Naabli ang folder, apan wala pay libro nga miabot. Hulata nga mahuman pagkopya ang imong sync app, unya sulayi pag-usab.</string>
+    <string name="folder_sync_failed">Dili maabli ang folder. Susiha kung naa pa ba kini, o pilia kini pag-usab.</string>
+    <string name="folder_sync_join_body">Kini nga folder aduna nay Penny data gikan sa laing device. I-type ang 24 ka pulong nga recovery phrase nga imong gisulat didto.</string>
+    <string name="folder_sync_join_title">Ablihi kini nga folder</string>
+    <string name="folder_sync_keep_same">Sa laing device, i-install ang Penny, ablihi ang Sync, pilia ang parehas nga folder ug i-type ang imong recovery phrase.</string>
+    <string name="folder_sync_not_penny">Wala pay Penny sync file kana nga folder. Pilia ang folder nga gi-sync sa imong laing device.</string>
+    <string name="folder_sync_on">Nag-sync pinaagi sa folder nga “%1$s”.</string>
+    <string name="folder_sync_partial">Ang pipila ka kausaban gikopya pa ngadto sa folder. Mosulay pag-usab ang Penny sa dili madugay.</string>
+    <string name="folder_sync_phrase_body">Isulat kini nga 24 ka pulong ug tipigi nga luwas. Kinahanglan nimo kini aron maabli kini nga folder sa laing device, ug aron ma-restore ang naka-encrypt nga backup. Dili na kini mapakita pag-usab sa Penny.</string>
+    <string name="folder_sync_stop">Hunonga ang pag-sync niini nga device</string>
+    <string name="folder_sync_title">Pag-sync pinaagi sa folder (libre)</string>
+    <string name="ob_join_folder">Naggamit ko og Penny sa laing device</string>
+    <string name="own_server_body">Para lang sa mga tawo nga nagpadagan mismo sa open-source sync server sa Penny. Kadaghanan kinahanglang mogamit sa folder sync sa ibabaw.</string>
+    <string name="own_server_title">Kaugalingong sync server (advanced)</string>
+    <string name="quick_add_needs_account">Pagdugang una og account (Settings › Mga account), unya i-save. Kinahanglang mahibaloan sa Penny kung asa gikan ang kwarta.</string>
+    <string name="relay_server">Address sa sync server</string>
+    <string name="relay_server_required">Address sa imong server, pananglitan https://sync.example.com</string>
+    <string name="share_choose_folder">Pagpili og walay sulod nga folder nga ipaambit</string>
+    <string name="share_code_body">Ihatag lang kini nga 24 ka pulong sa mga tawo nga imong gipaambitan niini nga libro. Bisan kinsa nga adunay folder ug kini nga mga pulong makabasa ug makausab niini. Dili kini ang imong personal nga recovery phrase.</string>
+    <string name="share_code_title">Share code</string>
+    <string name="share_folder_not_empty">Aduna nay mga Penny file kana nga folder. Pagpili og bag-o ug walay sulod nga folder para lang niini nga libro.</string>
+    <string name="share_free_body">Walay account ug walay server. Gitipigan sa Penny kini nga libro, naka-encrypt, sa kaugalingon niini nga folder nga imong ipaambit sa uban, pananglitan usa ka Syncthing folder o gipaambit nga Google Drive o OneDrive folder nga gipabilin nga naka-sync sa usa ka app. Makakuha ka og 24 ka pulong nga share code nga ihatag nimo kanila.</string>
+    <string name="share_free_how_others">Aron makadugang og tawo: ipaambit kanila ang folder, unya ihatag ang share code sa personal o pinaagi sa mensahe. Sa ilang phone, ablihan nila ang Gipaambit nga mga space ug i-tap ang Apil sa gipaambit nga libro. Ang tanan nga adunay code makabasa ug makausab niini nga libro.</string>
+    <string name="share_free_on">Gipaambit pinaagi sa folder nga “%1$s”.</string>
+    <string name="share_free_title">Ipaambit kini nga libro (libre)</string>
+    <string name="share_join_body">Adunay nagpaambit kanimo og libro? Pilia ang gipaambit nga folder nga gitipigan sa sync app niini nga phone, unya i-type ang share code nga ilang gihatag kanimo.</string>
+    <string name="share_join_choose">Apil sa gipaambit nga libro</string>
+    <string name="share_only_you">Ikaw pa lang sa pagkakaron.</string>
+    <string name="share_show_code">Ipakita ang share code</string>
+    <string name="share_start">Sugdi ang pagpaambit</string>
+    <string name="share_stop">Hunonga ang pagpaambit niini nga phone</string>
+    <string name="share_your_name">Imong ngalan, sumala sa makita sa uban</string>
+</resources>

@@ -133,6 +133,8 @@
     <string name="recipient_x">Отримує %1$s</string>
     <string name="not_decided">не визначено</string>
     <string name="payout_to">Виплачено: %1$s</string>
+    <string name="recipient_you">Отримуєте ви</string>
+    <string name="payout_to_you">Виплачено вам</string>
     <string name="paid_out">Виплачено</string>
     <string name="close_circle">Закрити коло</string>
     <string name="edit_circle">Редагувати коло</string>
@@ -276,7 +278,7 @@
     <string name="spaces">Спільні простори</string>
     <string name="spaces_sub">Ведіть бюджет разом із домочадцями</string>
     <string name="sync_and_banks">Синхронізація та банки</string>
-    <string name="sync_sub">Пристрої, фраза відновлення, підключення до банків</string>
+    <string name="sync_sub">Безкоштовна синхронізація між вашими пристроями через папку</string>
     <string name="your_data">Ваші дані</string>
     <string name="data_backup">Дані та резервне копіювання</string>
     <string name="data_sub">Експорт, імпорт, резервна копія, видалення</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">Спершу ввімкніть синхронізацію.</string>
     <string name="link_lasts">Посилання діє</string>
     <string name="create_advisor_link">Створити посилання</string>
-    <string name="spaces_body">Спільний простір — це бюджет, який ви ведете з іншими людьми, кожна з власним входом і роллю. Усе в ньому захищено наскрізним шифруванням.</string>
+    <string name="spaces_body">Спільний простір — це книга, яку ви ведете разом із родиною чи друзями. Вона зашифрована, і відкрити її можуть лише ті, хто має її код доступу.</string>
     <string name="spaces_need_sync">Для спільних просторів потрібна ввімкнена синхронізація.</string>
     <string name="your_spaces">Ваші простори</string>
     <string name="no_spaces">Ви поки не входите до жодного спільного простору.</string>

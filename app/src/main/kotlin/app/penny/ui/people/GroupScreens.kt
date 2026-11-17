@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowUpward
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Edit
@@ -578,7 +579,7 @@ fun CircleScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit) {
                                 Text(stringResource(R.string.round_n, r.n) + " · " + shortDate(r.date), style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
                                 if (r.isMine) Pill(stringResource(R.string.your_turn))
                             }
-                            Text(stringResource(R.string.recipient_x, r.recipient.ifBlank { stringResource(R.string.not_decided) }), style = MaterialTheme.typography.bodySmall)
+                            Text(if (c.value.members.any { it.isMe && it.name == r.recipient }) stringResource(R.string.recipient_you) else stringResource(R.string.recipient_x, r.recipient.ifBlank { stringResource(R.string.not_decided) }), style = MaterialTheme.typography.bodySmall)
                             c.value.members.sortedBy { it.turn }.forEach { m ->
                                 app.penny.ui.kit.CheckRow(m.name in r.paidBy, { on ->
                                         if (on) vm.act(R.string.recorded) { recordCircle(it, id, CircleContribution(id, r.n, m.name, c.value.contributionMinor, it.today()), account) }
@@ -588,7 +589,7 @@ fun CircleScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit) {
                             if (contribs.none { it.round == r.n && it.payout }) {
                                 Row {
                                     c.value.members.filter { c.value.payoutOrder != PayoutOrder.FIXED || it.name == r.recipient }.take(4).forEach { m ->
-                                        TextButton(onClick = { vm.act(R.string.recorded) { recordCircle(it, id, CircleContribution(id, r.n, m.name, r.potMinor, it.today(), payout = true), account) } }) { Text(stringResource(R.string.payout_to, m.name)) }
+                                        TextButton(onClick = { vm.act(R.string.recorded) { recordCircle(it, id, CircleContribution(id, r.n, m.name, r.potMinor, it.today(), payout = true), account) } }) { Text(if (m.isMe) stringResource(R.string.payout_to_you) else stringResource(R.string.payout_to, m.name)) }
                                     }
                                 }
                             } else Text(stringResource(R.string.paid_out), style = MaterialTheme.typography.labelMedium, color = Penny.status.positive)
@@ -642,7 +643,9 @@ fun CircleEditScreen(id: String, onBack: () -> Unit) {
                 members.forEachIndexed { i, m ->
                     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 16.dp)) {
                         Text("${i + 1}. " + m.removePrefix("*") + if (m.startsWith("*") && m.removePrefix("*") != me) " (" + me + ")" else "", modifier = Modifier.weight(1f))
-                        if (i > 0) TextButton(onClick = { members = members.toMutableList().also { l -> l[i] = l[i - 1].also { l[i - 1] = l[i] } } }) { Text("↑") }
+                        if (i > 0) IconButton(onClick = { members = members.toMutableList().also { l -> l[i] = l[i - 1].also { l[i - 1] = l[i] } } }) {
+                            Icon(androidx.compose.material.icons.Icons.Outlined.ArrowUpward, stringResource(R.string.move_up) + ": " + m.removePrefix("*"))
+                        }
                         IconButton(onClick = { members = members.filterIndexed { j, _ -> j != i } }) { Icon(Icons.Outlined.Close, stringResource(R.string.remove_x, m.removePrefix("*"))) }
                     }
                 }

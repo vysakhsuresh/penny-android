@@ -133,6 +133,8 @@
     <string name="recipient_x">%1$s کو جاتا ہے</string>
     <string name="not_decided">طے نہیں</string>
     <string name="payout_to">%1$s کو ادا کیا گیا</string>
+    <string name="recipient_you">آپ کو ملے گا</string>
+    <string name="payout_to_you">آپ کو ادا کیا گیا</string>
     <string name="paid_out">ادا کر دیا گیا</string>
     <string name="close_circle">کمیٹی بند کریں</string>
     <string name="edit_circle">کمیٹی میں ترمیم کریں</string>
@@ -276,7 +278,7 @@
     <string name="spaces">مشترکہ اسپیسز</string>
     <string name="spaces_sub">گھر والوں کے ساتھ بجٹ شیئر کریں</string>
     <string name="sync_and_banks">سنک اور بینک</string>
-    <string name="sync_sub">آلات، بیک اپ جملہ، بینک کنکشنز</string>
+    <string name="sync_sub">فولڈر کے ذریعے آپ کے آلات کے درمیان مفت سنک</string>
     <string name="your_data">آپ کا ڈیٹا</string>
     <string name="data_backup">ڈیٹا اور بیک اپ</string>
     <string name="data_sub">ایکسپورٹ، امپورٹ، بیک اپ، حذف</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">پہلے سنک آن کریں۔</string>
     <string name="link_lasts">لنک کی مدت</string>
     <string name="create_advisor_link">لنک بنائیں</string>
-    <string name="spaces_body">مشترکہ اسپیس ایک بجٹ ہے جسے آپ دوسروں کے ساتھ شیئر کرتے ہیں، ہر ایک کے اپنے لاگ ان اور کردار کے ساتھ۔ اس میں سب کچھ اینڈ ٹو اینڈ انکرپٹڈ ہے۔</string>
+    <string name="spaces_body">مشترکہ اسپیس ایک کھاتہ ہے جسے آپ گھر والوں یا دوستوں کے ساتھ شیئر کرتے ہیں۔ یہ انکرپٹڈ ہے، اور اسے صرف وہی لوگ کھول سکتے ہیں جن کے پاس اس کا شیئر کوڈ ہو۔</string>
     <string name="spaces_need_sync">مشترکہ اسپیسز کے لیے سنک آن ہونا ضروری ہے۔</string>
     <string name="your_spaces">آپ کی اسپیسز</string>
     <string name="no_spaces">آپ ابھی کسی مشترکہ اسپیس میں نہیں ہیں۔</string>

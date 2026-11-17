@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">ไม่ต้องมีบัญชีผู้ใช้และไม่ต้องใช้เซิร์ฟเวอร์ Penny บันทึกการเปลี่ยนแปลงของคุณแบบเข้ารหัสไว้ในโฟลเดอร์ที่คุณเลือก ทำให้โฟลเดอร์นั้นตรงกันบนโทรศัพท์และแท็บเล็ตเครื่องอื่นของคุณด้วยแอปซิงค์ฟรีอย่าง Syncthing หรือแอปซิงค์โฟลเดอร์ของ Google Drive หรือ OneDrive มีเพียงวลีกู้คืนของคุณเท่านั้นที่เปิดไฟล์ได้</string>
+    <string name="folder_sync_choose">เลือกโฟลเดอร์</string>
+    <string name="folder_sync_empty">เปิดโฟลเดอร์แล้ว แต่ยังไม่มีสมุดบัญชีมาถึง รอให้แอปซิงค์คัดลอกเสร็จก่อน แล้วลองอีกครั้ง</string>
+    <string name="folder_sync_failed">เปิดโฟลเดอร์ไม่ได้ ตรวจสอบว่าโฟลเดอร์ยังอยู่ หรือเลือกใหม่อีกครั้ง</string>
+    <string name="folder_sync_join_body">โฟลเดอร์นี้มีข้อมูล Penny จากอุปกรณ์อื่นอยู่แล้ว พิมพ์วลีกู้คืน 24 คำที่คุณจดไว้ที่เครื่องนั้น</string>
+    <string name="folder_sync_join_title">เปิดโฟลเดอร์นี้</string>
+    <string name="folder_sync_keep_same">บนอุปกรณ์อื่น ติดตั้ง Penny เปิดหน้าซิงค์ เลือกโฟลเดอร์เดียวกัน แล้วพิมพ์วลีกู้คืนของคุณ</string>
+    <string name="folder_sync_not_penny">โฟลเดอร์นั้นยังไม่มีไฟล์ซิงค์ของ Penny เลือกโฟลเดอร์ที่อุปกรณ์อีกเครื่องของคุณซิงค์ไป</string>
+    <string name="folder_sync_on">กำลังซิงค์ผ่านโฟลเดอร์ “%1$s”</string>
+    <string name="folder_sync_partial">การเปลี่ยนแปลงบางรายการยังคัดลอกเข้าโฟลเดอร์ไม่เสร็จ Penny จะลองอีกครั้งในอีกสักครู่</string>
+    <string name="folder_sync_phrase_body">จดคำทั้ง 24 คำนี้ไว้และเก็บให้ปลอดภัย คุณต้องใช้เพื่อเปิดโฟลเดอร์นี้บนอุปกรณ์อื่น และเพื่อกู้คืนข้อมูลสำรองที่เข้ารหัส Penny แสดงคำเหล่านี้อีกไม่ได้</string>
+    <string name="folder_sync_stop">หยุดซิงค์บนอุปกรณ์นี้</string>
+    <string name="folder_sync_title">ซิงค์ผ่านโฟลเดอร์ (ฟรี)</string>
+    <string name="ob_join_folder">ฉันใช้ Penny บนอุปกรณ์อื่นอยู่</string>
+    <string name="own_server_body">สำหรับผู้ที่ใช้งานเซิร์ฟเวอร์ซิงค์โอเพนซอร์สของ Penny เองเท่านั้น คนส่วนใหญ่ควรใช้การซิงค์ผ่านโฟลเดอร์ด้านบน</string>
+    <string name="own_server_title">เซิร์ฟเวอร์ซิงค์ของคุณเอง (ขั้นสูง)</string>
+    <string name="quick_add_needs_account">เพิ่มบัญชีก่อน (การตั้งค่า › บัญชี) แล้วจึงบันทึก Penny ต้องรู้ว่าเงินมาจากไหน</string>
+    <string name="relay_server">ที่อยู่เซิร์ฟเวอร์ซิงค์</string>
+    <string name="relay_server_required">ที่อยู่เซิร์ฟเวอร์ของคุณ เช่น https://sync.example.com</string>
+    <string name="share_choose_folder">เลือกโฟลเดอร์ว่างเพื่อแชร์</string>
+    <string name="share_code_body">ให้คำทั้ง 24 คำนี้เฉพาะคนที่คุณแชร์สมุดบัญชีนี้ด้วยเท่านั้น ใครก็ตามที่มีโฟลเดอร์และคำเหล่านี้จะอ่านและแก้ไขได้ นี่ไม่ใช่วลีกู้คืนส่วนตัวของคุณ</string>
+    <string name="share_code_title">รหัสแชร์</string>
+    <string name="share_folder_not_empty">โฟลเดอร์นั้นมีไฟล์ Penny อยู่แล้ว เลือกโฟลเดอร์ใหม่ที่ว่างเปล่าสำหรับสมุดบัญชีนี้โดยเฉพาะ</string>
+    <string name="share_free_body">ไม่ต้องมีบัญชีผู้ใช้และไม่ต้องใช้เซิร์ฟเวอร์ Penny เก็บสมุดบัญชีนี้แบบเข้ารหัสไว้ในโฟลเดอร์ของมันเองที่คุณแชร์กับคนอื่น เช่น โฟลเดอร์ Syncthing หรือโฟลเดอร์ที่แชร์บน Google Drive หรือ OneDrive ซึ่งมีแอปคอยซิงค์ให้ตรงกัน คุณจะได้รหัสแชร์ 24 คำไว้ให้พวกเขา</string>
+    <string name="share_free_how_others">วิธีเพิ่มคน: แชร์โฟลเดอร์ให้เขา แล้วให้รหัสแชร์ต่อหน้าหรือทางข้อความ บนโทรศัพท์ของเขา ให้เปิดพื้นที่ที่แชร์แล้วแตะเข้าร่วมสมุดบัญชีที่แชร์ ทุกคนที่มีรหัสจะอ่านและแก้ไขสมุดบัญชีนี้ได้</string>
+    <string name="share_free_on">แชร์ผ่านโฟลเดอร์ “%1$s”</string>
+    <string name="share_free_title">แชร์สมุดบัญชีนี้ (ฟรี)</string>
+    <string name="share_join_body">มีคนแชร์สมุดบัญชีให้คุณใช่ไหม เลือกโฟลเดอร์ที่แชร์ซึ่งแอปซิงค์เก็บไว้ในโทรศัพท์เครื่องนี้ แล้วพิมพ์รหัสแชร์ที่เขาให้มา</string>
+    <string name="share_join_choose">เข้าร่วมสมุดบัญชีที่แชร์</string>
+    <string name="share_only_you">ตอนนี้มีแค่คุณ</string>
+    <string name="share_show_code">แสดงรหัสแชร์</string>
+    <string name="share_start">เริ่มแชร์</string>
+    <string name="share_stop">หยุดแชร์บนโทรศัพท์เครื่องนี้</string>
+    <string name="share_your_name">ชื่อของคุณที่คนอื่นจะเห็น</string>
+</resources>

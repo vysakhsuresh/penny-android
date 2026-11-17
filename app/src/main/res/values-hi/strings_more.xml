@@ -133,6 +133,8 @@
     <string name="recipient_x">%1$s को जाता है</string>
     <string name="not_decided">तय नहीं</string>
     <string name="payout_to">%1$s को दिया गया</string>
+    <string name="recipient_you">आपको मिलेगा</string>
+    <string name="payout_to_you">आपको दिया गया</string>
     <string name="paid_out">दे दिया गया</string>
     <string name="close_circle">बचत समूह बंद करें</string>
     <string name="edit_circle">बचत समूह बदलें</string>
@@ -276,7 +278,7 @@
     <string name="spaces">साझा स्पेस</string>
     <string name="spaces_sub">परिवार के साथ बजट शेयर करें</string>
     <string name="sync_and_banks">सिंक और बैंक</string>
-    <string name="sync_sub">डिवाइस, बैकअप वाक्यांश, बैंक कनेक्शन</string>
+    <string name="sync_sub">फ़ोल्डर के ज़रिए आपके डिवाइसों के बीच मुफ़्त सिंक</string>
     <string name="your_data">आपका डेटा</string>
     <string name="data_backup">डेटा और बैकअप</string>
     <string name="data_sub">एक्सपोर्ट, इंपोर्ट, बैकअप, मिटाना</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">पहले सिंक चालू करें।</string>
     <string name="link_lasts">लिंक की अवधि</string>
     <string name="create_advisor_link">लिंक बनाएं</string>
-    <string name="spaces_body">साझा स्पेस एक बजट है जिसे आप दूसरों के साथ शेयर करते हैं, हर एक के अपने लॉगिन और भूमिका के साथ। इसमें सब कुछ एंड-टू-एंड एन्क्रिप्टेड है।</string>
+    <string name="spaces_body">साझा स्पेस एक बही है जिसे आप परिवार या दोस्तों के साथ शेयर करते हैं। यह एन्क्रिप्टेड है, और इसे सिर्फ़ वही लोग खोल सकते हैं जिनके पास इसका शेयर कोड है।</string>
     <string name="spaces_need_sync">साझा स्पेस के लिए सिंक चालू होना ज़रूरी है।</string>
     <string name="your_spaces">आपके स्पेस</string>
     <string name="no_spaces">आप अभी किसी साझा स्पेस में नहीं हैं।</string>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">কোনো অ্যাকাউন্ট নেই, কোনো সার্ভার নেই। Penny আপনার পরিবর্তনগুলো এনক্রিপ্ট করে আপনার বেছে নেওয়া ফোল্ডারে সেভ করে। Syncthing-এর মতো কোনো ফ্রি সিঙ্ক অ্যাপ, বা Google Drive বা OneDrive-এর ফোল্ডার-সিঙ্ক অ্যাপ দিয়ে আপনার অন্য ফোন ও ট্যাবলেটে সেই ফোল্ডারটি একই রাখুন। শুধু আপনার রিকভারি বাক্যাংশ দিয়েই ফাইলগুলো খোলা যায়।</string>
+    <string name="folder_sync_choose">একটি ফোল্ডার বেছে নিন</string>
+    <string name="folder_sync_empty">ফোল্ডারটি খুলেছে, কিন্তু এখনও কোনো খাতা আসেনি। আপনার সিঙ্ক অ্যাপের কপি করা শেষ হওয়া পর্যন্ত অপেক্ষা করুন, তারপর আবার চেষ্টা করুন।</string>
+    <string name="folder_sync_failed">ফোল্ডারটি খোলা যায়নি। দেখুন সেটি এখনও আছে কি না, বা আবার বেছে নিন।</string>
+    <string name="folder_sync_join_body">এই ফোল্ডারে অন্য একটি ডিভাইসের Penny ডেটা আগে থেকেই আছে। সেখানে লিখে রাখা 24 শব্দের রিকভারি বাক্যাংশটি টাইপ করুন।</string>
+    <string name="folder_sync_join_title">এই ফোল্ডারটি খুলুন</string>
+    <string name="folder_sync_keep_same">অন্য ডিভাইসে Penny ইনস্টল করুন, সিঙ্ক খুলুন, একই ফোল্ডার বেছে নিন এবং আপনার রিকভারি বাক্যাংশ টাইপ করুন।</string>
+    <string name="folder_sync_not_penny">ওই ফোল্ডারে এখনও Penny-এর কোনো সিঙ্ক ফাইল নেই। আপনার অন্য ডিভাইস যে ফোল্ডারে সিঙ্ক করে সেটি বেছে নিন।</string>
+    <string name="folder_sync_on">“%1$s” ফোল্ডারের মাধ্যমে সিঙ্ক হচ্ছে।</string>
+    <string name="folder_sync_partial">কিছু পরিবর্তন এখনও ফোল্ডারে কপি হচ্ছে। Penny একটু পরে আবার চেষ্টা করবে।</string>
+    <string name="folder_sync_phrase_body">এই 24টি শব্দ লিখে নিরাপদে রাখুন। অন্য ডিভাইসে এই ফোল্ডার খুলতে এবং এনক্রিপ্ট করা ব্যাকআপ ফিরিয়ে আনতে এগুলো লাগবে। Penny এগুলো আর দেখাতে পারবে না।</string>
+    <string name="folder_sync_stop">এই ডিভাইসে সিঙ্ক বন্ধ করুন</string>
+    <string name="folder_sync_title">ফোল্ডারের মাধ্যমে সিঙ্ক (ফ্রি)</string>
+    <string name="ob_join_folder">আমি অন্য ডিভাইসে Penny ব্যবহার করি</string>
+    <string name="own_server_body">শুধু তাঁদের জন্য যাঁরা নিজেরাই Penny-এর ওপেন-সোর্স সিঙ্ক সার্ভার চালান। বেশিরভাগ মানুষের ওপরের ফোল্ডার সিঙ্ক ব্যবহার করা উচিত।</string>
+    <string name="own_server_title">আপনার নিজের সিঙ্ক সার্ভার (উন্নত)</string>
+    <string name="quick_add_needs_account">আগে একটি অ্যাকাউন্ট যোগ করুন (সেটিংস › অ্যাকাউন্ট), তারপর সেভ করুন। টাকা কোথা থেকে এল তা Penny-এর জানা দরকার।</string>
+    <string name="relay_server">সিঙ্ক সার্ভারের ঠিকানা</string>
+    <string name="relay_server_required">আপনার সার্ভারের ঠিকানা, যেমন https://sync.example.com</string>
+    <string name="share_choose_folder">শেয়ার করার জন্য একটি খালি ফোল্ডার বেছে নিন</string>
+    <string name="share_code_body">এই 24টি শব্দ শুধু তাঁদেরই দিন যাঁদের সঙ্গে আপনি এই খাতা শেয়ার করেন। যাঁর কাছে ফোল্ডার আর এই শব্দগুলো আছে, তিনি এটি পড়তে ও বদলাতে পারেন। এটি আপনার ব্যক্তিগত রিকভারি বাক্যাংশ নয়।</string>
+    <string name="share_code_title">শেয়ার কোড</string>
+    <string name="share_folder_not_empty">ওই ফোল্ডারে আগে থেকেই Penny ফাইল আছে। শুধু এই খাতার জন্য একটি নতুন, খালি ফোল্ডার বেছে নিন।</string>
+    <string name="share_free_body">কোনো অ্যাকাউন্ট নেই, কোনো সার্ভার নেই। Penny এই খাতাটি এনক্রিপ্ট করে এর নিজস্ব একটি ফোল্ডারে রাখে, যা আপনি অন্যদের সঙ্গে শেয়ার করেন, যেমন একটি Syncthing ফোল্ডার, বা কোনো অ্যাপ দিয়ে সিঙ্ক রাখা Google Drive বা OneDrive-এর শেয়ার করা ফোল্ডার। তাঁদের দেওয়ার জন্য আপনি 24 শব্দের একটি শেয়ার কোড পাবেন।</string>
+    <string name="share_free_how_others">কাউকে যোগ করতে: তাঁর সঙ্গে ফোল্ডারটি শেয়ার করুন, তারপর শেয়ার কোডটি সামনাসামনি বা মেসেজে দিন। তাঁর ফোনে তিনি শেয়ার করা স্পেস খুলে শেয়ার করা খাতায় যোগ দিন-এ ট্যাপ করবেন। কোড যাঁর কাছেই আছে, তিনিই এই খাতা পড়তে ও বদলাতে পারেন।</string>
+    <string name="share_free_on">“%1$s” ফোল্ডারের মাধ্যমে শেয়ার করা হয়েছে।</string>
+    <string name="share_free_title">এই খাতাটি শেয়ার করুন (ফ্রি)</string>
+    <string name="share_join_body">কেউ আপনার সঙ্গে একটি খাতা শেয়ার করেছেন? সিঙ্ক অ্যাপ এই ফোনে যে শেয়ার করা ফোল্ডারটি রাখে সেটি বেছে নিন, তারপর তাঁর দেওয়া শেয়ার কোড টাইপ করুন।</string>
+    <string name="share_join_choose">শেয়ার করা খাতায় যোগ দিন</string>
+    <string name="share_only_you">এখন পর্যন্ত শুধু আপনি।</string>
+    <string name="share_show_code">শেয়ার কোড দেখান</string>
+    <string name="share_start">শেয়ার করা শুরু করুন</string>
+    <string name="share_stop">এই ফোনে শেয়ার করা বন্ধ করুন</string>
+    <string name="share_your_name">আপনার নাম, যেভাবে অন্যরা দেখবেন</string>
+</resources>

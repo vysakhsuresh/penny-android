@@ -133,6 +133,8 @@
     <string name="recipient_x">%1$sకి వెళ్తుంది</string>
     <string name="not_decided">నిర్ణయించలేదు</string>
     <string name="payout_to">%1$sకి చెల్లించబడింది</string>
+    <string name="recipient_you">మీకు</string>
+    <string name="payout_to_you">మీకు చెల్లించబడింది</string>
     <string name="paid_out">చెల్లించబడింది</string>
     <string name="close_circle">చిట్టీని ముగించండి</string>
     <string name="edit_circle">చిట్టీని ఎడిట్ చేయండి</string>
@@ -276,7 +278,7 @@
     <string name="spaces">షేర్ చేసిన స్పేస్‌లు</string>
     <string name="spaces_sub">మీ కుటుంబంతో బడ్జెట్‌ను షేర్ చేయండి</string>
     <string name="sync_and_banks">సింక్ మరియు బ్యాంకులు</string>
-    <string name="sync_sub">పరికరాలు, బ్యాకప్ ఫ్రేజ్, బ్యాంక్ కనెక్షన్‌లు</string>
+    <string name="sync_sub">ఫోల్డర్ ద్వారా మీ పరికరాల మధ్య ఉచిత సింక్</string>
     <string name="your_data">మీ డేటా</string>
     <string name="data_backup">డేటా మరియు బ్యాకప్</string>
     <string name="data_sub">ఎక్స్‌పోర్ట్, ఇంపోర్ట్, బ్యాకప్, తొలగింపు</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">ముందుగా సింక్ ఆన్ చేయండి.</string>
     <string name="link_lasts">లింక్ గడువు</string>
     <string name="create_advisor_link">లింక్ సృష్టించండి</string>
-    <string name="spaces_body">షేర్ చేసిన స్పేస్ అంటే ఇతరులతో పంచుకునే బడ్జెట్, ప్రతి ఒక్కరికీ సొంత లాగిన్, పాత్ర ఉంటాయి. అందులోని అంతా ఎండ్-టు-ఎండ్ ఎన్‌క్రిప్ట్ చేయబడింది.</string>
+    <string name="spaces_body">షేర్ చేసిన స్పేస్ అంటే కుటుంబం లేదా స్నేహితులతో పంచుకునే లెక్కల పుస్తకం. ఇది ఎన్‌క్రిప్ట్ చేయబడింది, దాని షేర్ కోడ్ ఉన్నవారు మాత్రమే దీన్ని తెరవగలరు.</string>
     <string name="spaces_need_sync">షేర్ చేసిన స్పేస్‌లకు సింక్ ఆన్‌లో ఉండాలి.</string>
     <string name="your_spaces">మీ స్పేస్‌లు</string>
     <string name="no_spaces">మీరు ఇంకా ఏ షేర్ చేసిన స్పేస్‌లోనూ లేరు.</string>

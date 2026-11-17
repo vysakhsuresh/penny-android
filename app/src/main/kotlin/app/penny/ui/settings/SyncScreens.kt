@@ -337,14 +337,15 @@ fun SpacesScreen(onBack: () -> Unit, initialToken: String? = null, svm: SyncView
             Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(bottom = 48.dp)) {
                 Text(stringResource(R.string.spaces_body), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
                 error?.let { Text(it, color = MaterialTheme.colorScheme.error, modifier = Modifier.padding(horizontal = 20.dp)) }
-                if (st.phase != SyncPhase.READY) Pill(stringResource(R.string.spaces_need_sync), Modifier.padding(horizontal = 16.dp))
                 SectionHeader(stringResource(R.string.your_spaces))
                 val spaceIds = spaceRows.map { it.id }.toSet()
                 if (spaceIds.isEmpty()) Text(stringResource(R.string.no_spaces), style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 20.dp))
                 profiles.filter { p -> p.state.id in spaceIds }.forEach { p ->
                     ListRow(p.value.name, leading = { Avatar(p.value.name, p.state.id, icon = Icons.Outlined.Groups) }, onClick = { vm.prefs.setCurrentProfile(p.state.id) }, divider = true)
                 }
-                if (isSpace) {
+                // Decision 56: sharing is free. A shared book syncs through its own folder with its own share code.
+                if (isSpace && st.phase != SyncPhase.READY) FolderShareSection(svm, ctx.book.profileId, ctx.book.members.filter { !it.value.left }.map { it.value.displayName })
+                if (isSpace && st.phase == SyncPhase.READY) {
                     SectionHeader(stringResource(R.string.members))
                     members.forEach { m ->
                         ListRow(m.accountId.take(8), subtitle = m.role.lowercase() + if (m.left) " · " + stringResource(R.string.ex_member) else "", leading = { Avatar(m.accountId, m.accountId) },
@@ -364,9 +365,10 @@ fun SpacesScreen(onBack: () -> Unit, initialToken: String? = null, svm: SyncView
                     Text(stringResource(R.string.invite_expiry_note), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))
                     TextButton(onClick = { scope.launch { runCatching { svm.sync.leave(ctx.book.profileId) }.onFailure { error = it.message } } }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.leave_space)) }
                 }
-                SectionHeader(stringResource(R.string.join_space))
-                TextInput(joinToken, { joinToken = it.substringAfterLast('/') }, stringResource(R.string.invite_link_or_code))
-                OutlinedButton(onClick = {
+                if (st.phase != SyncPhase.READY) FolderJoinSection(svm) { id -> vm.prefs.setCurrentProfile(id) }
+                if (st.phase == SyncPhase.READY) SectionHeader(stringResource(R.string.join_space))
+                if (st.phase == SyncPhase.READY) TextInput(joinToken, { joinToken = it.substringAfterLast('/') }, stringResource(R.string.invite_link_or_code))
+                if (st.phase == SyncPhase.READY) OutlinedButton(onClick = {
                     scope.launch { runCatching { svm.sync.acceptInvite(joinToken.trim()) }.onSuccess { joinToken = ""; error = context.getString(R.string.joined_wait_key) }.onFailure { error = it.message } }
                 }, modifier = Modifier.padding(horizontal = 16.dp), enabled = joinToken.isNotBlank() && st.phase == SyncPhase.READY) { Text(stringResource(R.string.join)) }
                 PrimaryButton(stringResource(R.string.create_space), { creating = true }, Modifier.padding(16.dp))
@@ -478,4 +480,125 @@ private fun FolderSyncSection(svm: SyncViewModel) {
         },
         dismissButton = { TextButton(onClick = { join = false }) { Text(stringResource(R.string.cancel)) } },
     )
+}
+
+/** Decision 56: share the current shared book through a folder, free. Shows the folder and the share code once shared. */
+@Composable
+private fun FolderShareSection(svm: SyncViewModel, spaceId: String, memberNames: List<String>) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val fs by svm.folder.state.collectAsStateWithLifecycle()
+    val shared = spaceId in fs.spaces
+    var picked by rememberSaveable { mutableStateOf<String?>(null) }
+    var words by remember { mutableStateOf<List<String>?>(null) }
+    var showCode by remember { mutableStateOf(false) }
+    var error by rememberSaveable { mutableStateOf<String?>(null) }
+    val chooser = androidx.activity.compose.rememberLauncherForActivityResult(androidx.activity.result.contract.ActivityResultContracts.OpenDocumentTree()) { uri ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        runCatching { context.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION) }
+        scope.launch {
+            // A shared book needs a folder of its own: one already used by Penny would mix books.
+            if (svm.folder.folderHasPenny(uri)) error = context.getString(R.string.share_folder_not_empty)
+            else { error = null; picked = uri.toString(); words = BackupCrypto.newPhrase() }
+        }
+    }
+    SectionHeader(stringResource(R.string.members))
+    if (memberNames.isEmpty()) Text(stringResource(R.string.share_only_you), style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 20.dp))
+    memberNames.forEach { n -> ListRow(n, leading = { Avatar(n, n) }, divider = true) }
+    PennyCard {
+        Column(Modifier.padding(16.dp)) {
+            Text(stringResource(R.string.share_free_title), style = MaterialTheme.typography.titleMedium)
+            Spacer(Modifier.height(6.dp))
+            if (shared) {
+                Text(stringResource(R.string.share_free_on, svm.folder.spaceFolderName(spaceId).orEmpty()), style = MaterialTheme.typography.bodyMedium)
+                Text(stringResource(R.string.share_free_how_others), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(top = 6.dp))
+                androidx.compose.foundation.layout.FlowRow {
+                    TextButton(onClick = { showCode = true }) { Text(stringResource(R.string.share_show_code)) }
+                    TextButton(onClick = { scope.launch { svm.folder.syncNow() } }, enabled = !fs.syncing) { Text(stringResource(R.string.sync_now)) }
+                    TextButton(onClick = { scope.launch { svm.folder.stopSpace(spaceId) } }) { Text(stringResource(R.string.share_stop), color = MaterialTheme.colorScheme.error) }
+                }
+                fs.error?.let { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall) }
+            } else {
+                Text(stringResource(R.string.share_free_body), style = MaterialTheme.typography.bodyMedium)
+                error?.let { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 6.dp)) }
+                Spacer(Modifier.height(10.dp))
+                PrimaryButton(stringResource(R.string.share_choose_folder), { chooser.launch(null) })
+            }
+        }
+    }
+    val code = words ?: if (showCode) svm.folder.shareCode(spaceId) else null
+    code?.let { w ->
+        AlertDialog(
+            onDismissRequest = { if (words == null) showCode = false },
+            title = { Text(stringResource(R.string.share_code_title)) },
+            text = {
+                Column {
+                    Text(stringResource(R.string.share_code_body))
+                    Spacer(Modifier.height(12.dp))
+                    Text(w.chunked(4).joinToString("\n") { it.joinToString("  ") }, fontFamily = FontFamily.Monospace, style = MaterialTheme.typography.bodyLarge)
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    if (words != null) {
+                        val uri = picked?.let(android.net.Uri::parse)
+                        words = null
+                        if (uri != null) scope.launch { runCatching { svm.folder.shareSpace(spaceId, uri, w) }.onFailure { error = context.getString(R.string.folder_sync_failed) } }
+                    } else showCode = false
+                }) { Text(stringResource(if (words != null) R.string.share_start else R.string.close)) }
+            },
+            dismissButton = { if (words != null) TextButton(onClick = { words = null }) { Text(stringResource(R.string.cancel)) } },
+        )
+    }
+}
+
+/** Decision 56: join a book someone shared, with their folder and their share code. */
+@Composable
+private fun FolderJoinSection(svm: SyncViewModel, onJoined: (String) -> Unit) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    var picked by rememberSaveable { mutableStateOf<String?>(null) }
+    var code by remember { mutableStateOf("") }
+    var myName by rememberSaveable { mutableStateOf("") }
+    var wrong by rememberSaveable { mutableStateOf(false) }
+    var busy by rememberSaveable { mutableStateOf(false) }
+    var error by rememberSaveable { mutableStateOf<String?>(null) }
+    val chooser = androidx.activity.compose.rememberLauncherForActivityResult(androidx.activity.result.contract.ActivityResultContracts.OpenDocumentTree()) { uri ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        runCatching { context.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION) }
+        scope.launch { if (svm.folder.folderHasPenny(uri)) { error = null; picked = uri.toString() } else error = context.getString(R.string.folder_sync_not_penny) }
+    }
+    SectionHeader(stringResource(R.string.join_space))
+    Text(stringResource(R.string.share_join_body), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))
+    error?.let { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp)) }
+    OutlinedButton(onClick = { chooser.launch(null) }, modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) { Text(stringResource(R.string.share_join_choose)) }
+    picked?.let { u ->
+        AlertDialog(
+            onDismissRequest = { picked = null },
+            title = { Text(stringResource(R.string.join_space)) },
+            text = {
+                Column {
+                    TextInput(myName, { myName = it }, stringResource(R.string.share_your_name))
+                    app.penny.ui.kit.SoftField(code, { code = it; wrong = false }, label = { Text(stringResource(R.string.share_code_title)) }, minLines = 3, isError = wrong,
+                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp), supportingText = { if (wrong) Text(stringResource(R.string.wrong_phrase)) })
+                }
+            },
+            confirmButton = {
+                TextButton(enabled = BackupCrypto.validPhrase(code) && myName.isNotBlank() && !busy, onClick = {
+                    busy = true
+                    scope.launch {
+                        val r = runCatching { svm.folder.joinSpace(android.net.Uri.parse(u), code, myName) }
+                        busy = false
+                        val id = r.getOrNull()
+                        when {
+                            r.exceptionOrNull()?.message == app.penny.domain.FolderSyncManager.NOT_ARRIVED -> { picked = null; error = context.getString(R.string.folder_sync_empty) }
+                            id == null -> wrong = true
+                            else -> { picked = null; code = ""; onJoined(id) }
+                        }
+                    }
+                }) { Text(stringResource(R.string.join)) }
+            },
+            dismissButton = { TextButton(onClick = { picked = null }) { Text(stringResource(R.string.cancel)) } },
+        )
+    }
 }

@@ -133,6 +133,8 @@
     <string name="recipient_x">%1$s-ന് ലഭിക്കും</string>
     <string name="not_decided">തീരുമാനിച്ചിട്ടില്ല</string>
     <string name="payout_to">%1$s-ന് നൽകി</string>
+    <string name="recipient_you">നിങ്ങൾക്ക്</string>
+    <string name="payout_to_you">നിങ്ങൾക്ക് നൽകി</string>
     <string name="paid_out">നൽകി</string>
     <string name="close_circle">ചിട്ടി അവസാനിപ്പിക്കുക</string>
     <string name="edit_circle">ചിട്ടി എഡിറ്റ് ചെയ്യുക</string>
@@ -276,7 +278,7 @@
     <string name="spaces">പങ്കിട്ട സ്‌പേസുകൾ</string>
     <string name="spaces_sub">നിങ്ങളുടെ കുടുംബവുമായി ബജറ്റ് പങ്കിടുക</string>
     <string name="sync_and_banks">സിങ്കും ബാങ്കുകളും</string>
-    <string name="sync_sub">ഉപകരണങ്ങൾ, ബാക്കപ്പ് ഫ്രേസ്, ബാങ്ക് കണക്ഷനുകൾ</string>
+    <string name="sync_sub">ഒരു ഫോൾഡർ വഴി നിങ്ങളുടെ ഉപകരണങ്ങൾക്കിടയിൽ സൗജന്യ സിങ്ക്</string>
     <string name="your_data">നിങ്ങളുടെ ഡാറ്റ</string>
     <string name="data_backup">ഡാറ്റയും ബാക്കപ്പും</string>
     <string name="data_sub">എക്സ്പോർട്ട്, ഇംപോർട്ട്, ബാക്കപ്പ്, ഇല്ലാതാക്കൽ</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">ആദ്യം സിങ്ക് ഓണാക്കുക.</string>
     <string name="link_lasts">ലിങ്കിന്റെ കാലാവധി</string>
     <string name="create_advisor_link">ലിങ്ക് സൃഷ്ടിക്കുക</string>
-    <string name="spaces_body">മറ്റുള്ളവരുമായി പങ്കിടുന്ന ബജറ്റാണ് പങ്കിട്ട സ്‌പേസ്, ഓരോരുത്തർക്കും സ്വന്തം ലോഗിനും റോളും. അതിലുള്ളതെല്ലാം എൻഡ്-ടു-എൻഡ് എൻക്രിപ്റ്റ് ചെയ്തതാണ്.</string>
+    <string name="spaces_body">കുടുംബവുമായോ സുഹൃത്തുക്കളുമായോ പങ്കിടുന്ന കണക്കുപുസ്തകമാണ് പങ്കിട്ട സ്‌പേസ്. അത് എൻക്രിപ്റ്റ് ചെയ്തതാണ്, അതിന്റെ ഷെയർ കോഡ് ഉള്ളവർക്ക് മാത്രമേ അത് തുറക്കാനാകൂ.</string>
     <string name="spaces_need_sync">പങ്കിട്ട സ്‌പേസുകൾക്ക് സിങ്ക് ഓണായിരിക്കണം.</string>
     <string name="your_spaces">നിങ്ങളുടെ സ്‌പേസുകൾ</string>
     <string name="no_spaces">നിങ്ങൾ ഇതുവരെ ഒരു പങ്കിട്ട സ്‌പേസിലുമില്ല.</string>

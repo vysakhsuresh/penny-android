@@ -133,6 +133,8 @@
     <string name="recipient_x">归 %1$s</string>
     <string name="not_decided">未确定</string>
     <string name="payout_to">已付给 %1$s</string>
+    <string name="recipient_you">归你</string>
+    <string name="payout_to_you">已付给你</string>
     <string name="paid_out">已发放</string>
     <string name="close_circle">结束储蓄会</string>
     <string name="edit_circle">编辑储蓄会</string>
@@ -276,7 +278,7 @@
     <string name="spaces">共享空间</string>
     <string name="spaces_sub">与家人共享预算</string>
     <string name="sync_and_banks">同步与银行</string>
-    <string name="sync_sub">设备、备份短语、银行连接</string>
+    <string name="sync_sub">通过文件夹在你的设备间免费同步</string>
     <string name="your_data">你的数据</string>
     <string name="data_backup">数据与备份</string>
     <string name="data_sub">导出、导入、备份、删除</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">请先开启同步。</string>
     <string name="link_lasts">链接有效期</string>
     <string name="create_advisor_link">创建链接</string>
-    <string name="spaces_body">共享空间是你与他人共享的预算，每人都有自己的登录和角色。其中所有内容都经过端到端加密。</string>
+    <string name="spaces_body">共享空间是你与家人或朋友共享的账本。它经过加密，只有拥有共享码的人才能打开。</string>
     <string name="spaces_need_sync">共享空间需要开启同步。</string>
     <string name="your_spaces">你的空间</string>
     <string name="no_spaces">你还没有加入任何共享空间。</string>

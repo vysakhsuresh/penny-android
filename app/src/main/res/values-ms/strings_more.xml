@@ -133,6 +133,8 @@
     <string name="recipient_x">Kepada %1$s</string>
     <string name="not_decided">belum ditentukan</string>
     <string name="payout_to">Dibayar kepada %1$s</string>
+    <string name="recipient_you">Untuk anda</string>
+    <string name="payout_to_you">Dibayar kepada anda</string>
     <string name="paid_out">Sudah dibayar</string>
     <string name="close_circle">Tutup kutu</string>
     <string name="edit_circle">Edit kutu</string>
@@ -276,7 +278,7 @@
     <string name="spaces">Ruang kongsi</string>
     <string name="spaces_sub">Kongsi bajet dengan isi rumah anda</string>
     <string name="sync_and_banks">Penyegerakan dan bank</string>
-    <string name="sync_sub">Peranti, frasa sandaran, sambungan bank</string>
+    <string name="sync_sub">Penyegerakan percuma antara peranti anda melalui folder</string>
     <string name="your_data">Data anda</string>
     <string name="data_backup">Data dan sandaran</string>
     <string name="data_sub">Eksport, import, sandaran, padam</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">Hidupkan penyegerakan dahulu.</string>
     <string name="link_lasts">Tempoh pautan</string>
     <string name="create_advisor_link">Cipta pautan</string>
-    <string name="spaces_body">Ruang kongsi ialah bajet yang anda kongsi dengan orang lain, masing-masing dengan log masuk dan peranan sendiri. Semua di dalamnya disulitkan hujung ke hujung.</string>
+    <string name="spaces_body">Ruang kongsi ialah buku yang anda kongsi dengan keluarga atau rakan. Ia disulitkan, dan hanya orang yang mempunyai kod perkongsiannya boleh membukanya.</string>
     <string name="spaces_need_sync">Ruang kongsi memerlukan penyegerakan dihidupkan.</string>
     <string name="your_spaces">Ruang anda</string>
     <string name="no_spaces">Anda belum berada dalam mana-mana ruang kongsi.</string>

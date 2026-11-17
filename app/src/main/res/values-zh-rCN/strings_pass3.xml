@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">无需账号，也无需服务器。Penny 会把你的更改加密保存在你选择的文件夹中。用 Syncthing 等免费同步应用，或 Google Drive、OneDrive 的文件夹同步应用，让你其他手机和平板上的这个文件夹保持一致。只有你的恢复短语才能打开这些文件。</string>
+    <string name="folder_sync_choose">选择文件夹</string>
+    <string name="folder_sync_empty">文件夹已打开，但还没有收到账本。请等同步应用复制完成后再试。</string>
+    <string name="folder_sync_failed">无法打开文件夹。请检查它是否仍然存在，或重新选择。</string>
+    <string name="folder_sync_join_body">此文件夹中已有来自另一台设备的 Penny 数据。请输入你在那台设备上抄下的 24 个词的恢复短语。</string>
+    <string name="folder_sync_join_title">打开此文件夹</string>
+    <string name="folder_sync_keep_same">在另一台设备上安装 Penny，打开同步，选择同一个文件夹并输入你的恢复短语。</string>
+    <string name="folder_sync_not_penny">该文件夹中还没有 Penny 同步文件。请选择你的另一台设备所同步的文件夹。</string>
+    <string name="folder_sync_on">正在通过文件夹“%1$s”同步。</string>
+    <string name="folder_sync_partial">部分更改仍在复制到文件夹中。Penny 稍后会重试。</string>
+    <string name="folder_sync_phrase_body">请抄下这 24 个词并妥善保管。在另一台设备上打开此文件夹或恢复加密备份时都需要它们。Penny 无法再次显示。</string>
+    <string name="folder_sync_stop">在此设备上停止同步</string>
+    <string name="folder_sync_title">通过文件夹同步（免费）</string>
+    <string name="ob_join_folder">我在另一台设备上使用 Penny</string>
+    <string name="own_server_body">仅适用于自行运行 Penny 开源同步服务器的用户。大多数人应使用上方的文件夹同步。</string>
+    <string name="own_server_title">自己的同步服务器（高级）</string>
+    <string name="quick_add_needs_account">请先添加账户（设置 › 账户），再保存。Penny 需要知道这笔钱从哪里来。</string>
+    <string name="relay_server">同步服务器地址</string>
+    <string name="relay_server_required">你的服务器地址，例如 https://sync.example.com</string>
+    <string name="share_choose_folder">选择一个空文件夹用于共享</string>
+    <string name="share_code_body">这 24 个词只能交给与你共享此账本的人。任何拥有该文件夹和这些词的人都能查看和修改它。这不是你个人的恢复短语。</string>
+    <string name="share_code_title">共享码</string>
+    <string name="share_folder_not_empty">该文件夹中已有 Penny 文件。请为此账本单独选择一个新的空文件夹。</string>
+    <string name="share_free_body">无需账号，也无需服务器。Penny 把此账本加密保存在一个专用文件夹中，由你与其他人共享，例如 Syncthing 文件夹，或由应用保持同步的 Google Drive、OneDrive 共享文件夹。你会得到一个 24 个词的共享码，交给他们即可。</string>
+    <string name="share_free_how_others">添加成员：先与对方共享文件夹，再当面或通过消息把共享码告诉对方。对方在手机上打开“共享空间”，点按“加入共享账本”。拥有共享码的人都能查看和修改此账本。</string>
+    <string name="share_free_on">正在通过文件夹“%1$s”共享。</string>
+    <string name="share_free_title">共享此账本（免费）</string>
+    <string name="share_join_body">有人与你共享了账本？请选择同步应用在此手机上保存的共享文件夹，然后输入对方给你的共享码。</string>
+    <string name="share_join_choose">加入共享账本</string>
+    <string name="share_only_you">目前只有你。</string>
+    <string name="share_show_code">显示共享码</string>
+    <string name="share_start">开始共享</string>
+    <string name="share_stop">在此手机上停止共享</string>
+    <string name="share_your_name">你的名字（其他人会看到）</string>
+</resources>

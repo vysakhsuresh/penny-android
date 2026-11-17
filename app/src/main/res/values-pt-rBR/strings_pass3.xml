@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">Sem conta e sem servidor. O Penny salva suas alterações, criptografadas, numa pasta que você escolher. Mantenha essa pasta igual nos seus outros celulares e tablets com um app de sincronização gratuito como o Syncthing, ou um app de sincronização de pastas do Google Drive ou OneDrive. Só a sua frase de recuperação abre os arquivos.</string>
+    <string name="folder_sync_choose">Escolher uma pasta</string>
+    <string name="folder_sync_empty">A pasta foi aberta, mas nenhum livro chegou ainda. Espere o app de sincronização terminar de copiar e tente de novo.</string>
+    <string name="folder_sync_failed">Não foi possível abrir a pasta. Verifique se ela ainda existe ou escolha de novo.</string>
+    <string name="folder_sync_join_body">Esta pasta já tem dados do Penny de outro aparelho. Digite a frase de recuperação de 24 palavras que você anotou lá.</string>
+    <string name="folder_sync_join_title">Abrir esta pasta</string>
+    <string name="folder_sync_keep_same">No outro aparelho, instale o Penny, abra Sincronização, escolha a mesma pasta e digite sua frase de recuperação.</string>
+    <string name="folder_sync_not_penny">Essa pasta ainda não tem arquivos de sincronização do Penny. Escolha a pasta com que seu outro aparelho sincroniza.</string>
+    <string name="folder_sync_on">Sincronizando pela pasta “%1$s”.</string>
+    <string name="folder_sync_partial">Algumas alterações ainda estão sendo copiadas para a pasta. O Penny vai tentar de novo em breve.</string>
+    <string name="folder_sync_phrase_body">Anote estas 24 palavras e guarde em local seguro. Você precisa delas para abrir esta pasta em outro aparelho e para restaurar um backup criptografado. O Penny não pode mostrá-las de novo.</string>
+    <string name="folder_sync_stop">Parar de sincronizar neste aparelho</string>
+    <string name="folder_sync_title">Sincronizar por uma pasta (grátis)</string>
+    <string name="ob_join_folder">Uso o Penny em outro aparelho</string>
+    <string name="own_server_body">Só para quem roda por conta própria o servidor de sincronização de código aberto do Penny. A maioria das pessoas deve usar a sincronização por pasta acima.</string>
+    <string name="own_server_title">Seu próprio servidor de sincronização (avançado)</string>
+    <string name="quick_add_needs_account">Adicione uma conta primeiro (Configurações › Contas) e depois salve. O Penny precisa saber de onde veio o dinheiro.</string>
+    <string name="relay_server">Endereço do servidor de sincronização</string>
+    <string name="relay_server_required">O endereço do seu servidor, por exemplo https://sync.example.com</string>
+    <string name="share_choose_folder">Escolha uma pasta vazia para compartilhar</string>
+    <string name="share_code_body">Passe estas 24 palavras só para as pessoas com quem você compartilha este livro. Qualquer pessoa com a pasta e estas palavras pode ler e alterar o livro. Esta não é a sua frase de recuperação pessoal.</string>
+    <string name="share_code_title">Código de compartilhamento</string>
+    <string name="share_folder_not_empty">Essa pasta já tem arquivos do Penny. Escolha uma pasta nova e vazia só para este livro.</string>
+    <string name="share_free_body">Sem conta e sem servidor. O Penny guarda este livro, criptografado, numa pasta própria que você compartilha com os outros, por exemplo uma pasta do Syncthing ou uma pasta compartilhada do Google Drive ou OneDrive mantida em sincronia por um app. Você recebe um código de compartilhamento de 24 palavras para passar a eles.</string>
+    <string name="share_free_how_others">Para adicionar alguém: compartilhe a pasta com a pessoa e passe o código de compartilhamento pessoalmente ou por mensagem. No celular dela, ela abre Espaços compartilhados e toca em Entrar num livro compartilhado. Todos com o código podem ler e alterar este livro.</string>
+    <string name="share_free_on">Compartilhado pela pasta “%1$s”.</string>
+    <string name="share_free_title">Compartilhar este livro (grátis)</string>
+    <string name="share_join_body">Alguém compartilhou um livro com você? Escolha a pasta compartilhada que o app de sincronização mantém neste celular e digite o código de compartilhamento que você recebeu.</string>
+    <string name="share_join_choose">Entrar num livro compartilhado</string>
+    <string name="share_only_you">Por enquanto, só você.</string>
+    <string name="share_show_code">Mostrar o código de compartilhamento</string>
+    <string name="share_start">Começar a compartilhar</string>
+    <string name="share_stop">Parar de compartilhar neste celular</string>
+    <string name="share_your_name">Seu nome, como os outros vão ver</string>
+</resources>

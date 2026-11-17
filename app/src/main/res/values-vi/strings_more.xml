@@ -133,6 +133,8 @@
     <string name="recipient_x">Đến lượt %1$s</string>
     <string name="not_decided">chưa quyết định</string>
     <string name="payout_to">Đã trao cho %1$s</string>
+    <string name="recipient_you">Bạn nhận</string>
+    <string name="payout_to_you">Đã trả cho bạn</string>
     <string name="paid_out">Đã trao</string>
     <string name="close_circle">Đóng dây hụi</string>
     <string name="edit_circle">Sửa dây hụi</string>
@@ -276,7 +278,7 @@
     <string name="spaces">Không gian chung</string>
     <string name="spaces_sub">Dùng chung ngân sách với gia đình</string>
     <string name="sync_and_banks">Đồng bộ và ngân hàng</string>
-    <string name="sync_sub">Thiết bị, cụm từ sao lưu, kết nối ngân hàng</string>
+    <string name="sync_sub">Đồng bộ miễn phí giữa các thiết bị của bạn qua một thư mục</string>
     <string name="your_data">Dữ liệu của bạn</string>
     <string name="data_backup">Dữ liệu và sao lưu</string>
     <string name="data_sub">Xuất, nhập, sao lưu, xóa</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">Hãy bật đồng bộ trước.</string>
     <string name="link_lasts">Liên kết có hiệu lực</string>
     <string name="create_advisor_link">Tạo liên kết</string>
-    <string name="spaces_body">Không gian chung là ngân sách bạn dùng chung với người khác, mỗi người có đăng nhập và vai trò riêng. Mọi thứ trong đó được mã hóa đầu cuối.</string>
+    <string name="spaces_body">Không gian chung là một sổ bạn dùng chung với gia đình hoặc bạn bè. Sổ được mã hóa và chỉ những người có mã chia sẻ mới mở được.</string>
     <string name="spaces_need_sync">Không gian chung cần bật đồng bộ.</string>
     <string name="your_spaces">Không gian của bạn</string>
     <string name="no_spaces">Bạn chưa ở trong không gian chung nào.</string>

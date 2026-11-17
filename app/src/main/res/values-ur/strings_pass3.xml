@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">نہ کوئی اکاؤنٹ، نہ کوئی سرور۔ Penny آپ کی تبدیلیاں انکرپٹ کر کے آپ کے منتخب کردہ فولڈر میں محفوظ کرتا ہے۔ Syncthing جیسی کسی مفت سنک ایپ، یا Google Drive یا OneDrive کی فولڈر سنک ایپ سے وہی فولڈر اپنے دوسرے فونز اور ٹیبلیٹس پر ایک جیسا رکھیں۔ فائلیں صرف آپ کے بحالی کے جملے سے کھلتی ہیں۔</string>
+    <string name="folder_sync_choose">فولڈر منتخب کریں</string>
+    <string name="folder_sync_empty">فولڈر کھل گیا، لیکن ابھی تک کوئی کھاتہ نہیں آیا۔ اپنی سنک ایپ کے کاپی مکمل کرنے کا انتظار کریں، پھر دوبارہ کوشش کریں۔</string>
+    <string name="folder_sync_failed">فولڈر نہیں کھل سکا۔ دیکھیں کہ وہ اب بھی موجود ہے، یا اسے دوبارہ منتخب کریں۔</string>
+    <string name="folder_sync_join_body">اس فولڈر میں کسی دوسرے آلے کا Penny ڈیٹا پہلے سے موجود ہے۔ وہاں لکھا ہوا 24 الفاظ کا بحالی کا جملہ ٹائپ کریں۔</string>
+    <string name="folder_sync_join_title">یہ فولڈر کھولیں</string>
+    <string name="folder_sync_keep_same">دوسرے آلے پر Penny انسٹال کریں، سنک کھولیں، وہی فولڈر منتخب کریں اور اپنا بحالی کا جملہ ٹائپ کریں۔</string>
+    <string name="folder_sync_not_penny">اس فولڈر میں ابھی Penny کی کوئی سنک فائل نہیں ہے۔ وہ فولڈر منتخب کریں جس میں آپ کا دوسرا آلہ سنک کرتا ہے۔</string>
+    <string name="folder_sync_on">فولڈر “%1$s” کے ذریعے سنک ہو رہا ہے۔</string>
+    <string name="folder_sync_partial">کچھ تبدیلیاں ابھی فولڈر میں کاپی ہو رہی ہیں۔ Penny تھوڑی دیر میں دوبارہ کوشش کرے گا۔</string>
+    <string name="folder_sync_phrase_body">یہ 24 الفاظ لکھ لیں اور محفوظ رکھیں۔ دوسرے آلے پر یہ فولڈر کھولنے اور انکرپٹڈ بیک اپ بحال کرنے کے لیے ان کی ضرورت ہوگی۔ Penny انہیں دوبارہ نہیں دکھا سکتا۔</string>
+    <string name="folder_sync_stop">اس آلے پر سنک بند کریں</string>
+    <string name="folder_sync_title">فولڈر کے ذریعے سنک (مفت)</string>
+    <string name="ob_join_folder">میں دوسرے آلے پر Penny استعمال کرتا/کرتی ہوں</string>
+    <string name="own_server_body">صرف ان لوگوں کے لیے جو Penny کا اوپن سورس سنک سرور خود چلاتے ہیں۔ زیادہ تر لوگوں کو اوپر والا فولڈر سنک استعمال کرنا چاہیے۔</string>
+    <string name="own_server_title">آپ کا اپنا سنک سرور (ایڈوانسڈ)</string>
+    <string name="quick_add_needs_account">پہلے ایک اکاؤنٹ شامل کریں (ترتیبات › اکاؤنٹس)، پھر محفوظ کریں۔ Penny کو معلوم ہونا چاہیے کہ پیسہ کہاں سے آیا۔</string>
+    <string name="relay_server">سنک سرور کا پتہ</string>
+    <string name="relay_server_required">آپ کے سرور کا پتہ، مثلاً https://sync.example.com</string>
+    <string name="share_choose_folder">شیئر کرنے کے لیے خالی فولڈر منتخب کریں</string>
+    <string name="share_code_body">یہ 24 الفاظ صرف ان لوگوں کو دیں جن کے ساتھ آپ یہ کھاتہ شیئر کرتے ہیں۔ جس کے پاس بھی فولڈر اور یہ الفاظ ہوں وہ اسے پڑھ اور بدل سکتا ہے۔ یہ آپ کا ذاتی بحالی کا جملہ نہیں ہے۔</string>
+    <string name="share_code_title">شیئر کوڈ</string>
+    <string name="share_folder_not_empty">اس فولڈر میں پہلے سے Penny فائلیں موجود ہیں۔ صرف اس کھاتے کے لیے ایک نیا، خالی فولڈر منتخب کریں۔</string>
+    <string name="share_free_body">نہ کوئی اکاؤنٹ، نہ کوئی سرور۔ Penny یہ کھاتہ انکرپٹ کر کے اس کے اپنے ایک فولڈر میں رکھتا ہے جسے آپ دوسروں کے ساتھ شیئر کرتے ہیں، مثلاً Syncthing فولڈر، یا Google Drive یا OneDrive کا شیئر کردہ فولڈر جسے کوئی ایپ سنک رکھتی ہے۔ آپ کو انہیں دینے کے لیے 24 الفاظ کا شیئر کوڈ ملتا ہے۔</string>
+    <string name="share_free_how_others">کسی کو شامل کرنے کے لیے: ان کے ساتھ فولڈر شیئر کریں، پھر انہیں شیئر کوڈ بالمشافہ یا پیغام کے ذریعے دیں۔ اپنے فون پر وہ مشترکہ اسپیسز کھولیں اور مشترکہ کھاتے میں شامل ہوں پر ٹیپ کریں۔ جس کے پاس بھی کوڈ ہو وہ یہ کھاتہ پڑھ اور بدل سکتا ہے۔</string>
+    <string name="share_free_on">فولڈر “%1$s” کے ذریعے شیئر کیا گیا۔</string>
+    <string name="share_free_title">یہ کھاتہ شیئر کریں (مفت)</string>
+    <string name="share_join_body">کسی نے آپ کے ساتھ کھاتہ شیئر کیا ہے؟ وہ شیئر کردہ فولڈر منتخب کریں جو سنک ایپ اس فون پر رکھتی ہے، پھر ان کا دیا ہوا شیئر کوڈ ٹائپ کریں۔</string>
+    <string name="share_join_choose">مشترکہ کھاتے میں شامل ہوں</string>
+    <string name="share_only_you">ابھی تک صرف آپ۔</string>
+    <string name="share_show_code">شیئر کوڈ دکھائیں</string>
+    <string name="share_start">شیئر کرنا شروع کریں</string>
+    <string name="share_stop">اس فون پر شیئر کرنا بند کریں</string>
+    <string name="share_your_name">آپ کا نام، جیسا دوسرے دیکھیں گے</string>
+</resources>

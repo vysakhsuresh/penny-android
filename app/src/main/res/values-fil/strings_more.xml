@@ -133,6 +133,8 @@
     <string name="recipient_x">Mapupunta kay %1$s</string>
     <string name="not_decided">hindi pa napagpapasyahan</string>
     <string name="payout_to">Naibigay kay %1$s</string>
+    <string name="recipient_you">Para sa iyo</string>
+    <string name="payout_to_you">Ibinayad sa iyo</string>
     <string name="paid_out">Naibigay na</string>
     <string name="close_circle">Isara ang paluwagan</string>
     <string name="edit_circle">I-edit ang paluwagan</string>
@@ -276,7 +278,7 @@
     <string name="spaces">Shared spaces</string>
     <string name="spaces_sub">Ibahagi ang budget sa sambahayan mo</string>
     <string name="sync_and_banks">Sync at mga bangko</string>
-    <string name="sync_sub">Mga device, backup phrase, bank connection</string>
+    <string name="sync_sub">Libreng sync sa pagitan ng mga device mo gamit ang isang folder</string>
     <string name="your_data">Ang data mo</string>
     <string name="data_backup">Data at backup</string>
     <string name="data_sub">Export, import, backup, pagbura</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">I-on muna ang sync.</string>
     <string name="link_lasts">Tagal ng link</string>
     <string name="create_advisor_link">Gumawa ng link</string>
-    <string name="spaces_body">Ang shared space ay budget na ibinabahagi mo sa iba, bawat isa may sariling login at role. End-to-end encrypted ang lahat ng nasa loob nito.</string>
+    <string name="spaces_body">Ang shared space ay isang talaang ibinabahagi mo sa pamilya o mga kaibigan. Naka-encrypt ito, at ang mga may share code lang nito ang makakapagbukas.</string>
     <string name="spaces_need_sync">Kailangang naka-on ang sync para sa shared spaces.</string>
     <string name="your_spaces">Ang mga space mo</string>
     <string name="no_spaces">Wala ka pa sa anumang shared space.</string>

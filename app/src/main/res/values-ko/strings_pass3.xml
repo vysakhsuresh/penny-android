@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">계정도 서버도 필요 없어요. Penny는 변경 내용을 암호화해 선택한 폴더에 저장해요. Syncthing 같은 무료 동기화 앱이나 Google Drive, OneDrive 폴더 동기화 앱으로 다른 휴대폰과 태블릿에서도 그 폴더를 똑같이 유지하세요. 파일은 복구 문구로만 열 수 있어요.</string>
+    <string name="folder_sync_choose">폴더 선택</string>
+    <string name="folder_sync_empty">폴더는 열렸지만 아직 가계부가 도착하지 않았어요. 동기화 앱이 복사를 마칠 때까지 기다린 뒤 다시 시도하세요.</string>
+    <string name="folder_sync_failed">폴더를 열 수 없어요. 폴더가 아직 있는지 확인하거나 다시 선택하세요.</string>
+    <string name="folder_sync_join_body">이 폴더에는 이미 다른 기기의 Penny 데이터가 있어요. 그 기기에서 적어 둔 24단어 복구 문구를 입력하세요.</string>
+    <string name="folder_sync_join_title">이 폴더 열기</string>
+    <string name="folder_sync_keep_same">다른 기기에 Penny를 설치하고 동기화를 열어 같은 폴더를 선택한 뒤 복구 문구를 입력하세요.</string>
+    <string name="folder_sync_not_penny">이 폴더에는 아직 Penny 동기화 파일이 없어요. 다른 기기가 동기화하는 폴더를 선택하세요.</string>
+    <string name="folder_sync_on">‘%1$s’ 폴더로 동기화 중이에요.</string>
+    <string name="folder_sync_partial">일부 변경 내용을 아직 폴더로 복사하고 있어요. Penny가 곧 다시 시도할게요.</string>
+    <string name="folder_sync_phrase_body">이 24단어를 적어서 안전하게 보관하세요. 다른 기기에서 이 폴더를 열 때와 암호화된 백업을 복원할 때 필요해요. Penny는 이 단어를 다시 보여 줄 수 없어요.</string>
+    <string name="folder_sync_stop">이 기기에서 동기화 중지</string>
+    <string name="folder_sync_title">폴더로 동기화(무료)</string>
+    <string name="ob_join_folder">다른 기기에서 Penny를 쓰고 있어요</string>
+    <string name="own_server_body">Penny의 오픈 소스 동기화 서버를 직접 운영하는 분만 사용하세요. 대부분은 위의 폴더 동기화를 쓰면 돼요.</string>
+    <string name="own_server_title">내 동기화 서버(고급)</string>
+    <string name="quick_add_needs_account">먼저 계좌를 추가한 뒤(설정 › 계좌) 저장하세요. Penny가 돈이 어디서 나왔는지 알아야 해요.</string>
+    <string name="relay_server">동기화 서버 주소</string>
+    <string name="relay_server_required">서버 주소(예: https://sync.example.com)</string>
+    <string name="share_choose_folder">공유할 빈 폴더 선택</string>
+    <string name="share_code_body">이 24단어는 이 가계부를 함께 쓰는 사람에게만 알려 주세요. 폴더와 이 단어가 있으면 누구나 가계부를 보고 바꿀 수 있어요. 이것은 개인 복구 문구가 아니에요.</string>
+    <string name="share_code_title">공유 코드</string>
+    <string name="share_folder_not_empty">이 폴더에는 이미 Penny 파일이 있어요. 이 가계부만을 위한 새 빈 폴더를 선택하세요.</string>
+    <string name="share_free_body">계정도 서버도 필요 없어요. Penny는 이 가계부를 암호화해 전용 폴더에 보관하고, 그 폴더를 다른 사람과 공유해요. 예를 들어 Syncthing 폴더나 앱으로 동기화되는 Google Drive, OneDrive 공유 폴더를 쓸 수 있어요. 상대에게 줄 24단어 공유 코드를 받게 돼요.</string>
+    <string name="share_free_how_others">사람을 추가하려면 폴더를 공유한 뒤 공유 코드를 직접 또는 메시지로 알려 주세요. 상대는 자기 휴대폰에서 공유 스페이스를 열고 공유 가계부 참여를 탭하면 돼요. 코드가 있는 사람은 모두 이 가계부를 보고 바꿀 수 있어요.</string>
+    <string name="share_free_on">‘%1$s’ 폴더로 공유 중이에요.</string>
+    <string name="share_free_title">이 가계부 공유(무료)</string>
+    <string name="share_join_body">누군가 가계부를 공유했나요? 동기화 앱이 이 휴대폰에 유지하는 공유 폴더를 선택한 뒤 받은 공유 코드를 입력하세요.</string>
+    <string name="share_join_choose">공유 가계부 참여</string>
+    <string name="share_only_you">아직 나만 있어요.</string>
+    <string name="share_show_code">공유 코드 보기</string>
+    <string name="share_start">공유 시작</string>
+    <string name="share_stop">이 휴대폰에서 공유 중지</string>
+    <string name="share_your_name">다른 사람에게 보일 내 이름</string>
+</resources>

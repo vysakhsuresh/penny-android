@@ -133,6 +133,8 @@
     <string name="recipient_x">تذهب إلى %1$s</string>
     <string name="not_decided">لم يُحدَّد</string>
     <string name="payout_to">صُرفت إلى %1$s</string>
+    <string name="recipient_you">يذهب إليك</string>
+    <string name="payout_to_you">دُفع لك</string>
     <string name="paid_out">صُرفت</string>
     <string name="close_circle">إغلاق الجمعية</string>
     <string name="edit_circle">تعديل الجمعية</string>
@@ -276,7 +278,7 @@
     <string name="spaces">المساحات المشتركة</string>
     <string name="spaces_sub">شارك ميزانية مع أسرتك</string>
     <string name="sync_and_banks">المزامنة والبنوك</string>
-    <string name="sync_sub">الأجهزة وعبارة الاسترداد والاتصالات البنكية</string>
+    <string name="sync_sub">مزامنة مجانية بين أجهزتك عبر مجلد</string>
     <string name="your_data">بياناتك</string>
     <string name="data_backup">البيانات والنسخ الاحتياطي</string>
     <string name="data_sub">التصدير والاستيراد والنسخ الاحتياطي والحذف</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">فعّل المزامنة أولًا.</string>
     <string name="link_lasts">مدة صلاحية الرابط</string>
     <string name="create_advisor_link">إنشاء رابط</string>
-    <string name="spaces_body">المساحة المشتركة ميزانية تشاركها مع آخرين، لكل منهم تسجيل دخوله ودوره. كل ما فيها مشفّر من طرف إلى طرف.</string>
+    <string name="spaces_body">المساحة المشتركة دفتر تشاركه مع العائلة أو الأصدقاء. وهي مشفّرة، ولا يستطيع فتحها إلا من لديه رمز المشاركة الخاص بها.</string>
     <string name="spaces_need_sync">تتطلب المساحات المشتركة تفعيل المزامنة.</string>
     <string name="your_spaces">مساحاتك</string>
     <string name="no_spaces">لست في أي مساحة مشتركة بعد.</string>

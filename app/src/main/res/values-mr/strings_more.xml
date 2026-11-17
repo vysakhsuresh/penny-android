@@ -133,6 +133,8 @@
     <string name="recipient_x">%1$s ला जाते</string>
     <string name="not_decided">ठरलेले नाही</string>
     <string name="payout_to">%1$s ला दिले</string>
+    <string name="recipient_you">तुम्हाला मिळेल</string>
+    <string name="payout_to_you">तुम्हाला दिले</string>
     <string name="paid_out">दिले</string>
     <string name="close_circle">भिशी बंद करा</string>
     <string name="edit_circle">भिशी संपादित करा</string>
@@ -276,7 +278,7 @@
     <string name="spaces">शेअर केलेल्या स्पेस</string>
     <string name="spaces_sub">तुमच्या घरच्यांसोबत बजेट शेअर करा</string>
     <string name="sync_and_banks">सिंक आणि बँका</string>
-    <string name="sync_sub">डिव्हाइस, बॅकअप फ्रेज, बँक कनेक्शन</string>
+    <string name="sync_sub">फोल्डरमधून तुमच्या डिव्हाइसेसमध्ये मोफत सिंक</string>
     <string name="your_data">तुमचा डेटा</string>
     <string name="data_backup">डेटा आणि बॅकअप</string>
     <string name="data_sub">एक्सपोर्ट, इम्पोर्ट, बॅकअप, हटवा</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">आधी सिंक सुरू करा.</string>
     <string name="link_lasts">लिंकची मुदत</string>
     <string name="create_advisor_link">लिंक तयार करा</string>
-    <string name="spaces_body">शेअर केलेली स्पेस म्हणजे इतरांसोबत शेअर केलेले बजेट, प्रत्येकाचे स्वतःचे लॉगिन आणि भूमिका. त्यातील सर्व काही एंड-टू-एंड एन्क्रिप्टेड असते.</string>
+    <string name="spaces_body">शेअर केलेली स्पेस म्हणजे कुटुंब किंवा मित्रांसोबत शेअर केलेली हिशोबवही. ती एन्क्रिप्टेड असते, आणि तिचा शेअर कोड असलेलेच लोक ती उघडू शकतात.</string>
     <string name="spaces_need_sync">शेअर केलेल्या स्पेससाठी सिंक सुरू असणे आवश्यक आहे.</string>
     <string name="your_spaces">तुमच्या स्पेस</string>
     <string name="no_spaces">तुम्ही अजून कोणत्याही शेअर केलेल्या स्पेसमध्ये नाही.</string>

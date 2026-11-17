@@ -133,6 +133,8 @@
     <string name="recipient_x">歸 %1$s</string>
     <string name="not_decided">未決定</string>
     <string name="payout_to">已付給 %1$s</string>
+    <string name="recipient_you">歸你</string>
+    <string name="payout_to_you">已付給你</string>
     <string name="paid_out">已發放</string>
     <string name="close_circle">結束互助會</string>
     <string name="edit_circle">編輯互助會</string>
@@ -276,7 +278,7 @@
     <string name="spaces">共用空間</string>
     <string name="spaces_sub">與家人共用預算</string>
     <string name="sync_and_banks">同步與銀行</string>
-    <string name="sync_sub">裝置、備份詞組、銀行連結</string>
+    <string name="sync_sub">透過資料夾在你的裝置間免費同步</string>
     <string name="your_data">你的資料</string>
     <string name="data_backup">資料與備份</string>
     <string name="data_sub">匯出、匯入、備份、刪除</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">請先開啟同步。</string>
     <string name="link_lasts">連結有效期間</string>
     <string name="create_advisor_link">建立連結</string>
-    <string name="spaces_body">共用空間是你與其他人共用的預算，每個人都有自己的登入和角色。其中所有內容都經過端對端加密。</string>
+    <string name="spaces_body">共用空間是你與家人或朋友共用的帳本。它經過加密，只有擁有共用代碼的人才能開啟。</string>
     <string name="spaces_need_sync">共用空間需要開啟同步。</string>
     <string name="your_spaces">你的空間</string>
     <string name="no_spaces">你還沒有加入任何共用空間。</string>

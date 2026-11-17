@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">Geen account en geen server. Penny bewaart je wijzigingen versleuteld in een map die je zelf kiest. Houd die map gelijk op je andere telefoons en tablets met een gratis synchronisatie-app zoals Syncthing, of een app die een Google Drive- of OneDrive-map synchroniseert. Alleen je herstelzin kan de bestanden openen.</string>
+    <string name="folder_sync_choose">Map kiezen</string>
+    <string name="folder_sync_empty">De map is geopend, maar er is nog geen boek binnengekomen. Wacht tot je synchronisatie-app klaar is met kopiëren en probeer het dan opnieuw.</string>
+    <string name="folder_sync_failed">Kan de map niet openen. Controleer of hij nog bestaat, of kies hem opnieuw.</string>
+    <string name="folder_sync_join_body">Deze map bevat al Penny-gegevens van een ander apparaat. Typ de herstelzin van 24 woorden die je daar hebt opgeschreven.</string>
+    <string name="folder_sync_join_title">Deze map openen</string>
+    <string name="folder_sync_keep_same">Installeer Penny op een ander apparaat, open Synchronisatie, kies dezelfde map en typ je herstelzin.</string>
+    <string name="folder_sync_not_penny">Die map bevat nog geen Penny-synchronisatiebestanden. Kies de map waarmee je andere apparaat synchroniseert.</string>
+    <string name="folder_sync_on">Synchroniseert via de map „%1$s”.</string>
+    <string name="folder_sync_partial">Sommige wijzigingen worden nog naar de map gekopieerd. Penny probeert het zo opnieuw.</string>
+    <string name="folder_sync_phrase_body">Schrijf deze 24 woorden op en bewaar ze veilig. Je hebt ze nodig om deze map op een ander apparaat te openen en om een versleutelde back-up terug te zetten. Penny kan ze niet nog eens tonen.</string>
+    <string name="folder_sync_stop">Synchronisatie op dit apparaat stoppen</string>
+    <string name="folder_sync_title">Synchroniseren via een map (gratis)</string>
+    <string name="ob_join_folder">Ik gebruik Penny op een ander apparaat</string>
+    <string name="own_server_body">Alleen voor wie de opensource-synchronisatieserver van Penny zelf draait. De meeste mensen gebruiken beter de mapsynchronisatie hierboven.</string>
+    <string name="own_server_title">Je eigen synchronisatieserver (geavanceerd)</string>
+    <string name="quick_add_needs_account">Voeg eerst een rekening toe (Instellingen › Rekeningen) en sla dan op. Penny moet weten waar het geld vandaan kwam.</string>
+    <string name="relay_server">Adres van de synchronisatieserver</string>
+    <string name="relay_server_required">Het adres van je server, bijvoorbeeld https://sync.example.com</string>
+    <string name="share_choose_folder">Kies een lege map om te delen</string>
+    <string name="share_code_body">Geef deze 24 woorden alleen aan de mensen met wie je dit boek deelt. Iedereen met de map en deze woorden kan het lezen en wijzigen. Dit is niet je persoonlijke herstelzin.</string>
+    <string name="share_code_title">Deelcode</string>
+    <string name="share_folder_not_empty">Die map bevat al Penny-bestanden. Kies een nieuwe, lege map alleen voor dit boek.</string>
+    <string name="share_free_body">Geen account en geen server. Penny bewaart dit boek versleuteld in een eigen map die je met de anderen deelt, bijvoorbeeld een Syncthing-map of een gedeelde Google Drive- of OneDrive-map die door een app gesynchroniseerd wordt. Je krijgt een deelcode van 24 woorden om aan hen te geven.</string>
+    <string name="share_free_how_others">Iemand toevoegen: deel de map met die persoon en geef de deelcode persoonlijk of via een bericht. Op de eigen telefoon opent die persoon Gedeelde ruimtes en tikt op Meedoen met een gedeeld boek. Iedereen met de code kan dit boek lezen en wijzigen.</string>
+    <string name="share_free_on">Gedeeld via de map „%1$s”.</string>
+    <string name="share_free_title">Dit boek delen (gratis)</string>
+    <string name="share_join_body">Heeft iemand een boek met je gedeeld? Kies de gedeelde map die de synchronisatie-app op deze telefoon bijhoudt en typ dan de deelcode die je hebt gekregen.</string>
+    <string name="share_join_choose">Meedoen met een gedeeld boek</string>
+    <string name="share_only_you">Voorlopig alleen jij.</string>
+    <string name="share_show_code">Deelcode tonen</string>
+    <string name="share_start">Beginnen met delen</string>
+    <string name="share_stop">Stoppen met delen op deze telefoon</string>
+    <string name="share_your_name">Je naam, zoals de anderen die zien</string>
+</resources>

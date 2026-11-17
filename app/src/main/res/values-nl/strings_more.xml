@@ -133,6 +133,8 @@
     <string name="recipient_x">Gaat naar %1$s</string>
     <string name="not_decided">nog niet bepaald</string>
     <string name="payout_to">Uitbetaald aan %1$s</string>
+    <string name="recipient_you">Gaat naar jou</string>
+    <string name="payout_to_you">Uitbetaald aan jou</string>
     <string name="paid_out">Uitbetaald</string>
     <string name="close_circle">Kring sluiten</string>
     <string name="edit_circle">Kring bewerken</string>
@@ -276,7 +278,7 @@
     <string name="spaces">Gedeelde ruimtes</string>
     <string name="spaces_sub">Deel een budget met je huishouden</string>
     <string name="sync_and_banks">Synchronisatie en banken</string>
-    <string name="sync_sub">Apparaten, herstelzin, bankkoppelingen</string>
+    <string name="sync_sub">Gratis synchronisatie tussen je apparaten via een map</string>
     <string name="your_data">Je gegevens</string>
     <string name="data_backup">Gegevens en back-up</string>
     <string name="data_sub">Exporteren, importeren, back-up, verwijderen</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">Zet eerst synchronisatie aan.</string>
     <string name="link_lasts">Link is geldig</string>
     <string name="create_advisor_link">Link maken</string>
-    <string name="spaces_body">Een gedeelde ruimte is een budget dat je met anderen deelt, ieder met een eigen login en rol. Alles erin is end-to-end versleuteld.</string>
+    <string name="spaces_body">Een gedeelde ruimte is een boek dat je deelt met familie of vrienden. Het is versleuteld en alleen mensen met de deelcode ervan kunnen het openen.</string>
     <string name="spaces_need_sync">Voor gedeelde ruimtes moet synchronisatie aanstaan.</string>
     <string name="your_spaces">Je ruimtes</string>
     <string name="no_spaces">Je zit nog in geen enkele gedeelde ruimte.</string>

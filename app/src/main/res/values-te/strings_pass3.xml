@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">ఖాతా అవసరం లేదు, సర్వర్ అవసరం లేదు. మీరు ఎంచుకున్న ఫోల్డర్‌లో Penny మీ మార్పులను ఎన్‌క్రిప్ట్ చేసి సేవ్ చేస్తుంది. Syncthing లాంటి ఉచిత సింక్ యాప్‌తో, లేదా Google Drive లేదా OneDrive ఫోల్డర్-సింక్ యాప్‌తో మీ ఇతర ఫోన్‌లు, టాబ్లెట్‌లలో ఆ ఫోల్డర్‌ను ఒకేలా ఉంచండి. మీ రికవరీ ఫ్రేజ్ మాత్రమే ఫైల్‌లను తెరవగలదు.</string>
+    <string name="folder_sync_choose">ఫోల్డర్‌ను ఎంచుకోండి</string>
+    <string name="folder_sync_empty">ఫోల్డర్ తెరుచుకుంది, కానీ ఇంకా ఏ లెక్కల పుస్తకమూ రాలేదు. మీ సింక్ యాప్ కాపీ చేయడం పూర్తయ్యే వరకు వేచి ఉండి, మళ్లీ ప్రయత్నించండి.</string>
+    <string name="folder_sync_failed">ఫోల్డర్‌ను తెరవలేకపోయాం. అది ఇంకా ఉందో లేదో చూడండి, లేదా దాన్ని మళ్లీ ఎంచుకోండి.</string>
+    <string name="folder_sync_join_body">ఈ ఫోల్డర్‌లో ఇప్పటికే మరో పరికరం నుంచి Penny డేటా ఉంది. అక్కడ రాసుకున్న 24 పదాల రికవరీ ఫ్రేజ్‌ను టైప్ చేయండి.</string>
+    <string name="folder_sync_join_title">ఈ ఫోల్డర్‌ను తెరవండి</string>
+    <string name="folder_sync_keep_same">మరో పరికరంలో Pennyని ఇన్‌స్టాల్ చేసి, సింక్ తెరిచి, అదే ఫోల్డర్‌ను ఎంచుకుని, మీ రికవరీ ఫ్రేజ్‌ను టైప్ చేయండి.</string>
+    <string name="folder_sync_not_penny">ఆ ఫోల్డర్‌లో ఇంకా Penny సింక్ ఫైల్‌లు లేవు. మీ మరో పరికరం సింక్ చేసే ఫోల్డర్‌ను ఎంచుకోండి.</string>
+    <string name="folder_sync_on">“%1$s” ఫోల్డర్ ద్వారా సింక్ అవుతోంది.</string>
+    <string name="folder_sync_partial">కొన్ని మార్పులు ఇంకా ఫోల్డర్‌లోకి కాపీ అవుతున్నాయి. Penny కాసేపట్లో మళ్లీ ప్రయత్నిస్తుంది.</string>
+    <string name="folder_sync_phrase_body">ఈ 24 పదాలను రాసుకుని సురక్షితంగా ఉంచుకోండి. మరో పరికరంలో ఈ ఫోల్డర్‌ను తెరవడానికి, ఎన్‌క్రిప్ట్ చేసిన బ్యాకప్‌ను పునరుద్ధరించడానికి ఇవి అవసరం. Penny వీటిని మళ్లీ చూపించలేదు.</string>
+    <string name="folder_sync_stop">ఈ పరికరంలో సింక్ ఆపండి</string>
+    <string name="folder_sync_title">ఫోల్డర్ ద్వారా సింక్ (ఉచితం)</string>
+    <string name="ob_join_folder">నేను మరో పరికరంలో Penny వాడుతున్నాను</string>
+    <string name="own_server_body">Penny ఓపెన్-సోర్స్ సింక్ సర్వర్‌ను స్వయంగా నడిపేవారికి మాత్రమే. చాలామంది పైన ఉన్న ఫోల్డర్ సింక్‌ను వాడాలి.</string>
+    <string name="own_server_title">మీ సొంత సింక్ సర్వర్ (అధునాతనం)</string>
+    <string name="quick_add_needs_account">ముందుగా ఒక ఖాతాను జోడించండి (సెట్టింగ్‌లు › ఖాతాలు), ఆపై సేవ్ చేయండి. డబ్బు ఎక్కడి నుంచి వచ్చిందో Pennyకి తెలియాలి.</string>
+    <string name="relay_server">సింక్ సర్వర్ చిరునామా</string>
+    <string name="relay_server_required">మీ సర్వర్ చిరునామా, ఉదాహరణకు https://sync.example.com</string>
+    <string name="share_choose_folder">షేర్ చేయడానికి ఖాళీ ఫోల్డర్‌ను ఎంచుకోండి</string>
+    <string name="share_code_body">ఈ లెక్కల పుస్తకాన్ని మీరు ఎవరితో షేర్ చేస్తారో వారికి మాత్రమే ఈ 24 పదాలను ఇవ్వండి. ఫోల్డర్, ఈ పదాలు ఉన్న ఎవరైనా దీన్ని చదవగలరు, మార్చగలరు. ఇది మీ వ్యక్తిగత రికవరీ ఫ్రేజ్ కాదు.</string>
+    <string name="share_code_title">షేర్ కోడ్</string>
+    <string name="share_folder_not_empty">ఆ ఫోల్డర్‌లో ఇప్పటికే Penny ఫైల్‌లు ఉన్నాయి. ఈ లెక్కల పుస్తకం కోసమే కొత్త, ఖాళీ ఫోల్డర్‌ను ఎంచుకోండి.</string>
+    <string name="share_free_body">ఖాతా అవసరం లేదు, సర్వర్ అవసరం లేదు. Penny ఈ లెక్కల పుస్తకాన్ని ఎన్‌క్రిప్ట్ చేసి దాని సొంత ఫోల్డర్‌లో ఉంచుతుంది, దాన్ని మీరు ఇతరులతో షేర్ చేస్తారు, ఉదాహరణకు ఒక Syncthing ఫోల్డర్, లేదా ఒక యాప్ సింక్‌లో ఉంచే షేర్ చేసిన Google Drive లేదా OneDrive ఫోల్డర్. వారికి ఇవ్వడానికి మీకు 24 పదాల షేర్ కోడ్ వస్తుంది.</string>
+    <string name="share_free_how_others">ఎవరినైనా జోడించడానికి: వారితో ఫోల్డర్‌ను షేర్ చేయండి, ఆపై షేర్ కోడ్‌ను నేరుగా లేదా మెసేజ్ ద్వారా ఇవ్వండి. వారి ఫోన్‌లో వారు షేర్ చేసిన స్పేస్‌లు తెరిచి షేర్ చేసిన లెక్కల పుస్తకంలో చేరండి నొక్కుతారు. కోడ్ ఉన్న అందరూ ఈ లెక్కల పుస్తకాన్ని చదవగలరు, మార్చగలరు.</string>
+    <string name="share_free_on">“%1$s” ఫోల్డర్ ద్వారా షేర్ చేయబడింది.</string>
+    <string name="share_free_title">ఈ లెక్కల పుస్తకాన్ని షేర్ చేయండి (ఉచితం)</string>
+    <string name="share_join_body">ఎవరైనా మీతో లెక్కల పుస్తకాన్ని షేర్ చేశారా? సింక్ యాప్ ఈ ఫోన్‌లో ఉంచే షేర్ చేసిన ఫోల్డర్‌ను ఎంచుకుని, వారు ఇచ్చిన షేర్ కోడ్‌ను టైప్ చేయండి.</string>
+    <string name="share_join_choose">షేర్ చేసిన లెక్కల పుస్తకంలో చేరండి</string>
+    <string name="share_only_you">ఇప్పటివరకు మీరు మాత్రమే.</string>
+    <string name="share_show_code">షేర్ కోడ్ చూపించండి</string>
+    <string name="share_start">షేర్ చేయడం ప్రారంభించండి</string>
+    <string name="share_stop">ఈ ఫోన్‌లో షేర్ చేయడం ఆపండి</string>
+    <string name="share_your_name">ఇతరులకు కనిపించే మీ పేరు</string>
+</resources>

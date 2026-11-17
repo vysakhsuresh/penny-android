@@ -133,6 +133,8 @@
     <string name="recipient_x">Goes to %1$s</string>
     <string name="not_decided">not decided</string>
     <string name="payout_to">Paid out to %1$s</string>
+    <string name="recipient_you">Goes to you</string>
+    <string name="payout_to_you">Paid out to you</string>
     <string name="paid_out">Paid out</string>
     <string name="close_circle">Close circle</string>
     <string name="edit_circle">Edit circle</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">Turn on sync first.</string>
     <string name="link_lasts">Link lasts</string>
     <string name="create_advisor_link">Create link</string>
-    <string name="spaces_body">A shared space is a budget you share with others, each with their own login and role. Everything in it is end-to-end encrypted.</string>
+    <string name="spaces_body">A shared space is a book you share with family or friends. It is encrypted, and only people with its share code can open it.</string>
     <string name="spaces_need_sync">Shared spaces need sync turned on.</string>
     <string name="your_spaces">Your spaces</string>
     <string name="no_spaces">You are not in any shared space yet.</string>

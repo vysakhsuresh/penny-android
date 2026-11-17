@@ -133,6 +133,8 @@
     <string name="recipient_x">Alacak kişi: %1$s</string>
     <string name="not_decided">belli değil</string>
     <string name="payout_to">Ödeme yapılan: %1$s</string>
+    <string name="recipient_you">Sana gider</string>
+    <string name="payout_to_you">Sana ödendi</string>
     <string name="paid_out">Ödendi</string>
     <string name="close_circle">Birikim gününü kapat</string>
     <string name="edit_circle">Birikim gününü düzenle</string>
@@ -276,7 +278,7 @@
     <string name="spaces">Paylaşılan alanlar</string>
     <string name="spaces_sub">Bir bütçeyi hanenle paylaş</string>
     <string name="sync_and_banks">Eşitleme ve bankalar</string>
-    <string name="sync_sub">Cihazlar, yedekleme ifadesi, banka bağlantıları</string>
+    <string name="sync_sub">Cihazların arasında bir klasör üzerinden ücretsiz eşitleme</string>
     <string name="your_data">Verilerin</string>
     <string name="data_backup">Veri ve yedekleme</string>
     <string name="data_sub">Dışa aktar, içe aktar, yedekle, sil</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">Önce eşitlemeyi aç.</string>
     <string name="link_lasts">Bağlantı süresi</string>
     <string name="create_advisor_link">Bağlantı oluştur</string>
-    <string name="spaces_body">Paylaşılan alan, her birinin kendi girişi ve rolü olduğu, başkalarıyla paylaştığın bir bütçedir. İçindeki her şey uçtan uca şifrelidir.</string>
+    <string name="spaces_body">Paylaşılan alan, ailen veya arkadaşlarınla paylaştığın bir defterdir. Şifrelidir ve yalnızca paylaşım kodu olan kişiler açabilir.</string>
     <string name="spaces_need_sync">Paylaşılan alanlar için eşitlemenin açık olması gerekir.</string>
     <string name="your_spaces">Alanların</string>
     <string name="no_spaces">Henüz hiçbir paylaşılan alanda değilsin.</string>

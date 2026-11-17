@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">Hesap yok, sunucu yok. Penny değişikliklerini şifreli olarak seçtiğin bir klasöre kaydeder. Bu klasörü diğer telefonlarında ve tabletlerinde Syncthing gibi ücretsiz bir eşitleme uygulamasıyla ya da bir Google Drive veya OneDrive klasör eşitleme uygulamasıyla aynı tut. Dosyaları yalnızca kurtarma ifaden açabilir.</string>
+    <string name="folder_sync_choose">Klasör seç</string>
+    <string name="folder_sync_empty">Klasör açıldı ama henüz bir defter gelmedi. Eşitleme uygulamanın kopyalamayı bitirmesini bekle, sonra tekrar dene.</string>
+    <string name="folder_sync_failed">Klasör açılamadı. Hâlâ var olup olmadığını kontrol et ya da yeniden seç.</string>
+    <string name="folder_sync_join_body">Bu klasörde başka bir cihazdan gelen Penny verileri zaten var. Orada not ettiğin 24 kelimelik kurtarma ifadesini yaz.</string>
+    <string name="folder_sync_join_title">Bu klasörü aç</string>
+    <string name="folder_sync_keep_same">Başka bir cihaza Penny’yi yükle, Eşitleme’yi aç, aynı klasörü seç ve kurtarma ifadeni yaz.</string>
+    <string name="folder_sync_not_penny">Bu klasörde henüz Penny eşitleme dosyası yok. Diğer cihazının eşitlendiği klasörü seç.</string>
+    <string name="folder_sync_on">“%1$s” klasörü üzerinden eşitleniyor.</string>
+    <string name="folder_sync_partial">Bazı değişiklikler hâlâ klasöre kopyalanıyor. Penny kısa süre içinde tekrar deneyecek.</string>
+    <string name="folder_sync_phrase_body">Bu 24 kelimeyi yaz ve güvenli bir yerde sakla. Bu klasörü başka bir cihazda açmak ve şifreli bir yedeği geri yüklemek için bunlara ihtiyacın var. Penny bunları bir daha gösteremez.</string>
+    <string name="folder_sync_stop">Bu cihazda eşitlemeyi durdur</string>
+    <string name="folder_sync_title">Klasör üzerinden eşitle (ücretsiz)</string>
+    <string name="ob_join_folder">Penny’yi başka bir cihazda kullanıyorum</string>
+    <string name="own_server_body">Yalnızca Penny’nin açık kaynaklı eşitleme sunucusunu kendisi çalıştıranlar için. Çoğu kişi yukarıdaki klasör eşitlemeyi kullanmalı.</string>
+    <string name="own_server_title">Kendi eşitleme sunucun (gelişmiş)</string>
+    <string name="quick_add_needs_account">Önce bir hesap ekle (Ayarlar › Hesaplar), sonra kaydet. Penny’nin paranın nereden geldiğini bilmesi gerekiyor.</string>
+    <string name="relay_server">Eşitleme sunucusu adresi</string>
+    <string name="relay_server_required">Sunucunun adresi, örneğin https://sync.example.com</string>
+    <string name="share_choose_folder">Paylaşmak için boş bir klasör seç</string>
+    <string name="share_code_body">Bu 24 kelimeyi yalnızca bu defteri paylaştığın kişilere ver. Klasöre ve bu kelimelere sahip olan herkes defteri okuyabilir ve değiştirebilir. Bu, kişisel kurtarma ifaden değildir.</string>
+    <string name="share_code_title">Paylaşım kodu</string>
+    <string name="share_folder_not_empty">Bu klasörde zaten Penny dosyaları var. Yalnızca bu defter için yeni ve boş bir klasör seç.</string>
+    <string name="share_free_body">Hesap yok, sunucu yok. Penny bu defteri şifreli olarak, diğerleriyle paylaştığın kendine ait bir klasörde tutar; örneğin bir Syncthing klasörü ya da bir uygulamayla eşitlenen paylaşılan bir Google Drive veya OneDrive klasörü. Onlara vermen için 24 kelimelik bir paylaşım kodu alırsın.</string>
+    <string name="share_free_how_others">Birini eklemek için: klasörü onunla paylaş, sonra paylaşım kodunu yüz yüze ya da mesajla ver. O kişi kendi telefonunda Paylaşılan alanlar’ı açar ve Paylaşılan deftere katıl’a dokunur. Kodu olan herkes bu defteri okuyabilir ve değiştirebilir.</string>
+    <string name="share_free_on">“%1$s” klasörü üzerinden paylaşılıyor.</string>
+    <string name="share_free_title">Bu defteri paylaş (ücretsiz)</string>
+    <string name="share_join_body">Biri seninle bir defter mi paylaştı? Eşitleme uygulamasının bu telefonda tuttuğu paylaşılan klasörü seç, sonra sana verilen paylaşım kodunu yaz.</string>
+    <string name="share_join_choose">Paylaşılan deftere katıl</string>
+    <string name="share_only_you">Şimdilik yalnızca sen.</string>
+    <string name="share_show_code">Paylaşım kodunu göster</string>
+    <string name="share_start">Paylaşmaya başla</string>
+    <string name="share_stop">Bu telefonda paylaşımı durdur</string>
+    <string name="share_your_name">Diğerlerinin göreceği adın</string>
+</resources>

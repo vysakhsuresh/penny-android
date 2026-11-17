@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">Nessun account e nessun server. Penny salva le tue modifiche, cifrate, in una cartella a tua scelta. Mantieni quella cartella uguale sugli altri telefoni e tablet con un’app di sincronizzazione gratuita come Syncthing, o un’app di sincronizzazione cartelle per Google Drive o OneDrive. Solo la tua frase di recupero può aprire i file.</string>
+    <string name="folder_sync_choose">Scegli una cartella</string>
+    <string name="folder_sync_empty">La cartella è stata aperta, ma non è ancora arrivato nessun registro. Attendi che l’app di sincronizzazione finisca di copiare, poi riprova.</string>
+    <string name="folder_sync_failed">Impossibile aprire la cartella. Controlla che esista ancora o sceglila di nuovo.</string>
+    <string name="folder_sync_join_body">Questa cartella contiene già dati di Penny da un altro dispositivo. Digita la frase di recupero di 24 parole che hai annotato lì.</string>
+    <string name="folder_sync_join_title">Apri questa cartella</string>
+    <string name="folder_sync_keep_same">Su un altro dispositivo installa Penny, apri Sincronizzazione, scegli la stessa cartella e digita la tua frase di recupero.</string>
+    <string name="folder_sync_not_penny">Questa cartella non contiene ancora file di sincronizzazione di Penny. Scegli la cartella con cui si sincronizza l’altro dispositivo.</string>
+    <string name="folder_sync_on">Sincronizzazione tramite la cartella «%1$s».</string>
+    <string name="folder_sync_partial">Alcune modifiche sono ancora in copia nella cartella. Penny riproverà a breve.</string>
+    <string name="folder_sync_phrase_body">Scrivi queste 24 parole e conservale al sicuro. Ti servono per aprire questa cartella su un altro dispositivo e per ripristinare un backup cifrato. Penny non potrà mostrarle di nuovo.</string>
+    <string name="folder_sync_stop">Interrompi la sincronizzazione su questo dispositivo</string>
+    <string name="folder_sync_title">Sincronizza tramite una cartella (gratis)</string>
+    <string name="ob_join_folder">Uso Penny su un altro dispositivo</string>
+    <string name="own_server_body">Solo per chi gestisce in autonomia il server di sincronizzazione open source di Penny. La maggior parte delle persone dovrebbe usare la sincronizzazione tramite cartella qui sopra.</string>
+    <string name="own_server_title">Il tuo server di sincronizzazione (avanzato)</string>
+    <string name="quick_add_needs_account">Prima aggiungi un conto (Impostazioni › Conti), poi salva. Penny deve sapere da dove arrivano i soldi.</string>
+    <string name="relay_server">Indirizzo del server di sincronizzazione</string>
+    <string name="relay_server_required">L’indirizzo del tuo server, ad esempio https://sync.example.com</string>
+    <string name="share_choose_folder">Scegli una cartella vuota da condividere</string>
+    <string name="share_code_body">Dai queste 24 parole solo alle persone con cui condividi questo registro. Chiunque abbia la cartella e queste parole può leggerlo e modificarlo. Non è la tua frase di recupero personale.</string>
+    <string name="share_code_title">Codice di condivisione</string>
+    <string name="share_folder_not_empty">Questa cartella contiene già file di Penny. Scegli una cartella nuova e vuota solo per questo registro.</string>
+    <string name="share_free_body">Nessun account e nessun server. Penny conserva questo registro, cifrato, in una cartella dedicata che condividi con gli altri, ad esempio una cartella Syncthing o una cartella condivisa di Google Drive o OneDrive mantenuta sincronizzata da un’app. Ricevi un codice di condivisione di 24 parole da dare loro.</string>
+    <string name="share_free_how_others">Per aggiungere qualcuno: condividi la cartella con quella persona, poi dagli il codice di condivisione di persona o via messaggio. Sul suo telefono apre Spazi condivisi e tocca Entra in un registro condiviso. Chiunque abbia il codice può leggere e modificare questo registro.</string>
+    <string name="share_free_on">Condiviso tramite la cartella «%1$s».</string>
+    <string name="share_free_title">Condividi questo registro (gratis)</string>
+    <string name="share_join_body">Qualcuno ha condiviso un registro con te? Scegli la cartella condivisa che l’app di sincronizzazione mantiene su questo telefono, poi digita il codice di condivisione che ti è stato dato.</string>
+    <string name="share_join_choose">Entra in un registro condiviso</string>
+    <string name="share_only_you">Per ora solo tu.</string>
+    <string name="share_show_code">Mostra il codice di condivisione</string>
+    <string name="share_start">Inizia a condividere</string>
+    <string name="share_stop">Interrompi la condivisione su questo telefono</string>
+    <string name="share_your_name">Il tuo nome, come lo vedranno gli altri</string>
+</resources>

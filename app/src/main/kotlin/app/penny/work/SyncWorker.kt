@@ -31,7 +31,7 @@ class SyncWorker @AssistedInject constructor(
 ) : CoroutineWorker(context, params) {
     override suspend fun doWork(): Result {
         // Free folder sync (decision 53) runs on the same triggers; it needs no account.
-        if (folder.on) runCatching { folder.syncNow() }
+        if (folder.active) runCatching { folder.syncNow() }
         if (!sync.signedIn) { Widgets.refresh(applicationContext); return Result.success() }
         val before = sync.state.value.error
         sync.syncNow()

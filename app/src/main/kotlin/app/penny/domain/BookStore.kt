@@ -1,5 +1,9 @@
 package app.penny.domain
 
+import kotlinx.coroutines.flow.first
+
+import kotlinx.coroutines.launch
+
 import app.penny.packs.RegionalPack
 import app.penny.ui.common.MoneyFmt
 import kotlinx.coroutines.CoroutineScope
@@ -33,7 +37,14 @@ class BookStore @Inject constructor(private val repo: PennyRepository) {
     val state: StateFlow<BookLoad> = repo.observeBook().map { b ->
         runCatching {
             if (b == null) {
-                if (repo.currentProfileId.value == null) BookLoad.NoProfile else BookLoad.Loading
+                val id = repo.currentProfileId.value
+                // The open profile no longer exists here (deleted, or a shared book that has not arrived): open another
+                // one instead of spinning forever.
+                if (id != null) scope.launch {
+                    val ids = repo.observeProfiles().first().map { it.state.id }
+                    if (id !in ids && repo.currentProfileId.value == id) repo.prefs.setCurrentProfile(ids.firstOrNull())
+                }
+                if (id == null) BookLoad.NoProfile else BookLoad.Loading
             } else {
                 val pack = repo.packs.get(b.profile.regionPack)
                 BookLoad.Ready(b, pack, MoneyFmt.of(b.profile, pack))

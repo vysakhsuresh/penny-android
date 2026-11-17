@@ -133,6 +133,8 @@
     <string name="recipient_x">Geht an %1$s</string>
     <string name="not_decided">offen</string>
     <string name="payout_to">Ausgezahlt an %1$s</string>
+    <string name="recipient_you">Geht an dich</string>
+    <string name="payout_to_you">An dich ausgezahlt</string>
     <string name="paid_out">Ausgezahlt</string>
     <string name="close_circle">Sparkreis beenden</string>
     <string name="edit_circle">Sparkreis bearbeiten</string>
@@ -276,7 +278,7 @@
     <string name="spaces">Geteilte Bereiche</string>
     <string name="spaces_sub">Ein Budget mit deinem Haushalt teilen</string>
     <string name="sync_and_banks">Sync und Banken</string>
-    <string name="sync_sub">Geräte, Wiederherstellungsphrase, Bankverbindungen</string>
+    <string name="sync_sub">Kostenloser Sync zwischen deinen Geräten über einen Ordner</string>
     <string name="your_data">Deine Daten</string>
     <string name="data_backup">Daten und Sicherung</string>
     <string name="data_sub">Export, Import, Sicherung, Löschen</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">Schalte zuerst Sync ein.</string>
     <string name="link_lasts">Link gilt</string>
     <string name="create_advisor_link">Link erstellen</string>
-    <string name="spaces_body">Ein geteilter Bereich ist ein Budget, das du mit anderen teilst, jede Person mit eigener Anmeldung und Rolle. Alles darin ist Ende-zu-Ende-verschlüsselt.</string>
+    <string name="spaces_body">Ein geteilter Bereich ist ein Haushaltsbuch, das du mit Familie oder Freunden teilst. Es ist verschlüsselt, und nur Personen mit seinem Freigabecode können es öffnen.</string>
     <string name="spaces_need_sync">Geteilte Bereiche brauchen eingeschaltetes Sync.</string>
     <string name="your_spaces">Deine Bereiche</string>
     <string name="no_spaces">Du bist noch in keinem geteilten Bereich.</string>

@@ -133,6 +133,8 @@
     <string name="recipient_x">Vai para %1$s</string>
     <string name="not_decided">não definido</string>
     <string name="payout_to">Pago a %1$s</string>
+    <string name="recipient_you">Vai para você</string>
+    <string name="payout_to_you">Pago a você</string>
     <string name="paid_out">Pago</string>
     <string name="close_circle">Encerrar grupo</string>
     <string name="edit_circle">Editar grupo</string>
@@ -276,7 +278,7 @@
     <string name="spaces">Espaços compartilhados</string>
     <string name="spaces_sub">Compartilhe um orçamento com quem mora com você</string>
     <string name="sync_and_banks">Sincronização e bancos</string>
-    <string name="sync_sub">Aparelhos, frase de backup, conexões bancárias</string>
+    <string name="sync_sub">Sincronização grátis entre seus aparelhos por uma pasta</string>
     <string name="your_data">Seus dados</string>
     <string name="data_backup">Dados e backup</string>
     <string name="data_sub">Exportar, importar, backup, excluir</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">Ative a sincronização primeiro.</string>
     <string name="link_lasts">Validade do link</string>
     <string name="create_advisor_link">Criar link</string>
-    <string name="spaces_body">Um espaço compartilhado é um orçamento que você divide com outras pessoas, cada uma com seu login e sua função. Tudo nele tem criptografia de ponta a ponta.</string>
+    <string name="spaces_body">Um espaço compartilhado é um livro que você compartilha com a família ou os amigos. Ele é criptografado, e só quem tem o código de compartilhamento dele pode abri-lo.</string>
     <string name="spaces_need_sync">Os espaços compartilhados precisam da sincronização ativa.</string>
     <string name="your_spaces">Seus espaços</string>
     <string name="no_spaces">Você ainda não está em nenhum espaço compartilhado.</string>

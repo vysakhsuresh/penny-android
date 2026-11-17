@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">アカウントもサーバーも不要です。Penny は変更内容を暗号化して、選んだフォルダに保存します。Syncthing などの無料同期アプリや、Google Drive・OneDrive のフォルダ同期アプリを使って、ほかのスマートフォンやタブレットでも同じフォルダを保つようにしてください。ファイルを開けるのはあなたの復元フレーズだけです。</string>
+    <string name="folder_sync_choose">フォルダを選択</string>
+    <string name="folder_sync_empty">フォルダは開きましたが、まだ家計簿が届いていません。同期アプリのコピーが終わるまで待ってから、もう一度お試しください。</string>
+    <string name="folder_sync_failed">フォルダを開けませんでした。フォルダがまだ存在するか確認するか、もう一度選択してください。</string>
+    <string name="folder_sync_join_body">このフォルダには、別の端末の Penny データがすでにあります。その端末で書き留めた 24 語の復元フレーズを入力してください。</string>
+    <string name="folder_sync_join_title">このフォルダを開く</string>
+    <string name="folder_sync_keep_same">別の端末に Penny をインストールし、同期を開いて同じフォルダを選び、復元フレーズを入力してください。</string>
+    <string name="folder_sync_not_penny">このフォルダにはまだ Penny の同期ファイルがありません。ほかの端末が同期しているフォルダを選んでください。</string>
+    <string name="folder_sync_on">フォルダ「%1$s」で同期しています。</string>
+    <string name="folder_sync_partial">一部の変更はまだフォルダにコピー中です。Penny はまもなく再試行します。</string>
+    <string name="folder_sync_phrase_body">この 24 語を書き留めて、安全に保管してください。別の端末でこのフォルダを開くときや、暗号化バックアップを復元するときに必要です。Penny では二度と表示できません。</string>
+    <string name="folder_sync_stop">この端末での同期を停止</string>
+    <string name="folder_sync_title">フォルダで同期（無料）</string>
+    <string name="ob_join_folder">別の端末で Penny を使っています</string>
+    <string name="own_server_body">Penny のオープンソース同期サーバーを自分で運用している人向けです。ほとんどの方は上のフォルダ同期をお使いください。</string>
+    <string name="own_server_title">自分の同期サーバー（上級者向け）</string>
+    <string name="quick_add_needs_account">先に口座を追加してから（設定 › 口座）、保存してください。Penny はお金がどこから出たかを知る必要があります。</string>
+    <string name="relay_server">同期サーバーのアドレス</string>
+    <string name="relay_server_required">サーバーのアドレス（例: https://sync.example.com）</string>
+    <string name="share_choose_folder">共有用の空のフォルダを選択</string>
+    <string name="share_code_body">この 24 語は、この家計簿を共有する相手にだけ渡してください。フォルダとこの言葉の両方を持つ人は、誰でも家計簿を閲覧・変更できます。これはあなた個人の復元フレーズではありません。</string>
+    <string name="share_code_title">共有コード</string>
+    <string name="share_folder_not_empty">このフォルダにはすでに Penny のファイルがあります。この家計簿専用の、新しい空のフォルダを選んでください。</string>
+    <string name="share_free_body">アカウントもサーバーも不要です。Penny はこの家計簿を暗号化して専用のフォルダに保存し、そのフォルダをほかの人と共有します。たとえば Syncthing のフォルダや、アプリで同期される Google Drive・OneDrive の共有フォルダが使えます。相手に渡す 24 語の共有コードが発行されます。</string>
+    <string name="share_free_how_others">メンバーを追加するには、フォルダを相手と共有し、共有コードを直接またはメッセージで伝えてください。相手は自分のスマートフォンで「共有スペース」を開き、「共有家計簿に参加」をタップします。コードを持つ人は全員、この家計簿を閲覧・変更できます。</string>
+    <string name="share_free_on">フォルダ「%1$s」で共有しています。</string>
+    <string name="share_free_title">この家計簿を共有（無料）</string>
+    <string name="share_join_body">家計簿を共有してもらいましたか？同期アプリがこのスマートフォンに保存している共有フォルダを選び、受け取った共有コードを入力してください。</string>
+    <string name="share_join_choose">共有家計簿に参加</string>
+    <string name="share_only_you">今のところあなただけです。</string>
+    <string name="share_show_code">共有コードを表示</string>
+    <string name="share_start">共有を開始</string>
+    <string name="share_stop">このスマートフォンでの共有を停止</string>
+    <string name="share_your_name">ほかのメンバーに表示されるあなたの名前</string>
+</resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">Без облікового запису й без сервера. Penny зберігає ваші зміни в зашифрованому вигляді в папці, яку ви оберете. Підтримуйте цю папку однаковою на інших телефонах і планшетах за допомогою безкоштовного застосунку для синхронізації, як-от Syncthing, або застосунку для синхронізації папок Google Drive чи OneDrive. Відкрити файли можна лише з вашою фразою відновлення.</string>
+    <string name="folder_sync_choose">Вибрати папку</string>
+    <string name="folder_sync_empty">Папку відкрито, але книга в ній ще не з’явилася. Зачекайте, доки застосунок синхронізації завершить копіювання, і спробуйте ще раз.</string>
+    <string name="folder_sync_failed">Не вдалося відкрити папку. Перевірте, чи вона ще існує, або виберіть її знову.</string>
+    <string name="folder_sync_join_body">У цій папці вже є дані Penny з іншого пристрою. Введіть фразу відновлення з 24 слів, яку ви там записали.</string>
+    <string name="folder_sync_join_title">Відкрити цю папку</string>
+    <string name="folder_sync_keep_same">На іншому пристрої встановіть Penny, відкрийте «Синхронізація», виберіть ту саму папку й введіть свою фразу відновлення.</string>
+    <string name="folder_sync_not_penny">У цій папці ще немає файлів синхронізації Penny. Виберіть папку, з якою синхронізується ваш інший пристрій.</string>
+    <string name="folder_sync_on">Синхронізація через папку «%1$s».</string>
+    <string name="folder_sync_partial">Деякі зміни ще копіюються в папку. Penny незабаром спробує знову.</string>
+    <string name="folder_sync_phrase_body">Запишіть ці 24 слова й зберігайте їх у надійному місці. Вони потрібні, щоб відкрити цю папку на іншому пристрої та відновити зашифровану резервну копію. Penny не зможе показати їх знову.</string>
+    <string name="folder_sync_stop">Зупинити синхронізацію на цьому пристрої</string>
+    <string name="folder_sync_title">Синхронізація через папку (безкоштовно)</string>
+    <string name="ob_join_folder">Я користуюся Penny на іншому пристрої</string>
+    <string name="own_server_body">Лише для тих, хто сам запускає сервер синхронізації Penny з відкритим кодом. Більшості варто використовувати синхронізацію через папку вище.</string>
+    <string name="own_server_title">Власний сервер синхронізації (для досвідчених)</string>
+    <string name="quick_add_needs_account">Спершу додайте рахунок (Налаштування › Рахунки), потім збережіть. Penny має знати, звідки надійшли гроші.</string>
+    <string name="relay_server">Адреса сервера синхронізації</string>
+    <string name="relay_server_required">Адреса вашого сервера, наприклад https://sync.example.com</string>
+    <string name="share_choose_folder">Виберіть порожню папку для спільного доступу</string>
+    <string name="share_code_body">Передавайте ці 24 слова лише тим, з ким ви ділите цю книгу. Будь-хто, у кого є папка й ці слова, може читати й змінювати її. Це не ваша особиста фраза відновлення.</string>
+    <string name="share_code_title">Код доступу</string>
+    <string name="share_folder_not_empty">У цій папці вже є файли Penny. Виберіть нову порожню папку лише для цієї книги.</string>
+    <string name="share_free_body">Без облікового запису й без сервера. Penny зберігає цю книгу в зашифрованому вигляді в окремій папці, до якої ви відкриваєте доступ іншим, наприклад у папці Syncthing або спільній папці Google Drive чи OneDrive, яку синхронізує застосунок. Ви отримаєте код доступу з 24 слів, щоб передати його їм.</string>
+    <string name="share_free_how_others">Щоб додати когось, відкрийте цій людині доступ до папки, а потім передайте код доступу особисто чи в повідомленні. На своєму телефоні вона відкриває «Спільні простори» й торкається «Приєднатися до спільної книги». Усі, хто має код, можуть читати й змінювати цю книгу.</string>
+    <string name="share_free_on">Спільний доступ через папку «%1$s».</string>
+    <string name="share_free_title">Поділитися цією книгою (безкоштовно)</string>
+    <string name="share_join_body">Хтось поділився з вами книгою? Виберіть спільну папку, яку застосунок синхронізації зберігає на цьому телефоні, і введіть отриманий код доступу.</string>
+    <string name="share_join_choose">Приєднатися до спільної книги</string>
+    <string name="share_only_you">Поки що лише ви.</string>
+    <string name="share_show_code">Показати код доступу</string>
+    <string name="share_start">Почати ділитися</string>
+    <string name="share_stop">Припинити спільний доступ на цьому телефоні</string>
+    <string name="share_your_name">Ваше ім’я, як його бачитимуть інші</string>
+</resources>

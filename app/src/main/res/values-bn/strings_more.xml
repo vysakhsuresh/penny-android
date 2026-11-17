@@ -133,6 +133,8 @@
     <string name="recipient_x">%1$s পাবেন</string>
     <string name="not_decided">ঠিক হয়নি</string>
     <string name="payout_to">%1$s-কে দেওয়া হয়েছে</string>
+    <string name="recipient_you">আপনি পাবেন</string>
+    <string name="payout_to_you">আপনাকে দেওয়া হয়েছে</string>
     <string name="paid_out">দেওয়া হয়েছে</string>
     <string name="close_circle">সমিতি বন্ধ করুন</string>
     <string name="edit_circle">সমিতি সম্পাদনা</string>
@@ -276,7 +278,7 @@
     <string name="spaces">শেয়ার করা স্পেস</string>
     <string name="spaces_sub">পরিবারের সঙ্গে বাজেট শেয়ার করুন</string>
     <string name="sync_and_banks">সিঙ্ক আর ব্যাংক</string>
-    <string name="sync_sub">ডিভাইস, ব্যাকআপ বাক্যাংশ, ব্যাংক সংযোগ</string>
+    <string name="sync_sub">একটি ফোল্ডারের মাধ্যমে আপনার ডিভাইসগুলোর মধ্যে ফ্রি সিঙ্ক</string>
     <string name="your_data">আপনার ডেটা</string>
     <string name="data_backup">ডেটা আর ব্যাকআপ</string>
     <string name="data_sub">এক্সপোর্ট, ইমপোর্ট, ব্যাকআপ, মুছুন</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">আগে সিঙ্ক চালু করুন।</string>
     <string name="link_lasts">লিংকের মেয়াদ</string>
     <string name="create_advisor_link">লিংক তৈরি করুন</string>
-    <string name="spaces_body">শেয়ার করা স্পেস হলো একটি বাজেট যা আপনি অন্যদের সঙ্গে শেয়ার করেন, প্রত্যেকের নিজস্ব লগইন আর ভূমিকাসহ। এর সবকিছু এন্ড-টু-এন্ড এনক্রিপ্ট করা।</string>
+    <string name="spaces_body">শেয়ার করা স্পেস হলো একটি খাতা যা আপনি পরিবার বা বন্ধুদের সঙ্গে শেয়ার করেন। এটি এনক্রিপ্ট করা, আর শুধু যাঁদের কাছে এর শেয়ার কোড আছে তাঁরাই এটি খুলতে পারেন।</string>
     <string name="spaces_need_sync">শেয়ার করা স্পেসের জন্য সিঙ্ক চালু থাকতে হবে।</string>
     <string name="your_spaces">আপনার স্পেস</string>
     <string name="no_spaces">আপনি এখনও কোনো শেয়ার করা স্পেসে নেই।</string>

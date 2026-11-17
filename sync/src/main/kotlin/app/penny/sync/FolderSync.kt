@@ -42,8 +42,13 @@ class FolderSync(
     private val folder: SyncFolder,
     private val deviceId: String,
     private val phraseToKey: (phrase: String, salt: ByteArray) -> ByteArray = StreamCrypto::masterKey,
+    /** Cursor namespace: each folder keeps its own, so the same book in two folders is sent to each in full. */
+    private val kvPrefix: String = "fsync",
 ) {
     private val ser = ListSerializer(Event.serializer())
+
+    /** Streams (books) the folder holds keys for; a shared book's folder holds exactly one. */
+    suspend fun streamIds(): List<String> = folder.list(KEYS).filter { it.endsWith(".key") }.map { it.removeSuffix(".key") }
 
     /** True when the folder already holds a Penny sync set (another device set it up). */
     suspend fun isSetUp(): Boolean = folder.read(SALT) != null
@@ -69,9 +74,10 @@ class FolderSync(
      * Pushes this device's events for [localStreams] and pulls every stream in the folder. One stream or one unreadable
      * file never stops the rest; the first problem is returned in [FolderSyncResult.error] and retried next time.
      */
-    suspend fun sync(master: ByteArray, localStreams: List<String>): FolderSyncResult {
+    suspend fun sync(master: ByteArray, localStreams: List<String>, skip: Set<String> = emptySet()): FolderSyncResult {
         var pushed = 0; var pulled = 0; var error: Throwable? = null
-        val keys = streamKeys(master, localStreams)
+        // [skip]: books deleted on this phone; the folder still has them for other devices, but they must not come back here.
+        val keys = streamKeys(master, localStreams.filter { it !in skip }).filterKeys { it !in skip }
         for ((stream, key) in keys) {
             runCatching {
                 if (stream in localStreams) pushed += push(stream, key)
@@ -99,7 +105,7 @@ class FolderSync(
 
     private suspend fun push(stream: String, key: ByteArray): Int {
         var total = 0
-        var after = kv.get("fsync.pushed.$stream")?.toLongOrNull() ?: 0
+        var after = kv.get("$kvPrefix.pushed.$stream")?.toLongOrNull() ?: 0
         while (true) {
             val batch = store.eventsAfter(stream, after, BATCH)
             if (batch.isEmpty()) break
@@ -107,7 +113,7 @@ class FolderSync(
             val plain = SyncEngine.deflate(PennyJson.encodeToString(ser, batch).toByteArray())
             folder.write("$STREAMS/$stream/${fileName(deviceId, last)}", StreamCrypto.seal(key, plain, "batch:$stream"))
             after = last
-            kv.put("fsync.pushed.$stream", after.toString())
+            kv.put("$kvPrefix.pushed.$stream", after.toString())
             total += batch.size
             if (batch.size < BATCH) break
         }
@@ -117,9 +123,11 @@ class FolderSync(
     private suspend fun pull(stream: String, key: ByteArray): Int {
         var total = 0
         var failure: Throwable? = null
-        val byDevice = folder.list("$STREAMS/$stream").mapNotNull(::parse).filter { it.device != deviceId }.groupBy { it.device }
+        // This device's own files are read too: ingest skips events already here, and after a book was deleted and joined
+        // again on this phone they are the only copy of its history.
+        val byDevice = folder.list("$STREAMS/$stream").mapNotNull(::parse).groupBy { it.device }
         for ((device, files) in byDevice) {
-            var cursor = kv.get("fsync.cursor.$stream.$device")?.toLongOrNull() ?: 0
+            var cursor = kv.get("$kvPrefix.cursor.$stream.$device")?.toLongOrNull() ?: 0
             for (f in files.filter { it.seq > cursor }.sortedBy { it.seq }) {
                 // A file still being copied in by the sync tool fails to open: stop at it for this device so nothing after
                 // it is skipped, and read it again next time.
@@ -130,7 +138,7 @@ class FolderSync(
                 // Only events for this stream are accepted (a file cannot smuggle events into another book).
                 total += store.ingest(events.filter { it.profileId == stream }).size
                 cursor = f.seq
-                kv.put("fsync.cursor.$stream.$device", cursor.toString())
+                kv.put("$kvPrefix.cursor.$stream.$device", cursor.toString())
             }
         }
         failure?.let { throw it }

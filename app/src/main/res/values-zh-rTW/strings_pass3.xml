@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">無需帳號，也無需伺服器。Penny 會將你的變更加密儲存在你選擇的資料夾中。使用 Syncthing 等免費同步應用程式，或 Google Drive、OneDrive 的資料夾同步應用程式，讓你其他手機和平板上的這個資料夾保持一致。只有你的復原詞組才能開啟這些檔案。</string>
+    <string name="folder_sync_choose">選擇資料夾</string>
+    <string name="folder_sync_empty">資料夾已開啟，但尚未收到帳本。請等同步應用程式複製完成後再試一次。</string>
+    <string name="folder_sync_failed">無法開啟資料夾。請確認它是否仍存在，或重新選擇。</string>
+    <string name="folder_sync_join_body">此資料夾已有來自另一部裝置的 Penny 資料。請輸入你在那部裝置上抄下的 24 個字的復原詞組。</string>
+    <string name="folder_sync_join_title">開啟此資料夾</string>
+    <string name="folder_sync_keep_same">在另一部裝置上安裝 Penny，開啟同步，選擇同一個資料夾並輸入你的復原詞組。</string>
+    <string name="folder_sync_not_penny">該資料夾中還沒有 Penny 同步檔案。請選擇你另一部裝置所同步的資料夾。</string>
+    <string name="folder_sync_on">正在透過資料夾「%1$s」同步。</string>
+    <string name="folder_sync_partial">部分變更仍在複製到資料夾中。Penny 稍後會再試一次。</string>
+    <string name="folder_sync_phrase_body">請抄下這 24 個字並妥善保管。在另一部裝置上開啟此資料夾或還原加密備份時都需要它們。Penny 無法再次顯示。</string>
+    <string name="folder_sync_stop">在此裝置上停止同步</string>
+    <string name="folder_sync_title">透過資料夾同步（免費）</string>
+    <string name="ob_join_folder">我在另一部裝置上使用 Penny</string>
+    <string name="own_server_body">僅適用於自行架設 Penny 開放原始碼同步伺服器的使用者。大多數人應使用上方的資料夾同步。</string>
+    <string name="own_server_title">自己的同步伺服器（進階）</string>
+    <string name="quick_add_needs_account">請先新增帳戶（設定 › 帳戶），再儲存。Penny 需要知道這筆錢從哪裡來。</string>
+    <string name="relay_server">同步伺服器位址</string>
+    <string name="relay_server_required">你的伺服器位址，例如 https://sync.example.com</string>
+    <string name="share_choose_folder">選擇要共用的空資料夾</string>
+    <string name="share_code_body">這 24 個字只能交給與你共用此帳本的人。任何擁有該資料夾和這些字的人都能查看和修改它。這不是你個人的復原詞組。</string>
+    <string name="share_code_title">共用代碼</string>
+    <string name="share_folder_not_empty">該資料夾已有 Penny 檔案。請為此帳本另外選擇一個新的空資料夾。</string>
+    <string name="share_free_body">無需帳號，也無需伺服器。Penny 會將此帳本加密保存在專屬資料夾中，由你與其他人共用，例如 Syncthing 資料夾，或由應用程式保持同步的 Google Drive、OneDrive 共用資料夾。你會取得一組 24 個字的共用代碼，交給他們即可。</string>
+    <string name="share_free_how_others">新增成員：先與對方共用資料夾，再當面或透過訊息把共用代碼告訴對方。對方在手機上開啟「共用空間」，輕觸「加入共用帳本」。擁有代碼的人都能查看和修改此帳本。</string>
+    <string name="share_free_on">正在透過資料夾「%1$s」共用。</string>
+    <string name="share_free_title">共用此帳本（免費）</string>
+    <string name="share_join_body">有人與你共用了帳本？請選擇同步應用程式在此手機上保存的共用資料夾，然後輸入對方給你的共用代碼。</string>
+    <string name="share_join_choose">加入共用帳本</string>
+    <string name="share_only_you">目前只有你。</string>
+    <string name="share_show_code">顯示共用代碼</string>
+    <string name="share_start">開始共用</string>
+    <string name="share_stop">在此手機上停止共用</string>
+    <string name="share_your_name">你的名字（其他人會看到）</string>
+</resources>

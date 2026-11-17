@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">لا حاجة إلى حساب ولا إلى خادم. يحفظ Penny تغييراتك مشفّرةً في مجلد تختاره. اجعل هذا المجلد متطابقًا على هواتفك وأجهزتك اللوحية الأخرى بتطبيق مزامنة مجاني مثل Syncthing، أو بتطبيق لمزامنة مجلدات Google Drive أو OneDrive. لا تفتح الملفاتِ إلا عبارةُ الاسترداد الخاصة بك.</string>
+    <string name="folder_sync_choose">اختر مجلدًا</string>
+    <string name="folder_sync_empty">فُتح المجلد، لكن لم يصل أي دفتر بعد. انتظر حتى ينتهي تطبيق المزامنة من النسخ، ثم حاول مرة أخرى.</string>
+    <string name="folder_sync_failed">تعذّر فتح المجلد. تأكد من أنه ما زال موجودًا، أو اختره مرة أخرى.</string>
+    <string name="folder_sync_join_body">يحتوي هذا المجلد بالفعل على بيانات Penny من جهاز آخر. اكتب عبارة الاسترداد المكوّنة من 24 كلمة التي دوّنتها هناك.</string>
+    <string name="folder_sync_join_title">فتح هذا المجلد</string>
+    <string name="folder_sync_keep_same">على جهاز آخر: ثبّت Penny، وافتح المزامنة، واختر المجلد نفسه، واكتب عبارة الاسترداد.</string>
+    <string name="folder_sync_not_penny">لا يحتوي هذا المجلد على ملفات مزامنة Penny بعد. اختر المجلد الذي يُزامن إليه جهازك الآخر.</string>
+    <string name="folder_sync_on">تجري المزامنة عبر المجلد «%1$s».</string>
+    <string name="folder_sync_partial">ما زالت بعض التغييرات قيد النسخ إلى المجلد. سيحاول Penny مرة أخرى بعد قليل.</string>
+    <string name="folder_sync_phrase_body">دوّن هذه الكلمات الـ24 واحفظها في مكان آمن. ستحتاج إليها لفتح هذا المجلد على جهاز آخر، ولاستعادة نسخة احتياطية مشفّرة. لا يستطيع Penny عرضها مرة أخرى.</string>
+    <string name="folder_sync_stop">إيقاف المزامنة على هذا الجهاز</string>
+    <string name="folder_sync_title">المزامنة عبر مجلد (مجانًا)</string>
+    <string name="ob_join_folder">أستخدم Penny على جهاز آخر</string>
+    <string name="own_server_body">فقط لمن يشغّلون بأنفسهم خادم المزامنة مفتوح المصدر الخاص بـ Penny. ينبغي لمعظم الناس استخدام المزامنة عبر مجلد أعلاه.</string>
+    <string name="own_server_title">خادم المزامنة الخاص بك (متقدّم)</string>
+    <string name="quick_add_needs_account">أضف حسابًا أولًا (الإعدادات › الحسابات)، ثم احفظ. يحتاج Penny إلى معرفة مصدر المال.</string>
+    <string name="relay_server">عنوان خادم المزامنة</string>
+    <string name="relay_server_required">عنوان خادمك، مثلًا https://sync.example.com</string>
+    <string name="share_choose_folder">اختر مجلدًا فارغًا للمشاركة</string>
+    <string name="share_code_body">لا تعطِ هذه الكلمات الـ24 إلا للأشخاص الذين تشارك معهم هذا الدفتر. يستطيع أي شخص لديه المجلد وهذه الكلمات قراءته وتغييره. هذه ليست عبارة الاسترداد الشخصية الخاصة بك.</string>
+    <string name="share_code_title">رمز المشاركة</string>
+    <string name="share_folder_not_empty">يحتوي هذا المجلد بالفعل على ملفات Penny. اختر مجلدًا جديدًا فارغًا لهذا الدفتر وحده.</string>
+    <string name="share_free_body">لا حاجة إلى حساب ولا إلى خادم. يحفظ Penny هذا الدفتر مشفّرًا في مجلد خاص به تشاركه مع الآخرين، مثل مجلد Syncthing أو مجلد مشترك على Google Drive أو OneDrive يُبقيه تطبيقٌ متزامنًا. ستحصل على رمز مشاركة من 24 كلمة لتعطيه لهم.</string>
+    <string name="share_free_how_others">لإضافة شخص: شارك المجلد معه، ثم أعطه رمز المشاركة وجهًا لوجه أو في رسالة. على هاتفه يفتح «المساحات المشتركة» وينقر «الانضمام إلى دفتر مشترك». يستطيع كل من لديه الرمز قراءة هذا الدفتر وتغييره.</string>
+    <string name="share_free_on">تجري المشاركة عبر المجلد «%1$s».</string>
+    <string name="share_free_title">مشاركة هذا الدفتر (مجانًا)</string>
+    <string name="share_join_body">هل شاركك أحدهم دفترًا؟ اختر المجلد المشترك الذي يحفظه تطبيق المزامنة على هذا الهاتف، ثم اكتب رمز المشاركة الذي أعطاك إياه.</string>
+    <string name="share_join_choose">الانضمام إلى دفتر مشترك</string>
+    <string name="share_only_you">أنت فقط حتى الآن.</string>
+    <string name="share_show_code">عرض رمز المشاركة</string>
+    <string name="share_start">بدء المشاركة</string>
+    <string name="share_stop">إيقاف المشاركة على هذا الهاتف</string>
+    <string name="share_your_name">اسمك كما سيراه الآخرون</string>
+</resources>

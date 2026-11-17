@@ -133,6 +133,8 @@
     <string name="recipient_x">Получает %1$s</string>
     <string name="not_decided">не определено</string>
     <string name="payout_to">Выплачено: %1$s</string>
+    <string name="recipient_you">Получаете вы</string>
+    <string name="payout_to_you">Выплачено вам</string>
     <string name="paid_out">Выплачено</string>
     <string name="close_circle">Закрыть круг</string>
     <string name="edit_circle">Изменить круг</string>
@@ -276,7 +278,7 @@
     <string name="spaces">Общие пространства</string>
     <string name="spaces_sub">Общий бюджет с семьёй</string>
     <string name="sync_and_banks">Синхронизация и банки</string>
-    <string name="sync_sub">Устройства, фраза восстановления, подключения к банкам</string>
+    <string name="sync_sub">Бесплатная синхронизация между вашими устройствами через папку</string>
     <string name="your_data">Ваши данные</string>
     <string name="data_backup">Данные и резервные копии</string>
     <string name="data_sub">Экспорт, импорт, резервное копирование, удаление</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">Сначала включите синхронизацию.</string>
     <string name="link_lasts">Срок действия ссылки</string>
     <string name="create_advisor_link">Создать ссылку</string>
-    <string name="spaces_body">Общее пространство — это бюджет, который вы ведёте вместе с другими, у каждого свой вход и роль. Всё в нём защищено сквозным шифрованием.</string>
+    <string name="spaces_body">Общее пространство — это книга, которую вы ведёте вместе с семьёй или друзьями. Она зашифрована, и открыть её могут только те, у кого есть её код доступа.</string>
     <string name="spaces_need_sync">Для общих пространств нужна синхронизация.</string>
     <string name="your_spaces">Ваши пространства</string>
     <string name="no_spaces">Вы пока не состоите ни в одном общем пространстве.</string>

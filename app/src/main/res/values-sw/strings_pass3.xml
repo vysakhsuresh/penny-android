@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">Hakuna akaunti wala seva. Penny huhifadhi mabadiliko yako, yakiwa yamesimbwa, kwenye folda unayochagua. Iweke folda hiyo sawa kwenye simu na kompyuta kibao zako nyingine kwa programu ya bure ya kusawazisha kama Syncthing, au programu ya kusawazisha folda ya Google Drive au OneDrive. Kifungu chako cha urejeshaji pekee ndicho kinachoweza kufungua faili hizi.</string>
+    <string name="folder_sync_choose">Chagua folda</string>
+    <string name="folder_sync_empty">Folda imefunguka, lakini hakuna daftari lililofika bado. Subiri programu yako ya kusawazisha imalize kunakili, kisha ujaribu tena.</string>
+    <string name="folder_sync_failed">Imeshindwa kufungua folda. Hakikisha bado ipo, au uichague tena.</string>
+    <string name="folder_sync_join_body">Folda hii tayari ina data ya Penny kutoka kifaa kingine. Andika kifungu cha urejeshaji cha maneno 24 ulichokiandika huko.</string>
+    <string name="folder_sync_join_title">Fungua folda hii</string>
+    <string name="folder_sync_keep_same">Kwenye kifaa kingine, sakinisha Penny, fungua Usawazishaji, chagua folda ileile na uandike kifungu chako cha urejeshaji.</string>
+    <string name="folder_sync_not_penny">Folda hiyo bado haina faili za usawazishaji za Penny. Chagua folda ambayo kifaa chako kingine kinasawazisha.</string>
+    <string name="folder_sync_on">Inasawazisha kupitia folda “%1$s”.</string>
+    <string name="folder_sync_partial">Baadhi ya mabadiliko bado yananakiliwa kwenye folda. Penny itajaribu tena hivi karibuni.</string>
+    <string name="folder_sync_phrase_body">Andika maneno haya 24 na uyahifadhi mahali salama. Unayahitaji ili kufungua folda hii kwenye kifaa kingine, na kurejesha nakala rudufu iliyosimbwa. Penny haiwezi kuyaonyesha tena.</string>
+    <string name="folder_sync_stop">Acha kusawazisha kwenye kifaa hiki</string>
+    <string name="folder_sync_title">Sawazisha kupitia folda (bure)</string>
+    <string name="ob_join_folder">Ninatumia Penny kwenye kifaa kingine</string>
+    <string name="own_server_body">Ni kwa watu wanaoendesha wenyewe seva ya usawazishaji ya Penny ya chanzo huria. Watu wengi wanapaswa kutumia usawazishaji wa folda hapo juu.</string>
+    <string name="own_server_title">Seva yako ya usawazishaji (ya hali ya juu)</string>
+    <string name="quick_add_needs_account">Ongeza akaunti kwanza (Mipangilio › Akaunti), kisha uhifadhi. Penny inahitaji kujua pesa zilitoka wapi.</string>
+    <string name="relay_server">Anwani ya seva ya usawazishaji</string>
+    <string name="relay_server_required">Anwani ya seva yako, kwa mfano https://sync.example.com</string>
+    <string name="share_choose_folder">Chagua folda tupu ya kushiriki</string>
+    <string name="share_code_body">Wape maneno haya 24 watu unaoshiriki nao daftari hili pekee. Yeyote aliye na folda na maneno haya anaweza kulisoma na kulibadilisha. Hiki si kifungu chako binafsi cha urejeshaji.</string>
+    <string name="share_code_title">Msimbo wa kushiriki</string>
+    <string name="share_folder_not_empty">Folda hiyo tayari ina faili za Penny. Chagua folda mpya tupu kwa ajili ya daftari hili pekee.</string>
+    <string name="share_free_body">Hakuna akaunti wala seva. Penny huhifadhi daftari hili, likiwa limesimbwa, kwenye folda yake yenyewe unayoshiriki na wengine, kwa mfano folda ya Syncthing au folda ya pamoja ya Google Drive au OneDrive inayosawazishwa na programu. Utapata msimbo wa kushiriki wa maneno 24 wa kuwapa.</string>
+    <string name="share_free_how_others">Kuongeza mtu: shiriki folda naye, kisha mpe msimbo wa kushiriki ana kwa ana au kwa ujumbe. Kwenye simu yake, anafungua Nafasi za pamoja na kugusa Jiunge na daftari la pamoja. Kila aliye na msimbo anaweza kusoma na kubadilisha daftari hili.</string>
+    <string name="share_free_on">Inashirikiwa kupitia folda “%1$s”.</string>
+    <string name="share_free_title">Shiriki daftari hili (bure)</string>
+    <string name="share_join_body">Kuna mtu amekushirikisha daftari? Chagua folda ya pamoja ambayo programu ya kusawazisha inaiweka kwenye simu hii, kisha uandike msimbo wa kushiriki aliokupa.</string>
+    <string name="share_join_choose">Jiunge na daftari la pamoja</string>
+    <string name="share_only_you">Ni wewe tu kwa sasa.</string>
+    <string name="share_show_code">Onyesha msimbo wa kushiriki</string>
+    <string name="share_start">Anza kushiriki</string>
+    <string name="share_stop">Acha kushiriki kwenye simu hii</string>
+    <string name="share_your_name">Jina lako, kama wengine watakavyoliona</string>
+</resources>

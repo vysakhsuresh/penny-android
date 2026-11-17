@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">Ni compte ni serveur. Penny enregistre vos modifications, chiffrées, dans un dossier de votre choix. Gardez ce dossier identique sur vos autres téléphones et tablettes avec une appli de synchronisation gratuite comme Syncthing, ou une appli de synchronisation de dossiers Google Drive ou OneDrive. Seule votre phrase de récupération peut ouvrir les fichiers.</string>
+    <string name="folder_sync_choose">Choisir un dossier</string>
+    <string name="folder_sync_empty">Le dossier s’est ouvert, mais aucun carnet n’est encore arrivé. Attendez que votre appli de synchronisation ait fini de copier, puis réessayez.</string>
+    <string name="folder_sync_failed">Impossible d’ouvrir le dossier. Vérifiez qu’il existe toujours, ou choisissez-le à nouveau.</string>
+    <string name="folder_sync_join_body">Ce dossier contient déjà des données Penny d’un autre appareil. Saisissez la phrase de récupération de 24 mots que vous avez notée là-bas.</string>
+    <string name="folder_sync_join_title">Ouvrir ce dossier</string>
+    <string name="folder_sync_keep_same">Sur un autre appareil, installez Penny, ouvrez Synchronisation, choisissez le même dossier et saisissez votre phrase de récupération.</string>
+    <string name="folder_sync_not_penny">Ce dossier ne contient encore aucun fichier de synchronisation Penny. Choisissez le dossier avec lequel votre autre appareil se synchronise.</string>
+    <string name="folder_sync_on">Synchronisation via le dossier « %1$s ».</string>
+    <string name="folder_sync_partial">Certaines modifications sont encore en cours de copie dans le dossier. Penny va réessayer sous peu.</string>
+    <string name="folder_sync_phrase_body">Notez ces 24 mots et conservez-les en lieu sûr. Ils vous seront nécessaires pour ouvrir ce dossier sur un autre appareil et pour restaurer une sauvegarde chiffrée. Penny ne pourra plus les afficher.</string>
+    <string name="folder_sync_stop">Arrêter la synchronisation sur cet appareil</string>
+    <string name="folder_sync_title">Synchroniser via un dossier (gratuit)</string>
+    <string name="ob_join_folder">J’utilise Penny sur un autre appareil</string>
+    <string name="own_server_body">Uniquement pour les personnes qui hébergent elles-mêmes le serveur de synchronisation open source de Penny. La plupart des gens devraient utiliser la synchronisation par dossier ci-dessus.</string>
+    <string name="own_server_title">Votre propre serveur de synchronisation (avancé)</string>
+    <string name="quick_add_needs_account">Ajoutez d’abord un compte (Paramètres › Comptes), puis enregistrez. Penny doit savoir d’où vient l’argent.</string>
+    <string name="relay_server">Adresse du serveur de synchronisation</string>
+    <string name="relay_server_required">L’adresse de votre serveur, par exemple https://sync.example.com</string>
+    <string name="share_choose_folder">Choisir un dossier vide à partager</string>
+    <string name="share_code_body">Ne donnez ces 24 mots qu’aux personnes avec qui vous partagez ce carnet. Toute personne disposant du dossier et de ces mots peut le lire et le modifier. Ce n’est pas votre phrase de récupération personnelle.</string>
+    <string name="share_code_title">Code de partage</string>
+    <string name="share_folder_not_empty">Ce dossier contient déjà des fichiers Penny. Choisissez un nouveau dossier vide, réservé à ce carnet.</string>
+    <string name="share_free_body">Ni compte ni serveur. Penny conserve ce carnet, chiffré, dans un dossier dédié que vous partagez avec les autres, par exemple un dossier Syncthing ou un dossier Google Drive ou OneDrive partagé, synchronisé par une appli. Vous obtenez un code de partage de 24 mots à leur transmettre.</string>
+    <string name="share_free_how_others">Pour ajouter quelqu’un : partagez le dossier avec cette personne, puis donnez-lui le code de partage en main propre ou par message. Sur son téléphone, elle ouvre Espaces partagés et appuie sur Rejoindre un carnet partagé. Toute personne disposant du code peut lire et modifier ce carnet.</string>
+    <string name="share_free_on">Partagé via le dossier « %1$s ».</string>
+    <string name="share_free_title">Partager ce carnet (gratuit)</string>
+    <string name="share_join_body">Quelqu’un a partagé un carnet avec vous ? Choisissez le dossier partagé que l’appli de synchronisation conserve sur ce téléphone, puis saisissez le code de partage qu’on vous a donné.</string>
+    <string name="share_join_choose">Rejoindre un carnet partagé</string>
+    <string name="share_only_you">Vous seul pour l’instant.</string>
+    <string name="share_show_code">Afficher le code de partage</string>
+    <string name="share_start">Commencer le partage</string>
+    <string name="share_stop">Arrêter le partage sur ce téléphone</string>
+    <string name="share_your_name">Votre nom, tel que les autres le verront</string>
+</resources>

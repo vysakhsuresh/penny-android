@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">Kein Konto und kein Server. Penny speichert deine Änderungen verschlüsselt in einem Ordner deiner Wahl. Halte diesen Ordner auf deinen anderen Handys und Tablets gleich – mit einer kostenlosen Sync-App wie Syncthing oder einer Ordner-Sync-App für Google Drive oder OneDrive. Nur deine Wiederherstellungsphrase kann die Dateien öffnen.</string>
+    <string name="folder_sync_choose">Ordner wählen</string>
+    <string name="folder_sync_empty">Der Ordner wurde geöffnet, aber noch ist kein Haushaltsbuch angekommen. Warte, bis deine Sync-App fertig kopiert hat, und versuche es dann erneut.</string>
+    <string name="folder_sync_failed">Der Ordner konnte nicht geöffnet werden. Prüfe, ob er noch existiert, oder wähle ihn erneut.</string>
+    <string name="folder_sync_join_body">Dieser Ordner enthält bereits Penny-Daten von einem anderen Gerät. Gib die Wiederherstellungsphrase aus 24 Wörtern ein, die du dort notiert hast.</string>
+    <string name="folder_sync_join_title">Diesen Ordner öffnen</string>
+    <string name="folder_sync_keep_same">Installiere Penny auf einem anderen Gerät, öffne Sync, wähle denselben Ordner und gib deine Wiederherstellungsphrase ein.</string>
+    <string name="folder_sync_not_penny">Dieser Ordner enthält noch keine Penny-Sync-Dateien. Wähle den Ordner, mit dem dein anderes Gerät synchronisiert.</string>
+    <string name="folder_sync_on">Synchronisierung über den Ordner „%1$s“.</string>
+    <string name="folder_sync_partial">Einige Änderungen werden noch in den Ordner kopiert. Penny versucht es gleich erneut.</string>
+    <string name="folder_sync_phrase_body">Schreib diese 24 Wörter auf und bewahre sie sicher auf. Du brauchst sie, um diesen Ordner auf einem anderen Gerät zu öffnen und um eine verschlüsselte Sicherung wiederherzustellen. Penny kann sie nicht noch einmal anzeigen.</string>
+    <string name="folder_sync_stop">Synchronisierung auf diesem Gerät beenden</string>
+    <string name="folder_sync_title">Sync über einen Ordner (kostenlos)</string>
+    <string name="ob_join_folder">Ich nutze Penny auf einem anderen Gerät</string>
+    <string name="own_server_body">Nur für Leute, die den Open-Source-Sync-Server von Penny selbst betreiben. Die meisten sollten oben die Ordner-Synchronisierung nutzen.</string>
+    <string name="own_server_title">Eigener Sync-Server (für Fortgeschrittene)</string>
+    <string name="quick_add_needs_account">Füge zuerst ein Konto hinzu (Einstellungen › Konten) und speichere dann. Penny muss wissen, woher das Geld kam.</string>
+    <string name="relay_server">Adresse des Sync-Servers</string>
+    <string name="relay_server_required">Die Adresse deines Servers, zum Beispiel https://sync.example.com</string>
+    <string name="share_choose_folder">Leeren Ordner zum Teilen wählen</string>
+    <string name="share_code_body">Gib diese 24 Wörter nur den Personen, mit denen du dieses Haushaltsbuch teilst. Wer den Ordner und diese Wörter hat, kann es lesen und ändern. Das ist nicht deine persönliche Wiederherstellungsphrase.</string>
+    <string name="share_code_title">Freigabecode</string>
+    <string name="share_folder_not_empty">Dieser Ordner enthält bereits Penny-Dateien. Wähle einen neuen, leeren Ordner nur für dieses Haushaltsbuch.</string>
+    <string name="share_free_body">Kein Konto und kein Server. Penny speichert dieses Haushaltsbuch verschlüsselt in einem eigenen Ordner, den du mit den anderen teilst, zum Beispiel einem Syncthing-Ordner oder einem geteilten Google-Drive- oder OneDrive-Ordner, den eine App synchron hält. Du bekommst einen Freigabecode aus 24 Wörtern, den du ihnen gibst.</string>
+    <string name="share_free_how_others">So fügst du jemanden hinzu: Teile den Ordner mit der Person und gib ihr den Freigabecode persönlich oder per Nachricht. Auf ihrem Handy öffnet sie „Geteilte Bereiche“ und tippt auf „Geteiltem Haushaltsbuch beitreten“. Alle mit dem Code können dieses Haushaltsbuch lesen und ändern.</string>
+    <string name="share_free_on">Geteilt über den Ordner „%1$s“.</string>
+    <string name="share_free_title">Dieses Haushaltsbuch teilen (kostenlos)</string>
+    <string name="share_join_body">Jemand hat ein Haushaltsbuch mit dir geteilt? Wähle den geteilten Ordner, den die Sync-App auf diesem Handy bereithält, und gib dann den Freigabecode ein, den du bekommen hast.</string>
+    <string name="share_join_choose">Geteiltem Haushaltsbuch beitreten</string>
+    <string name="share_only_you">Bisher nur du.</string>
+    <string name="share_show_code">Freigabecode anzeigen</string>
+    <string name="share_start">Teilen starten</string>
+    <string name="share_stop">Teilen auf diesem Handy beenden</string>
+    <string name="share_your_name">Dein Name, wie die anderen ihn sehen</string>
+</resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">न कोई अकाउंट, न कोई सर्वर। Penny आपके बदलाव एन्क्रिप्ट करके आपके चुने फ़ोल्डर में सहेजता है। Syncthing जैसे किसी मुफ़्त सिंक ऐप से, या Google Drive या OneDrive के फ़ोल्डर-सिंक ऐप से, वही फ़ोल्डर अपने दूसरे फ़ोन और टैबलेट पर एक जैसा रखें। फ़ाइलें सिर्फ़ आपके रिकवरी वाक्यांश से खुलती हैं।</string>
+    <string name="folder_sync_choose">फ़ोल्डर चुनें</string>
+    <string name="folder_sync_empty">फ़ोल्डर खुल गया, पर अभी तक कोई बही नहीं आई है। अपने सिंक ऐप के कॉपी पूरा करने तक रुकें, फिर दोबारा कोशिश करें।</string>
+    <string name="folder_sync_failed">फ़ोल्डर नहीं खुल सका। देखें कि वह अब भी मौजूद है, या उसे फिर से चुनें।</string>
+    <string name="folder_sync_join_body">इस फ़ोल्डर में किसी दूसरे डिवाइस का Penny डेटा पहले से है। वहाँ लिखकर रखा 24 शब्दों का रिकवरी वाक्यांश टाइप करें।</string>
+    <string name="folder_sync_join_title">यह फ़ोल्डर खोलें</string>
+    <string name="folder_sync_keep_same">दूसरे डिवाइस पर Penny इंस्टॉल करें, सिंक खोलें, वही फ़ोल्डर चुनें और अपना रिकवरी वाक्यांश टाइप करें।</string>
+    <string name="folder_sync_not_penny">उस फ़ोल्डर में अभी Penny की कोई सिंक फ़ाइल नहीं है। वह फ़ोल्डर चुनें जिसमें आपका दूसरा डिवाइस सिंक करता है।</string>
+    <string name="folder_sync_on">“%1$s” फ़ोल्डर से सिंक हो रहा है।</string>
+    <string name="folder_sync_partial">कुछ बदलाव अभी फ़ोल्डर में कॉपी हो रहे हैं। Penny थोड़ी देर में फिर कोशिश करेगा।</string>
+    <string name="folder_sync_phrase_body">ये 24 शब्द लिख लें और सुरक्षित रखें। दूसरे डिवाइस पर यह फ़ोल्डर खोलने और एन्क्रिप्टेड बैकअप वापस लाने के लिए इनकी ज़रूरत होगी। Penny इन्हें दोबारा नहीं दिखा सकता।</string>
+    <string name="folder_sync_stop">इस डिवाइस पर सिंक बंद करें</string>
+    <string name="folder_sync_title">फ़ोल्डर से सिंक (मुफ़्त)</string>
+    <string name="ob_join_folder">मैं दूसरे डिवाइस पर Penny इस्तेमाल करता/करती हूँ</string>
+    <string name="own_server_body">सिर्फ़ उनके लिए जो Penny का ओपन-सोर्स सिंक सर्वर खुद चलाते हैं। ज़्यादातर लोगों को ऊपर दिया फ़ोल्डर सिंक इस्तेमाल करना चाहिए।</string>
+    <string name="own_server_title">आपका अपना सिंक सर्वर (एडवांस्ड)</string>
+    <string name="quick_add_needs_account">पहले एक खाता जोड़ें (सेटिंग › खाते), फिर सहेजें। Penny को पता होना चाहिए कि पैसा कहाँ से आया।</string>
+    <string name="relay_server">सिंक सर्वर का पता</string>
+    <string name="relay_server_required">आपके सर्वर का पता, जैसे https://sync.example.com</string>
+    <string name="share_choose_folder">शेयर करने के लिए खाली फ़ोल्डर चुनें</string>
+    <string name="share_code_body">ये 24 शब्द सिर्फ़ उन लोगों को दें जिनके साथ आप यह बही शेयर करते हैं। जिसके पास फ़ोल्डर और ये शब्द हों, वह इसे पढ़ और बदल सकता है। यह आपका निजी रिकवरी वाक्यांश नहीं है।</string>
+    <string name="share_code_title">शेयर कोड</string>
+    <string name="share_folder_not_empty">उस फ़ोल्डर में पहले से Penny फ़ाइलें हैं। सिर्फ़ इस बही के लिए एक नया, खाली फ़ोल्डर चुनें।</string>
+    <string name="share_free_body">न कोई अकाउंट, न कोई सर्वर। Penny यह बही एन्क्रिप्ट करके उसके अपने एक फ़ोल्डर में रखता है, जिसे आप दूसरों के साथ शेयर करते हैं, जैसे Syncthing फ़ोल्डर, या Google Drive या OneDrive का शेयर किया फ़ोल्डर जिसे कोई ऐप सिंक रखता है। आपको उन्हें देने के लिए 24 शब्दों का शेयर कोड मिलता है।</string>
+    <string name="share_free_how_others">किसी को जोड़ने के लिए: उनके साथ फ़ोल्डर शेयर करें, फिर उन्हें शेयर कोड आमने-सामने या मैसेज से दें। अपने फ़ोन पर वे साझा स्पेस खोलें और साझा बही से जुड़ें पर टैप करें। जिसके पास भी कोड है, वह इस बही को पढ़ और बदल सकता है।</string>
+    <string name="share_free_on">“%1$s” फ़ोल्डर से शेयर किया गया।</string>
+    <string name="share_free_title">यह बही शेयर करें (मुफ़्त)</string>
+    <string name="share_join_body">किसी ने आपके साथ बही शेयर की है? वह शेयर किया फ़ोल्डर चुनें जिसे सिंक ऐप इस फ़ोन पर रखता है, फिर उनका दिया शेयर कोड टाइप करें।</string>
+    <string name="share_join_choose">साझा बही से जुड़ें</string>
+    <string name="share_only_you">अभी तक सिर्फ़ आप।</string>
+    <string name="share_show_code">शेयर कोड दिखाएँ</string>
+    <string name="share_start">शेयर करना शुरू करें</string>
+    <string name="share_stop">इस फ़ोन पर शेयर करना बंद करें</string>
+    <string name="share_your_name">आपका नाम, जैसा दूसरे देखेंगे</string>
+</resources>

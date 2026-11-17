@@ -172,4 +172,20 @@
     <string name="folder_sync_empty">The folder opened, but no book has arrived yet. Wait for your sync app to finish copying, then try again.</string>
     <string name="relay_server_required">Your server’s address, for example https://sync.example.com</string>
     <string name="relay_server">Sync server address</string>
+    <string name="share_free_title">Share this book (free)</string>
+    <string name="share_free_body">No account and no server. Penny keeps this book, encrypted, in a folder of its own that you share with the others, for example a Syncthing folder or a shared Google Drive or OneDrive folder kept in sync by an app. You get a 24-word share code to give them.</string>
+    <string name="share_choose_folder">Choose an empty folder to share</string>
+    <string name="share_folder_not_empty">That folder already has Penny files. Choose a new, empty folder just for this book.</string>
+    <string name="share_free_on">Shared through the folder “%1$s”.</string>
+    <string name="share_free_how_others">To add someone: share the folder with them, then give them the share code in person or by message. On their phone they open Shared spaces and tap Join a shared book. Everyone with the code can read and change this book.</string>
+    <string name="share_show_code">Show the share code</string>
+    <string name="share_stop">Stop sharing on this phone</string>
+    <string name="share_code_title">Share code</string>
+    <string name="share_code_body">Give these 24 words only to the people you share this book with. Anyone with the folder and these words can read and change it. This is not your personal recovery phrase.</string>
+    <string name="share_start">Start sharing</string>
+    <string name="share_only_you">Only you so far.</string>
+    <string name="share_join_body">Someone shared a book with you? Choose the shared folder their sync app keeps on this phone, then type the share code they gave you.</string>
+    <string name="share_join_choose">Join a shared book</string>
+    <string name="share_your_name">Your name, as the others will see it</string>
+    <string name="quick_add_needs_account">Add an account first (Settings › Accounts), then save. Penny needs to know where the money came from.</string>
 </resources>

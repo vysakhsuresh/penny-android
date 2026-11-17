@@ -241,6 +241,8 @@ fun ProfileSettingsScreen(onBack: () -> Unit, onDeleted: () -> Unit, onRates: ()
                 deleting = false
                 vm.launch {
                     val pid = currentProfileId.value ?: return@launch
+                    // Stop folder sync for it first, so a sync running now cannot pull it straight back.
+                    runCatching { dagger.hilt.android.EntryPointAccessors.fromApplication(vm.context.applicationContext, app.penny.domain.FolderSyncDeps::class.java).folderSync().forget(pid) }
                     store.eraseProfile(pid)
                     // Stop syncing it here, or the next sync would pull later edits from other devices into a hidden half-book.
                     runCatching { app.penny.domain.syncManager(vm.context).forgetStream(pid) }

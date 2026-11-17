@@ -56,6 +56,41 @@ class FolderSyncTest : FunSpec({
         a.current("transaction", "t1")!!.data shouldBe b.current("transaction", "t1")!!.data
     }
 
+    test("a shared book's folder carries only that book; the person joining learns its id and gets it") {
+        val folder = MemFolder()
+        val (_, fa, ra) = device(folder, "devA")
+        val (b, fb, rb) = device(folder, "devB")
+        ra.create("private1", "personal", tx.copy(payee = "Private pharmacy"))
+        ra.create("shared1", "space1", tx.copy(payee = "Rent"))
+        fa.sync(fa.create(phrase), listOf("space1"))
+        fb.streamIds() shouldBe listOf("space1")
+        fb.sync(fb.unlock(phrase)!!, emptyList()).pulled shouldBe 1
+        rb.decode(b.current("transaction", "shared1")!!.data).payee shouldBe "Rent"
+        b.current("transaction", "private1").shouldBeNull()
+    }
+
+    test("the same book in two folders is sent to each in full (cursors are per folder)") {
+        val one = MemFolder(); val two = MemFolder()
+        val store = InMemoryEventStore()
+        val kv = MemKv()
+        val r = EventSourcedRepository("transaction", Transaction.serializer(), store, { Actor("acct", "devA") })
+        r.create("t1", "space1", tx)
+        val f1 = FolderSync(store, kv, one, "devA", fastKey, kvPrefix = "fsync")
+        f1.sync(f1.create(phrase), listOf("space1")).pushed shouldBe 1
+        val f2 = FolderSync(store, kv, two, "devA", fastKey, kvPrefix = "fspace.space1")
+        f2.sync(f2.create(phrase), listOf("space1")).pushed shouldBe 1
+    }
+
+    test("a book deleted on this phone is not pulled back from the folder") {
+        val folder = MemFolder()
+        val (_, fa, ra) = device(folder, "devA")
+        val (b, fb, _) = device(folder, "devB")
+        ra.create("t1", "book1", tx)
+        fa.sync(fa.create(phrase), listOf("book1"))
+        fb.sync(fb.unlock(phrase)!!, emptyList(), skip = setOf("book1")).pulled shouldBe 0
+        b.current("transaction", "t1").shouldBeNull()
+    }
+
     test("a wrong phrase does not open the folder") {
         val folder = MemFolder()
         val (_, fa, _) = device(folder, "devA")

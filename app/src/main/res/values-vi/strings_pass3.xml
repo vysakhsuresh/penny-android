@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">Không cần tài khoản, không cần máy chủ. Penny lưu các thay đổi của bạn, đã mã hóa, vào thư mục bạn chọn. Hãy giữ thư mục đó giống nhau trên các điện thoại và máy tính bảng khác bằng một ứng dụng đồng bộ miễn phí như Syncthing, hoặc ứng dụng đồng bộ thư mục của Google Drive hay OneDrive. Chỉ cụm từ khôi phục của bạn mới mở được các tệp này.</string>
+    <string name="folder_sync_choose">Chọn thư mục</string>
+    <string name="folder_sync_empty">Thư mục đã mở nhưng chưa có sổ nào được chuyển đến. Hãy chờ ứng dụng đồng bộ sao chép xong rồi thử lại.</string>
+    <string name="folder_sync_failed">Không mở được thư mục. Hãy kiểm tra xem thư mục còn tồn tại không, hoặc chọn lại.</string>
+    <string name="folder_sync_join_body">Thư mục này đã có dữ liệu Penny từ thiết bị khác. Hãy nhập cụm từ khôi phục 24 từ mà bạn đã ghi lại trên thiết bị đó.</string>
+    <string name="folder_sync_join_title">Mở thư mục này</string>
+    <string name="folder_sync_keep_same">Trên thiết bị khác, hãy cài Penny, mở Đồng bộ, chọn cùng thư mục đó và nhập cụm từ khôi phục của bạn.</string>
+    <string name="folder_sync_not_penny">Thư mục đó chưa có tệp đồng bộ Penny nào. Hãy chọn thư mục mà thiết bị kia của bạn đồng bộ tới.</string>
+    <string name="folder_sync_on">Đang đồng bộ qua thư mục “%1$s”.</string>
+    <string name="folder_sync_partial">Một số thay đổi vẫn đang được sao chép vào thư mục. Penny sẽ sớm thử lại.</string>
+    <string name="folder_sync_phrase_body">Hãy ghi lại 24 từ này và cất giữ an toàn. Bạn cần chúng để mở thư mục này trên thiết bị khác và để khôi phục bản sao lưu được mã hóa. Penny không thể hiển thị lại chúng.</string>
+    <string name="folder_sync_stop">Dừng đồng bộ trên thiết bị này</string>
+    <string name="folder_sync_title">Đồng bộ qua thư mục (miễn phí)</string>
+    <string name="ob_join_folder">Tôi dùng Penny trên thiết bị khác</string>
+    <string name="own_server_body">Chỉ dành cho người tự vận hành máy chủ đồng bộ mã nguồn mở của Penny. Hầu hết mọi người nên dùng đồng bộ thư mục ở trên.</string>
+    <string name="own_server_title">Máy chủ đồng bộ của riêng bạn (nâng cao)</string>
+    <string name="quick_add_needs_account">Hãy thêm một tài khoản trước (Cài đặt › Tài khoản), rồi lưu. Penny cần biết tiền đến từ đâu.</string>
+    <string name="relay_server">Địa chỉ máy chủ đồng bộ</string>
+    <string name="relay_server_required">Địa chỉ máy chủ của bạn, ví dụ https://sync.example.com</string>
+    <string name="share_choose_folder">Chọn một thư mục trống để chia sẻ</string>
+    <string name="share_code_body">Chỉ đưa 24 từ này cho những người bạn chia sẻ sổ này. Bất kỳ ai có thư mục và các từ này đều có thể xem và thay đổi sổ. Đây không phải cụm từ khôi phục cá nhân của bạn.</string>
+    <string name="share_code_title">Mã chia sẻ</string>
+    <string name="share_folder_not_empty">Thư mục đó đã có tệp Penny. Hãy chọn một thư mục mới, trống, chỉ dành cho sổ này.</string>
+    <string name="share_free_body">Không cần tài khoản, không cần máy chủ. Penny giữ sổ này, đã mã hóa, trong một thư mục riêng mà bạn chia sẻ với những người khác, ví dụ thư mục Syncthing hoặc thư mục Google Drive hay OneDrive dùng chung được một ứng dụng giữ đồng bộ. Bạn sẽ nhận được mã chia sẻ 24 từ để đưa cho họ.</string>
+    <string name="share_free_how_others">Để thêm ai đó: chia sẻ thư mục với họ, rồi đưa mã chia sẻ trực tiếp hoặc qua tin nhắn. Trên điện thoại của họ, họ mở Không gian chung và nhấn Tham gia sổ dùng chung. Mọi người có mã đều có thể xem và thay đổi sổ này.</string>
+    <string name="share_free_on">Đang chia sẻ qua thư mục “%1$s”.</string>
+    <string name="share_free_title">Chia sẻ sổ này (miễn phí)</string>
+    <string name="share_join_body">Có người đã chia sẻ sổ với bạn? Hãy chọn thư mục dùng chung mà ứng dụng đồng bộ giữ trên điện thoại này, rồi nhập mã chia sẻ họ đưa cho bạn.</string>
+    <string name="share_join_choose">Tham gia sổ dùng chung</string>
+    <string name="share_only_you">Hiện chỉ có bạn.</string>
+    <string name="share_show_code">Hiện mã chia sẻ</string>
+    <string name="share_start">Bắt đầu chia sẻ</string>
+    <string name="share_stop">Dừng chia sẻ trên điện thoại này</string>
+    <string name="share_your_name">Tên của bạn mà người khác sẽ thấy</string>
+</resources>

@@ -133,6 +133,8 @@
     <string name="recipient_x">Pour %1$s</string>
     <string name="not_decided">non fixé</string>
     <string name="payout_to">Versé à %1$s</string>
+    <string name="recipient_you">Pour vous</string>
+    <string name="payout_to_you">Versé à vous</string>
     <string name="paid_out">Versé</string>
     <string name="close_circle">Clôturer la tontine</string>
     <string name="edit_circle">Modifier la tontine</string>
@@ -276,7 +278,7 @@
     <string name="spaces">Espaces partagés</string>
     <string name="spaces_sub">Partagez un budget avec votre foyer</string>
     <string name="sync_and_banks">Synchronisation et banques</string>
-    <string name="sync_sub">Appareils, phrase de récupération, connexions bancaires</string>
+    <string name="sync_sub">Synchronisation gratuite entre vos appareils via un dossier</string>
     <string name="your_data">Vos données</string>
     <string name="data_backup">Données et sauvegarde</string>
     <string name="data_sub">Exporter, importer, sauvegarder, supprimer</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">Activez d’abord la synchronisation.</string>
     <string name="link_lasts">Durée du lien</string>
     <string name="create_advisor_link">Créer le lien</string>
-    <string name="spaces_body">Un espace partagé est un budget que vous partagez avec d’autres, chacun avec son identifiant et son rôle. Tout y est chiffré de bout en bout.</string>
+    <string name="spaces_body">Un espace partagé est un carnet que vous partagez avec votre famille ou vos amis. Il est chiffré, et seules les personnes ayant son code de partage peuvent l’ouvrir.</string>
     <string name="spaces_need_sync">Les espaces partagés nécessitent la synchronisation.</string>
     <string name="your_spaces">Vos espaces</string>
     <string name="no_spaces">Vous ne faites encore partie d’aucun espace partagé.</string>

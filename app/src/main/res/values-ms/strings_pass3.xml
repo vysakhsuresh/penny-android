@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">Tiada akaun dan tiada pelayan. Penny menyimpan perubahan anda, disulitkan, dalam folder yang anda pilih. Pastikan folder itu sama pada telefon dan tablet anda yang lain dengan aplikasi penyegerakan percuma seperti Syncthing, atau aplikasi penyegerakan folder Google Drive atau OneDrive. Hanya frasa pemulihan anda boleh membuka fail-fail ini.</string>
+    <string name="folder_sync_choose">Pilih folder</string>
+    <string name="folder_sync_empty">Folder telah dibuka, tetapi belum ada buku yang tiba. Tunggu aplikasi penyegerakan anda selesai menyalin, kemudian cuba lagi.</string>
+    <string name="folder_sync_failed">Tidak dapat membuka folder. Semak sama ada folder itu masih wujud, atau pilih semula.</string>
+    <string name="folder_sync_join_body">Folder ini sudah mempunyai data Penny daripada peranti lain. Taipkan frasa pemulihan 24 perkataan yang anda catat di sana.</string>
+    <string name="folder_sync_join_title">Buka folder ini</string>
+    <string name="folder_sync_keep_same">Pada peranti lain, pasang Penny, buka Penyegerakan, pilih folder yang sama dan taipkan frasa pemulihan anda.</string>
+    <string name="folder_sync_not_penny">Folder itu belum mempunyai fail penyegerakan Penny. Pilih folder yang disegerakkan oleh peranti anda yang lain.</string>
+    <string name="folder_sync_on">Menyegerakkan melalui folder “%1$s”.</string>
+    <string name="folder_sync_partial">Sesetengah perubahan masih disalin ke dalam folder. Penny akan cuba lagi sebentar lagi.</string>
+    <string name="folder_sync_phrase_body">Catat 24 perkataan ini dan simpan dengan selamat. Anda memerlukannya untuk membuka folder ini pada peranti lain dan untuk memulihkan sandaran yang disulitkan. Penny tidak dapat menunjukkannya lagi.</string>
+    <string name="folder_sync_stop">Hentikan penyegerakan pada peranti ini</string>
+    <string name="folder_sync_title">Segerakkan melalui folder (percuma)</string>
+    <string name="ob_join_folder">Saya menggunakan Penny pada peranti lain</string>
+    <string name="own_server_body">Hanya untuk mereka yang menjalankan sendiri pelayan penyegerakan sumber terbuka Penny. Kebanyakan orang patut menggunakan penyegerakan folder di atas.</string>
+    <string name="own_server_title">Pelayan penyegerakan sendiri (lanjutan)</string>
+    <string name="quick_add_needs_account">Tambah akaun dahulu (Tetapan › Akaun), kemudian simpan. Penny perlu tahu dari mana wang itu datang.</string>
+    <string name="relay_server">Alamat pelayan penyegerakan</string>
+    <string name="relay_server_required">Alamat pelayan anda, contohnya https://sync.example.com</string>
+    <string name="share_choose_folder">Pilih folder kosong untuk dikongsi</string>
+    <string name="share_code_body">Berikan 24 perkataan ini hanya kepada orang yang anda kongsi buku ini. Sesiapa yang mempunyai folder dan perkataan ini boleh membaca dan mengubahnya. Ini bukan frasa pemulihan peribadi anda.</string>
+    <string name="share_code_title">Kod perkongsian</string>
+    <string name="share_folder_not_empty">Folder itu sudah mempunyai fail Penny. Pilih folder baharu yang kosong khas untuk buku ini.</string>
+    <string name="share_free_body">Tiada akaun dan tiada pelayan. Penny menyimpan buku ini, disulitkan, dalam folder tersendiri yang anda kongsi dengan orang lain, contohnya folder Syncthing atau folder kongsi Google Drive atau OneDrive yang disegerakkan oleh aplikasi. Anda akan mendapat kod perkongsian 24 perkataan untuk diberikan kepada mereka.</string>
+    <string name="share_free_how_others">Untuk menambah seseorang: kongsi folder dengan mereka, kemudian berikan kod perkongsian secara bersemuka atau melalui mesej. Pada telefon mereka, mereka membuka Ruang kongsi dan mengetik Sertai buku kongsi. Semua yang mempunyai kod boleh membaca dan mengubah buku ini.</string>
+    <string name="share_free_on">Dikongsi melalui folder “%1$s”.</string>
+    <string name="share_free_title">Kongsi buku ini (percuma)</string>
+    <string name="share_join_body">Seseorang berkongsi buku dengan anda? Pilih folder kongsi yang disimpan oleh aplikasi penyegerakan pada telefon ini, kemudian taipkan kod perkongsian yang mereka berikan.</string>
+    <string name="share_join_choose">Sertai buku kongsi</string>
+    <string name="share_only_you">Hanya anda setakat ini.</string>
+    <string name="share_show_code">Tunjukkan kod perkongsian</string>
+    <string name="share_start">Mula berkongsi</string>
+    <string name="share_stop">Hentikan perkongsian pada telefon ini</string>
+    <string name="share_your_name">Nama anda, seperti yang akan dilihat oleh orang lain</string>
+</resources>

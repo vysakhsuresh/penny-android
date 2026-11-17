@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">Tanpa akun dan tanpa server. Penny menyimpan perubahanmu, terenkripsi, di folder yang kamu pilih. Jaga agar folder itu sama di ponsel dan tablet lainnya dengan aplikasi sinkronisasi gratis seperti Syncthing, atau aplikasi sinkronisasi folder Google Drive atau OneDrive. Hanya frasa pemulihanmu yang bisa membuka file-file ini.</string>
+    <string name="folder_sync_choose">Pilih folder</string>
+    <string name="folder_sync_empty">Folder sudah terbuka, tetapi belum ada buku yang masuk. Tunggu aplikasi sinkronisasimu selesai menyalin, lalu coba lagi.</string>
+    <string name="folder_sync_failed">Tidak bisa membuka folder. Pastikan folder itu masih ada, atau pilih lagi.</string>
+    <string name="folder_sync_join_body">Folder ini sudah berisi data Penny dari perangkat lain. Ketik frasa pemulihan 24 kata yang kamu catat di sana.</string>
+    <string name="folder_sync_join_title">Buka folder ini</string>
+    <string name="folder_sync_keep_same">Di perangkat lain, instal Penny, buka Sinkronisasi, pilih folder yang sama, lalu ketik frasa pemulihanmu.</string>
+    <string name="folder_sync_not_penny">Folder itu belum berisi file sinkronisasi Penny. Pilih folder yang disinkronkan oleh perangkatmu yang lain.</string>
+    <string name="folder_sync_on">Menyinkronkan melalui folder “%1$s”.</string>
+    <string name="folder_sync_partial">Beberapa perubahan masih disalin ke folder. Penny akan mencoba lagi sebentar lagi.</string>
+    <string name="folder_sync_phrase_body">Catat 24 kata ini dan simpan dengan aman. Kamu memerlukannya untuk membuka folder ini di perangkat lain dan untuk memulihkan cadangan terenkripsi. Penny tidak bisa menampilkannya lagi.</string>
+    <string name="folder_sync_stop">Hentikan sinkronisasi di perangkat ini</string>
+    <string name="folder_sync_title">Sinkronkan melalui folder (gratis)</string>
+    <string name="ob_join_folder">Saya memakai Penny di perangkat lain</string>
+    <string name="own_server_body">Hanya untuk orang yang menjalankan sendiri server sinkronisasi open-source Penny. Kebanyakan orang sebaiknya memakai sinkronisasi folder di atas.</string>
+    <string name="own_server_title">Server sinkronisasi sendiri (lanjutan)</string>
+    <string name="quick_add_needs_account">Tambahkan akun dulu (Pengaturan › Akun), lalu simpan. Penny perlu tahu dari mana uangnya berasal.</string>
+    <string name="relay_server">Alamat server sinkronisasi</string>
+    <string name="relay_server_required">Alamat servermu, misalnya https://sync.example.com</string>
+    <string name="share_choose_folder">Pilih folder kosong untuk dibagikan</string>
+    <string name="share_code_body">Berikan 24 kata ini hanya kepada orang yang berbagi buku ini denganmu. Siapa pun yang memiliki folder dan kata-kata ini bisa membaca dan mengubahnya. Ini bukan frasa pemulihan pribadimu.</string>
+    <string name="share_code_title">Kode berbagi</string>
+    <string name="share_folder_not_empty">Folder itu sudah berisi file Penny. Pilih folder baru yang kosong khusus untuk buku ini.</string>
+    <string name="share_free_body">Tanpa akun dan tanpa server. Penny menyimpan buku ini, terenkripsi, di folder tersendiri yang kamu bagikan dengan orang lain, misalnya folder Syncthing atau folder bersama Google Drive atau OneDrive yang disinkronkan oleh aplikasi. Kamu mendapat kode berbagi 24 kata untuk diberikan kepada mereka.</string>
+    <string name="share_free_how_others">Untuk menambahkan seseorang: bagikan foldernya, lalu berikan kode berbagi secara langsung atau lewat pesan. Di ponselnya, mereka membuka Ruang bersama dan mengetuk Gabung ke buku bersama. Semua yang memiliki kode bisa membaca dan mengubah buku ini.</string>
+    <string name="share_free_on">Dibagikan melalui folder “%1$s”.</string>
+    <string name="share_free_title">Bagikan buku ini (gratis)</string>
+    <string name="share_join_body">Ada yang membagikan buku denganmu? Pilih folder bersama yang disimpan aplikasi sinkronisasi di ponsel ini, lalu ketik kode berbagi yang mereka berikan.</string>
+    <string name="share_join_choose">Gabung ke buku bersama</string>
+    <string name="share_only_you">Baru kamu sendiri.</string>
+    <string name="share_show_code">Tampilkan kode berbagi</string>
+    <string name="share_start">Mulai berbagi</string>
+    <string name="share_stop">Hentikan berbagi di ponsel ini</string>
+    <string name="share_your_name">Namamu, seperti yang akan dilihat orang lain</string>
+</resources>

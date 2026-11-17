@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_sync_body">Bez konta i bez serwera. Penny zapisuje Twoje zmiany w zaszyfrowanej postaci w wybranym przez Ciebie folderze. Utrzymuj ten folder taki sam na innych telefonach i tabletach za pomocą darmowej aplikacji do synchronizacji, takiej jak Syncthing, albo aplikacji synchronizującej folder Google Drive lub OneDrive. Pliki można otworzyć tylko Twoją frazą odzyskiwania.</string>
+    <string name="folder_sync_choose">Wybierz folder</string>
+    <string name="folder_sync_empty">Folder został otwarty, ale nie ma w nim jeszcze żadnej księgi. Poczekaj, aż aplikacja do synchronizacji skończy kopiowanie, i spróbuj ponownie.</string>
+    <string name="folder_sync_failed">Nie udało się otworzyć folderu. Sprawdź, czy nadal istnieje, albo wybierz go ponownie.</string>
+    <string name="folder_sync_join_body">Ten folder zawiera już dane Penny z innego urządzenia. Wpisz frazę odzyskiwania z 24 słów zapisaną na tamtym urządzeniu.</string>
+    <string name="folder_sync_join_title">Otwórz ten folder</string>
+    <string name="folder_sync_keep_same">Na innym urządzeniu zainstaluj Penny, otwórz Synchronizację, wybierz ten sam folder i wpisz swoją frazę odzyskiwania.</string>
+    <string name="folder_sync_not_penny">Ten folder nie zawiera jeszcze plików synchronizacji Penny. Wybierz folder, z którym synchronizuje się Twoje drugie urządzenie.</string>
+    <string name="folder_sync_on">Synchronizacja przez folder „%1$s”.</string>
+    <string name="folder_sync_partial">Część zmian jest jeszcze kopiowana do folderu. Penny wkrótce spróbuje ponownie.</string>
+    <string name="folder_sync_phrase_body">Zapisz te 24 słowa i przechowuj je w bezpiecznym miejscu. Są potrzebne, aby otworzyć ten folder na innym urządzeniu i przywrócić zaszyfrowaną kopię zapasową. Penny nie pokaże ich ponownie.</string>
+    <string name="folder_sync_stop">Zatrzymaj synchronizację na tym urządzeniu</string>
+    <string name="folder_sync_title">Synchronizacja przez folder (za darmo)</string>
+    <string name="ob_join_folder">Używam Penny na innym urządzeniu</string>
+    <string name="own_server_body">Tylko dla osób, które same uruchamiają serwer synchronizacji Penny o otwartym kodzie. Większość osób powinna korzystać z synchronizacji przez folder powyżej.</string>
+    <string name="own_server_title">Własny serwer synchronizacji (zaawansowane)</string>
+    <string name="quick_add_needs_account">Najpierw dodaj konto (Ustawienia › Konta), a potem zapisz. Penny musi wiedzieć, skąd pochodzą pieniądze.</string>
+    <string name="relay_server">Adres serwera synchronizacji</string>
+    <string name="relay_server_required">Adres Twojego serwera, na przykład https://sync.example.com</string>
+    <string name="share_choose_folder">Wybierz pusty folder do udostępnienia</string>
+    <string name="share_code_body">Przekaż te 24 słowa tylko osobom, którym udostępniasz tę księgę. Każdy, kto ma folder i te słowa, może ją czytać i zmieniać. To nie jest Twoja osobista fraza odzyskiwania.</string>
+    <string name="share_code_title">Kod udostępniania</string>
+    <string name="share_folder_not_empty">Ten folder zawiera już pliki Penny. Wybierz nowy, pusty folder tylko dla tej księgi.</string>
+    <string name="share_free_body">Bez konta i bez serwera. Penny przechowuje tę księgę w zaszyfrowanej postaci we własnym folderze, który udostępniasz pozostałym, na przykład w folderze Syncthing albo we wspólnym folderze Google Drive lub OneDrive synchronizowanym przez aplikację. Dostajesz kod udostępniania z 24 słów, który im przekazujesz.</string>
+    <string name="share_free_how_others">Aby kogoś dodać: udostępnij tej osobie folder, a potem przekaż jej kod udostępniania osobiście lub w wiadomości. Na swoim telefonie otwiera ona Wspólne przestrzenie i wybiera Dołącz do wspólnej księgi. Każdy, kto ma kod, może czytać i zmieniać tę księgę.</string>
+    <string name="share_free_on">Udostępniono przez folder „%1$s”.</string>
+    <string name="share_free_title">Udostępnij tę księgę (za darmo)</string>
+    <string name="share_join_body">Ktoś udostępnił Ci księgę? Wybierz wspólny folder, który aplikacja do synchronizacji przechowuje na tym telefonie, a potem wpisz otrzymany kod udostępniania.</string>
+    <string name="share_join_choose">Dołącz do wspólnej księgi</string>
+    <string name="share_only_you">Na razie tylko Ty.</string>
+    <string name="share_show_code">Pokaż kod udostępniania</string>
+    <string name="share_start">Zacznij udostępniać</string>
+    <string name="share_stop">Zatrzymaj udostępnianie na tym telefonie</string>
+    <string name="share_your_name">Twoje imię, tak jak zobaczą je inni</string>
+</resources>

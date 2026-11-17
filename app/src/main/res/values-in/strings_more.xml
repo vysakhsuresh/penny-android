@@ -133,6 +133,8 @@
     <string name="recipient_x">Untuk %1$s</string>
     <string name="not_decided">belum ditentukan</string>
     <string name="payout_to">Dibayarkan ke %1$s</string>
+    <string name="recipient_you">Untuk kamu</string>
+    <string name="payout_to_you">Dibayarkan ke kamu</string>
     <string name="paid_out">Sudah dibayarkan</string>
     <string name="close_circle">Tutup arisan</string>
     <string name="edit_circle">Edit arisan</string>
@@ -276,7 +278,7 @@
     <string name="spaces">Ruang bersama</string>
     <string name="spaces_sub">Bagikan anggaran dengan keluarga serumah</string>
     <string name="sync_and_banks">Sinkronisasi dan bank</string>
-    <string name="sync_sub">Perangkat, frasa cadangan, koneksi bank</string>
+    <string name="sync_sub">Sinkronisasi gratis antarperangkat melalui folder</string>
     <string name="your_data">Datamu</string>
     <string name="data_backup">Data dan cadangan</string>
     <string name="data_sub">Ekspor, impor, cadangan, hapus</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">Aktifkan sinkronisasi dulu.</string>
     <string name="link_lasts">Masa berlaku tautan</string>
     <string name="create_advisor_link">Buat tautan</string>
-    <string name="spaces_body">Ruang bersama adalah anggaran yang kamu bagikan dengan orang lain, masing-masing dengan login dan peran sendiri. Semua isinya terenkripsi end-to-end.</string>
+    <string name="spaces_body">Ruang bersama adalah buku yang kamu bagikan dengan keluarga atau teman. Isinya terenkripsi, dan hanya orang yang memiliki kode berbaginya yang bisa membukanya.</string>
     <string name="spaces_need_sync">Ruang bersama memerlukan sinkronisasi aktif.</string>
     <string name="your_spaces">Ruangmu</string>
     <string name="no_spaces">Kamu belum ada di ruang bersama mana pun.</string>

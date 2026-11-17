@@ -132,6 +132,8 @@
     <string name="recipient_x">ได้แก่ %1$s</string>
     <string name="not_decided">ยังไม่กำหนด</string>
     <string name="payout_to">จ่ายให้ %1$s แล้ว</string>
+    <string name="recipient_you">ถึงคุณ</string>
+    <string name="payout_to_you">จ่ายให้คุณแล้ว</string>
     <string name="paid_out">จ่ายแล้ว</string>
     <string name="close_circle">ปิดวงแชร์</string>
     <string name="edit_circle">แก้ไขวงแชร์</string>
@@ -272,7 +274,7 @@
     <string name="spaces">พื้นที่ที่แชร์</string>
     <string name="spaces_sub">แชร์งบประมาณกับคนในบ้าน</string>
     <string name="sync_and_banks">ซิงค์และธนาคาร</string>
-    <string name="sync_sub">อุปกรณ์ วลีสำรอง การเชื่อมต่อธนาคาร</string>
+    <string name="sync_sub">ซิงค์ฟรีระหว่างอุปกรณ์ของคุณผ่านโฟลเดอร์</string>
     <string name="your_data">ข้อมูลของคุณ</string>
     <string name="data_backup">ข้อมูลและการสำรอง</string>
     <string name="data_sub">ส่งออก นำเข้า สำรอง ลบ</string>
@@ -478,7 +480,7 @@
     <string name="advisor_needs_sync">เปิดการซิงค์ก่อน</string>
     <string name="link_lasts">ลิงก์ใช้ได้</string>
     <string name="create_advisor_link">สร้างลิงก์</string>
-    <string name="spaces_body">พื้นที่ที่แชร์คืองบประมาณที่แชร์กับผู้อื่น โดยแต่ละคนมีการเข้าสู่ระบบและบทบาทของตัวเอง ทุกอย่างในนั้นเข้ารหัสตั้งแต่ต้นทางถึงปลายทาง</string>
+    <string name="spaces_body">พื้นที่ที่แชร์คือสมุดบัญชีที่คุณแชร์กับครอบครัวหรือเพื่อน ข้อมูลถูกเข้ารหัส และมีเพียงผู้ที่มีรหัสแชร์ของพื้นที่นั้นเท่านั้นที่เปิดได้</string>
     <string name="spaces_need_sync">พื้นที่ที่แชร์ต้องเปิดการซิงค์</string>
     <string name="your_spaces">พื้นที่ของคุณ</string>
     <string name="no_spaces">คุณยังไม่ได้อยู่ในพื้นที่ที่แชร์ใด</string>

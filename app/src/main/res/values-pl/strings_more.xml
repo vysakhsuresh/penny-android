@@ -133,6 +133,8 @@
     <string name="recipient_x">Otrzymuje: %1$s</string>
     <string name="not_decided">nie ustalono</string>
     <string name="payout_to">Wypłacono: %1$s</string>
+    <string name="recipient_you">Dla ciebie</string>
+    <string name="payout_to_you">Wypłacono tobie</string>
     <string name="paid_out">Wypłacono</string>
     <string name="close_circle">Zamknij kasę</string>
     <string name="edit_circle">Edytuj kasę</string>
@@ -276,7 +278,7 @@
     <string name="spaces">Wspólne przestrzenie</string>
     <string name="spaces_sub">Dziel budżet z domownikami</string>
     <string name="sync_and_banks">Synchronizacja i banki</string>
-    <string name="sync_sub">Urządzenia, fraza kopii, połączenia z bankami</string>
+    <string name="sync_sub">Darmowa synchronizacja między Twoimi urządzeniami przez folder</string>
     <string name="your_data">Twoje dane</string>
     <string name="data_backup">Dane i kopia zapasowa</string>
     <string name="data_sub">Eksport, import, kopia zapasowa, usuwanie</string>
@@ -488,7 +490,7 @@
     <string name="advisor_needs_sync">Najpierw włącz synchronizację.</string>
     <string name="link_lasts">Ważność linku</string>
     <string name="create_advisor_link">Utwórz link</string>
-    <string name="spaces_body">Wspólna przestrzeń to budżet dzielony z innymi, z których każdy ma własne logowanie i rolę. Wszystko w niej jest szyfrowane end-to-end.</string>
+    <string name="spaces_body">Wspólna przestrzeń to księga, którą dzielisz z rodziną lub znajomymi. Jest zaszyfrowana i otworzyć ją mogą tylko osoby, które mają jej kod udostępniania.</string>
     <string name="spaces_need_sync">Wspólne przestrzenie wymagają włączonej synchronizacji.</string>
     <string name="your_spaces">Twoje przestrzenie</string>
     <string name="no_spaces">Nie należysz jeszcze do żadnej wspólnej przestrzeni.</string>

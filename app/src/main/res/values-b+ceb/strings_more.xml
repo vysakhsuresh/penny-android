@@ -59,6 +59,8 @@
     <string name="simplified_settle">Pinakagamay nga bayad aron mahuman</string>
     <string name="who_owes_whom">Kinsa ang mobayad kang kinsa</string>
     <string name="x_pays_y">Si %1$s mobayad kang %2$s</string>
+    <string name="x_pays_you">Si %1$s mobayad nimo</string>
+    <string name="you_pay_x">Mobayad ka kang %1$s</string>
     <string name="settle">Bayri</string>
     <string name="expenses">Mga gasto</string>
     <string name="no_group_expenses">Wala pay gasto</string>
@@ -66,6 +68,7 @@
     <string name="add_expense">Pagdugang og gasto</string>
     <string name="edit_expense">Usba ang gasto</string>
     <string name="paid_by_x">gibayran ni %1$s</string>
+    <string name="paid_by_you">ikaw ang nagbayad</string>
     <string name="disputed">Gikuwestiyon</string>
     <string name="show_pairwise">Ipakita kinsa ang mobayad kang kinsa</string>
     <string name="simplify_debts">Pasayona ang mga utang</string>

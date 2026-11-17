@@ -59,6 +59,8 @@
     <string name="simplified_settle">Hesaplaşmak için en az ödeme</string>
     <string name="who_owes_whom">Kim kime borçlu</string>
     <string name="x_pays_y">%1$s → %2$s ödeme yapar</string>
+    <string name="x_pays_you">%1$s sana öder</string>
+    <string name="you_pay_x">Sen %1$s kişisine ödersin</string>
     <string name="settle">Hesaplaş</string>
     <string name="expenses">Harcamalar</string>
     <string name="no_group_expenses">Henüz harcama yok</string>
@@ -66,6 +68,7 @@
     <string name="add_expense">Harcama ekle</string>
     <string name="edit_expense">Harcamayı düzenle</string>
     <string name="paid_by_x">ödeyen: %1$s</string>
+    <string name="paid_by_you">ödeyen: sen</string>
     <string name="disputed">İtiraz edildi</string>
     <string name="show_pairwise">Kim kime borçlu, göster</string>
     <string name="simplify_debts">Borçları sadeleştir</string>

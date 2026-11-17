@@ -59,6 +59,8 @@
     <string name="simplified_settle">Wenigste Zahlungen zum Ausgleich</string>
     <string name="who_owes_whom">Wer gibt wem</string>
     <string name="x_pays_y">%1$s zahlt an %2$s</string>
+    <string name="x_pays_you">%1$s zahlt an dich</string>
+    <string name="you_pay_x">Du zahlst an %1$s</string>
     <string name="settle">Ausgleichen</string>
     <string name="expenses">Ausgaben</string>
     <string name="no_group_expenses">Noch keine Ausgaben</string>
@@ -66,6 +68,7 @@
     <string name="add_expense">Ausgabe hinzufügen</string>
     <string name="edit_expense">Ausgabe bearbeiten</string>
     <string name="paid_by_x">bezahlt von %1$s</string>
+    <string name="paid_by_you">von dir bezahlt</string>
     <string name="disputed">Beanstandet</string>
     <string name="show_pairwise">Zeigen, wer wem gibt</string>
     <string name="simplify_debts">Schulden vereinfachen</string>

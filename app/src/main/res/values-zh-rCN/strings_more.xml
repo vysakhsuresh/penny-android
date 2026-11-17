@@ -59,6 +59,8 @@
     <string name="simplified_settle">最少付款次数结清</string>
     <string name="who_owes_whom">谁该给谁</string>
     <string name="x_pays_y">%1$s 给 %2$s</string>
+    <string name="x_pays_you">%1$s 给你</string>
+    <string name="you_pay_x">你给 %1$s</string>
     <string name="settle">结算</string>
     <string name="expenses">费用</string>
     <string name="no_group_expenses">还没有费用</string>
@@ -66,6 +68,7 @@
     <string name="add_expense">添加费用</string>
     <string name="edit_expense">编辑费用</string>
     <string name="paid_by_x">由 %1$s 支付</string>
+    <string name="paid_by_you">你付的</string>
     <string name="disputed">有异议</string>
     <string name="show_pairwise">显示谁该给谁</string>
     <string name="simplify_debts">简化债务</string>

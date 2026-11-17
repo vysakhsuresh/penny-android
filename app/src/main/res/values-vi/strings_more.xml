@@ -59,6 +59,8 @@
     <string name="simplified_settle">Ít lần trả nhất để xong</string>
     <string name="who_owes_whom">Ai nợ ai</string>
     <string name="x_pays_y">%1$s trả %2$s</string>
+    <string name="x_pays_you">%1$s trả bạn</string>
+    <string name="you_pay_x">Bạn trả %1$s</string>
     <string name="settle">Thanh toán</string>
     <string name="expenses">Chi phí</string>
     <string name="no_group_expenses">Chưa có chi phí nào</string>
@@ -66,6 +68,7 @@
     <string name="add_expense">Thêm chi phí</string>
     <string name="edit_expense">Sửa chi phí</string>
     <string name="paid_by_x">%1$s đã trả</string>
+    <string name="paid_by_you">Bạn đã trả</string>
     <string name="disputed">Có thắc mắc</string>
     <string name="show_pairwise">Hiện ai nợ ai</string>
     <string name="simplify_debts">Đơn giản hóa nợ</string>

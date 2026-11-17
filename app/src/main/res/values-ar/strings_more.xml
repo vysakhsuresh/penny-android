@@ -59,6 +59,8 @@
     <string name="simplified_settle">أقل عدد من الدفعات للتسوية</string>
     <string name="who_owes_whom">من يدين لمن</string>
     <string name="x_pays_y">%1$s يدفع لـ %2$s</string>
+    <string name="x_pays_you">%1$s يدفع لك</string>
+    <string name="you_pay_x">أنت تدفع لـ %1$s</string>
     <string name="settle">تسوية</string>
     <string name="expenses">المصروفات</string>
     <string name="no_group_expenses">لا توجد مصروفات بعد</string>
@@ -66,6 +68,7 @@
     <string name="add_expense">إضافة مصروف</string>
     <string name="edit_expense">تعديل المصروف</string>
     <string name="paid_by_x">دفعه %1$s</string>
+    <string name="paid_by_you">دفعتَ أنت</string>
     <string name="disputed">محل خلاف</string>
     <string name="show_pairwise">إظهار من يدين لمن</string>
     <string name="simplify_debts">تبسيط الديون</string>

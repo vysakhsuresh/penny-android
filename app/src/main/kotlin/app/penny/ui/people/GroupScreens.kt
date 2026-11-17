@@ -3,6 +3,8 @@ package app.penny.ui.people
 import app.penny.domain.ops.deleteCircleContribution
 import app.penny.domain.ops.deleteRemittance
 import app.penny.domain.ops.deleteGroupExpense
+import app.penny.domain.ops.deleteGroup
+import app.penny.domain.ops.deleteCircle
 import app.penny.ui.common.safeStart
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
@@ -102,6 +104,13 @@ import java.math.BigDecimal
 
 private fun memberName(ctx: Ctx, id: String, me: String) = if (id == Group.ME) me else ctx.book.personName(id).ifEmpty { "?" }
 
+/** "Ken pays you" / "You pay Ken" / "Ken pays Aiko": "you" needs its own grammar, not a capitalised name. */
+private fun payLine(context: android.content.Context, ctx: Ctx, from: String, to: String, me: String): String = when {
+    from == Group.ME -> context.getString(R.string.you_pay_x, memberName(ctx, to, me))
+    to == Group.ME -> context.getString(R.string.x_pays_you, memberName(ctx, from, me))
+    else -> context.getString(R.string.x_pays_y, memberName(ctx, from, me), memberName(ctx, to, me))
+}
+
 /** PE-03 group: balances, simplified debts with settle-up links, expenses, export, archive. */
 @Composable
 fun GroupScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onExpense: (String, String) -> Unit, svm: app.penny.ui.settings.SyncViewModel = androidx.hilt.navigation.compose.hiltViewModel()) {
@@ -140,22 +149,29 @@ fun GroupScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onExpe
                 }
                 if (plan.isNotEmpty()) {
                     item { SectionHeader(stringResource(if (g.value.simplify) R.string.simplified_settle else R.string.who_owes_whom)) }
-                    items(plan.size) { i ->
-                        val d = plan[i]
-                        ListRow(
-                            stringResource(R.string.x_pays_y, memberName(ctx, d.from, me), memberName(ctx, d.to, me)), trailingText = ctx.money(d.amountMinor, g.value.baseCurrency),
-                            trailing = { TextButton(onClick = { settleDialog = i }) { Text(stringResource(R.string.settle)) } }, divider = true,
-                        )
+                    item {
+                        PennyCard {
+                            plan.forEachIndexed { i, d ->
+                                ListRow(
+                                    payLine(context, ctx, d.from, d.to, me), subtitle = ctx.money(d.amountMinor, g.value.baseCurrency),
+                                    trailing = { TextButton(onClick = { settleDialog = i }) { Text(stringResource(R.string.settle)) } }, divider = i < plan.lastIndex,
+                                )
+                            }
+                        }
                     }
                 }
                 item { SectionHeader(stringResource(R.string.expenses)) }
                 if (expenses.isEmpty()) item { EmptyState(stringResource(R.string.no_group_expenses), stringResource(R.string.no_group_expenses_body)) }
-                items(expenses, key = { it.state.id }) { e ->
-                    ListRow(
-                        e.value.description,
-                        subtitle = listOfNotNull(shortDate(e.value.date), stringResource(R.string.paid_by_x, memberName(ctx, e.value.payerId, me)), stringResource(R.string.disputed).takeIf { e.value.disputed }).joinToString(" · "),
-                        trailingText = ctx.money(e.value.amountMinor, e.value.currency), onClick = { onExpense(e.state.id, id) }, divider = true,
-                    )
+                else item {
+                    PennyCard {
+                        expenses.forEachIndexed { i, e ->
+                            ListRow(
+                                e.value.description,
+                                subtitle = listOfNotNull(shortDate(e.value.date), if (e.value.payerId == Group.ME) stringResource(R.string.paid_by_you) else stringResource(R.string.paid_by_x, memberName(ctx, e.value.payerId, me)), stringResource(R.string.disputed).takeIf { e.value.disputed }).joinToString(" · "),
+                                trailingText = ctx.money(e.value.amountMinor, e.value.currency), onClick = { onExpense(e.state.id, id) }, divider = i < expenses.lastIndex,
+                            )
+                        }
+                    }
                 }
                 item {
                     // US-10: a read-only web view for members without the app (end-to-end encrypted link).
@@ -168,7 +184,7 @@ fun GroupScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onExpe
                                 put("title", kotlinx.serialization.json.JsonPrimitive(g.value.name))
                                 put("generatedAt", kotlinx.serialization.json.JsonPrimitive(java.time.Instant.now().toString()))
                                 put("currency", kotlinx.serialization.json.JsonPrimitive(g.value.baseCurrency))
-                                put("note", kotlinx.serialization.json.JsonPrimitive(plan.joinToString("; ") { d -> context.getString(R.string.x_pays_y, memberName(ctx, d.from, me), memberName(ctx, d.to, me)) + " " + ctx.money(d.amountMinor, g.value.baseCurrency) }))
+                                put("note", kotlinx.serialization.json.JsonPrimitive(plan.joinToString("; ") { d -> payLine(context, ctx, d.from, d.to, me) + " " + ctx.money(d.amountMinor, g.value.baseCurrency) }))
                                 put("rows", kotlinx.serialization.json.JsonArray(rows.map { (n, v) -> kotlinx.serialization.json.buildJsonObject { put("label", kotlinx.serialization.json.JsonPrimitive(n)); put("value", kotlinx.serialization.json.JsonPrimitive(ctx.money(v, g.value.baseCurrency, signed = v > 0))) } }))
                             }.toString()
                             runCatching { svm.sync.advisorLink(json, 30) }.onSuccess { link ->
@@ -179,7 +195,7 @@ fun GroupScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onExpe
                     app.penny.ui.kit.ActionStrip {
                         app.penny.ui.kit.StripAction(destructive = false, onClick = { vm.act(R.string.updated) { saveGroup(it, id, g.value.copy(simplify = !g.value.simplify)) } }) { Text(stringResource(if (g.value.simplify) R.string.show_pairwise else R.string.simplify_debts)) }
                         app.penny.ui.kit.StripAction(destructive = false, onClick = { vm.act(if (g.value.archived) R.string.unarchived else R.string.archived_done) { saveGroup(it, id, g.value.copy(archived = !g.value.archived)) } }) { Text(stringResource(if (g.value.archived) R.string.unarchive else R.string.archive)) }
-                        app.penny.ui.kit.StripAction(destructive = true, onClick = { vm.act(R.string.deleted, after = onBack) { groups.delete(id) } }) { Text(stringResource(R.string.delete)) }
+                        app.penny.ui.kit.StripAction(destructive = true, onClick = { vm.act(R.string.deleted, after = onBack) { deleteGroup(it, id) } }) { Text(stringResource(R.string.delete)) }
                     }
                 }
             }
@@ -193,7 +209,7 @@ fun GroupScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onExpe
                 title = { Text(stringResource(R.string.settle)) },
                 text = {
                     Column {
-                        Text(stringResource(R.string.x_pays_y, memberName(ctx, d.from, me), memberName(ctx, d.to, me)) + " · " + ctx.money(d.amountMinor, g.value.baseCurrency))
+                        Text(payLine(context, ctx, d.from, d.to, me) + " · " + ctx.money(d.amountMinor, g.value.baseCurrency))
                         if (involvesMe) SelectField(stringResource(R.string.field_account), account, b.activeAccounts.map { Choice(it.state.id, it.value.name) }, { account = it }, allowNone = true, noneLabel = stringResource(R.string.dont_post))
                         if (d.from == Group.ME) TextButton(onClick = { context.safeStart(settleIntent(context, ctx, b.peopleMap[d.to]?.value, d.amountMinor, g.value.baseCurrency, g.value.name)) }) { Text(stringResource(R.string.pay_in_app)) }
                         if (d.to == Group.ME) TextButton(onClick = {
@@ -205,7 +221,8 @@ fun GroupScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onExpe
                     }
                 },
                 confirmButton = {
-                    TextButton(onClick = {
+                    // The one action the dialog is for, filled like the bill dialog's "Mark paid".
+                    androidx.compose.material3.Button(onClick = {
                         vm.act(R.string.settled) { settle(it, Settlement(id, d.from, d.to, d.amountMinor, g.value.baseCurrency, it.today()), account.takeIf { involvesMe }) }
                         settleDialog = null
                     }) { Text(stringResource(R.string.mark_as_paid)) }
@@ -238,16 +255,11 @@ fun GroupEditScreen(id: String, onBack: () -> Unit) {
                 if (currencyLocked) Text(stringResource(R.string.currency_locked_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))
                 SectionHeader(stringResource(R.string.members))
                 b.people.filter { !it.value.archived }.forEach { p ->
-                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 8.dp)) {
-                        Checkbox(p.state.id in members, { on -> members = if (on) members + p.state.id else members - p.state.id })
-                        Text(p.value.name)
-                    }
+                    app.penny.ui.kit.CheckRow(p.state.id in members, { on -> members = if (on) members + p.state.id else members - p.state.id }, p.value.name)
                 }
+                // New names line up with existing people: ticked, and unticking removes them before they are created.
                 newNames.forEach { n ->
-                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 16.dp)) {
-                        Text(n, modifier = Modifier.weight(1f))
-                        IconButton(onClick = { newNames = newNames - n }) { Icon(Icons.Outlined.Close, stringResource(R.string.remove_x, n)) }
-                    }
+                    app.penny.ui.kit.CheckRow(true, { on -> if (!on) newNames = newNames - n }, n)
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     TextInput(newMember, { newMember = it }, stringResource(R.string.add_member_by_name), Modifier.weight(1f))
@@ -344,15 +356,25 @@ fun GroupExpenseEditScreen(id: String, groupArg: String?, onBack: () -> Unit) {
                         else stringResource(R.string.split_total_amount, ctx.money(sum, currency), ctx.money(goal, currency))
                     Text(shown, style = MaterialTheme.typography.bodySmall, color = if (sum == goal) MaterialTheme.colorScheme.onSurfaceVariant else Penny.status.near, modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp))
                 }
+                // Live preview of each person's part, with the same remainder rule as the saved split.
+                val preview: Map<String, Long> = run {
+                    val total = parseAmount(amount, currency, ctx.fmt) ?: 0L
+                    when (mode) {
+                        SplitMode.EQUAL, SplitMode.SHARES -> Splitting.distribute(total, members.mapNotNull { m -> v(m).toLongOrNull()?.takeIf { it > 0 }?.let { m to it } })
+                        SplitMode.PERCENT -> Splitting.distribute(total, members.mapNotNull { m -> app.penny.ui.kit.parsePercentBp(v(m))?.toLong()?.takeIf { it > 0 }?.let { m to it } })
+                        else -> emptyMap()
+                    }
+                }
                 if (mode != SplitMode.ITEMS) members.forEach { m ->
-                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 8.dp)) {
-                        if (mode == SplitMode.EQUAL) {
-                            Checkbox(v(m) != "0" && v(m).isNotEmpty(), { on -> setV(m, if (on) "1" else "0") })
+                    if (mode == SplitMode.EQUAL) {
+                        app.penny.ui.kit.CheckRow(v(m) != "0" && v(m).isNotEmpty(), { on -> setV(m, if (on) "1" else "0") }, memberName(ctx, m, me),
+                            trailing = preview[m]?.let { amt -> { Text(ctx.money(amt, currency), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant) } })
+                    } else Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = 8.dp, end = 20.dp)) {
+                        Column(Modifier.weight(1f).padding(start = 12.dp)) {
                             Text(memberName(ctx, m, me))
-                        } else {
-                            Text(memberName(ctx, m, me), modifier = Modifier.weight(1f).padding(start = 12.dp))
-                            TextInput(v(m), { setV(m, if (mode == SplitMode.SHARES) it.filter(Char::isDigit).take(4) else it) }, stringResource(when (mode) { SplitMode.EXACT -> R.string.field_amount; SplitMode.PERCENT -> R.string.percent; else -> R.string.shares }), Modifier.weight(1f), keyboard = if (mode == SplitMode.SHARES) KeyboardType.Number else KeyboardType.Decimal)
+                            preview[m]?.let { Text(ctx.money(it, currency), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant) }
                         }
+                        TextInput(v(m), { setV(m, if (mode == SplitMode.SHARES) it.filter(Char::isDigit).take(4) else it) }, stringResource(when (mode) { SplitMode.EXACT -> R.string.field_amount; SplitMode.PERCENT -> R.string.percent; else -> R.string.shares }), Modifier.weight(1f), keyboard = if (mode == SplitMode.SHARES) KeyboardType.Number else KeyboardType.Decimal)
                     }
                 } else {
                     items.forEachIndexed { i, line ->
@@ -361,18 +383,16 @@ fun GroupExpenseEditScreen(id: String, groupArg: String?, onBack: () -> Unit) {
                             TextInput(label, { s -> items = items.toMutableList().also { l -> l[i] = "$s|$amt|$who" } }, stringResource(R.string.item))
                             AmountInput(amt, { s -> items = items.toMutableList().also { l -> l[i] = "$label|$s|$who" } }, currency, ctx.fmt, stringResource(R.string.field_amount))
                             members.forEach { m ->
-                                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 8.dp)) {
-                                    val set = who.split(',').filter { it.isNotEmpty() }
-                                    Checkbox(m in set, { on -> val ns = if (on) set + m else set - m; items = items.toMutableList().also { l -> l[i] = "$label|$amt|${ns.joinToString(",")}" } })
-                                    Text(memberName(ctx, m, me))
-                                }
+                                val set = who.split(',').filter { it.isNotEmpty() }
+                                app.penny.ui.kit.CheckRow(m in set, { on -> val ns = if (on) set + m else set - m; items = items.toMutableList().also { l -> l[i] = "$label|$amt|${ns.joinToString(",")}" } }, memberName(ctx, m, me))
                             }
                         }
                     }
                     TextButton(onClick = { items = items + "||${members.joinToString(",")}" }, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.add_item)) }
                 }
                 if (existing == null && payer == Group.ME) SelectField(stringResource(R.string.post_from_account), account, b.activeAccounts.map { Choice(it.state.id, it.value.name) }, { account = it }, allowNone = true, noneLabel = stringResource(R.string.dont_post))
-                SwitchRow(stringResource(R.string.dispute), disputed, { disputed = it }, subtitle = stringResource(R.string.dispute_hint))
+                // Flagging a problem is for an expense someone else sees later, not for one being written now.
+                if (existing != null) SwitchRow(stringResource(R.string.dispute), disputed, { disputed = it }, subtitle = stringResource(R.string.dispute_hint))
                 if (disputed) TextInput(disputeNote, { disputeNote = it }, stringResource(R.string.dispute_note))
                 err?.let { Text(it, color = MaterialTheme.colorScheme.error, modifier = Modifier.padding(horizontal = 20.dp)) }
                 Spacer(Modifier.height(12.dp))
@@ -557,13 +577,10 @@ fun CircleScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit) {
                             }
                             Text(stringResource(R.string.recipient_x, r.recipient.ifBlank { stringResource(R.string.not_decided) }), style = MaterialTheme.typography.bodySmall)
                             c.value.members.sortedBy { it.turn }.forEach { m ->
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Checkbox(m.name in r.paidBy, { on ->
+                                app.penny.ui.kit.CheckRow(m.name in r.paidBy, { on ->
                                         if (on) vm.act(R.string.recorded) { recordCircle(it, id, CircleContribution(id, r.n, m.name, c.value.contributionMinor, it.today()), account) }
                                         else b.circleContributions.firstOrNull { it.value.circleId == id && it.value.round == r.n && it.value.memberName == m.name && !it.value.payout }?.let { e -> vm.act(R.string.deleted) { deleteCircleContribution(it, e.state.id) } }
-                                    })
-                                    Text(m.name + if (m.isMe) " (" + stringResource(R.string.you) + ")" else "", modifier = Modifier.weight(1f))
-                                }
+                                    }, m.name + if (m.isMe) " (" + stringResource(R.string.you) + ")" else "")
                             }
                             if (contribs.none { it.round == r.n && it.payout }) {
                                 Row {
@@ -578,7 +595,7 @@ fun CircleScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit) {
                 item {
                     app.penny.ui.kit.ActionStrip {
                         app.penny.ui.kit.StripAction(destructive = false, onClick = { vm.act(R.string.updated) { saveCircle(it, id, c.value.copy(closed = !c.value.closed)) } }) { Text(stringResource(if (c.value.closed) R.string.reopen else R.string.close_circle)) }
-                        app.penny.ui.kit.StripAction(destructive = true, onClick = { vm.act(R.string.deleted, after = onBack) { circles.delete(id) } }) { Text(stringResource(R.string.delete)) }
+                        app.penny.ui.kit.StripAction(destructive = true, onClick = { vm.act(R.string.deleted, after = onBack) { deleteCircle(it, id) } }) { Text(stringResource(R.string.delete)) }
                     }
                 }
             }

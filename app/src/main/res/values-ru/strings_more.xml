@@ -59,6 +59,8 @@
     <string name="simplified_settle">Минимум платежей для расчёта</string>
     <string name="who_owes_whom">Кто кому должен</string>
     <string name="x_pays_y">%1$s платит %2$s</string>
+    <string name="x_pays_you">%1$s платит вам</string>
+    <string name="you_pay_x">Вы платите %1$s</string>
     <string name="settle">Рассчитаться</string>
     <string name="expenses">Расходы</string>
     <string name="no_group_expenses">Расходов пока нет</string>
@@ -66,6 +68,7 @@
     <string name="add_expense">Добавить расход</string>
     <string name="edit_expense">Изменить расход</string>
     <string name="paid_by_x">оплатил(а) %1$s</string>
+    <string name="paid_by_you">оплатили вы</string>
     <string name="disputed">Оспорено</string>
     <string name="show_pairwise">Показать, кто кому должен</string>
     <string name="simplify_debts">Упростить долги</string>

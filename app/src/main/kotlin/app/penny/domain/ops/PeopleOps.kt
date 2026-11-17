@@ -236,6 +236,35 @@ suspend fun PennyRepository.deleteGroupExpense(book: Book, id: String): String {
     return g
 }
 
+/**
+ * Deleting a group removes its expenses and settlements and everything they posted to accounts, in one undo group.
+ * Before, only the group went: its dinner and the repayments stayed in Cash with nothing left to explain them.
+ */
+suspend fun PennyRepository.deleteGroup(book: Book, id: String): String {
+    val g = groups.newGroup()
+    book.groupExpenses.filter { it.value.groupId == id }.forEach { e ->
+        groupExpenses.delete(e.state.id, g)
+        deleteLinkedTx(book, e.value.transactionId, g)
+    }
+    book.settlements.filter { it.value.groupId == id }.forEach { s ->
+        settlements.delete(s.state.id, g)
+        deleteLinkedTx(book, s.value.transactionId, g)
+    }
+    groups.delete(id, g)
+    return g
+}
+
+/** Same for a savings circle: its contributions and the transactions they posted go with it. */
+suspend fun PennyRepository.deleteCircle(book: Book, id: String): String {
+    val g = circles.newGroup()
+    book.circleContributions.filter { it.value.circleId == id }.forEach { c ->
+        circleContributions.delete(c.state.id, g)
+        deleteLinkedTx(book, c.value.transactionId, g)
+    }
+    circles.delete(id, g)
+    return g
+}
+
 suspend fun PennyRepository.deleteRemittance(book: Book, id: String): String {
     val g = remittances.newGroup()
     val r = book.remittances.firstOrNull { it.state.id == id }?.value

@@ -59,6 +59,8 @@
     <string name="simplified_settle">Найменше платежів для розрахунку</string>
     <string name="who_owes_whom">Хто кому винен</string>
     <string name="x_pays_y">%1$s платить %2$s</string>
+    <string name="x_pays_you">%1$s платить вам</string>
+    <string name="you_pay_x">Ви платите %1$s</string>
     <string name="settle">Розрахуватися</string>
     <string name="expenses">Витрати</string>
     <string name="no_group_expenses">Витрат поки немає</string>
@@ -66,6 +68,7 @@
     <string name="add_expense">Додати витрату</string>
     <string name="edit_expense">Редагувати витрату</string>
     <string name="paid_by_x">сплатив(-ла) %1$s</string>
+    <string name="paid_by_you">оплатили ви</string>
     <string name="disputed">Оскаржено</string>
     <string name="show_pairwise">Показати, хто кому винен</string>
     <string name="simplify_debts">Спростити борги</string>

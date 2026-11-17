@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -602,3 +603,29 @@ fun SoftField(
     singleLine = singleLine, minLines = minLines, maxLines = maxLines, shape = shape, colors = pennyFieldColors(isError),
     prefix = prefix, textStyle = textStyle,
 )
+
+/**
+ * A checkbox with its label, where the whole row is the touch target (48 dp tall) and TalkBack reads one
+ * "checkbox, Ken, checked" instead of an unlabeled box next to a separate text.
+ */
+@Composable
+fun CheckRow(
+    checked: Boolean,
+    onChange: (Boolean) -> Unit,
+    label: String,
+    modifier: Modifier = Modifier,
+    trailing: (@Composable () -> Unit)? = null,
+) {
+    androidx.compose.foundation.layout.Row(
+        modifier
+            .fillMaxWidth()
+            .toggleable(value = checked, role = Role.Checkbox, onValueChange = onChange)
+            .heightIn(min = 48.dp)
+            .padding(start = 8.dp, end = 20.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        androidx.compose.material3.Checkbox(checked, onCheckedChange = null, modifier = Modifier.padding(12.dp))
+        Text(label, modifier = Modifier.weight(1f))
+        trailing?.invoke()
+    }
+}

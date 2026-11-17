@@ -59,6 +59,8 @@
     <string name="simplified_settle">Najmniej płatności do rozliczenia</string>
     <string name="who_owes_whom">Kto komu oddaje</string>
     <string name="x_pays_y">%1$s płaci osobie %2$s</string>
+    <string name="x_pays_you">%1$s płaci tobie</string>
+    <string name="you_pay_x">Ty płacisz osobie %1$s</string>
     <string name="settle">Rozlicz</string>
     <string name="expenses">Wydatki</string>
     <string name="no_group_expenses">Brak wydatków</string>
@@ -66,6 +68,7 @@
     <string name="add_expense">Dodaj wydatek</string>
     <string name="edit_expense">Edytuj wydatek</string>
     <string name="paid_by_x">zapłacił(a) %1$s</string>
+    <string name="paid_by_you">zapłacone przez ciebie</string>
     <string name="disputed">Zakwestionowany</string>
     <string name="show_pairwise">Pokaż, kto komu oddaje</string>
     <string name="simplify_debts">Uprość długi</string>

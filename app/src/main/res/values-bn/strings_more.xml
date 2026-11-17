@@ -59,6 +59,8 @@
     <string name="simplified_settle">সবচেয়ে কম পেমেন্টে হিসাব মেটানো</string>
     <string name="who_owes_whom">কে কাকে দেবে</string>
     <string name="x_pays_y">%1$s দেবেন %2$s-কে</string>
+    <string name="x_pays_you">%1$s আপনাকে দেবেন</string>
+    <string name="you_pay_x">আপনি %1$s-কে দেবেন</string>
     <string name="settle">হিসাব মেটান</string>
     <string name="expenses">খরচ</string>
     <string name="no_group_expenses">এখনও কোনো খরচ নেই</string>
@@ -66,6 +68,7 @@
     <string name="add_expense">খরচ যোগ করুন</string>
     <string name="edit_expense">খরচ সম্পাদনা</string>
     <string name="paid_by_x">দিয়েছেন %1$s</string>
+    <string name="paid_by_you">আপনি দিয়েছেন</string>
     <string name="disputed">আপত্তি আছে</string>
     <string name="show_pairwise">কে কাকে দেবে দেখান</string>
     <string name="simplify_debts">দেনা সহজ করুন</string>

@@ -190,10 +190,7 @@ fun DataScreen(onBack: () -> Unit, go: (String) -> Unit, onWiped: () -> Unit) {
                         // Numbered so it can be copied onto paper in order.
                         Text(words.mapIndexed { i, w -> "${i + 1}. $w" }.chunked(3).joinToString("\n") { it.joinToString("   ") }, style = MaterialTheme.typography.bodyLarge.copy(fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace))
                         Spacer(Modifier.height(12.dp))
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Checkbox(written, { written = it })
-                            Text(stringResource(R.string.backup_phrase_written))
-                        }
+                        app.penny.ui.kit.CheckRow(written, { written = it }, stringResource(R.string.backup_phrase_written))
                     }
                 },
                 confirmButton = {

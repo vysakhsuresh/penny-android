@@ -59,6 +59,8 @@
     <string name="simplified_settle">సెటిల్ చేయడానికి అతి తక్కువ చెల్లింపులు</string>
     <string name="who_owes_whom">ఎవరు ఎవరికి ఇవ్వాలి</string>
     <string name="x_pays_y">%1$s, %2$sకి చెల్లిస్తారు</string>
+    <string name="x_pays_you">%1$s మీకు చెల్లిస్తారు</string>
+    <string name="you_pay_x">మీరు %1$sకి చెల్లిస్తారు</string>
     <string name="settle">సెటిల్ చేయండి</string>
     <string name="expenses">ఖర్చులు</string>
     <string name="no_group_expenses">ఇంకా ఖర్చులు లేవు</string>
@@ -66,6 +68,7 @@
     <string name="add_expense">ఖర్చు జోడించండి</string>
     <string name="edit_expense">ఖర్చును ఎడిట్ చేయండి</string>
     <string name="paid_by_x">%1$s చెల్లించారు</string>
+    <string name="paid_by_you">మీరు చెల్లించారు</string>
     <string name="disputed">వివాదంలో ఉంది</string>
     <string name="show_pairwise">ఎవరు ఎవరికి ఇవ్వాలో చూపించండి</string>
     <string name="simplify_debts">అప్పులను సులభం చేయండి</string>

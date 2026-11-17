@@ -311,6 +311,20 @@ class PennyRepository @Inject constructor(
 
     suspend fun undo(group: String?) { if (group != null) undoer.undo(group) }
 
+    /**
+     * Restores a deleted item together with everything deleted in the same action that is still in Trash
+     * (a group with its expenses, settlements and their transactions), so a restore never brings back half a record.
+     */
+    suspend fun restoreWithLinked(book: Book, entity: String, id: String): String {
+        val g = transactions.newGroup()
+        val stillDeleted = book.deleted.map { it.entity to it.id }.toSet()
+        val lastDelete = store.eventsFor(entity, id).filter { it.op == app.penny.core.event.Op.DELETE }.maxByOrNull { it.ts }
+        val together = lastDelete?.groupId?.let { gid -> store.eventsInGroup(gid).filter { it.op == app.penny.core.event.Op.DELETE } }.orEmpty()
+            .map { it.entity to it.entityId }.filter { it in stillDeleted }.toSet() + (entity to id)
+        together.forEach { (e, i) -> repoFor(e).restore(i, g) }
+        return g
+    }
+
     suspend fun undoAll(groups: List<String>) { groups.asReversed().forEach { g -> undoer.undo(g) } }
 
     companion object {

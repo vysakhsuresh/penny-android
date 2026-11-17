@@ -58,6 +58,8 @@
     <string name="simplified_settle">จ่ายน้อยครั้งที่สุดเพื่อเคลียร์ยอด</string>
     <string name="who_owes_whom">ใครต้องให้ใคร</string>
     <string name="x_pays_y">%1$s จ่ายให้ %2$s</string>
+    <string name="x_pays_you">%1$s จ่ายให้คุณ</string>
+    <string name="you_pay_x">คุณจ่ายให้ %1$s</string>
     <string name="settle">เคลียร์ยอด</string>
     <string name="expenses">ค่าใช้จ่าย</string>
     <string name="no_group_expenses">ยังไม่มีค่าใช้จ่าย</string>
@@ -65,6 +67,7 @@
     <string name="add_expense">เพิ่มค่าใช้จ่าย</string>
     <string name="edit_expense">แก้ไขค่าใช้จ่าย</string>
     <string name="paid_by_x">จ่ายโดย %1$s</string>
+    <string name="paid_by_you">จ่ายโดยคุณ</string>
     <string name="disputed">มีข้อโต้แย้ง</string>
     <string name="show_pairwise">แสดงว่าใครต้องให้ใคร</string>
     <string name="simplify_debts">ลดความซับซ้อนของยอดค้าง</string>

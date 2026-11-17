@@ -59,6 +59,8 @@
     <string name="simplified_settle">最少回数で精算</string>
     <string name="who_owes_whom">誰が誰に渡すか</string>
     <string name="x_pays_y">%1$s から %2$s へ</string>
+    <string name="x_pays_you">%1$s からあなたへ</string>
+    <string name="you_pay_x">あなたから %1$s へ</string>
     <string name="settle">精算</string>
     <string name="expenses">費用</string>
     <string name="no_group_expenses">費用はまだありません</string>
@@ -66,6 +68,7 @@
     <string name="add_expense">費用を追加</string>
     <string name="edit_expense">費用を編集</string>
     <string name="paid_by_x">%1$s が支払い</string>
+    <string name="paid_by_you">あなたが支払い</string>
     <string name="disputed">確認が必要</string>
     <string name="show_pairwise">誰が誰に渡すかを表示</string>
     <string name="simplify_debts">精算を簡単にする</string>

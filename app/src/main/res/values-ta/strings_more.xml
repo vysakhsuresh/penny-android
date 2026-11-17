@@ -59,6 +59,8 @@
     <string name="simplified_settle">தீர்க்கக் குறைந்தபட்சப் பணம் செலுத்தல்கள்</string>
     <string name="who_owes_whom">யார் யாருக்குக் கொடுக்க வேண்டும்</string>
     <string name="x_pays_y">%1$s, %2$s-க்குச் செலுத்துவார்</string>
+    <string name="x_pays_you">%1$s உங்களுக்குச் செலுத்துவார்</string>
+    <string name="you_pay_x">நீங்கள் %1$s-க்குச் செலுத்துவீர்கள்</string>
     <string name="settle">தீர்</string>
     <string name="expenses">செலவுகள்</string>
     <string name="no_group_expenses">இன்னும் செலவுகள் இல்லை</string>
@@ -66,6 +68,7 @@
     <string name="add_expense">செலவைச் சேர்</string>
     <string name="edit_expense">செலவைத் திருத்து</string>
     <string name="paid_by_x">%1$s செலுத்தியது</string>
+    <string name="paid_by_you">நீங்கள் செலுத்தியது</string>
     <string name="disputed">சர்ச்சையில்</string>
     <string name="show_pairwise">யார் யாருக்குக் கொடுக்க வேண்டும் என்று காட்டு</string>
     <string name="simplify_debts">கடன்களை எளிதாக்கு</string>

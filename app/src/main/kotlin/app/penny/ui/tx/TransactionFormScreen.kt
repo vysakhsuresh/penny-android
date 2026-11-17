@@ -129,6 +129,21 @@ fun TransactionFormScreen(
                             OutlinedButton(onClick = { unlockReconciled = true; vm.update { it.copy(status = TxStatus.CLEARED) } }) { Text(stringResource(R.string.unreconcile)) }
                         }
                     }
+                    // A transaction posted by a People record follows that record: say where to change it,
+                    // so an edit here does not leave a group's or a person's balance out of step.
+                    val txId = vm.txId
+                    val source = if (txId == null) null else when {
+                        b.groupExpenses.any { it.value.transactionId == txId } -> R.string.tx_from_group_expense
+                        b.settlements.any { it.value.transactionId == txId } -> R.string.tx_from_settlement
+                        b.lending.any { it.value.transactionId == txId } -> R.string.tx_from_lending
+                        b.remittances.any { it.value.transactionId == txId } || b.circleContributions.any { it.value.transactionId == txId } -> R.string.tx_from_people
+                        else -> null
+                    }
+                    if (source != null) {
+                        app.penny.ui.kit.PennyCard {
+                            Text(stringResource(source), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(16.dp))
+                        }
+                    }
                     Segmented(
                         listOf(TxType.EXPENSE, TxType.INCOME, TxType.TRANSFER).map { Choice(it, stringResource(typeLabel(it))) },
                         // A refund, adjustment or opening balance is chosen in the row below; this row then shows none.

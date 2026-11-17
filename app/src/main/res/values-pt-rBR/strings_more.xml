@@ -59,6 +59,8 @@
     <string name="simplified_settle">Menos pagamentos para acertar</string>
     <string name="who_owes_whom">Quem acerta com quem</string>
     <string name="x_pays_y">%1$s paga %2$s</string>
+    <string name="x_pays_you">%1$s paga você</string>
+    <string name="you_pay_x">Você paga %1$s</string>
     <string name="settle">Acertar</string>
     <string name="expenses">Despesas</string>
     <string name="no_group_expenses">Nenhuma despesa ainda</string>
@@ -66,6 +68,7 @@
     <string name="add_expense">Adicionar despesa</string>
     <string name="edit_expense">Editar despesa</string>
     <string name="paid_by_x">pago por %1$s</string>
+    <string name="paid_by_you">pago por você</string>
     <string name="disputed">Contestada</string>
     <string name="show_pairwise">Mostrar quem acerta com quem</string>
     <string name="simplify_debts">Simplificar dívidas</string>

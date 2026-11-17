@@ -59,6 +59,8 @@
     <string name="simplified_settle">הכי מעט תשלומים להתחשבנות</string>
     <string name="who_owes_whom">מי חייב למי</string>
     <string name="x_pays_y">%1$s משלם ל־%2$s</string>
+    <string name="x_pays_you">%1$s משלם לך</string>
+    <string name="you_pay_x">את/ה משלם/ת ל־%1$s</string>
     <string name="settle">התחשבנות</string>
     <string name="expenses">הוצאות</string>
     <string name="no_group_expenses">עדיין אין הוצאות</string>
@@ -66,6 +68,7 @@
     <string name="add_expense">הוספת הוצאה</string>
     <string name="edit_expense">עריכת הוצאה</string>
     <string name="paid_by_x">שולם על ידי %1$s</string>
+    <string name="paid_by_you">שולם על ידיך</string>
     <string name="disputed">במחלוקת</string>
     <string name="show_pairwise">הצגת מי חייב למי</string>
     <string name="simplify_debts">פישוט חובות</string>

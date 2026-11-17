@@ -59,6 +59,8 @@
     <string name="simplified_settle">Le moins de paiements possible</string>
     <string name="who_owes_whom">Qui rembourse qui</string>
     <string name="x_pays_y">%1$s paie %2$s</string>
+    <string name="x_pays_you">%1$s vous paie</string>
+    <string name="you_pay_x">Vous payez %1$s</string>
     <string name="settle">Régler</string>
     <string name="expenses">Dépenses</string>
     <string name="no_group_expenses">Aucune dépense pour l’instant</string>
@@ -66,6 +68,7 @@
     <string name="add_expense">Ajouter une dépense</string>
     <string name="edit_expense">Modifier la dépense</string>
     <string name="paid_by_x">payé par %1$s</string>
+    <string name="paid_by_you">payé par vous</string>
     <string name="disputed">Contesté</string>
     <string name="show_pairwise">Voir qui rembourse qui</string>
     <string name="simplify_debts">Simplifier les dettes</string>

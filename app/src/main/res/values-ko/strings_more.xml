@@ -59,6 +59,8 @@
     <string name="simplified_settle">최소 송금으로 정산</string>
     <string name="who_owes_whom">누가 누구에게 줄지</string>
     <string name="x_pays_y">%1$s → %2$s</string>
+    <string name="x_pays_you">%1$s → 나</string>
+    <string name="you_pay_x">나 → %1$s</string>
     <string name="settle">정산</string>
     <string name="expenses">비용</string>
     <string name="no_group_expenses">아직 비용이 없어요</string>
@@ -66,6 +68,7 @@
     <string name="add_expense">비용 추가</string>
     <string name="edit_expense">비용 수정</string>
     <string name="paid_by_x">%1$s님이 결제</string>
+    <string name="paid_by_you">내가 결제</string>
     <string name="disputed">이의 있음</string>
     <string name="show_pairwise">누가 누구에게 줄지 보기</string>
     <string name="simplify_debts">빚 단순화</string>

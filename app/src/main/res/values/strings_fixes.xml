@@ -150,4 +150,8 @@
     <string name="email_forwarding_needs_sync">Turn on sync first. Tap to open Sync and banks.</string>
     <string name="net_worth_builds">Your net worth today. The line fills in as you keep using Penny.</string>
     <string name="day_of_month_x">on day %1$s</string>
+    <string name="tx_from_group_expense">This came from a group expense. Change the amount or split in the group, so everyone’s balance stays right.</string>
+    <string name="tx_from_settlement">This came from settling up in a group. Undo or change it in the group.</string>
+    <string name="tx_from_lending">This came from a lending record. Change it in People, so what you are owed stays right.</string>
+    <string name="tx_from_people">This came from a record in People. Change it there to keep it in step.</string>
 </resources>

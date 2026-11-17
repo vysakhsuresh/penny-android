@@ -59,6 +59,8 @@
     <string name="simplified_settle">Pembayaran paling sedikit untuk melunasi</string>
     <string name="who_owes_whom">Siapa berutang ke siapa</string>
     <string name="x_pays_y">%1$s membayar %2$s</string>
+    <string name="x_pays_you">%1$s membayar kamu</string>
+    <string name="you_pay_x">Kamu membayar %1$s</string>
     <string name="settle">Lunasi</string>
     <string name="expenses">Pengeluaran</string>
     <string name="no_group_expenses">Belum ada pengeluaran</string>
@@ -66,6 +68,7 @@
     <string name="add_expense">Tambah pengeluaran</string>
     <string name="edit_expense">Edit pengeluaran</string>
     <string name="paid_by_x">dibayar oleh %1$s</string>
+    <string name="paid_by_you">dibayar oleh kamu</string>
     <string name="disputed">Dipersoalkan</string>
     <string name="show_pairwise">Tampilkan siapa berutang ke siapa</string>
     <string name="simplify_debts">Sederhanakan utang</string>

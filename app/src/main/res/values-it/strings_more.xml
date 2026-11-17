@@ -59,6 +59,8 @@
     <string name="simplified_settle">Meno pagamenti per saldare</string>
     <string name="who_owes_whom">Chi deve dare a chi</string>
     <string name="x_pays_y">%1$s paga %2$s</string>
+    <string name="x_pays_you">%1$s ti paga</string>
+    <string name="you_pay_x">Tu paghi %1$s</string>
     <string name="settle">Salda</string>
     <string name="expenses">Spese</string>
     <string name="no_group_expenses">Ancora nessuna spesa</string>
@@ -66,6 +68,7 @@
     <string name="add_expense">Aggiungi spesa</string>
     <string name="edit_expense">Modifica spesa</string>
     <string name="paid_by_x">pagato da %1$s</string>
+    <string name="paid_by_you">pagato da te</string>
     <string name="disputed">Contestata</string>
     <string name="show_pairwise">Mostra chi deve dare a chi</string>
     <string name="simplify_debts">Semplifica i debiti</string>

@@ -79,8 +79,8 @@
     <string name="field_type">Type</string>
     <string name="field_amount">Amount</string>
     <string name="field_amount_hint">Use + − × ÷ to calculate</string>
-    <string name="amount_result">= %1$s</string>
-    <string name="amount_rounded">= %1$s (rounded)</string>
+    <string name="amount_result">&#x2066;= %1$s&#x2069;</string>
+    <string name="amount_rounded">&#x2066;= %1$s&#x2069; (rounded)</string>
     <string name="field_currency">Currency</string>
     <string name="field_account">Account</string>
     <string name="field_to_account">To account</string>

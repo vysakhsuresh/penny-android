@@ -159,7 +159,7 @@ fun SyncScreen(onBack: () -> Unit, svm: SyncViewModel = hiltViewModel()) {
                         }
                         SectionHeader(stringResource(R.string.devices))
                         (devices ?: emptyList()).forEach { d ->
-                            ListRow(d.name, subtitle = d.platform + " · " + DateFormat.getDateInstance().format(Date(d.lastSeen)) + if (d.current) " · " + stringResource(R.string.this_device) else "",
+                            ListRow(d.name, subtitle = d.platform + " · " + app.penny.ui.common.shortDate(java.time.Instant.ofEpochMilli(d.lastSeen).atZone(java.time.ZoneId.systemDefault()).toLocalDate()) + if (d.current) " · " + stringResource(R.string.this_device) else "",
                                 leading = { Avatar(d.name, d.deviceId, icon = Icons.Outlined.Devices) },
                                 trailing = { if (!d.current) TextButton(onClick = { scope.launch { runCatching { svm.sync.signOutDevice(d.deviceId) }; devices = runCatching { svm.sync.devices() }.getOrNull() } }) { Text(stringResource(R.string.sign_out)) } }, divider = true)
                         }

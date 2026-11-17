@@ -49,13 +49,20 @@ class MoneyFmt(val spec: NumberFormatSpec, private val useCode: Boolean = false)
 fun periodRange(context: Context, start: LocalDate, end: LocalDate): String {
     val zone = java.time.ZoneOffset.UTC
     val a = start.atStartOfDay(zone).toInstant().toEpochMilli()
-    // The range end is exclusive: the start of the next day includes the last day itself.
-    val b = end.plusDays(1).atStartOfDay(zone).toInstant().toEpochMilli()
-    return android.text.format.DateUtils.formatDateRange(
-        context, java.util.Formatter(StringBuilder(), Locale.getDefault()), a, b,
-        android.text.format.DateUtils.FORMAT_SHOW_DATE or android.text.format.DateUtils.FORMAT_ABBREV_MONTH or android.text.format.DateUtils.FORMAT_SHOW_YEAR,
-        "UTC",
-    ).toString()
+    val b = end.atStartOfDay(zone).toInstant().toEpochMilli()
+    // ICU interval format with Latin digits (LO-02: amounts use Latin digits, so dates beside them do too; Android's
+    // DateUtils range gave Arabic-Indic digits next to Latin amounts in Arabic).
+    return runCatching {
+        val uloc = android.icu.util.ULocale.forLocale(Locale.getDefault()).setKeywordValue("numbers", "latn")
+        val f = android.icu.text.DateIntervalFormat.getInstance("yMMMd", uloc)
+        f.timeZone = android.icu.util.TimeZone.getTimeZone("UTC")
+        f.format(android.icu.util.DateInterval(a, b))
+    }.getOrElse {
+        android.text.format.DateUtils.formatDateRange(
+            context, java.util.Formatter(StringBuilder(), Locale.getDefault()), a, end.plusDays(1).atStartOfDay(zone).toInstant().toEpochMilli(),
+            android.text.format.DateUtils.FORMAT_SHOW_DATE or android.text.format.DateUtils.FORMAT_ABBREV_MONTH or android.text.format.DateUtils.FORMAT_SHOW_YEAR, "UTC",
+        ).toString()
+    }
 }
 
 fun shortDate(date: LocalDate, locale: Locale = Locale.getDefault()): String =
@@ -63,7 +70,7 @@ fun shortDate(date: LocalDate, locale: Locale = Locale.getDefault()): String =
 
 /** Short localised month and day ("Nov 6", "6 nov.", "11月6日") for chart labels. */
 fun monthDay(date: LocalDate, locale: Locale = Locale.getDefault()): String =
-    DateTimeFormatter.ofPattern(android.text.format.DateFormat.getBestDateTimePattern(locale, "MMMd"), locale).format(date)
+    DateTimeFormatter.ofPattern(android.text.format.DateFormat.getBestDateTimePattern(locale, "MMMd"), locale).withDecimalStyle(java.time.format.DecimalStyle.STANDARD).format(date)
 
 fun relativeDate(context: Context, date: LocalDate, today: LocalDate): String = when (date) {
     today -> context.getString(R.string.today)

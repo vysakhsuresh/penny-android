@@ -160,7 +160,9 @@ fun AmountInput(
     val shown = (preview as? AmountResult.Ok)?.let { fmt.format(it.minor, currency) }.orEmpty()
     val roundedText = stringResource(R.string.amount_rounded, shown)
     val resultText = stringResource(R.string.amount_result, shown)
-    val supporting = (preview as? AmountResult.Ok)?.let { p -> if (p.rounded) roundedText else if (p.isExpression) resultText else null }
+    // Also shown for a plain number long enough to need separators, so "300000" reads as "¥300,000" while typing.
+    val needsGrouping = value.count { it.isDigit() } >= 5 && fmt.spec.groupSeparator !in value
+    val supporting = (preview as? AmountResult.Ok)?.let { p -> if (p.rounded) roundedText else if (p.isExpression || needsGrouping) resultText else null }
     // State-based field (TextFieldState): the text lives in the field, so keystrokes never wait for the caller's
     // state. The value-based field lost focus and closed the keyboard right after the first digit on a Moto g84.
     val state = androidx.compose.foundation.text.input.rememberTextFieldState(value)

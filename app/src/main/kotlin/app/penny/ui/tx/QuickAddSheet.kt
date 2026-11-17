@@ -145,11 +145,12 @@ fun QuickAddSheet(onDismiss: () -> Unit, onMore: (TxType, Long?, String?) -> Uni
                 Column(Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 8.dp), horizontalAlignment = Alignment.End) {
                     MoneyLabel(
                         // Grouped while typing ("¥1,200", "₹12,34,567"), spaced like the formatted amounts.
-                        if (amount.isEmpty()) ctx.money(0, currency) else app.penny.core.money.CurrencySymbols.symbol(currency, ctx.fmt.spec.localeTag) + (if (ctx.fmt.spec.symbolSpaced) " " else "") + app.penny.core.money.MoneyFormatter.groupTyped(amount, ctx.fmt.spec),
+                        // Wrapped in a left-to-right isolate: in Arabic or Hebrew a typed expression ("3+5") was reordered.
+                        if (amount.isEmpty()) ctx.money(0, currency) else LRI + app.penny.core.money.CurrencySymbols.symbol(currency, ctx.fmt.spec.localeTag) + (if (ctx.fmt.spec.symbolSpaced) " " else "") + app.penny.core.money.MoneyFormatter.groupTyped(amount, ctx.fmt.spec) + PDI,
                         style = MaterialTheme.typography.displaySmall,
                         modifier = Modifier.semantics { contentDescription = amount.ifEmpty { "0" } },
                     )
-                    if (ok != null && ok.isExpression) MoneyLabel("= " + ctx.money(ok.minor, currency), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    if (ok != null && ok.isExpression) MoneyLabel(LRI + "= " + ctx.money(ok.minor, currency) + PDI, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     if (result is AmountResult.Invalid && amount.isNotEmpty() && !amount.last().let { it in "+−-×÷(" }) {
                         Text(stringResource(R.string.err_amount_invalid), color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
                     }
@@ -208,11 +209,17 @@ fun QuickAddSheet(onDismiss: () -> Unit, onMore: (TxType, Long?, String?) -> Uni
     }
 }
 
+/** Left-to-right isolate and its end: keep typed amounts and expressions in order inside RTL text. */
+private val LRI = Char(0x2066).toString()
+private val PDI = Char(0x2069).toString()
+
 /** Calculator keypad: digits, locale decimal separator, + − × ÷, backspace. 56 dp keys. */
 @Composable
 private fun Keypad(decimal: Char, wholeUnits: Boolean, onKey: (String) -> Unit) {
     // Currencies with no minor unit (JPY, KRW, …) get a "00" key instead of a decimal point they cannot use.
     val rows = listOf(listOf("7", "8", "9", "÷"), listOf("4", "5", "6", "×"), listOf("1", "2", "3", "−"), listOf(if (wholeUnits) "00" else "dec", "0", "⌫", "+"))
+    // Number pads keep their left-to-right order in RTL languages, like a phone dialer or calculator.
+    androidx.compose.runtime.CompositionLocalProvider(androidx.compose.ui.platform.LocalLayoutDirection provides androidx.compose.ui.unit.LayoutDirection.Ltr) {
     Column(Modifier.fillMaxWidth().padding(horizontal = 12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
         rows.forEach { r ->
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -234,5 +241,6 @@ private fun Keypad(decimal: Char, wholeUnits: Boolean, onKey: (String) -> Unit) 
                 }
             }
         }
+    }
     }
 }

@@ -280,7 +280,7 @@ fun TrashScreen(onBack: () -> Unit) {
                         )
                         Row(Modifier.padding(start = 8.dp, bottom = 8.dp)) {
                             TextButton(onClick = { vm.act(R.string.restored) { repoFor(st.entity).restore(st.id) } }) { Text(stringResource(R.string.restore)) }
-                            TextButton(onClick = {
+                            TextButton(colors = androidx.compose.material3.ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error), onClick = {
                                 val key = "${st.entity}:${st.id}"
                                 pendingPurge = pendingPurge + key
                                 vm.undo.offer(

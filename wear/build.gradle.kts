@@ -12,7 +12,7 @@ android {
     namespace = "app.penny.wear"
     compileSdk = libs.versions.compileSdk.get().toInt()
     defaultConfig {
-        applicationId = "app.penny"
+        applicationId = "com.layerbit.penny"
         minSdk = 30
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
@@ -50,4 +50,9 @@ dependencies {
     implementation(libs.kotlinx.coroutines.guava)
     implementation(libs.kotlinx.coroutines.play.services)
     implementation(libs.kotlinx.serialization.json)
+}
+
+// Same as the phone app: test builds keep app.penny.debug so the paired phone test build still finds the watch.
+androidComponents {
+    onVariants(selector().withBuildType("debug")) { it.applicationId.set("app.penny.debug") }
 }

@@ -9,3 +9,7 @@ build/
 .cxx
 .kotlin/
 .claude/settings.local.json
+# Release signing (Layerbit upload key) stays on this machine only.
+keystore.properties
+*.jks
+*.keystore

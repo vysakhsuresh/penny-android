@@ -20,18 +20,26 @@ class MoneyFmt(val spec: NumberFormatSpec, private val useCode: Boolean = false)
     // "Show currency code" (profile setting): USD 12.50 instead of $12.50, always with a space after the code.
     private val codeSpec = spec.copy(symbolSpaced = true)
 
-    /** Wrapped in a first-strong isolate so amounts with RTL symbols never break surrounding LTR text, and vice versa (LO-07). */
+    /**
+     * Wrapped in a left-to-right isolate so amounts never break surrounding text and vice versa (LO-07). Left-to-right,
+     * not first-strong: digits are always Latin (decision 11), and a first-strong isolate turned "14.00 د.إ" right-to-left
+     * because the Arabic symbol is its first strong character, which then clipped in tight spaces.
+     */
     fun format(minor: Long, currency: String, signed: Boolean = false): String {
         val text = if (useCode) MoneyFormatter.format(minor, currency, codeSpec, symbol = currency, signForPositive = signed)
         else MoneyFormatter.format(minor, currency, spec, symbol = CurrencySymbols.symbol(currency, spec.localeTag), signForPositive = signed)
-        return FSI + text + PDI
+        // ICU symbols such as "د.إ.‏" carry their own direction marks; inside the isolate they only confuse text
+        // measurement (the amount was measured narrower than drawn and clipped), so they are dropped.
+        return LRI + text.filterNot { it in MARKS } + PDI
     }
 
     fun editable(minor: Long, currency: String) = MoneyFormatter.toEditable(minor, currency, spec)
 
     companion object {
-        /** First-strong isolate and pop directional isolate (Unicode bidi), built from code points. */
-        private val FSI = Char(0x2068).toString()
+        /** Left-to-right isolate and pop directional isolate (Unicode bidi), built from code points. */
+        private val LRI = Char(0x2066).toString()
+        /** Right-to-left mark, left-to-right mark and Arabic letter mark. */
+        private val MARKS = setOf(Char(0x200F), Char(0x200E), Char(0x061C))
         private val PDI = Char(0x2069).toString()
 
         fun of(profile: Profile, pack: RegionalPack) =

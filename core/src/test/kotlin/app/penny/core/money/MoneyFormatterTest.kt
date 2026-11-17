@@ -29,6 +29,12 @@ class MoneyFormatterTest : FunSpec({
         MoneyFormatter.formatNumber(5, 0, us) shouldBe "5"
     }
 
+    test("symbols in a right-to-left script show as the ISO code; others keep their symbol") {
+        CurrencySymbols.symbol("AED", "ar-AE") shouldBe "AED"
+        CurrencySymbols.symbol("SAR", "ar-SA") shouldBe "SAR"
+        CurrencySymbols.symbol("INR", "en-IN") shouldBe "₹"
+    }
+
     test("KWD has three decimals") {
         MoneyFormatter.format(1234567, "KWD", us.copy(symbolSpaced = true), symbol = "KD") shouldBe "KD 1,234.567"
         MoneyFormatter.formatNumber(5, 3, us) shouldBe "0.005"

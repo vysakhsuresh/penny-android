@@ -54,7 +54,10 @@ data class NumberFormatSpec(
 
 object CurrencySymbols {
     /** Locale-appropriate symbol, falling back to the ISO code. */
-    fun symbol(currency: String, localeTag: String): String =
-        runCatching { java.util.Currency.getInstance(currency).getSymbol(Locale.forLanguageTag(localeTag)) }
-            .getOrDefault(currency)
+    fun symbol(currency: String, localeTag: String): String {
+        val s = runCatching { java.util.Currency.getInstance(currency).getSymbol(Locale.forLanguageTag(localeTag)) }.getOrDefault(currency)
+        // Symbols written in a right-to-left script (د.إ, ر.س, د.ك, ﷼) are shown as the ISO code (AED, SAR, KWD), as banks
+        // in those countries do: inside a left-to-right amount Android split and clipped them ("800.0"), see decision 58.
+        return if (s.any { it.code in 0x0590..0x08FF || it.code in 0xFB1D..0xFDFF || it.code in 0xFE70..0xFEFF }) currency else s
+    }
 }

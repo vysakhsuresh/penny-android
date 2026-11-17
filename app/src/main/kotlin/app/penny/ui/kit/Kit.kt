@@ -309,14 +309,19 @@ fun MoneyLabel(text: String, modifier: Modifier = Modifier, color: Color = Color
     val shown = if (hidden) "••••" else text
     var scale by remember(shown, style) { mutableStateOf(1f) }
     var fitted by remember(shown, style) { mutableStateOf(false) }
-    val base = style.copy(fontFeatureSettings = app.penny.ui.theme.TabularNumbers)
+    // Amounts are laid out left to right (Latin digits, decision 11). Left to "content", an Arabic-script symbol first
+    // (د.إ, ر.س, د.ك) turned the line right-to-left; the line then never fitted, shrank to half size and was clipped
+    // ("14.0" instead of "14.00 د.إ"). Found in the release QA with a UAE sample book.
+    val base = style.copy(fontFeatureSettings = app.penny.ui.theme.TabularNumbers, textDirection = androidx.compose.ui.text.style.TextDirection.Ltr)
     val sized = if (base.fontSize.isSp && scale < 1f) base.copy(fontSize = base.fontSize * scale, lineHeight = if (base.lineHeight.isSp) base.lineHeight * scale else base.lineHeight) else base
     Text(
         shown,
         modifier = (if (hidden) modifier.semantics { contentDescription = hiddenLabel } else modifier).drawWithContent { if (fitted) drawContent() },
         style = sized,
         color = color, maxLines = 1, softWrap = false, textAlign = align,
-        onTextLayout = { r -> if (r.hasVisualOverflow && scale > 0.5f && base.fontSize.isSp) scale *= 0.9f else fitted = true },
+        // Only width counts: a symbol from a fallback font (د.إ, ﷼) is taller than the line and reported as overflowing in
+        // height, which shrinking can never fix; it used to shrink every such amount to half size and clip it.
+        onTextLayout = { r -> if (r.didOverflowWidth && scale > 0.5f && base.fontSize.isSp) scale *= 0.9f else fitted = true },
     )
 }
 

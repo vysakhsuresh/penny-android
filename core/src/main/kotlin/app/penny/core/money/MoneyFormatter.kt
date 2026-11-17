@@ -50,6 +50,25 @@ object MoneyFormatter {
         return parts.joinToString(sep.toString()) + sep + tail
     }
 
+    /**
+     * An amount as it is being typed ("12500+3000.5"), with each number's whole part grouped for reading
+     * ("12,500+3,000.5"; lakh grouping where the region uses it). The fraction and operators are left as typed.
+     */
+    fun groupTyped(typed: String, spec: NumberFormatSpec): String {
+        val out = StringBuilder()
+        var i = 0
+        while (i < typed.length) {
+            if (!typed[i].isDigit()) { out.append(typed[i]); i++; continue }
+            var j = i
+            while (j < typed.length && typed[j].isDigit()) j++
+            // Digits right after the decimal separator are a fraction: never grouped.
+            val afterDecimal = i > 0 && typed[i - 1] == spec.decimalSeparator
+            out.append(if (afterDecimal) typed.substring(i, j) else group(typed.substring(i, j), spec))
+            i = j
+        }
+        return out.toString()
+    }
+
     /** Plain editable text for an amount, e.g. "1234.5" becomes "1234,50" for a comma locale. No grouping. */
     fun toEditable(minor: Long, currency: String, spec: NumberFormatSpec): String {
         val unit = CurrencyUnit.of(currency)

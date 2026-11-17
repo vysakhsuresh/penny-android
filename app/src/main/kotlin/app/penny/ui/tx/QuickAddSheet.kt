@@ -111,6 +111,8 @@ fun QuickAddSheet(onDismiss: () -> Unit, onMore: (TxType, Long?, String?) -> Uni
                 tick()
                 amount = when (k) {
                     "⌫" -> amount.dropLast(1)
+                    // "00" only after a digit: on its own it would just be a zero.
+                    "00" -> if (amount.lastOrNull()?.isDigit() == true) amount + "00" else amount
                     "dec" -> if (amount.takeLastWhile { it.isDigit() || it == ctx.fmt.spec.decimalSeparator }.contains(ctx.fmt.spec.decimalSeparator)) amount else amount + ctx.fmt.spec.decimalSeparator
                     else -> amount + k
                 }
@@ -142,7 +144,8 @@ fun QuickAddSheet(onDismiss: () -> Unit, onMore: (TxType, Long?, String?) -> Uni
                 // Amount display: the evaluated result is shown under the expression (TX-09).
                 Column(Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 8.dp), horizontalAlignment = Alignment.End) {
                     MoneyLabel(
-                        if (amount.isEmpty()) ctx.money(0, currency) else "${app.penny.core.money.CurrencySymbols.symbol(currency, ctx.fmt.spec.localeTag)} $amount",
+                        // Grouped while typing ("¥1,200", "₹12,34,567"), spaced like the formatted amounts.
+                        if (amount.isEmpty()) ctx.money(0, currency) else app.penny.core.money.CurrencySymbols.symbol(currency, ctx.fmt.spec.localeTag) + (if (ctx.fmt.spec.symbolSpaced) " " else "") + app.penny.core.money.MoneyFormatter.groupTyped(amount, ctx.fmt.spec),
                         style = MaterialTheme.typography.displaySmall,
                         modifier = Modifier.semantics { contentDescription = amount.ifEmpty { "0" } },
                     )
@@ -185,7 +188,7 @@ fun QuickAddSheet(onDismiss: () -> Unit, onMore: (TxType, Long?, String?) -> Uni
                         }
                     }
                 }
-                Keypad(ctx.fmt.spec.decimalSeparator, ::key)
+                Keypad(ctx.fmt.spec.decimalSeparator, (unit?.minorUnits ?: 2) == 0, ::key)
                 Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                     TextButton(onClick = { onDismiss(); onMore(type, ok?.minor, category) /* keep what was typed */ }) { Text(stringResource(R.string.more)) }
                     Spacer(Modifier.weight(1f))
@@ -207,8 +210,9 @@ fun QuickAddSheet(onDismiss: () -> Unit, onMore: (TxType, Long?, String?) -> Uni
 
 /** Calculator keypad: digits, locale decimal separator, + − × ÷, backspace. 56 dp keys. */
 @Composable
-private fun Keypad(decimal: Char, onKey: (String) -> Unit) {
-    val rows = listOf(listOf("7", "8", "9", "÷"), listOf("4", "5", "6", "×"), listOf("1", "2", "3", "−"), listOf("dec", "0", "⌫", "+"))
+private fun Keypad(decimal: Char, wholeUnits: Boolean, onKey: (String) -> Unit) {
+    // Currencies with no minor unit (JPY, KRW, …) get a "00" key instead of a decimal point they cannot use.
+    val rows = listOf(listOf("7", "8", "9", "÷"), listOf("4", "5", "6", "×"), listOf("1", "2", "3", "−"), listOf(if (wholeUnits) "00" else "dec", "0", "⌫", "+"))
     Column(Modifier.fillMaxWidth().padding(horizontal = 12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
         rows.forEach { r ->
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {

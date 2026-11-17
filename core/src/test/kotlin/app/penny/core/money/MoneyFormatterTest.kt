@@ -5,6 +5,16 @@ import io.kotest.matchers.shouldBe
 
 class MoneyFormatterTest : FunSpec({
     val us = NumberFormatSpec.Default
+
+    test("typed amounts are grouped as they are typed, fractions and operators untouched") {
+        MoneyFormatter.groupTyped("1200", us) shouldBe "1,200"
+        MoneyFormatter.groupTyped("12500+3000.5", us) shouldBe "12,500+3,000.5"
+        MoneyFormatter.groupTyped("0.12345", us) shouldBe "0.12345"
+        MoneyFormatter.groupTyped("1234567", us.copy(grouping = Grouping.INDIAN)) shouldBe "12,34,567"
+        val de = NumberFormatSpec.forLocale("de-DE")
+        MoneyFormatter.groupTyped("1234,5", de) shouldBe "1.234,5"
+        MoneyFormatter.groupTyped("", us) shouldBe ""
+    }
     val indian = us.copy(grouping = Grouping.INDIAN, localeTag = "en-IN")
 
     test("minor units come from ISO 4217: JPY 0, USD 2, KWD 3") {

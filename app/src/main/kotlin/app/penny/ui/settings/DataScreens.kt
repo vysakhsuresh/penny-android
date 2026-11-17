@@ -211,7 +211,7 @@ fun DataScreen(onBack: () -> Unit, go: (String) -> Unit, onWiped: () -> Unit) {
                 text = {
                     Column {
                         Text(stringResource(R.string.backup_enter_phrase_body))
-                        OutlinedTextField(phrase, { phrase = it; wrong = false }, minLines = 3, isError = wrong, modifier = Modifier.fillMaxWidth(),
+                        app.penny.ui.kit.SoftField(phrase, { phrase = it; wrong = false }, minLines = 3, isError = wrong, modifier = Modifier.fillMaxWidth(),
                             supportingText = { if (wrong) Text(stringResource(R.string.backup_phrase_wrong)) })
                     }
                 },

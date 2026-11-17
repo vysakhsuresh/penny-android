@@ -159,7 +159,7 @@ fun NameDialog(title: String, initial: String, onDismiss: () -> Unit, taken: (St
     AlertDialog(
         onDismissRequest = onDismiss, title = { Text(title) },
         text = {
-            OutlinedTextField(name, { name = it }, label = { Text(stringResource(R.string.field_name)) }, singleLine = true, isError = clash,
+            app.penny.ui.kit.SoftField(name, { name = it }, label = { Text(stringResource(R.string.field_name)) }, singleLine = true, isError = clash,
                 supportingText = { if (clash) Text(stringResource(R.string.name_taken)) })
         },
         confirmButton = { TextButton(onClick = { onOk(name.trim()) }, enabled = name.isNotBlank() && !clash) { Text(stringResource(R.string.save)) } },

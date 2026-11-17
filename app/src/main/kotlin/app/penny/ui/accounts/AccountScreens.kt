@@ -299,14 +299,17 @@ fun AmountDialog(ctx: Ctx, title: String, body: String, currency: String, initia
 private fun DeleteAccountDialog(ctx: Ctx, id: String, a: FinancialAccount, count: Int, onDismiss: () -> Unit, onConfirm: (String?) -> Unit) {
     var moveTo by rememberSaveable { mutableStateOf<String?>(ctx.book.activeAccounts.firstOrNull { it.state.id != id && it.value.currency == a.currency }?.state?.id) }
     var confirm by rememberSaveable { mutableStateOf(false) }
-    if (!confirm && count > 0) {
+    // Bills, rules, goals and the like that use this account; they follow the same choice as its transactions.
+    val uses = ctx.book.accountUseCount(id)
+    if (!confirm && (count > 0 || uses > 0)) {
         AlertDialog(
             onDismissRequest = onDismiss,
             title = { Text(stringResource(R.string.delete_account_title, a.name)) },
             text = {
                 Column {
-                    Text(pluralStringResource(R.plurals.delete_account_body, count, count))
-                    SelectField(stringResource(R.string.move_to), moveTo, ctx.book.activeAccounts.filter { it.state.id != id }.map { Choice(it.state.id, it.value.name, it.value.currency) }, { moveTo = it }, allowNone = true, noneLabel = stringResource(R.string.delete_transactions_too))
+                    if (count > 0) Text(pluralStringResource(R.plurals.delete_account_body, count, count))
+                    if (uses > 0) Text(pluralStringResource(R.plurals.delete_account_uses, uses, uses), modifier = Modifier.padding(top = 8.dp))
+                    SelectField(stringResource(R.string.move_to), moveTo, ctx.book.activeAccounts.filter { it.state.id != id }.map { Choice(it.state.id, it.value.name, it.value.currency) }, { moveTo = it }, allowNone = true, noneLabel = stringResource(if (count > 0) R.string.delete_transactions_too else R.string.dont_move_pause))
                 }
             },
             confirmButton = { TextButton(onClick = { confirm = true }) { Text(stringResource(R.string.next)) } },
@@ -315,7 +318,8 @@ private fun DeleteAccountDialog(ctx: Ctx, id: String, a: FinancialAccount, count
     } else {
         TypedConfirmDialog(
             stringResource(R.string.delete_account_title, a.name), stringResource(R.string.delete_account_confirm), a.name,
-            stringResource(R.string.delete), onConfirm = { onConfirm(moveTo) }, onDismiss = onDismiss,
+            // Nothing moves unless the person chose where: with nothing using the account there was no choice to make.
+            stringResource(R.string.delete), onConfirm = { onConfirm(if (count > 0 || uses > 0) moveTo else null) }, onDismiss = onDismiss,
         )
     }
 }

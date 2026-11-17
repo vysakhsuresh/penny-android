@@ -131,7 +131,7 @@ fun SyncScreen(onBack: () -> Unit, svm: SyncViewModel = hiltViewModel()) {
                     SyncPhase.NEEDS_PHRASE -> {
                         SectionHeader(stringResource(R.string.recovery_phrase))
                         Text(stringResource(R.string.enter_phrase_body), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(horizontal = 20.dp))
-                        OutlinedTextField(phraseInput, { phraseInput = it }, label = { Text(stringResource(R.string.recovery_phrase)) }, modifier = Modifier.fillMaxWidth().padding(16.dp), minLines = 3)
+                        app.penny.ui.kit.SoftField(phraseInput, { phraseInput = it }, label = { Text(stringResource(R.string.recovery_phrase)) }, modifier = Modifier.fillMaxWidth().padding(16.dp), minLines = 3)
                         Row(Modifier.padding(horizontal = 16.dp)) {
                             FilledTonalButton(onClick = {
                                 busy = true
@@ -253,7 +253,7 @@ private fun BankSection(ctx: app.penny.ui.common.Ctx, bvm: BankViewModel = hiltV
         var token by rememberSaveable { mutableStateOf("") }
         AlertDialog(
             onDismissRequest = { tokenFor = null }, title = { Text(stringResource(R.string.connect_with_token)) },
-            text = { Column { Text(stringResource(R.string.simplefin_help)); OutlinedTextField(token, { token = it.trim() }, label = { Text(stringResource(R.string.setup_token)) }, minLines = 2) } },
+            text = { Column { Text(stringResource(R.string.simplefin_help)); app.penny.ui.kit.SoftField(token, { token = it.trim() }, label = { Text(stringResource(R.string.setup_token)) }, minLines = 2) } },
             confirmButton = {
                 TextButton(enabled = token.length > 20, onClick = {
                     scope.launch {

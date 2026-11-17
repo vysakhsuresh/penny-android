@@ -1,5 +1,9 @@
 package app.penny.ui.kit
 
+import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.border
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.ui.draw.shadow
 import androidx.compose.foundation.clickable
@@ -110,7 +114,7 @@ fun PennyScreen(
             // While amounts are hidden, every screen offers the way back, not only Home.
             val withReveal: @Composable RowScope.() -> Unit = { RevealAmountsButton(); actions() }
             val nav: @Composable () -> Unit = {
-                if (onBack != null) IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back)) }
+                if (onBack != null) BackPill(onBack)
             }
             if (large) {
                 LargeTopAppBar(
@@ -125,6 +129,26 @@ fun PennyScreen(
         bottomBar = bottomBar,
         content = content,
     )
+}
+
+/**
+ * The way back on every screen: a soft pill with a chevron and the word "Back", easier to read than a bare arrow.
+ * The 48 dp touch target is kept around the smaller visual pill; the chevron mirrors in right-to-left languages.
+ */
+@Composable
+fun BackPill(onBack: () -> Unit) {
+    val label = stringResource(R.string.back)
+    Surface(
+        onClick = onBack, shape = androidx.compose.foundation.shape.CircleShape, color = MaterialTheme.colorScheme.surfaceContainerHigh,
+        modifier = Modifier.padding(start = 12.dp).heightIn(min = 48.dp).padding(vertical = 6.dp)
+            .semantics { contentDescription = label; role = androidx.compose.ui.semantics.Role.Button },
+    ) {
+        Row(Modifier.padding(start = 8.dp, end = 14.dp, top = 6.dp, bottom = 6.dp), verticalAlignment = Alignment.CenterVertically) {
+            Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, null, modifier = Modifier.size(20.dp))
+            Spacer(Modifier.width(2.dp))
+            Text(label, style = MaterialTheme.typography.labelLarge, modifier = Modifier.clearAndSetSemantics {})
+        }
+    }
 }
 
 @Composable
@@ -475,5 +499,26 @@ fun HeroCard(modifier: Modifier = Modifier, onClick: (() -> Unit)? = null, conte
         MaterialTheme(colorScheme = cs, typography = MaterialTheme.typography, shapes = MaterialTheme.shapes) {
             Column(base, content = content)
         }
+    }
+}
+
+/** A book's badge: deep plum disc, gold initial and a thin gold ring, matching the app icon. */
+@Composable
+fun ProfileBadge(name: String, modifier: Modifier = Modifier, size: Dp = 40.dp) {
+    val gold = Color(0xFFF2C14E)
+    Box(
+        modifier.size(size).clip(CircleShape)
+            .background(androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0xFF5B2D8E), Color(0xFF2A1149))))
+            .border(1.5.dp, androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0xFFFFE7A3), gold, Color(0xFFB8801C))), CircleShape),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            name.trim().take(1).uppercase().ifEmpty { "•" },
+            style = MaterialTheme.typography.titleMedium.copy(
+                brush = androidx.compose.ui.graphics.Brush.verticalGradient(listOf(Color(0xFFFFF0B8), gold, Color(0xFFD9A030))),
+                fontSize = (size.value * 0.45f).sp,
+            ),
+            fontWeight = FontWeight.Bold,
+        )
     }
 }

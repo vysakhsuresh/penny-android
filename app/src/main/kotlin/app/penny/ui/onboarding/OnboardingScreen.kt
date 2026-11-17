@@ -171,7 +171,7 @@ fun OnboardingScreen(vm: OnboardingViewModel, onImport: () -> Unit, onDone: () -
                 0 -> Welcome()
                 1 -> Column {
                     Header(R.string.ob_region_title, R.string.ob_region_body)
-                    OutlinedTextField(
+                    app.penny.ui.kit.SoftField(
                         query, { query = it }, leadingIcon = { Icon(Icons.Outlined.Search, null) }, placeholder = { Text(stringResource(R.string.search)) },
                         singleLine = true, modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp), shape = MaterialTheme.shapes.extraLarge,
                     )
@@ -202,7 +202,7 @@ fun OnboardingScreen(vm: OnboardingViewModel, onImport: () -> Unit, onDone: () -
                 }
                 else -> Column {
                     Header(R.string.ob_account_title, R.string.ob_account_body)
-                    OutlinedTextField(
+                    app.penny.ui.kit.SoftField(
                         value = cash, onValueChange = { cash = it }, label = { Text(stringResource(R.string.field_amount)) },
                         prefix = { Text(app.penny.core.money.CurrencySymbols.symbol(pack.currency, pack.primaryLocale) + " ") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), singleLine = true,

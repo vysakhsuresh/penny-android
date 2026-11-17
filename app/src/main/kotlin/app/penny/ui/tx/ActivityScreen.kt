@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.BookmarkAdd
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Delete
@@ -140,7 +139,7 @@ fun ActivityScreen(initialFilter: String?, onBack: () -> Unit, onOpen: (String) 
                 } else {
                     TopAppBar(
                         title = {
-                            OutlinedTextField(
+                            app.penny.ui.kit.SoftField(
                                 query, { query = it }, placeholder = { Text(stringResource(R.string.search_hint), maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis) }, singleLine = true,
                                 leadingIcon = { Icon(Icons.Outlined.Search, null) },
                                 trailingIcon = { if (query.isNotEmpty()) IconButton(onClick = { query = "" }) { Icon(Icons.Outlined.Close, stringResource(R.string.clear)) } },
@@ -149,7 +148,7 @@ fun ActivityScreen(initialFilter: String?, onBack: () -> Unit, onOpen: (String) 
                             // Opened from Home's search button: put the cursor in the field and show the keyboard.
                             androidx.compose.runtime.LaunchedEffect(Unit) { if (focusSearch) runCatching { searchFocus.requestFocus() } }
                         },
-                        navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back)) } },
+                        navigationIcon = { app.penny.ui.kit.BackPill(onBack) },
                         actions = { app.penny.ui.kit.RevealAmountsButton() },
                     )
                 }
@@ -265,7 +264,7 @@ fun ActivityScreen(initialFilter: String?, onBack: () -> Unit, onOpen: (String) 
             AlertDialog(
                 onDismissRequest = { saveDialog = false },
                 title = { Text(stringResource(R.string.save_search)) },
-                text = { OutlinedTextField(name, { name = it }, label = { Text(stringResource(R.string.field_name)) }, singleLine = true) },
+                text = { app.penny.ui.kit.SoftField(name, { name = it }, label = { Text(stringResource(R.string.field_name)) }, singleLine = true) },
                 confirmButton = {
                     TextButton(enabled = name.isNotBlank(), onClick = {
                         vm.act(R.string.saved) { savedSearches.create(newId(), it.profileId, SavedSearch(name.trim(), effective, sort = it.savedSearches.size)) }

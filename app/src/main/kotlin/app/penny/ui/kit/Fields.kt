@@ -1,5 +1,6 @@
 package app.penny.ui.kit
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.background
@@ -124,14 +125,14 @@ fun TextInput(
     placeholder: String? = null,
 ) {
     val buf = rememberTextBuffer(value)
-    OutlinedTextField(
+    androidx.compose.material3.TextField(
         value = buf.tfv, onValueChange = { onChange(buf.edit(it)) }, label = { Text(label) },
         modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
         singleLine = singleLine, isError = error != null,
         supportingText = (error ?: supporting)?.let { { Text(it) } },
         keyboardOptions = KeyboardOptions(keyboardType = keyboard, imeAction = if (singleLine) ImeAction.Next else ImeAction.Default),
         placeholder = placeholder?.let { { Text(it) } },
-        shape = MaterialTheme.shapes.medium,
+        shape = PennyFieldShape, colors = pennyFieldColors(error != null),
     )
 }
 
@@ -176,7 +177,7 @@ fun AmountInput(
     }
     fun insert(op: String) = state.edit { replace(selection.min, selection.max, op) }
     Column(modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp)) {
-        OutlinedTextField(
+        androidx.compose.material3.TextField(
             state = state,
             label = { Text(label) },
             prefix = { Text(app.penny.core.money.CurrencySymbols.symbol(currency, fmt.spec.localeTag) + " ") },
@@ -194,7 +195,7 @@ fun AmountInput(
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Next),
             textStyle = MaterialTheme.typography.headlineSmall.copy(fontFeatureSettings = app.penny.ui.theme.TabularNumbers),
-            shape = MaterialTheme.shapes.medium,
+            shape = PennyFieldShape, colors = pennyFieldColors(error != null),
         )
         Row(Modifier.fillMaxWidth().padding(start = 16.dp, top = 2.dp), verticalAlignment = Alignment.CenterVertically) {
             Text(
@@ -248,20 +249,16 @@ fun <T> SelectField(
     var open by rememberSaveable { mutableStateOf(false) }
     val current = choices.firstOrNull { it.value == selected }?.label ?: if (allowNone) noneLabel else ""
     val openLabel = stringResource(R.string.choose_x, label)
-    OutlinedTextField(
+    androidx.compose.material3.TextField(
         value = current, onValueChange = {}, readOnly = true, label = { Text(label) }, isError = error != null,
         supportingText = error?.let { { Text(it) } },
         trailingIcon = { Icon(Icons.Outlined.ExpandMore, null) },
         // Disabled for typing; the whole field is one button that opens the sheet, announced with its value.
         modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp)
             .clickable(role = Role.Button) { open = true }.semantics(mergeDescendants = true) { contentDescription = "$openLabel: $current" },
-        shape = MaterialTheme.shapes.medium,
+        shape = PennyFieldShape,
         enabled = false,
-        colors = androidx.compose.material3.OutlinedTextFieldDefaults.colors(
-            disabledTextColor = MaterialTheme.colorScheme.onSurface, disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            disabledBorderColor = if (error != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline,
-            disabledTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant, disabledSupportingTextColor = MaterialTheme.colorScheme.error,
-        ),
+        colors = pennyFieldColors(error = error != null),
     )
     if (open) {
         OptionSheet(label, selected, choices, allowNone, noneLabel, searchable, onDismiss = { open = false }) { onSelect(it); open = false }
@@ -285,9 +282,10 @@ fun <T> OptionSheet(
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = state) {
         Text(title, style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp))
         if (searchable) {
-            OutlinedTextField(
+            androidx.compose.material3.TextField(
                 q, { q = it }, leadingIcon = { Icon(Icons.Outlined.Search, null) }, placeholder = { Text(stringResource(R.string.search)) },
-                singleLine = true, modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp), shape = MaterialTheme.shapes.medium,
+                singleLine = true, modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp), shape = PennyFieldShape,
+                colors = pennyFieldColors(),
             )
         }
         val filtered = choices.filter { q.isBlank() || it.label.contains(q, ignoreCase = true) || it.supporting?.contains(q, ignoreCase = true) == true }
@@ -323,14 +321,11 @@ private fun ChoiceRow(label: String, supporting: String?, selected: Boolean, ind
 fun DateInput(label: String, date: LocalDate?, onChange: (LocalDate) -> Unit, modifier: Modifier = Modifier, quick: Boolean = true, today: LocalDate = LocalDate.now()) {
     var open by rememberSaveable { mutableStateOf(false) }
     Column(modifier) {
-        OutlinedTextField(
+        androidx.compose.material3.TextField(
             value = date?.let { shortDate(it) }.orEmpty(), onValueChange = {}, readOnly = true, enabled = false, label = { Text(label) },
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp).clickable(role = Role.Button) { open = true },
-            shape = MaterialTheme.shapes.medium,
-            colors = androidx.compose.material3.OutlinedTextFieldDefaults.colors(
-                disabledTextColor = MaterialTheme.colorScheme.onSurface, disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                disabledBorderColor = MaterialTheme.colorScheme.outline,
-            ),
+            shape = PennyFieldShape,
+            colors = pennyFieldColors(error = false),
         )
         if (quick) {
             // Wraps in narrow places (dialogs, 200% text) instead of squeezing the last chip into a vertical strip.
@@ -361,13 +356,10 @@ fun DateInput(label: String, date: LocalDate?, onChange: (LocalDate) -> Unit, mo
 fun TimeInput(label: String, time: LocalTime?, onChange: (LocalTime?) -> Unit, modifier: Modifier = Modifier) {
     var open by rememberSaveable { mutableStateOf(false) }
     Row(modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-        OutlinedTextField(
+        androidx.compose.material3.TextField(
             value = time?.toString() ?: stringResource(R.string.field_no_time), onValueChange = {}, readOnly = true, enabled = false, label = { Text(label) },
-            modifier = Modifier.weight(1f).clickable(role = Role.Button) { open = true }, shape = MaterialTheme.shapes.medium,
-            colors = androidx.compose.material3.OutlinedTextFieldDefaults.colors(
-                disabledTextColor = MaterialTheme.colorScheme.onSurface, disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                disabledBorderColor = MaterialTheme.colorScheme.outline,
-            ),
+            modifier = Modifier.weight(1f).clickable(role = Role.Button) { open = true }, shape = PennyFieldShape,
+            colors = pennyFieldColors(error = false),
         )
         if (time != null) TextButton(onClick = { onChange(null) }) { Text(stringResource(R.string.clear_time)) }
     }
@@ -472,7 +464,7 @@ fun TypedConfirmDialog(title: String, body: String, expected: String, confirmLab
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(body)
-                OutlinedTextField(typed, { typed = it }, label = { Text(stringResource(R.string.type_to_confirm, expected)) }, singleLine = true)
+                SoftField(typed, { typed = it }, label = { Text(stringResource(R.string.type_to_confirm, expected)) }, singleLine = true)
             }
         },
         confirmButton = {
@@ -513,3 +505,54 @@ fun parseDayOfMonth(s: String): Int? = s.trim().toIntOrNull()?.takeIf { it in 1.
 
 /** A finite number of zero or more (weights, distances); null otherwise, so NaN and Infinity never reach storage. */
 fun parseNonNegative(s: String): Double? = s.trim().replace(',', '.').toDoubleOrNull()?.takeIf { it.isFinite() && it >= 0 }
+
+/**
+ * Field look for the whole app: a soft tinted surface with rounded corners and no outline, so a screen reads like a
+ * card being filled in, not a form. A thin accent line appears only on the field being typed in, and red on error.
+ */
+@Composable
+fun pennyFieldColors(error: Boolean = false): androidx.compose.material3.TextFieldColors {
+    val cs = MaterialTheme.colorScheme
+    val fill = cs.surfaceContainerHigh
+    return androidx.compose.material3.TextFieldDefaults.colors(
+        focusedContainerColor = fill, unfocusedContainerColor = fill, disabledContainerColor = fill, errorContainerColor = fill,
+        focusedIndicatorColor = cs.primary, unfocusedIndicatorColor = Color.Transparent,
+        disabledIndicatorColor = if (error) cs.error else Color.Transparent, errorIndicatorColor = cs.error,
+        disabledTextColor = cs.onSurface, disabledLabelColor = cs.onSurfaceVariant, unfocusedLabelColor = cs.onSurfaceVariant,
+        disabledTrailingIconColor = cs.onSurfaceVariant, disabledLeadingIconColor = cs.onSurfaceVariant,
+        disabledSupportingTextColor = cs.error, disabledPlaceholderColor = cs.onSurfaceVariant,
+    )
+}
+
+val PennyFieldShape = androidx.compose.foundation.shape.RoundedCornerShape(14.dp)
+
+/** Drop-in for OutlinedTextField with the soft look ([pennyFieldColors]). */
+@Composable
+fun SoftField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    readOnly: Boolean = false,
+    label: (@Composable () -> Unit)? = null,
+    placeholder: (@Composable () -> Unit)? = null,
+    leadingIcon: (@Composable () -> Unit)? = null,
+    trailingIcon: (@Composable () -> Unit)? = null,
+    supportingText: (@Composable () -> Unit)? = null,
+    isError: Boolean = false,
+    visualTransformation: androidx.compose.ui.text.input.VisualTransformation = androidx.compose.ui.text.input.VisualTransformation.None,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: androidx.compose.foundation.text.KeyboardActions = androidx.compose.foundation.text.KeyboardActions.Default,
+    singleLine: Boolean = false,
+    minLines: Int = 1,
+    maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
+    shape: androidx.compose.ui.graphics.Shape = PennyFieldShape,
+    prefix: (@Composable () -> Unit)? = null,
+    textStyle: androidx.compose.ui.text.TextStyle = androidx.compose.material3.LocalTextStyle.current,
+) = androidx.compose.material3.TextField(
+    value = value, onValueChange = onValueChange, modifier = modifier, enabled = enabled, readOnly = readOnly, label = label,
+    placeholder = placeholder, leadingIcon = leadingIcon, trailingIcon = trailingIcon, supportingText = supportingText, isError = isError,
+    visualTransformation = visualTransformation, keyboardOptions = keyboardOptions, keyboardActions = keyboardActions,
+    singleLine = singleLine, minLines = minLines, maxLines = maxLines, shape = shape, colors = pennyFieldColors(isError),
+    prefix = prefix, textStyle = textStyle,
+)

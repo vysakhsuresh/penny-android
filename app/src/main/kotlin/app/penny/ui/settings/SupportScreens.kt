@@ -95,7 +95,7 @@ fun HelpScreen(onBack: () -> Unit, go: (String) -> Unit) {
     PennyScreen(stringResource(R.string.get_help), onBack) { pad ->
         LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 48.dp)) {
             item {
-                OutlinedTextField(q, { q = it }, placeholder = { Text(stringResource(R.string.search_help)) }, singleLine = true, shape = MaterialTheme.shapes.extraLarge, modifier = Modifier.fillMaxWidth().padding(16.dp))
+                app.penny.ui.kit.SoftField(q, { q = it }, placeholder = { Text(stringResource(R.string.search_help)) }, singleLine = true, shape = MaterialTheme.shapes.extraLarge, modifier = Modifier.fillMaxWidth().padding(16.dp))
             }
             item { SectionHeader(stringResource(R.string.faq)) }
             val idx = questions.indices.filter { q.isBlank() || questions[it].contains(q, true) || answers.getOrNull(it)?.contains(q, true) == true }

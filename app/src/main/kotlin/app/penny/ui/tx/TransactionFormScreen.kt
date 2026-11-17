@@ -238,7 +238,7 @@ fun TransactionFormScreen(
         AlertDialog(
             onDismissRequest = { templateDialog = false },
             title = { Text(stringResource(R.string.save_as_template)) },
-            text = { OutlinedTextField(name, { name = it }, label = { Text(stringResource(R.string.field_name)) }, singleLine = true) },
+            text = { app.penny.ui.kit.SoftField(name, { name = it }, label = { Text(stringResource(R.string.field_name)) }, singleLine = true) },
             confirmButton = { TextButton(onClick = { vm.saveTemplate(name.ifBlank { templateDefault }); templateDialog = false }, enabled = name.isNotBlank()) { Text(stringResource(R.string.save)) } },
             dismissButton = { TextButton(onClick = { templateDialog = false }) { Text(stringResource(R.string.cancel)) } },
         )
@@ -264,7 +264,7 @@ fun TagsEditor(tags: List<String>, known: List<String>, onPending: (String) -> U
     androidx.compose.runtime.LaunchedEffect(input) { onPending(input) }
     fun commit() { val t = input.trim(); if (t.isNotEmpty()) onChange((tags + t).distinct()); input = "" }
     Column {
-        OutlinedTextField(
+        app.penny.ui.kit.SoftField(
             input, { s ->
                 if (s.endsWith(",") || s.endsWith("\n")) {
                     val t = s.trimEnd(',', '\n').trim()

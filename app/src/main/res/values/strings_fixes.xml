@@ -101,4 +101,9 @@
     <string name="currency_locked_entries">The currency is fixed once there are entries.</string>
     <string name="show_completed_archived">Show completed and archived</string>
     <string name="show_archived_n">Show archived (%1$d)</string>
+    <plurals name="delete_account_uses">
+        <item quantity="one">%1$d bill, rule or goal uses this account. Without a new account it is paused.</item>
+        <item quantity="other">%1$d bills, rules or goals use this account. Without a new account they are paused.</item>
+    </plurals>
+    <string name="dont_move_pause">Don’t move them (pause them)</string>
 </resources>

@@ -115,7 +115,7 @@ fun SettingsScreen(onBack: () -> Unit, go: (String) -> Unit) {
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 48.dp)) {
                 item {
                     PennyCard(onClick = { go(Routes.PROFILES) }) {
-                        ListRow(ctx.book.profile.name, subtitle = stringResource(R.string.switch_rename_profile), leading = { Avatar(ctx.book.profile.name, ctx.book.profileId, size = 44.dp) })
+                        ListRow(ctx.book.profile.name, subtitle = stringResource(R.string.switch_rename_profile), leading = { app.penny.ui.kit.ProfileBadge(ctx.book.profile.name) })
                     }
                 }
                 item { SectionHeader(stringResource(R.string.set_book)) }
@@ -184,7 +184,7 @@ fun ProfileSettingsScreen(onBack: () -> Unit, onDeleted: () -> Unit, onRates: ()
         fun save(np: Profile, msg: Int = R.string.updated) { vm.act(msg) { profiles.update(it.profileId, np) } }
         PennyScreen(stringResource(R.string.profile_settings), onBack) { pad ->
             Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(bottom = 48.dp)) {
-                ListRow(p.name, subtitle = stringResource(R.string.rename), leading = { Avatar(p.name, b.profileId) }, onClick = { rename = true })
+                ListRow(p.name, subtitle = stringResource(R.string.rename), leading = { app.penny.ui.kit.ProfileBadge(p.name) }, onClick = { rename = true })
                 SectionHeader(stringResource(R.string.settings_region))
                 SelectField(stringResource(R.string.settings_region), p.regionPack, vm.repo.packs.all().map { Choice(it.id, it.name, it.currency) }, { id ->
                     id?.let { vm.act(messageText = context.getString(R.string.region_changed, vm.repo.packs.get(it).name)) { book -> switchRegion(book.profileId, it) } }
@@ -307,7 +307,7 @@ fun ProfilesScreen(onBack: () -> Unit, onSwitched: () -> Unit, onNone: () -> Uni
                 items(profiles, key = { it.state.id }) { p ->
                     ListRow(
                         p.value.name, subtitle = listOfNotNull(p.value.baseCurrency, stringResource(R.string.business_book).takeIf { p.value.business != null }, stringResource(R.string.current).takeIf { p.state.id == currentId }).joinToString(" · "),
-                        leading = { Avatar(p.value.name, p.state.id) }, selected = p.state.id == currentId,
+                        leading = { app.penny.ui.kit.ProfileBadge(p.value.name) }, selected = p.state.id == currentId,
                         // Renaming a book (the first one is called "Personal") right where books are listed.
                         trailing = { IconButton(onClick = { renaming = p.state.id }) { Icon(Icons.Outlined.Edit, stringResource(R.string.rename_x, p.value.name)) } },
                         onClick = { vm.prefs.setCurrentProfile(p.state.id); onSwitched() }, divider = true,
@@ -331,7 +331,7 @@ fun ProfilesScreen(onBack: () -> Unit, onSwitched: () -> Unit, onNone: () -> Uni
                 onDismissRequest = { adding = false }, title = { Text(stringResource(R.string.add_profile)) },
                 text = {
                     Column {
-                        OutlinedTextField(name, { name = it }, label = { Text(stringResource(R.string.field_name)) }, singleLine = true, isError = clash,
+                        app.penny.ui.kit.SoftField(name, { name = it }, label = { Text(stringResource(R.string.field_name)) }, singleLine = true, isError = clash,
                             supportingText = { if (clash) Text(stringResource(R.string.name_taken)) })
                         Segmented(listOf(Choice(ProfileKind.PERSONAL, stringResource(R.string.personal)), Choice(ProfileKind.BUSINESS, stringResource(R.string.business)), Choice(ProfileKind.SUPERVISED, stringResource(R.string.supervised))), kind, { kind = it })
                     }
@@ -498,8 +498,8 @@ fun SecurityScreen(onBack: () -> Unit) {
                 title = { Text(stringResource(if (which == "pin") R.string.set_pin else R.string.set_duress_pin)) },
                 text = {
                     Column {
-                        OutlinedTextField(pin, { pin = it.take(12) }, label = { Text(stringResource(R.string.pin)) }, singleLine = true, keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(keyboardType = KeyboardType.NumberPassword), visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation())
-                        OutlinedTextField(pin2, { pin2 = it.take(12) }, label = { Text(stringResource(R.string.repeat_pin)) }, singleLine = true, keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(keyboardType = KeyboardType.NumberPassword), visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation())
+                        app.penny.ui.kit.SoftField(pin, { pin = it.take(12) }, label = { Text(stringResource(R.string.pin)) }, singleLine = true, keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(keyboardType = KeyboardType.NumberPassword), visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation())
+                        app.penny.ui.kit.SoftField(pin2, { pin2 = it.take(12) }, label = { Text(stringResource(R.string.repeat_pin)) }, singleLine = true, keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(keyboardType = KeyboardType.NumberPassword), visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation())
                         if (same) Text(stringResource(R.string.duress_same), color = MaterialTheme.colorScheme.error)
                     }
                 },

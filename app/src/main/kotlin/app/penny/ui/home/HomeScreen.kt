@@ -120,7 +120,7 @@ private fun HomeContent(ctx: Ctx, vm: BookViewModel, nav: HomeNav, padding: Padd
     LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding() + 96.dp)) {
         item {
             Row(Modifier.fillMaxWidth().padding(start = 16.dp, end = 8.dp, top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = nav.profiles) { Avatar(b.profile.name, b.profileId, size = 36.dp, modifier = Modifier.semantics { contentDescription = context.getString(R.string.settings) }) }
+                IconButton(onClick = nav.profiles) { app.penny.ui.kit.ProfileBadge(b.profile.name, size = 36.dp, modifier = Modifier.semantics { contentDescription = context.getString(R.string.settings) }) }
                 // The book name opens the book list too (switch, add, rename), not only the small avatar.
                 Column(Modifier.weight(1f).clip(MaterialTheme.shapes.small).clickable(onClick = nav.profiles).padding(start = 4.dp, top = 2.dp, bottom = 2.dp)) {
                     Text(b.profile.name, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)

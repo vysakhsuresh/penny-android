@@ -221,6 +221,15 @@ class Book(
         app.penny.core.model.TransactionValidator.validate(t) { accountMap[it]?.value?.currency }.isEmpty() &&
             accountMap.containsKey(t.accountId) && (t.toAccountId == null || accountMap.containsKey(t.toAccountId))
 
+    /** How many things other than transactions point at account [id] (bills, rules, templates, goals, loans...). */
+    fun accountUseCount(id: String): Int =
+        recurring.count { it.value.accountId == id || it.value.toAccountId == id } +
+            rules.count { r -> r.value.actions.accountId == id || r.value.actions.transferToAccountId == id || r.value.conditions.any { it.field == app.penny.core.model.RuleField.ACCOUNT && id in it.value.split(',') } } +
+            templates.count { it.value.accountId == id || it.value.toAccountId == id } +
+            goals.count { id in it.value.linkedAccountIds } +
+            loans.count { it.value.accountId == id || it.value.paidFromAccountId == id } +
+            circles.count { it.value.accountId == id }
+
     fun accountName(id: String?) = id?.let { accountMap[it]?.value?.name }.orEmpty()
 
     fun personName(id: String?) = when (id) {

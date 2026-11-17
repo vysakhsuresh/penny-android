@@ -320,7 +320,7 @@ fun CoachScreen(onBack: () -> Unit, onOpenTx: (String) -> Unit) {
                 item { Text(stringResource(R.string.coach_privacy), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp)) }
                 item { Segmented(CoachTone.entries.map { Choice(it, stringResource(when (it) { CoachTone.GENTLE -> R.string.tone_gentle; CoachTone.DIRECT -> R.string.tone_direct; CoachTone.ROAST -> R.string.tone_roast })) }, tone, { tone = it; vm.prefs.setString("coach.tone", it.name); if (asked.isNotEmpty()) ask(asked) }) }
                 item {
-                    OutlinedTextField(
+                    app.penny.ui.kit.SoftField(
                         q, { q = it }, placeholder = { Text(stringResource(R.string.coach_hint)) }, singleLine = true, shape = MaterialTheme.shapes.extraLarge,
                         trailingIcon = { IconButton(onClick = { if (q.isNotBlank()) ask(q) }) { Icon(Icons.AutoMirrored.Outlined.Send, stringResource(R.string.ask)) } },
                         modifier = Modifier.fillMaxWidth().padding(16.dp),

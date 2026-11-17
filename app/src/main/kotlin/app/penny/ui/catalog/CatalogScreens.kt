@@ -113,7 +113,7 @@ fun TagsScreen(onBack: () -> Unit, onActivity: (String) -> Unit) {
         ) { pad ->
             val list = b.tags.filter { showArchived || !it.value.archived }
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = pad.calculateBottomPadding() + 100.dp)) {
-                if (list.isEmpty()) item { EmptyState(stringResource(R.string.no_tags), stringResource(R.string.no_tags_body), icon = Icons.Outlined.Sell, action = stringResource(R.string.add_tag), onAction = { edit = "new" }) }
+                if (list.isEmpty()) item { EmptyState(stringResource(R.string.no_tags), stringResource(R.string.no_tags_body), icon = Icons.Outlined.Sell) }
                 items(list, key = { it.state.id }) { s ->
                     val n = counts[s.value.name] ?: 0
                     ListRow(
@@ -289,7 +289,7 @@ fun RulesScreen(onBack: () -> Unit, onEdit: (String) -> Unit) {
                         }
                     }
                 }
-                if (visible.isEmpty()) item { EmptyState(stringResource(R.string.no_rules), stringResource(R.string.no_rules_body), icon = Icons.Outlined.Rule, action = stringResource(R.string.add_rule), onAction = { onEdit("new") }) }
+                if (visible.isEmpty()) item { EmptyState(stringResource(R.string.no_rules), stringResource(R.string.no_rules_body), icon = Icons.Outlined.Rule) }
                 items(visible, key = { it.state.id }) { r ->
                     ListRow(
                         title = r.value.name,

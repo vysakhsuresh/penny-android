@@ -83,7 +83,7 @@ fun LoansScreen(onBack: () -> Unit, onOpen: (String) -> Unit, onAdd: () -> Unit)
             floating = { app.penny.ui.kit.AddFab(stringResource(R.string.add_loan), onAdd) },
         ) { pad ->
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = pad.calculateBottomPadding() + 100.dp)) {
-                if (debtors.isEmpty()) item { EmptyState(stringResource(R.string.no_debts), stringResource(R.string.no_debts_body), icon = Icons.Outlined.CreditCard, action = stringResource(R.string.add_loan), onAction = onAdd) }
+                if (debtors.isEmpty()) item { EmptyState(stringResource(R.string.no_debts), stringResource(R.string.no_debts_body), icon = Icons.Outlined.CreditCard) }
                 if (plan != null) {
                     item {
                         app.penny.ui.kit.HeroCard {

@@ -149,7 +149,7 @@ fun GroupScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onExpe
                     }
                 }
                 item { SectionHeader(stringResource(R.string.expenses)) }
-                if (expenses.isEmpty()) item { EmptyState(stringResource(R.string.no_group_expenses), stringResource(R.string.no_group_expenses_body), action = stringResource(R.string.add_expense), onAction = { onExpense("new", id) }) }
+                if (expenses.isEmpty()) item { EmptyState(stringResource(R.string.no_group_expenses), stringResource(R.string.no_group_expenses_body)) }
                 items(expenses, key = { it.state.id }) { e ->
                     ListRow(
                         e.value.description,
@@ -430,7 +430,7 @@ fun RemittancesScreen(onBack: () -> Unit, onEdit: (String) -> Unit) {
                         Text(stringResource(R.string.no_referrals), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))
                     }
                 }
-                if (b.remittances.isEmpty()) item { EmptyState(stringResource(R.string.no_remittances), stringResource(R.string.no_remittances_body), icon = Icons.Outlined.Public, action = stringResource(R.string.record_remittance), onAction = { onEdit("new") }) }
+                if (b.remittances.isEmpty()) item { EmptyState(stringResource(R.string.no_remittances), stringResource(R.string.no_remittances_body), icon = Icons.Outlined.Public) }
                 items(b.remittances, key = { it.state.id }) { r ->
                     val c = RemitCircle.cost(r.value)
                     ListRow(

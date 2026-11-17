@@ -170,13 +170,12 @@ fun InsightsScreen(padding: PaddingValues, go: (String) -> Unit) {
             }
             item {
                 PennyCard {
-                    Column(Modifier.padding(16.dp)) {
-                        Row {
-                            StatBlock(stringResource(R.string.income), ctx.money(s.incomeMinor), Modifier.weight(1f), Penny.status.positive)
-                            StatBlock(stringResource(R.string.spent), ctx.money(s.spentMinor), Modifier.weight(1f))
-                            StatBlock(stringResource(R.string.net), ctx.money(s.netMinor, signed = s.netMinor > 0), Modifier.weight(1f), if (s.netMinor < 0) Penny.status.near else androidx.compose.ui.graphics.Color.Unspecified)
-                        }
-                        Spacer(Modifier.height(8.dp))
+                    app.penny.ui.kit.StatsRow(listOf(
+                        app.penny.ui.kit.Stat(stringResource(R.string.income), ctx.money(s.incomeMinor), Penny.status.positive),
+                        app.penny.ui.kit.Stat(stringResource(R.string.spent), ctx.money(s.spentMinor)),
+                        app.penny.ui.kit.Stat(stringResource(R.string.net), ctx.money(s.netMinor, signed = s.netMinor > 0), if (s.netMinor < 0) Penny.status.near else androidx.compose.ui.graphics.Color.Unspecified),
+                    ), Modifier.padding(bottom = 0.dp))
+                    Column(Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
                         fun delta(now: Long, then: Long): String = if (then == 0L) "—" else "%+d%%".format(((now - then) * 100 / then).toInt())
                         // Only comparisons that exist; a row of dashes says nothing.
                         val parts = listOfNotNull(
@@ -244,18 +243,27 @@ fun InsightsScreen(padding: PaddingValues, go: (String) -> Unit) {
                         val taxSpend = b.txList.filter { it.date in p && (it.categoryId in taxCats || "tax" in it.tags.map(String::lowercase)) }.sumOf { it.amountMinor }
                         val vat = s.spentMinor * (b.profile.business?.vatRateBp ?: 0) / (10_000 + (b.profile.business?.vatRateBp ?: 0))
                         val miles = b.txList.filter { it.date in p }.sumOf { it.distance ?: 0.0 }
-                        PennyCard { Row(Modifier.padding(16.dp)) {
-                            StatBlock(stringResource(R.string.tax_deductible), ctx.money(taxSpend), Modifier.weight(1f))
-                            StatBlock(stringResource(R.string.vat_in_spend), ctx.money(vat), Modifier.weight(1f))
-                            StatBlock(stringResource(R.string.distance), "%.1f".format(miles), Modifier.weight(1f))
-                        } }
+                        PennyCard { app.penny.ui.kit.StatsRow(listOf(
+                            app.penny.ui.kit.Stat(stringResource(R.string.tax_deductible), ctx.money(taxSpend)),
+                            app.penny.ui.kit.Stat(stringResource(R.string.vat_in_spend), ctx.money(vat)),
+                            app.penny.ui.kit.Stat(stringResource(R.string.distance), "%.1f".format(miles)),
+                        )) }
                     }
                 }
             }
             item { SectionHeader(stringResource(R.string.net_worth), info = stringResource(R.string.info_net_worth)) }
             item {
-                val hist = NetWorth.history(b.accounts.map { it.state.id to it.value }, b.txList, today, 12, ctx.base, b.fx, b.valuations.map { it.value }, ctx.pack.goldPricePerGram)
-                PennyCard { Spacer(Modifier.height(12.dp)); LineChart(hist.map { app.penny.ui.common.monthDay(it.first) to it.second }, { ctx.money(it) }); Spacer(Modifier.height(12.dp)) }
+                val full = NetWorth.history(b.accounts.map { it.state.id to it.value }, b.txList, today, 12, ctx.base, b.fx, b.valuations.map { it.value }, ctx.pack.goldPricePerGram)
+                // The months before anything was recorded are not "zero net worth"; start the line at the first value.
+                val first = full.indexOfFirst { it.second != 0L }
+                val hist = if (first > 0) full.drop(first) else full
+                PennyCard {
+                    if (hist.size >= 2) { Spacer(Modifier.height(12.dp)); LineChart(hist.map { app.penny.ui.common.monthDay(it.first) to it.second }, { ctx.money(it) }); Spacer(Modifier.height(12.dp)) }
+                    else Column(Modifier.padding(16.dp)) {
+                        app.penny.ui.kit.MoneyLabel(ctx.money(full.lastOrNull()?.second ?: 0L), style = MaterialTheme.typography.headlineSmall)
+                        Text(stringResource(R.string.net_worth_builds), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                }
             }
             item { SectionHeader(stringResource(R.string.forecast), info = stringResource(R.string.info_forecast)) }
             item { ForecastCard(ctx) }

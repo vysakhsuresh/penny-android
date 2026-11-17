@@ -431,12 +431,15 @@ fun <T> Segmented(options: List<Choice<T>>, selected: T, onSelect: (T) -> Unit, 
     val index = options.indexOfFirst { it.value == selected }
     val reduce = app.penny.ui.theme.LocalPenny.current.reduceMotion
     val dark = app.penny.ui.theme.LocalPenny.current.isDark
+    val largeText = androidx.compose.ui.platform.LocalDensity.current.fontScale > 1.3f
+    // Fully round for one line; when labels wrap at large text, rounded corners so the ends do not clip them.
+    val pillShape = if (largeText) androidx.compose.foundation.shape.RoundedCornerShape(20.dp) else androidx.compose.foundation.shape.RoundedCornerShape(50)
     val track = if (dark) MaterialTheme.colorScheme.surfaceContainerHigh else MaterialTheme.colorScheme.surfaceContainerHighest
     // Neutral pill; the selected label carries the accent (in dark), so selection is clear without a purple slab.
     val thumb = if (dark) MaterialTheme.colorScheme.surfaceContainerHighest else MaterialTheme.colorScheme.surfaceContainerLowest
     androidx.compose.foundation.layout.BoxWithConstraints(
         modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp)
-            .clip(androidx.compose.foundation.shape.RoundedCornerShape(50))
+            .clip(pillShape)
             .background(track)
             .padding(4.dp)
             .selectableGroup(),
@@ -450,15 +453,15 @@ fun <T> Segmented(options: List<Choice<T>>, selected: T, onSelect: (T) -> Unit, 
         // The thumb: a raised pill under the chosen option.
         if (index >= 0) Box(
             Modifier.matchParentSize().wrapContentWidth(Alignment.Start).width(segment).offset(x = offset)
-                .shadow(if (dark) 0.dp else 2.dp, androidx.compose.foundation.shape.RoundedCornerShape(50), clip = false)
-                .clip(androidx.compose.foundation.shape.RoundedCornerShape(50))
+                .shadow(if (dark) 0.dp else 2.dp, pillShape, clip = false)
+                .clip(pillShape)
                 .background(thumb),
         )
         Row(Modifier.fillMaxWidth()) {
             options.forEachIndexed { i, o ->
                 val on = i == index
                 Box(
-                    Modifier.weight(1f).heightIn(min = 40.dp).clip(androidx.compose.foundation.shape.RoundedCornerShape(50))
+                    Modifier.weight(1f).heightIn(min = 40.dp).clip(pillShape)
                         .selectable(selected = on, role = androidx.compose.ui.semantics.Role.Tab, onClick = { onSelect(o.value) })
                         .padding(horizontal = 6.dp, vertical = 8.dp),
                     contentAlignment = Alignment.Center,
@@ -468,8 +471,10 @@ fun <T> Segmented(options: List<Choice<T>>, selected: T, onSelect: (T) -> Unit, 
                         fontWeight = if (on) androidx.compose.ui.text.font.FontWeight.Bold else androidx.compose.ui.text.font.FontWeight.Medium,
                         color = if (on) (if (dark) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface) else MaterialTheme.colorScheme.onSurfaceVariant,
                     )
+                    // Two lines at large text for labels of several words ("Pay / period") rather than "Pay pe…"; a single
+                    // word stays on one line and shrinks, so it is never split ("Quart / er").
                     androidx.compose.foundation.text.BasicText(
-                        o.label, style = style, maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                        o.label, style = style.copy(textAlign = androidx.compose.ui.text.style.TextAlign.Center), maxLines = if (largeText && o.label.trim().contains(' ')) 2 else 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
                         autoSize = androidx.compose.foundation.text.TextAutoSize.StepBased(minFontSize = 10.sp, maxFontSize = style.fontSize),
                     )
                 }

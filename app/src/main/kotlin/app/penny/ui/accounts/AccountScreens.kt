@@ -108,9 +108,10 @@ fun AccountsScreen(onBack: () -> Unit, onOpen: (String) -> Unit, onAdd: () -> Un
                         }
                     }
                 }
-                item { FilterChip(showArchived, { showArchived = !showArchived }, label = { Text(stringResource(R.string.show_archived)) }, modifier = Modifier.padding(horizontal = 16.dp)) }
+                // Only when there is something archived to show.
+                if (b.accounts.any { it.value.archived }) item { FilterChip(showArchived, { showArchived = !showArchived }, label = { Text(stringResource(R.string.show_archived)) }, modifier = Modifier.padding(horizontal = 16.dp)) }
                 val list = b.accounts.filter { showArchived || !it.value.archived }
-                if (list.isEmpty()) item { EmptyState(stringResource(R.string.no_accounts), stringResource(R.string.no_accounts_body), icon = Icons.Outlined.AccountBalance, action = stringResource(R.string.add_account), onAction = onAdd) }
+                if (list.isEmpty()) item { EmptyState(stringResource(R.string.no_accounts), stringResource(R.string.no_accounts_body), icon = Icons.Outlined.AccountBalance) }
                 list.groupBy { it.value.group ?: "" }.toSortedMap().forEach { (group, inGroup) ->
                     inGroup.groupBy { if (group.isEmpty()) it.value.type else null }.forEach { (type, accts) ->
                         item(key = "g:$group:$type") { SectionHeader(group.ifEmpty { type?.let { stringResource(accountTypeLabel(it)) }.orEmpty() }) }

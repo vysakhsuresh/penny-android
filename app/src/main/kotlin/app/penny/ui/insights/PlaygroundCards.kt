@@ -2,6 +2,8 @@ package app.penny.ui.insights
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -104,19 +106,27 @@ fun PlaygroundCards(ctx: Ctx, ins: Insights, p: Period, s: PeriodSummary, rule: 
         Column(Modifier.padding(16.dp)) {
             picked?.let { w -> Text(stringResource(R.string.week_rhythm_value, w.getDisplayName(TextStyle.FULL, locale), ctx.money(facts.weekdayAvgMinor[w] ?: 0)), style = MaterialTheme.typography.bodyMedium) }
             Spacer(Modifier.height(12.dp))
-            Row(Modifier.fillMaxWidth().height(120.dp), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.Bottom) {
+            // Bars and names in separate rows: the bars keep their height at any text size, and names shrink to fit
+            // their slot instead of being cut to "Mo" or pushing one column out of line.
+            Row(Modifier.fillMaxWidth().height(88.dp), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.Bottom) {
                 order.forEach { w ->
                     val v = facts.weekdayAvgMinor[w] ?: 0L
-                    val name = w.getDisplayName(TextStyle.SHORT, locale)
                     val desc = stringResource(R.string.week_rhythm_value, w.getDisplayName(TextStyle.FULL, locale), ctx.money(v))
-                    Column(Modifier.weight(1f).fillMaxHeight().clickable { picked = w }.semantics { contentDescription = desc }, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Bottom) {
-                        Box(
-                            Modifier.fillMaxWidth().height((88 * v / max).toInt().coerceAtLeast(4).dp).clip(RoundedCornerShape(topStart = 6.dp, topEnd = 6.dp))
-                                .background(if (w == facts.busiestWeekday) MaterialTheme.colorScheme.primary else if (w == picked) MaterialTheme.colorScheme.primary.copy(alpha = 0.6f) else Penny.status.track),
-                        )
-                        Spacer(Modifier.height(6.dp))
-                        Text(name, style = MaterialTheme.typography.labelSmall, color = if (w == picked) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1)
-                    }
+                    Box(
+                        Modifier.weight(1f).height((88 * v / max).toInt().coerceAtLeast(4).dp).clip(RoundedCornerShape(topStart = 6.dp, topEnd = 6.dp))
+                            .background(if (w == facts.busiestWeekday) MaterialTheme.colorScheme.primary else if (w == picked) MaterialTheme.colorScheme.primary.copy(alpha = 0.6f) else Penny.status.track)
+                            .clickable { picked = w }.semantics { contentDescription = desc },
+                    )
+                }
+            }
+            Spacer(Modifier.height(6.dp))
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                order.forEach { w ->
+                    val style = MaterialTheme.typography.labelSmall.copy(color = if (w == picked) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                    androidx.compose.foundation.text.BasicText(
+                        w.getDisplayName(TextStyle.SHORT, locale), Modifier.weight(1f).clickable { picked = w }.clearAndSetSemantics {}, style = style, maxLines = 1,
+                        autoSize = androidx.compose.foundation.text.TextAutoSize.StepBased(minFontSize = 8.sp, maxFontSize = style.fontSize),
+                    )
                 }
             }
         }
@@ -166,11 +176,20 @@ fun PlaygroundCards(ctx: Ctx, ins: Insights, p: Period, s: PeriodSummary, rule: 
         Column(Modifier.padding(16.dp)) {
             Text(stringResource(R.string.small_change_q, ctx.money(v)), style = MaterialTheme.typography.bodyLarge)
             Slider(perDay, { perDay = it }, valueRange = unit.toFloat()..maxPerDay.toFloat())
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                listOf(30 to R.string.in_a_month, 182 to R.string.in_six_months, 365 to R.string.in_a_year).forEach { (days, l) ->
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            val spans = listOf(30 to R.string.in_a_month, 182 to R.string.in_six_months, 365 to R.string.in_a_year)
+            if (androidx.compose.ui.platform.LocalDensity.current.fontScale > 1.3f) {
+                // Large text: one row each, label on the left and amount on the right, so nothing runs together.
+                spans.forEach { (days, l) ->
+                    Row(Modifier.fillMaxWidth().padding(vertical = 2.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Text(stringResource(l), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.weight(1f))
                         app.penny.ui.kit.MoneyLabel(ctx.money(Playground.setAside(v, days)), style = MaterialTheme.typography.titleMedium, color = Penny.status.positive)
-                        Text(stringResource(l), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                }
+            } else Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                spans.forEach { (days, l) ->
+                    Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
+                        app.penny.ui.kit.MoneyLabel(ctx.money(Playground.setAside(v, days)), style = MaterialTheme.typography.titleMedium, color = Penny.status.positive)
+                        Text(stringResource(l), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
                     }
                 }
             }
@@ -187,7 +206,8 @@ private fun FactTile(icon: ImageVector, value: String, label: String, modifier: 
             Icon(icon, null, tint = if (accent) Penny.status.positive else MaterialTheme.colorScheme.primary, modifier = Modifier.size(22.dp))
             Spacer(Modifier.height(8.dp))
             Text(value, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text(label, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 2)
+            // No line cap: at large text a two-line cap silently cut the end of the sentence ("…usually spend [most]").
+            Text(label, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
     if (onClick != null) androidx.compose.material3.Card(onClick = onClick, modifier = modifier, colors = colors, shape = MaterialTheme.shapes.large, border = edge) { body() }

@@ -263,7 +263,8 @@ fun ListRow(
                     if (supporting != null) Text(supporting, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
-            trailing?.invoke()
+            // In a Box so a menu opened from a trailing ⋮ anchors to that button, not to the start of the whole row.
+            if (trailing != null) Box { trailing() }
         }
         if (divider) HorizontalDivider(Modifier.padding(start = if (leading != null) 70.dp else 16.dp, end = if (LocalInCard.current) 0.dp else 16.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
     }
@@ -396,6 +397,29 @@ fun StatBlock(label: String, value: String, modifier: Modifier = Modifier, value
     }
 }
 
+/** One figure in a [StatsRow]. */
+data class Stat(val label: String, val value: String, val color: Color = Color.Unspecified)
+
+/**
+ * Two or three figures side by side; at large text (over 130%) they become label-and-value rows, so amounts keep one
+ * size and never shrink unevenly to fit narrow columns.
+ */
+@Composable
+fun StatsRow(stats: List<Stat>, modifier: Modifier = Modifier) {
+    if (androidx.compose.ui.platform.LocalDensity.current.fontScale > 1.3f) {
+        Column(modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            stats.forEach { s ->
+                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    Text(s.label, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.weight(1f))
+                    MoneyLabel(s.value, color = s.color, style = MaterialTheme.typography.titleMedium)
+                }
+            }
+        }
+    } else Row(modifier.fillMaxWidth().padding(16.dp)) {
+        stats.forEach { s -> StatBlock(s.label, s.value, Modifier.weight(1f), s.color) }
+    }
+}
+
 /** Constrains content width on tablets and landscape (UX-08) while phones use the full width. */
 @Composable
 fun Readable(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) {
@@ -488,9 +512,8 @@ fun RevealAmountsButton() {
 @Composable
 fun HeroCard(modifier: Modifier = Modifier, onClick: (() -> Unit)? = null, content: @Composable ColumnScope.() -> Unit) {
     val dark = LocalPenny.current.isDark
-    val top = if (dark) Color(0xFF4A2380) else Color(0xFF6A34B0)
-    val mid = if (dark) Color(0xFF331764) else Color(0xFF4A2186)
-    val end = if (dark) Color(0xFF1E0C3E) else Color(0xFF2E1259)
+    // Follows the accent chosen in Appearance (plum by default).
+    val (top, mid, end) = LocalPenny.current.hero
     val ink = Color(0xFFF6F0FF)
     val gold = Color(0xFFF2C14E)
     val cs = MaterialTheme.colorScheme.copy(
@@ -527,7 +550,7 @@ fun ProfileBadge(name: String, modifier: Modifier = Modifier, size: Dp = 40.dp) 
     val gold = Color(0xFFF2C14E)
     Box(
         modifier.size(size).clip(CircleShape)
-            .background(androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0xFF5B2D8E), Color(0xFF2A1149))))
+            .background(androidx.compose.ui.graphics.Brush.linearGradient(LocalPenny.current.hero.let { listOf(it[0], it[2]) }))
             .border(1.5.dp, androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0xFFFFE7A3), gold, Color(0xFFB8801C))), CircleShape),
         contentAlignment = Alignment.Center,
     ) {

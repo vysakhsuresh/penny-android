@@ -141,5 +141,6 @@
     <string name="in_six_months">in 6 months</string>
     <string name="in_a_year">in a year</string>
     <string name="close">Close</string>
+    <string name="net_worth_builds">Your net worth today. The line fills in as you keep using Penny.</string>
     <string name="day_of_month_x">on day %1$s</string>
 </resources>

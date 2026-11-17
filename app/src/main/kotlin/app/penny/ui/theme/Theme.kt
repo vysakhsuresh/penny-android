@@ -13,6 +13,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -61,7 +62,21 @@ data class PennyExtras(
     /** Stable palette for entities (categories, people, accounts) — never reuses semantic colours (UX-06). */
     val entityPalette: List<Color>,
     val isDark: Boolean,
+    /** The hero card gradient (top, middle, end), from the chosen accent; plum by default. */
+    val hero: List<Color> = heroGradient(0L, isDark),
 )
+
+/**
+ * The rich-card gradient for an accent. 0 is the brand plum (the exact original values); any other accent keeps the
+ * same depth steps, so white text on it keeps its contrast whatever colour is chosen.
+ */
+fun heroGradient(accent: Long, dark: Boolean): List<Color> {
+    if (accent == 0L) return if (dark) listOf(Color(0xFF4A2380), Color(0xFF331764), Color(0xFF1E0C3E)) else listOf(Color(0xFF6A34B0), Color(0xFF4A2186), Color(0xFF2E1259))
+    val a = Color(accent)
+    val black = Color.Black
+    return if (dark) listOf(androidx.compose.ui.graphics.lerp(a, black, 0.25f), androidx.compose.ui.graphics.lerp(a, black, 0.45f), androidx.compose.ui.graphics.lerp(a, black, 0.68f))
+    else listOf(a, androidx.compose.ui.graphics.lerp(a, black, 0.25f), androidx.compose.ui.graphics.lerp(a, black, 0.5f))
+}
 
 /** Money-in green: a status colour (positive), no longer the brand accent. */
 private val Accent = Color(0xFF007D54)
@@ -243,10 +258,15 @@ fun PennyTheme(appearance: Appearance = Appearance(), content: @Composable () ->
         spacing = if (appearance.dense) Spacing(xs = 2, s = 6, m = 8, l = 12, xl = 18, xxl = 24, gutter = 12, row = 52) else Spacing(),
         dense = appearance.dense, reduceMotion = appearance.reduceMotion, haptics = appearance.haptics, hideAmounts = appearance.hideAmounts,
         entityPalette = if (dark) DarkPalette else LightPalette, isDark = dark,
+        hero = heroGradient(if (mode == ThemeMode.HIGH_CONTRAST) 0L else appearance.accent, dark),
     )
     val density = LocalDensity.current
     // System bar icons follow Penny's theme, not the phone's: light theme on a dark phone left white icons on white.
     val view = androidx.compose.ui.platform.LocalView.current
+    // Shared image cards are drawn outside Compose; hand them the accent's (light) gradient.
+    androidx.compose.runtime.SideEffect {
+        app.penny.ui.common.ShareCard.gradient = heroGradient(if (mode == ThemeMode.HIGH_CONTRAST) 0L else appearance.accent, false).map { it.toArgb() }.toIntArray()
+    }
     if (!view.isInEditMode) androidx.compose.runtime.SideEffect {
         (view.context as? android.app.Activity)?.window?.let { w ->
             androidx.core.view.WindowCompat.getInsetsController(w, view).apply {

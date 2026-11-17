@@ -42,6 +42,7 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import app.penny.ui.theme.ChartOtherDark
@@ -79,7 +80,9 @@ fun Donut(data: List<Datum>, centerTop: String, centerValue: String, modifier: M
     val surface = app.penny.ui.theme.Penny.card
     val track = LocalPenny.current.status.track
     val summary = data.joinToString { "${it.label} ${it.valueText}" }
-    Row(modifier.fillMaxWidth().padding(16.dp).semantics(mergeDescendants = true) { contentDescription = summary }, verticalAlignment = Alignment.CenterVertically) {
+    // At large text the legend goes under the ring with the full width, instead of names cut to "Unca…".
+    val stacked = androidx.compose.ui.platform.LocalDensity.current.fontScale > 1.3f
+    val ring: @Composable () -> Unit = {
         Box(Modifier.size(150.dp), contentAlignment = Alignment.Center) {
             Canvas(Modifier.size(150.dp)) {
                 val stroke = 20.dp.toPx()
@@ -97,13 +100,15 @@ fun Donut(data: List<Datum>, centerTop: String, centerValue: String, modifier: M
                 }
                 drawCircle(surface, radius = (size.minDimension - stroke * 2) / 2 - 1)
             }
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(centerTop, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            // Kept inside the hole of the ring (110 dp across) so a large amount shrinks rather than spilling over it.
+            Column(Modifier.width(96.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(centerTop, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1)
                 MoneyLabel(centerValue, style = MaterialTheme.typography.titleMedium)
             }
         }
-        Spacer(Modifier.width(16.dp))
-        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+    }
+    val legend: @Composable (Modifier) -> Unit = { m ->
+        Column(m, verticalArrangement = Arrangement.spacedBy(6.dp)) {
             data.forEachIndexed { i, d ->
                 Row(
                     Modifier.fillMaxWidth().heightIn(min = 32.dp).clip(RoundedCornerShape(8.dp))
@@ -118,6 +123,9 @@ fun Donut(data: List<Datum>, centerTop: String, centerValue: String, modifier: M
             }
         }
     }
+    val root = modifier.fillMaxWidth().padding(16.dp).semantics(mergeDescendants = true) { contentDescription = summary }
+    if (stacked) Column(root, horizontalAlignment = Alignment.CenterHorizontally) { ring(); Spacer(Modifier.height(12.dp)); legend(Modifier.fillMaxWidth()) }
+    else Row(root, verticalAlignment = Alignment.CenterVertically) { ring(); Spacer(Modifier.width(16.dp)); legend(Modifier.weight(1f)) }
 }
 
 /**
@@ -191,13 +199,16 @@ fun Bars(
                 }
             }
         }
+        // Fewer labels at large text, and each shrinks to fit its slot, so neighbours never run together
+        // ("Aug 1Sep 1" at 200%).
+        val maxLabels = if (androidx.compose.ui.platform.LocalDensity.current.fontScale > 1.3f) 3 else 6
+        val step = (data.size + maxLabels - 1) / maxLabels
         Row(Modifier.fillMaxWidth().padding(top = 4.dp)) {
             data.forEachIndexed { i, d ->
-                Text(
-                    if (data.size <= 8 || i % ((data.size + 5) / 6) == 0) d.label else "",
-                    style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 1, overflow = TextOverflow.Clip, modifier = Modifier.weight(1f),
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                val style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                androidx.compose.foundation.text.BasicText(
+                    if (data.size <= maxLabels || i % step == 0) d.label else "", Modifier.weight(1f).padding(horizontal = 1.dp), style = style, maxLines = 1,
+                    autoSize = androidx.compose.foundation.text.TextAutoSize.StepBased(minFontSize = 8.sp, maxFontSize = style.fontSize),
                 )
             }
         }

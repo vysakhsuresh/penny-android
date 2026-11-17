@@ -33,6 +33,9 @@ object ShareCard {
     private const val W = 1080
     private const val PAD = 72f
 
+    /** Card gradient (ARGB), kept in step with the accent chosen in Appearance by PennyTheme; plum by default. */
+    @Volatile var gradient: IntArray = intArrayOf(0xFF6A34B0.toInt(), 0xFF4A2186.toInt(), 0xFF2E1259.toInt())
+
     fun share(context: Context, title: String, subtitle: String?, heroLabel: String?, hero: String?, rows: List<ShareRow>, caption: String) {
         val uri = runCatching {
             val bmp = render(context, title, subtitle, heroLabel, hero, rows)
@@ -76,7 +79,7 @@ object ShareCard {
         // Card: deep plum gradient, a light sheen from the top left and a faint gold coin ring off the top right.
         val card = RectF(0f, 0f, W.toFloat(), h)
         c.drawRoundRect(card, 56f, 56f, Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            shader = LinearGradient(0f, 0f, W.toFloat(), h, intArrayOf(0xFF6A34B0.toInt(), 0xFF4A2186.toInt(), 0xFF2E1259.toInt()), null, Shader.TileMode.CLAMP)
+            shader = LinearGradient(0f, 0f, W.toFloat(), h, gradient, null, Shader.TileMode.CLAMP)
         })
         c.drawCircle(W * 0.15f, 0f, W * 0.8f, Paint(Paint.ANTI_ALIAS_FLAG).apply {
             shader = RadialGradient(W * 0.15f, 0f, W * 0.8f, 0x29FFFFFF, 0x00FFFFFF, Shader.TileMode.CLAMP)

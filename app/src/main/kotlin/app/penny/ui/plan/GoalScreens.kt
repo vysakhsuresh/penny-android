@@ -83,8 +83,9 @@ fun GoalsScreen(onBack: () -> Unit, onOpen: (String) -> Unit, onAdd: () -> Unit)
         ) { pad ->
             val list = b.goals.filter { showDone || it.value.status in listOf(GoalStatus.ACTIVE, GoalStatus.PAUSED) }
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = pad.calculateBottomPadding() + 100.dp)) {
-                item { FilterChip(showDone, { showDone = !showDone }, label = { Text(stringResource(R.string.show_completed_archived)) }, modifier = Modifier.padding(horizontal = 16.dp)) }
-                if (list.isEmpty()) item { EmptyState(stringResource(R.string.no_goals), stringResource(R.string.no_goals_body), icon = Icons.Outlined.Flag, action = stringResource(R.string.add_goal), onAction = onAdd) }
+                // Only when some goal is completed or archived; otherwise the toggle shows nothing new.
+                if (b.goals.any { it.value.status !in listOf(GoalStatus.ACTIVE, GoalStatus.PAUSED) }) item { FilterChip(showDone, { showDone = !showDone }, label = { Text(stringResource(R.string.show_completed_archived)) }, modifier = Modifier.padding(horizontal = 16.dp)) }
+                if (list.isEmpty()) item { EmptyState(stringResource(R.string.no_goals), stringResource(R.string.no_goals_body), icon = Icons.Outlined.Flag) }
                 items(list, key = { it.state.id }) { g -> GoalCard(ctx, g.state.id, g.value) { onOpen(g.state.id) } }
             }
         }

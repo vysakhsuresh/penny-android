@@ -434,7 +434,9 @@ fun <T> Segmented(options: List<Choice<T>>, selected: T, onSelect: (T) -> Unit, 
     val largeText = androidx.compose.ui.platform.LocalDensity.current.fontScale > 1.3f
     // Fully round for one line; when labels wrap at large text, rounded corners so the ends do not clip them.
     val pillShape = if (largeText) androidx.compose.foundation.shape.RoundedCornerShape(20.dp) else androidx.compose.foundation.shape.RoundedCornerShape(50)
-    val track = if (dark) MaterialTheme.colorScheme.surfaceContainerHigh else MaterialTheme.colorScheme.surfaceContainerHighest
+    // A tint rather than a fixed surface colour, so the track still shows inside dialogs (whose background is the
+    // same surfaceContainerHigh the track used, which made it vanish there).
+    val track = MaterialTheme.colorScheme.onSurface.copy(alpha = if (dark) 0.08f else 0.07f)
     // Neutral pill; the selected label carries the accent (in dark), so selection is clear without a purple slab.
     val thumb = if (dark) MaterialTheme.colorScheme.surfaceContainerHighest else MaterialTheme.colorScheme.surfaceContainerLowest
     androidx.compose.foundation.layout.BoxWithConstraints(

@@ -256,7 +256,7 @@ fun InsightsScreen(padding: PaddingValues, go: (String) -> Unit) {
                 val full = NetWorth.history(b.accounts.map { it.state.id to it.value }, b.txList, today, 12, ctx.base, b.fx, b.valuations.map { it.value }, ctx.pack.goldPricePerGram)
                 // The months before anything was recorded are not "zero net worth"; start the line at the first value.
                 val first = full.indexOfFirst { it.second != 0L }
-                val hist = if (first > 0) full.drop(first) else full
+                val hist = if (first < 0) emptyList() else full.drop(first)
                 PennyCard {
                     if (hist.size >= 2) { Spacer(Modifier.height(12.dp)); LineChart(hist.map { app.penny.ui.common.monthDay(it.first) to it.second }, { ctx.money(it) }); Spacer(Modifier.height(12.dp)) }
                     else Column(Modifier.padding(16.dp)) {

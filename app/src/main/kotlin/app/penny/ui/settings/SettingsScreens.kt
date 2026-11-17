@@ -304,14 +304,20 @@ fun ProfilesScreen(onBack: () -> Unit, onSwitched: () -> Unit, onNone: () -> Uni
         PennyScreen(stringResource(R.string.profiles), onBack) { pad ->
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 48.dp)) {
                 item { Text(stringResource(R.string.profiles_body), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) }
-                items(profiles, key = { it.state.id }) { p ->
-                    ListRow(
-                        p.value.name, subtitle = listOfNotNull(p.value.baseCurrency, stringResource(R.string.business_book).takeIf { p.value.business != null }, stringResource(R.string.current).takeIf { p.state.id == currentId }).joinToString(" · "),
-                        leading = { app.penny.ui.kit.ProfileBadge(p.value.name) }, selected = p.state.id == currentId,
-                        // Renaming a book (the first one is called "Personal") right where books are listed.
-                        trailing = { IconButton(onClick = { renaming = p.state.id }) { Icon(Icons.Outlined.Edit, stringResource(R.string.rename_x, p.value.name)) } },
-                        onClick = { vm.prefs.setCurrentProfile(p.state.id); onSwitched() }, divider = true,
-                    )
+                // In a card like other lists; the current book is marked in its subtitle instead of a full-width slab.
+                item {
+                    app.penny.ui.kit.PennyCard {
+                        profiles.forEachIndexed { i, p ->
+                            ListRow(
+                                p.value.name, subtitle = listOfNotNull(p.value.baseCurrency, stringResource(R.string.business_book).takeIf { p.value.business != null }, stringResource(R.string.current).takeIf { p.state.id == currentId }).joinToString(" · "),
+                                leading = { app.penny.ui.kit.ProfileBadge(p.value.name) },
+                                subtitleColor = if (p.state.id == currentId) MaterialTheme.colorScheme.primary else androidx.compose.ui.graphics.Color.Unspecified,
+                                // Renaming a book (the first one is called "Personal") right where books are listed.
+                                trailing = { IconButton(onClick = { renaming = p.state.id }) { Icon(Icons.Outlined.Edit, stringResource(R.string.rename_x, p.value.name)) } },
+                                onClick = { vm.prefs.setCurrentProfile(p.state.id); onSwitched() }, divider = i < profiles.lastIndex,
+                            )
+                        }
+                    }
                 }
                 item { TextButton(onClick = { adding = true }, modifier = Modifier.padding(8.dp)) { Text(stringResource(R.string.add_profile)) } }
             }

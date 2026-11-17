@@ -60,10 +60,12 @@ fun Book.upcoming(from: LocalDate, to: LocalDate): List<Upcoming> {
 fun Book.safeToSpend(p: Period): SafeToSpend {
     val today = today()
     val (committed, expected) = Bills.committedAndExpected(upcoming(p.start, p.endInclusive), p, today, profile.baseCurrency, fx)
-    val savings = goals.filter { it.value.status == GoalStatus.ACTIVE && it.value.autoMinor != null }.sumOf { g ->
-        val contributed = goalEntries.filter { e -> e.value.goalId == g.state.id && e.value.date in p && e.value.amountMinor > 0 }.sumOf { it.value.amountMinor }
-        val left = maxOf(0, (g.value.autoMinor ?: 0) - contributed)
-        fx.convert(left, g.value.currency, profile.baseCurrency, p.start) ?: 0
+    // Goal contributions don't move money out of the account, so what is put aside this period (recorded or still
+    // planned) is held back; before, a recorded auto-contribution left that money counted as safe to spend.
+    val savings = goals.filter { it.value.status == GoalStatus.ACTIVE }.sumOf { g ->
+        val inPeriod = goalEntries.filter { e -> e.value.goalId == g.state.id && e.value.date in p }.map { it.value.amountMinor }
+        val reserved = app.penny.core.planning.Goals.reservedThisPeriod(g.value.autoMinor, inPeriod)
+        fx.convert(reserved, g.value.currency, profile.baseCurrency, p.start) ?: 0
     }
     return SafeToSpendCalculator.compute(txList, p, today, profile.baseCurrency, excludedCategoryIds, fx, expected, committed, savings)
 }

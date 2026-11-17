@@ -25,6 +25,18 @@ data class GoalProgress(
 )
 
 object Goals {
+    /**
+     * BU-07: how much of this period's money a goal holds back from safe to spend. Goal contributions are notes, not
+     * transfers, so the cash is still in the account: everything put aside this period (net of withdrawals) is reserved,
+     * plus whatever part of the planned amount per period has not been recorded yet. Never negative.
+     */
+    fun reservedThisPeriod(plannedPerPeriod: Long?, entryAmountsInPeriod: List<Long>): Long {
+        val net = entryAmountsInPeriod.sum()
+        val added = entryAmountsInPeriod.filter { it > 0 }.sum()
+        val notYetRecorded = maxOf(0L, (plannedPerPeriod ?: 0L) - added)
+        return maxOf(0L, net + notYetRecorded)
+    }
+
     fun saved(goalId: String, entries: List<GoalEntry>, linkedBalance: Long = 0): Long =
         entries.filter { it.goalId == goalId }.sumOf { it.amountMinor } + linkedBalance
 

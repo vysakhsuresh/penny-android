@@ -125,6 +125,12 @@ private fun GoalCard(ctx: Ctx, id: String, g: Goal, onClick: () -> Unit) {
                     g.status == GoalStatus.PAUSED -> stringResource(R.string.goal_paused_hint)
                     per != null -> stringResource(if (p.onTrack) R.string.on_track_need else R.string.behind_need, ctx.money(per, g.currency))
                     projected != null -> stringResource(R.string.projected_x, shortDate(projected))
+                    // A planned amount per period already says how long it takes, before any contribution.
+                    (g.autoMinor ?: 0) > 0 && p.remainingMinor > 0 -> {
+                        val auto = g.autoMinor!!
+                        val n = ((p.remainingMinor + auto - 1) / auto).toInt()
+                        androidx.compose.ui.res.pluralStringResource(R.plurals.goal_auto_periods, n, ctx.money(auto, g.currency), n)
+                    }
                     else -> stringResource(R.string.start_saving)
                 },
                 style = MaterialTheme.typography.bodySmall, color = if (p.onTrack) MaterialTheme.colorScheme.onSurfaceVariant else Penny.status.near,

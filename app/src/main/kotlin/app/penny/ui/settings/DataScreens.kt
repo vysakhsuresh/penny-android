@@ -1,6 +1,11 @@
 package app.penny.ui.settings
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.icons.outlined.Apps
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.core.graphics.drawable.toBitmap
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Checkbox
 import androidx.compose.ui.Alignment
@@ -384,7 +389,19 @@ fun CaptureSettingsScreen(onBack: () -> Unit, go: (String) -> Unit) {
                 }, subtitle = if (!listenerOn && capture) stringResource(R.string.needs_system_access) else null)
                 val apps = (ctx.pack.paymentApps + ctx.pack.bankApps).map { it.name }
                 if (apps.isNotEmpty()) Text(stringResource(R.string.apps_in_region, apps.joinToString()), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))
-                TextInput(extra, { extra = it; vm.prefs.setString("capture.extraPackages", it) }, stringResource(R.string.extra_apps), supporting = stringResource(R.string.extra_apps_hint))
+                // Other apps are chosen from the installed apps by name; the stored value is still the comma-separated
+                // package list the listener reads.
+                var pickApps by rememberSaveable { mutableStateOf(false) }
+                val chosen = extra.split(',').map { it.trim() }.filter { it.isNotEmpty() }
+                val pm = context.packageManager
+                val chosenNames = chosen.map { p -> runCatching { pm.getApplicationLabel(pm.getApplicationInfo(p, 0)).toString() }.getOrDefault(p) }
+                ListRow(
+                    stringResource(R.string.extra_apps), subtitle = if (chosen.isEmpty()) stringResource(R.string.extra_apps_hint) else chosenNames.joinToString(),
+                    leading = { androidx.compose.material3.Icon(androidx.compose.material.icons.Icons.Outlined.Apps, null) }, onClick = { pickApps = true },
+                )
+                if (pickApps) AppPickerSheet(chosen.toSet(), ctx.pack.capturePackages, onDismiss = { pickApps = false }) { set ->
+                    extra = set.joinToString(","); vm.prefs.setString("capture.extraPackages", extra)
+                }
                 SectionHeader(stringResource(R.string.sources))
                 if (ctx.book.captureSources.isEmpty()) Text(stringResource(R.string.no_sources_yet), style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 20.dp))
                 ctx.book.captureSources.forEach { s ->
@@ -396,7 +413,7 @@ fun CaptureSettingsScreen(onBack: () -> Unit, go: (String) -> Unit) {
                 ListRow(stringResource(R.string.share_sheet), subtitle = stringResource(R.string.share_sheet_sub), divider = true)
                 ListRow(stringResource(R.string.scan_receipt), subtitle = stringResource(R.string.scan_receipt_sub), onClick = { go(Routes.SCAN) }, divider = true)
                 ListRow(stringResource(R.string.voice_add), subtitle = stringResource(R.string.voice_sub), onClick = { go(Routes.VOICE) }, divider = true)
-                EmailForwarding()
+                EmailForwarding(onTurnOnSync = { go(Routes.SYNC) })
                 CommunityMerchants()
                 ListRow(stringResource(R.string.review_queue), onClick = { go(Routes.REVIEW) })
                 Text(stringResource(R.string.never_sms), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(20.dp))
@@ -411,18 +428,61 @@ fun CaptureSettingsScreen(onBack: () -> Unit, go: (String) -> Unit) {
     }
 }
 
+/** Installed apps with a launcher icon, by name, each with a tick; changes apply as they are ticked. */
+@OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
+@Composable
+private fun AppPickerSheet(selected: Set<String>, alreadyRead: Set<String>, onDismiss: () -> Unit, onChange: (Set<String>) -> Unit) {
+    val context = LocalContext.current
+    var chosen by remember { mutableStateOf(selected) }
+    var q by rememberSaveable { mutableStateOf("") }
+    // Loaded off the main thread: asking for every app's label can take a moment on a phone with many apps.
+    val apps by androidx.compose.runtime.produceState<List<Triple<String, String, androidx.compose.ui.graphics.ImageBitmap?>>?>(null) {
+        value = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+            val pm = context.packageManager
+            val launcher = android.content.Intent(android.content.Intent.ACTION_MAIN).addCategory(android.content.Intent.CATEGORY_LAUNCHER)
+            // Apps already read for the region are left out; each row has its icon, so two apps with the same name
+            // (two "Authenticator"s) can be told apart.
+            val px = (36 * context.resources.displayMetrics.density).toInt()
+            pm.queryIntentActivities(launcher, 0).filter { it.activityInfo.packageName != context.packageName && it.activityInfo.packageName !in alreadyRead }
+                .distinctBy { it.activityInfo.packageName }
+                .map { ri -> Triple(ri.activityInfo.packageName, ri.loadLabel(pm).toString(), runCatching { ri.loadIcon(pm).toBitmap(px, px).asImageBitmap() }.getOrNull()) }
+                .sortedBy { it.second.lowercase() }
+        }
+    }
+    androidx.compose.material3.ModalBottomSheet(onDismissRequest = onDismiss, sheetState = androidx.compose.material3.rememberModalBottomSheetState(skipPartiallyExpanded = true)) {
+        Text(stringResource(R.string.extra_apps), style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp))
+        app.penny.ui.kit.SoftField(q, { q = it }, Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp), singleLine = true,
+            placeholder = { Text(stringResource(R.string.search)) }, leadingIcon = { androidx.compose.material3.Icon(androidx.compose.material.icons.Icons.Outlined.Search, null) })
+        val list = apps
+        if (list == null) app.penny.ui.kit.LoadingState(Modifier.fillMaxWidth().height(200.dp))
+        else androidx.compose.foundation.lazy.LazyColumn(Modifier.fillMaxWidth().padding(bottom = 24.dp)) {
+            // Ticked apps first, so what is chosen is visible without scrolling.
+            val shown = list.filter { q.isBlank() || it.second.contains(q, ignoreCase = true) }.sortedByDescending { it.first in chosen }
+            items(shown.size, key = { shown[it].first }) { i ->
+                val (pkg, name, icon) = shown[i]
+                val on = pkg in chosen
+                ListRow(name, leading = { if (icon != null) androidx.compose.foundation.Image(icon, null, Modifier.size(36.dp)) }, onClick = {
+                    chosen = if (on) chosen - pkg else chosen + pkg; onChange(chosen)
+                }, trailing = { androidx.compose.material3.Checkbox(on, null) })
+            }
+        }
+    }
+}
+
 @dagger.hilt.android.lifecycle.HiltViewModel
 class MailViewModel @javax.inject.Inject constructor(val mail: app.penny.domain.MailService, val sync: app.penny.domain.SyncManager) : androidx.lifecycle.ViewModel()
 
 /** CP-06: per-account forwarding address; mail is encrypted to this phone by the relay and parsed here. */
 @Composable
-private fun EmailForwarding(mvm: MailViewModel = androidx.hilt.navigation.compose.hiltViewModel()) {
+private fun EmailForwarding(onTurnOnSync: () -> Unit, mvm: MailViewModel = androidx.hilt.navigation.compose.hiltViewModel()) {
     val scope = rememberCoroutineScope()
     val clip = androidx.compose.ui.platform.LocalClipboardManager.current
     var address by rememberSaveable { mutableStateOf(mvm.mail.address) }
     var error by rememberSaveable { mutableStateOf<String?>(null) }
+    // Without sync the row itself leads to Sync (it said "turn on sync above to connect a bank" on a screen with no
+    // sync above, about the wrong feature).
+    if (!mvm.sync.signedIn) { ListRow(stringResource(R.string.email_forwarding), subtitle = stringResource(R.string.email_forwarding_needs_sync), onClick = onTurnOnSync, divider = true); return }
     ListRow(stringResource(R.string.email_forwarding), subtitle = address ?: stringResource(R.string.email_forwarding_sub), divider = address == null)
-    if (!mvm.sync.signedIn) { Text(stringResource(R.string.bank_needs_sync), style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 20.dp)); return }
     error?.let { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 20.dp)) }
     Row(Modifier.padding(horizontal = 8.dp)) {
         if (address == null) TextButton(onClick = { scope.launch { runCatching { mvm.mail.enable() }.onSuccess { address = it }.onFailure { error = it.message } } }) { Text(stringResource(R.string.get_address)) }

@@ -25,6 +25,12 @@
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="upi" />
         </intent>
+        <!-- Capture: lets the person pick which installed apps' payment notifications Penny reads, instead of typing
+             package names. Only apps with a launcher icon are listed; no QUERY_ALL_PACKAGES. -->
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
     </queries>
 
     <application

@@ -238,8 +238,8 @@
     <string name="read_payment_notifications">Read payment notifications</string>
     <string name="needs_system_access">Needs notification access in system settings</string>
     <string name="apps_in_region">Recognised here: %1$s</string>
-    <string name="extra_apps">Other apps (package names)</string>
-    <string name="extra_apps_hint">Comma-separated. Only these and the apps for your region are read.</string>
+    <string name="extra_apps">Other apps to read</string>
+    <string name="extra_apps_hint">Pick any other payment or bank apps. Only these and the apps above are read.</string>
     <string name="sources">Sources</string>
     <string name="no_sources_yet">Sources appear after the first captured item.</string>
     <string name="auto_post_source">%1$d accepted in a row. Switch on to add automatically.</string>

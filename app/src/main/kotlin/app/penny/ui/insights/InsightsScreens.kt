@@ -200,7 +200,11 @@ fun InsightsScreen(padding: PaddingValues, go: (String) -> Unit) {
                 }
                 item { SectionHeader(stringResource(R.string.trend), info = stringResource(R.string.info_trend)) }
                 item {
-                    val trend = ins.trend(b.period(0, p.start), b.profile.cycle, 6, b.periodContext)
+                    // Periods before anything was recorded are left off (they read as months of zero spending); at least
+                    // two stay so the chart still has something to compare with.
+                    val full = ins.trend(b.period(0, p.start), b.profile.cycle, 6, b.periodContext)
+                    val firstUsed = full.indexOfFirst { it.second != 0L || it.third != 0L }.let { if (it < 0) full.lastIndex else it }
+                    val trend = full.drop(minOf(firstUsed, maxOf(0, full.size - 2)))
                     PennyCard {
                         Bars(trend.map { (per, spent, _) -> Datum(per.start.toString(), app.penny.ui.common.monthDay(per.start), spent, ctx.money(spent)) }, secondary = trend.map { it.third }, onSelect = { i -> drill(TxFilter(from = trend[i].first.start, to = trend[i].first.endInclusive)) })
                         // Legend: a colour dot with plain text (identity by colour, words in text colours).

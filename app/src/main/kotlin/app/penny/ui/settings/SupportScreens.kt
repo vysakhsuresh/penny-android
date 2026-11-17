@@ -209,7 +209,8 @@ fun AboutScreen(onBack: () -> Unit, go: (String) -> Unit) {
     PennyScreen(stringResource(R.string.about_us), onBack) { pad ->
         Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(bottom = 48.dp)) {
             Column(Modifier.fillMaxWidth().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                Avatar(Brand.NAME, "brand", size = 72.dp)
+                // The brand badge (plum disc, gold initial and ring), as on Home and the app icon.
+                app.penny.ui.kit.ProfileBadge(Brand.NAME, size = 72.dp)
                 Spacer(Modifier.height(12.dp))
                 Text(Brand.NAME, style = MaterialTheme.typography.headlineMedium)
                 Text(Brand.TAGLINE, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)

@@ -95,7 +95,8 @@ fun AccountsScreen(onBack: () -> Unit, onOpen: (String) -> Unit, onAdd: () -> Un
         val (net, missing) = NetWorth.total(b.accounts.map { it.state.id to it.value }, b.txList, b.today(), ctx.base, b.fx, b.valuations.map { it.value }, ctx.pack.goldPricePerGram)
         PennyScreen(
             stringResource(R.string.accounts), onBack,
-            actions = { TextButton(onClick = { reorder = !reorder }) { Text(stringResource(if (reorder) R.string.done else R.string.reorder)) } },
+            // Reordering needs at least two accounts.
+            actions = { if (reorder || b.accounts.count { !it.value.archived } > 1) TextButton(onClick = { reorder = !reorder }) { Text(stringResource(if (reorder) R.string.done else R.string.reorder)) } },
             floating = { app.penny.ui.kit.AddFab(stringResource(R.string.add_account), onAdd) },
         ) { pad ->
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = pad.calculateBottomPadding() + 100.dp)) {

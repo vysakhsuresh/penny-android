@@ -234,6 +234,7 @@ fun ListRow(
     titleMaxLines: Int = 1,
     subtitleColor: Color = Color.Unspecified,
     titleWeight: FontWeight = FontWeight.SemiBold,
+    titleColor: Color = Color.Unspecified,
 ) {
     val haptic = LocalHapticFeedback.current
     val haptics = LocalPenny.current.haptics
@@ -251,7 +252,7 @@ fun ListRow(
         ) {
             if (leading != null) { leading(); Spacer(Modifier.width(14.dp)) }
             Column(Modifier.weight(1f)) {
-                Text(title, style = MaterialTheme.typography.bodyLarge, fontWeight = titleWeight, maxLines = titleMaxLines, overflow = TextOverflow.Ellipsis)
+                Text(title, style = MaterialTheme.typography.bodyLarge, fontWeight = titleWeight, color = titleColor, maxLines = titleMaxLines, overflow = TextOverflow.Ellipsis)
                 if (!subtitle.isNullOrEmpty()) {
                     Text(subtitle, style = MaterialTheme.typography.bodySmall, color = subtitleColor.takeOrElse { MaterialTheme.colorScheme.onSurfaceVariant }, maxLines = 2, overflow = TextOverflow.Ellipsis)
                 }

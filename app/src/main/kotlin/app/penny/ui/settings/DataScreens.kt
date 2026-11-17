@@ -170,7 +170,7 @@ fun DataScreen(onBack: () -> Unit, go: (String) -> Unit, onWiped: () -> Unit) {
                     Text(if (counts.isEmpty()) stringResource(R.string.usage_counts_none) else counts.entries.joinToString { "${it.key.lowercase()}: ${it.value}" }, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))
                 }
                 SectionHeader(stringResource(R.string.danger_zone))
-                ListRow(stringResource(R.string.delete_everything), subtitle = stringResource(R.string.delete_everything_sub), onClick = { wipe = true })
+                ListRow(stringResource(R.string.delete_everything), subtitle = stringResource(R.string.delete_everything_sub), onClick = { wipe = true }, titleColor = MaterialTheme.colorScheme.error)
             }
         }
         newPhrase?.let { words ->

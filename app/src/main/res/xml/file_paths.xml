@@ -2,5 +2,6 @@
 <!-- Receipt photos are written to the app cache before OCR; attachments live in private files. -->
 <paths>
     <cache-path name="scans" path="scans/" />
+    <cache-path name="share" path="share/" />
     <files-path name="attachments" path="attachments/" />
 </paths>

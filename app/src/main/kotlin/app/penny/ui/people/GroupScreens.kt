@@ -128,7 +128,7 @@ fun GroupScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onExpe
             },
             floating = { app.penny.ui.kit.AddFab(stringResource(R.string.add_expense), { onExpense("new", id) }) },
         ) { pad ->
-            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 120.dp)) {
+            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 100.dp)) {
                 item { SectionHeader(stringResource(R.string.balances)) }
                 item {
                     PennyCard {
@@ -196,7 +196,12 @@ fun GroupScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onExpe
                         Text(stringResource(R.string.x_pays_y, memberName(ctx, d.from, me), memberName(ctx, d.to, me)) + " · " + ctx.money(d.amountMinor, g.value.baseCurrency))
                         if (involvesMe) SelectField(stringResource(R.string.field_account), account, b.activeAccounts.map { Choice(it.state.id, it.value.name) }, { account = it }, allowNone = true, noneLabel = stringResource(R.string.dont_post))
                         if (d.from == Group.ME) TextButton(onClick = { context.safeStart(settleIntent(context, ctx, b.peopleMap[d.to]?.value, d.amountMinor, g.value.baseCurrency, g.value.name)) }) { Text(stringResource(R.string.pay_in_app)) }
-                        if (d.to == Group.ME) TextButton(onClick = { context.safeStart(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, context.getString(R.string.settle_request_text, ctx.money(d.amountMinor, g.value.baseCurrency), g.value.name)), null)) }) { Text(stringResource(R.string.send_request)) }
+                        if (d.to == Group.ME) TextButton(onClick = {
+                            // The real amount even while hidden on screen: the person is choosing to send it.
+                            val amt = ctx.fmt.format(d.amountMinor, g.value.baseCurrency)
+                            app.penny.ui.common.ShareCard.share(context, g.value.name, context.getString(R.string.share_card_settle, memberName(ctx, d.from, me)), null, amt, emptyList(),
+                                context.getString(R.string.settle_request_text, amt, g.value.name))
+                        }) { Text(stringResource(R.string.send_request)) }
                     }
                 },
                 confirmButton = {
@@ -314,7 +319,8 @@ fun GroupExpenseEditScreen(id: String, groupArg: String?, onBack: () -> Unit) {
                 if (currency != g.baseCurrency) TextInput(rate, { rate = it; err = null }, stringResource(R.string.rate_to_x, g.baseCurrency), keyboard = KeyboardType.Decimal)
                 SelectField(stringResource(R.string.paid_by), payer, members.map { Choice(it, memberName(ctx, it, me)) }, { it?.let { p -> payer = p } })
                 DateInput(stringResource(R.string.field_date), runCatching { java.time.LocalDate.parse(date) }.getOrNull(), { date = it.toString() }, today = b.today())
-                SelectField(stringResource(R.string.field_category), category, b.categoriesOf(app.penny.core.model.CategoryKind.EXPENSE).map { Choice(it.state.id, b.categoryName(it.state.id)) }, { category = it }, allowNone = true)
+                SelectField(stringResource(R.string.field_category), category, b.categoriesOf(app.penny.core.model.CategoryKind.EXPENSE).map { Choice(it.state.id, b.categoryName(it.state.id)) }, { category = it }, allowNone = true,
+                    onAddNew = { name -> vm.addCategory(b, name, app.penny.core.model.CategoryKind.EXPENSE) { category = it } })
                 SectionHeader(stringResource(R.string.split))
                 SelectField(stringResource(R.string.split_mode), mode, SplitMode.entries.map { Choice(it, stringResource(when (it) { SplitMode.EQUAL -> R.string.split_equal; SplitMode.EXACT -> R.string.split_exact; SplitMode.PERCENT -> R.string.split_percent; SplitMode.SHARES -> R.string.split_shares; SplitMode.ITEMS -> R.string.split_items })) }, { it?.let { m ->
                     // Each mode starts from a sensible split: even percentages, one share each, empty exact amounts.
@@ -412,7 +418,7 @@ fun RemittancesScreen(onBack: () -> Unit, onEdit: (String) -> Unit) {
             stringResource(R.string.remittances), onBack,
             floating = { app.penny.ui.kit.AddFab(stringResource(R.string.record_remittance), { onEdit("new") }) },
         ) { pad ->
-            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 120.dp)) {
+            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 100.dp)) {
                 if (byProvider.isNotEmpty()) {
                     item { SectionHeader(stringResource(R.string.provider_cost)) }
                     item {

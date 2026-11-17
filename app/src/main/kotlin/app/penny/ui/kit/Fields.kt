@@ -1,5 +1,6 @@
 package app.penny.ui.kit
 
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.layout.Box
@@ -245,6 +246,7 @@ fun <T> SelectField(
     noneLabel: String = stringResource(R.string.none),
     error: String? = null,
     searchable: Boolean = choices.size > 8,
+    onAddNew: ((String) -> Unit)? = null,
 ) {
     var open by rememberSaveable { mutableStateOf(false) }
     val current = choices.firstOrNull { it.value == selected }?.label ?: if (allowNone) noneLabel else ""
@@ -261,7 +263,8 @@ fun <T> SelectField(
         colors = pennyFieldColors(error = error != null),
     )
     if (open) {
-        OptionSheet(label, selected, choices, allowNone, noneLabel, searchable, onDismiss = { open = false }) { onSelect(it); open = false }
+        OptionSheet(label, selected, choices, allowNone, noneLabel, searchable || onAddNew != null, onDismiss = { open = false },
+            onAddNew = onAddNew?.let { add -> { name: String -> add(name); open = false } }) { onSelect(it); open = false }
     }
 }
 
@@ -275,6 +278,7 @@ fun <T> OptionSheet(
     noneLabel: String,
     searchable: Boolean,
     onDismiss: () -> Unit,
+    onAddNew: ((String) -> Unit)? = null,
     onPick: (T?) -> Unit,
 ) {
     var q by rememberSaveable { mutableStateOf("") }
@@ -290,6 +294,20 @@ fun <T> OptionSheet(
         }
         val filtered = choices.filter { q.isBlank() || it.label.contains(q, ignoreCase = true) || it.supporting?.contains(q, ignoreCase = true) == true }
         LazyColumn(Modifier.fillMaxWidth().padding(bottom = 24.dp)) {
+            // Can't find it? Type a name and add it right here, without leaving the form.
+            if (onAddNew != null) {
+                val name = q.trim()
+                val exists = choices.any { it.label.split(" › ").last().equals(name, ignoreCase = true) }
+                if (name.isEmpty()) item {
+                    Text(stringResource(R.string.type_to_add_new), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(horizontal = 24.dp, vertical = 6.dp))
+                } else if (!exists) item {
+                    ListRow(
+                        stringResource(R.string.add_x, name), onClick = { onAddNew(name) },
+                        leading = { Icon(Icons.Filled.Add, null, tint = MaterialTheme.colorScheme.primary) },
+                    )
+                }
+            }
             if (allowNone && q.isBlank()) item { ChoiceRow(noneLabel, null, selected == null) { onPick(null) } }
             items(filtered, key = { it.value.hashCode().toString() + it.label }) { c ->
                 // Paths like "Food and groceries › Groceries" read as a tree: the leaf name, indented under its parent.

@@ -42,6 +42,9 @@ data class StatusColors(
     val positive: Color,
     val positiveContainer: Color,
     val track: Color,
+    /** Due today or overdue: a muted red used only for dates that need action now, never for spending. */
+    val due: Color = Color(0xFFB3261E),
+    val dueContainer: Color = Color(0xFFFFDAD6),
 )
 
 @Immutable
@@ -125,8 +128,21 @@ private val DarkStatus = StatusColors(
     near = Color(0xFFFFC46B), onNear = Color(0xFF3A2600), nearContainer = Color(0xFF4A3300),
     over = Color(0xFFFFA06A), onOver = Color(0xFF3D1600), overContainer = Color(0xFF5A2600),
     positive = AccentDark, positiveContainer = Color(0xFF0F4E37), track = Color(0xFF2E2E33),
+    due = Color(0xFFFF8A80), dueContainer = Color(0xFF5C1A17),
 )
-private val HighContrastStatus = LightStatus.copy(near = Color(0xFF5C3700), over = Color(0xFF7A2F00), track = Color(0xFFBDBDBD))
+private val HighContrastStatus = LightStatus.copy(near = Color(0xFF5C3700), over = Color(0xFF7A2F00), track = Color(0xFFBDBDBD), due = Color(0xFF8C0009))
+
+/**
+ * Colour for a due date: muted red when due today or late, amber while it is inside its reminder window, green once
+ * paid; otherwise the normal secondary text colour.
+ */
+@Composable
+fun dueColor(days: Int, leadDays: Int, paid: Boolean = false): Color = when {
+    paid -> Penny.status.positive
+    days <= 0 -> Penny.status.due
+    days <= maxOf(leadDays, 3) -> Penny.status.near
+    else -> MaterialTheme.colorScheme.onSurfaceVariant
+}
 
 /**
  * Categorical hues in fixed order (blue, aqua, magenta, green, violet) from the validated reference palette; its

@@ -98,7 +98,7 @@ fun AccountsScreen(onBack: () -> Unit, onOpen: (String) -> Unit, onAdd: () -> Un
             actions = { TextButton(onClick = { reorder = !reorder }) { Text(stringResource(if (reorder) R.string.done else R.string.reorder)) } },
             floating = { app.penny.ui.kit.AddFab(stringResource(R.string.add_account), onAdd) },
         ) { pad ->
-            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 120.dp)) {
+            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 100.dp)) {
                 item {
                     app.penny.ui.kit.HeroCard {
                         Column(Modifier.padding(20.dp)) {

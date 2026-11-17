@@ -102,7 +102,7 @@ fun CategoriesScreen(onBack: () -> Unit, onEdit: (String, String?) -> Unit) {
             },
             floating = { app.penny.ui.kit.AddFab(stringResource(R.string.add_category), { onEdit("new", null) }) },
         ) { pad ->
-            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 120.dp)) {
+            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 100.dp)) {
                 item { Segmented(listOf(Choice(CategoryKind.EXPENSE, stringResource(R.string.type_expense)), Choice(CategoryKind.INCOME, stringResource(R.string.type_income))), kind, { kind = it }) }
                 if (tree.isEmpty()) item { EmptyState(stringResource(R.string.no_categories), stringResource(R.string.no_categories_body), action = stringResource(R.string.reset_defaults), onAction = { vm.act(R.string.defaults_restored) { seedCategories(it.profileId) } }) }
                 items(tree, key = { it.first.state.id }) { (s, d) ->

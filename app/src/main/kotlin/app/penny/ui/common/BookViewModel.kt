@@ -1,5 +1,6 @@
 package app.penny.ui.common
 
+import app.penny.domain.ops.addCategoryNamed
 import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
@@ -57,6 +58,17 @@ class BookViewModel @Inject constructor(
      * Runs [op] off the main thread; when it returns an undo group and [message] is set, shows the 5-second undo
      * snackbar. [after] runs on the main thread when done (navigation).
      */
+    /**
+     * Adds a category from inside a picker and hands back its id to select (the existing one when the name is taken).
+     */
+    fun addCategory(book: Book, name: String, kind: app.penny.core.model.CategoryKind, onId: (String) -> Unit) {
+        val existing = book.categories.firstOrNull { it.value.parentId == null && it.value.kind == kind && it.value.name.trim().equals(name.trim(), ignoreCase = true) }
+        if (existing != null) { onId(existing.state.id); return }
+        val id = repo.newId()
+        onId(id)
+        act(app.penny.R.string.category_added) { b -> addCategoryNamed(b, id, name, kind) }
+    }
+
     fun act(@StringRes message: Int? = null, messageText: String? = null, after: (() -> Unit)? = null, op: suspend PennyRepository.(Book) -> String?) {
         val book = (state.value as? BookLoad.Ready)?.book ?: return
         // A second tap while the first save is still writing would create a duplicate and pop the screen twice.

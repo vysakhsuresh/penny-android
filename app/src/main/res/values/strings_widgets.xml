@@ -2,7 +2,7 @@
 <resources>
     <string name="widget_safe_desc">Safe to spend at a glance</string>
     <string name="widget_quick_desc">Add a transaction or fire a template in one tap</string>
-    <string name="widget_envelopes_desc">Envelopes and upcoming bills</string>
+    <string name="widget_envelopes_desc">Spending limits and upcoming bills</string>
     <string name="widget_safe_label">Safe to spend</string>
     <string name="widget_quick_label">Quick add</string>
     <string name="widget_envelopes_label">Budgets</string>

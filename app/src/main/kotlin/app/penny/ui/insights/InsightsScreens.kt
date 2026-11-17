@@ -122,7 +122,7 @@ fun InsightsScreen(padding: PaddingValues, go: (String) -> Unit) {
         fun drill(f: TxFilter) = go(Routes.activity(PennyJson.encodeToString(TxFilter.serializer(), f)))
         fun label(key: String) = if (key == Insights.UNCATEGORISED) context.getString(R.string.uncategorised) else b.categoryMap[key]?.value?.name ?: context.getString(R.string.uncategorised)
 
-        LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding() + 96.dp)) {
+        LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding() + 24.dp)) {
             item {
                 Row(Modifier.fillMaxWidth().padding(start = 20.dp, end = 4.dp, top = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                     Text(stringResource(R.string.tab_insights), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.weight(1f))
@@ -131,7 +131,17 @@ fun InsightsScreen(padding: PaddingValues, go: (String) -> Unit) {
                     IconButton(onClick = {
                         // IN-09 digest: plain text summary to share with the household.
                         val text = context.getString(R.string.digest_text, shortDate(p.start), shortDate(p.endInclusive), ctx.fmt.format(s.incomeMinor, ctx.base), ctx.fmt.format(s.spentMinor, ctx.base), s.byCategory.take(3).joinToString { label(it.key) + " " + ctx.fmt.format(it.amountMinor, ctx.base) })
-                        context.safeStart(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, text), null))
+                        // Shared as a designed card (the text rides along as the caption).
+                        val net = s.incomeMinor - s.spentMinor
+                        app.penny.ui.common.ShareCard.share(
+                            context, context.getString(R.string.share_card_summary_title), app.penny.ui.common.periodRange(context, p.start, p.endInclusive),
+                            context.getString(R.string.spent), ctx.fmt.format(s.spentMinor, ctx.base),
+                            listOf(
+                                app.penny.ui.common.ShareRow(context.getString(R.string.income), ctx.fmt.format(s.incomeMinor, ctx.base), app.penny.ui.common.ShareRow.Tone.Good),
+                                app.penny.ui.common.ShareRow(context.getString(R.string.net), ctx.fmt.format(net, ctx.base, signed = true), if (net >= 0) app.penny.ui.common.ShareRow.Tone.Good else app.penny.ui.common.ShareRow.Tone.Warn),
+                            ) + s.byCategory.take(4).map { app.penny.ui.common.ShareRow(label(it.key), ctx.fmt.format(it.amountMinor, ctx.base)) },
+                            text,
+                        )
                     }) { Icon(Icons.Outlined.IosShare, stringResource(R.string.share_digest)) }
                 }
             }
@@ -249,6 +259,7 @@ fun InsightsScreen(padding: PaddingValues, go: (String) -> Unit) {
             }
             item { SectionHeader(stringResource(R.string.forecast), info = stringResource(R.string.info_forecast)) }
             item { ForecastCard(ctx) }
+            item { Column { PlaygroundCards(ctx, ins, p, s, b.profile.cycle, { k -> label(k) }) { d -> drill(TxFilter(from = d, to = d)) } } }
             item { SectionHeader(stringResource(R.string.reports_and_coach)) }
             item {
                 PennyCard {

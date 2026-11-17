@@ -31,7 +31,7 @@
     <string name="merge">Merge</string>
     <string name="merged">Merged</string>
     <string name="merge_into">Merge into…</string>
-    <string name="merge_body">Every transaction, rule and envelope that uses %1$s moves to the category you pick. You can undo this.</string>
+    <string name="merge_body">Every transaction, rule and spending limit that uses %1$s moves to the category you pick. You can undo this.</string>
     <string name="move_to">Move to</string>
     <string name="deleted">Deleted</string>
     <string name="deleted_item">Deleted item</string>
@@ -129,7 +129,7 @@
     <string name="alerts">Alerts</string>
     <string name="review_waiting_body">Captured from notifications or shared to Penny. Check and add them.</string>
     <string name="no_alerts">No alerts</string>
-    <string name="no_alerts_body">When an envelope gets close, a bill is due or spending runs ahead, it shows here. Never in red.</string>
+    <string name="no_alerts_body">When a spending limit gets close, a bill is due or spending runs ahead, it shows here. Never in red.</string>
     <string name="alert_settings">Alert settings</string>
 
     <!-- Transactions -->
@@ -178,7 +178,7 @@
     <string name="no_tx_title">No transactions yet</string>
     <string name="no_tx_body">Add one with the plus button, or turn on capture so they arrive on their own.</string>
     <string name="no_tx_account_body">Nothing has moved through this account yet.</string>
-    <string name="no_tx_envelope_body">Nothing spent from this envelope in this period.</string>
+    <string name="no_tx_envelope_body">Nothing spent from this spending limit in this period.</string>
     <string name="no_results">Nothing matches</string>
     <string name="no_results_body">Try fewer words, or clear the filters.</string>
     <string name="clear_filters">Clear filters</string>
@@ -254,7 +254,7 @@
     <string name="add_subcategory">Add subcategory</string>
     <string name="category_deleted">Category deleted</string>
     <string name="delete_category">Delete category</string>
-    <string name="reassign_body">Transactions, rules and envelopes using %1$s need a new category.</string>
+    <string name="reassign_body">Transactions, rules and spending limits using %1$s need a new category.</string>
     <string name="reset_defaults">Restore default categories</string>
     <string name="defaults_restored">Missing defaults restored. Your own categories are untouched.</string>
     <string name="no_categories">No categories</string>
@@ -309,16 +309,16 @@
     <string name="favourite">Favourite</string>
 
     <!-- Budgets -->
-    <string name="envelopes">Envelopes</string>
-    <string name="add_envelope">Add envelope</string>
-    <string name="edit_envelope">Edit envelope</string>
-    <string name="no_envelopes">No envelopes yet</string>
-    <string name="no_envelopes_body">Envelopes set how much can go to food, rent, fun and the rest each period. Start from a template that fits you.</string>
+    <string name="envelopes">Spending limits</string>
+    <string name="add_envelope">Add spending limit</string>
+    <string name="edit_envelope">Edit spending limit</string>
+    <string name="no_envelopes">No spending limits yet</string>
+    <string name="no_envelopes_body">Spending limits set how much can go to food, rent, fun and the rest each period. Start from a template that fits you.</string>
     <string name="use_template">Use a template</string>
-    <string name="envelopes_created">Envelopes created</string>
+    <string name="envelopes_created">Spending limits created</string>
     <string name="available_to_assign">Available to assign</string>
-    <string name="ata_hint">Income this period not yet given to an envelope.</string>
-    <string name="over_assigned_hint">More is assigned than came in. Lower an envelope or wait for income.</string>
+    <string name="ata_hint">Income this period not yet given to a spending limit.</string>
+    <string name="over_assigned_hint">More is assigned than came in. Lower a spending limit or wait for income.</string>
     <string name="auto_assign">Fill from targets</string>
     <string name="assigned">Assigned</string>
     <string name="assign">Assign</string>
@@ -330,7 +330,7 @@
     <string name="change_cycle">Change pay cycle</string>
     <string name="period_view">Period view</string>
     <string name="year_view">Year view</string>
-    <string name="year_view_hint">Spent above, assigned below, for each envelope and period.</string>
+    <string name="year_view_hint">Spent above, assigned below, for each spending limit and period.</string>
     <string name="past_read_only">Past period, read-only</string>
     <string name="editing_past">Editing a past period</string>
     <string name="edit_anyway">Edit anyway</string>
@@ -349,7 +349,7 @@
     <string name="rollover_both">Leftover and overspend carry over</string>
     <string name="rollover_capped">Leftover carries over, up to a cap</string>
     <string name="rollover_cap">Most that can carry over</string>
-    <string name="envelope_period">Envelope period</string>
+    <string name="envelope_period">Spending limit period</string>
     <string name="same_as_budget">Same as the budget</string>
     <string name="cycle_monthly_short">Monthly</string>
     <string name="target">Target</string>
@@ -365,7 +365,7 @@
     <string name="festival_pot">Saving for a festival or season</string>
     <string name="use_last_year">Use last year’s spend: %1$s</string>
     <string name="income_smoothing">Income smoothing</string>
-    <string name="income_smoothing_hint">Optional. For irregular income: this envelope releases a steady amount into “available to assign” each period.</string>
+    <string name="income_smoothing_hint">Optional. For irregular income: this spending limit releases a steady amount into “available to assign” each period.</string>
     <string name="template">Template</string>
     <string name="monthly_income">Usual income per month</string>
     <string name="tpl_salaried">Salaried</string>

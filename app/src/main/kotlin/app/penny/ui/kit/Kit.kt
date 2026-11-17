@@ -1,5 +1,6 @@
 package app.penny.ui.kit
 
+import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.border
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -226,6 +227,7 @@ fun ListRow(
     selected: Boolean = false,
     divider: Boolean = false,
     titleMaxLines: Int = 1,
+    subtitleColor: Color = Color.Unspecified,
 ) {
     val haptic = LocalHapticFeedback.current
     val haptics = LocalPenny.current.haptics
@@ -245,7 +247,7 @@ fun ListRow(
             Column(Modifier.weight(1f)) {
                 Text(title, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold, maxLines = titleMaxLines, overflow = TextOverflow.Ellipsis)
                 if (!subtitle.isNullOrEmpty()) {
-                    Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                    Text(subtitle, style = MaterialTheme.typography.bodySmall, color = subtitleColor.takeOrElse { MaterialTheme.colorScheme.onSurfaceVariant }, maxLines = 2, overflow = TextOverflow.Ellipsis)
                 }
             }
             if (trailing != null || trailingText != null) Spacer(Modifier.width(12.dp))

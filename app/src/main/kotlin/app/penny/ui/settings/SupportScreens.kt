@@ -1,5 +1,6 @@
 package app.penny.ui.settings
 
+import androidx.compose.material.icons.automirrored.outlined.Chat
 import app.penny.ui.common.safeStart
 import android.content.Intent
 import android.net.Uri
@@ -119,6 +120,13 @@ fun HelpScreen(onBack: () -> Unit, go: (String) -> Unit) {
             item { SectionHeader(stringResource(R.string.contact)) }
             item {
                 PennyCard {
+                    // WhatsApp chat with the team, when a support number is set (Brand.SUPPORT_WHATSAPP).
+                    if (app.penny.core.Brand.SUPPORT_WHATSAPP.isNotBlank()) ListRow(
+                        stringResource(R.string.whatsapp_support), subtitle = stringResource(R.string.whatsapp_support_sub),
+                        leading = { Avatar("W", "whatsapp", color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant, icon = Icons.AutoMirrored.Outlined.Chat, size = 36.dp) },
+                        onClick = { runCatching { context.startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://wa.me/" + app.penny.core.Brand.SUPPORT_WHATSAPP + "?text=" + android.net.Uri.encode(context.getString(R.string.help_request))))) } },
+                        divider = true,
+                    )
                     ListRow(stringResource(R.string.email_support), subtitle = stringResource(R.string.email_support_sub), leading = { Avatar("E", "email", color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant, icon = Icons.Outlined.Email, size = 36.dp) }, onClick = { email(context.getString(R.string.help_request)) }, divider = true)
                     ListRow(stringResource(R.string.report_bug), leading = { Avatar("B", "bug", color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant, icon = Icons.Outlined.BugReport, size = 36.dp) }, onClick = { email(context.getString(R.string.bug_report)) }, divider = true)
                     ListRow(stringResource(R.string.suggest_feature), leading = { Avatar("I", "idea", color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant, icon = Icons.Outlined.Lightbulb, size = 36.dp) }, onClick = { email(context.getString(R.string.feature_idea)) }, divider = true)

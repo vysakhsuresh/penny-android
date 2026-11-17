@@ -176,7 +176,8 @@ fun TransactionFormScreen(
                             Text(if (rateParts != null) rateText else "", style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 20.dp))
                         }
                     } else if (f.splits.isEmpty()) {
-                        SelectField(stringResource(R.string.field_category), f.categoryId, vm.categoryChoices(b, if (f.type == TxType.INCOME) TxType.INCOME else TxType.EXPENSE), { id -> vm.selectCategory(id) }, allowNone = true, noneLabel = stringResource(R.string.uncategorised))
+                        SelectField(stringResource(R.string.field_category), f.categoryId, vm.categoryChoices(b, if (f.type == TxType.INCOME) TxType.INCOME else TxType.EXPENSE), { id -> vm.selectCategory(id) }, allowNone = true, noneLabel = stringResource(R.string.uncategorised),
+                            onAddNew = { name -> vm.addCategory(name, f.type) { id -> vm.selectCategory(id) } })
                     }
                     PayeeField(vm, f.payee)
                     DateInput(stringResource(R.string.field_date), runCatching { LocalDate.parse(f.date) }.getOrNull(), { d -> vm.update { it.copy(date = d.toString()) } }, today = b.today())
@@ -313,7 +314,8 @@ private fun SplitsEditor(vm: TransactionFormViewModel, f: TxForm, ready: BookLoa
             }
             if (f.splitByPercent) TextInput(s.amount, { v -> vm.update { it.copy(splits = it.splits.mapIndexed { j, x -> if (j == i) x.copy(amount = v) else x }) } }, stringResource(R.string.percent), keyboard = KeyboardType.Decimal)
             else AmountInput(s.amount, { v -> vm.update { it.copy(splits = it.splits.mapIndexed { j, x -> if (j == i) x.copy(amount = v) else x }) } }, f.currency, ready.fmt, stringResource(R.string.field_amount))
-            SelectField(stringResource(R.string.field_category), s.categoryId, vm.categoryChoices(b, if (f.type == TxType.INCOME) TxType.INCOME else TxType.EXPENSE), { c -> vm.update { it.copy(splits = it.splits.mapIndexed { j, x -> if (j == i) x.copy(categoryId = c) else x }) } }, allowNone = true)
+            SelectField(stringResource(R.string.field_category), s.categoryId, vm.categoryChoices(b, if (f.type == TxType.INCOME) TxType.INCOME else TxType.EXPENSE), { c -> vm.update { it.copy(splits = it.splits.mapIndexed { j, x -> if (j == i) x.copy(categoryId = c) else x }) } }, allowNone = true,
+                onAddNew = { name -> vm.addCategory(name, f.type) { c -> vm.update { it.copy(splits = it.splits.mapIndexed { j, x -> if (j == i) x.copy(categoryId = c) else x }) } } })
             TextInput(s.note, { v -> vm.update { it.copy(splits = it.splits.mapIndexed { j, x -> if (j == i) x.copy(note = v) else x }) } }, stringResource(R.string.field_note))
         }
     }

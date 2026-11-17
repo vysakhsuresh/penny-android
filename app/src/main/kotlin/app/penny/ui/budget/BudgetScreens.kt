@@ -1,5 +1,7 @@
 package app.penny.ui.budget
 
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -123,7 +125,7 @@ fun BudgetsScreen(padding: PaddingValues, go: (String) -> Unit) {
         val statuses = b.envelopeStatuses(period.start)
         val ata = BudgetEngine.availableToAssign(period, b.budgetInput())
 
-        LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding() + 96.dp)) {
+        LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding() + 24.dp)) {
             item {
                 Row(Modifier.fillMaxWidth().padding(start = 20.dp, end = 4.dp, top = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                     Text(stringResource(R.string.tab_budgets), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.weight(1f))
@@ -181,7 +183,7 @@ fun BudgetsScreen(padding: PaddingValues, go: (String) -> Unit) {
                     EmptyState(stringResource(R.string.no_envelopes), stringResource(R.string.no_envelopes_body), icon = Icons.Outlined.PieChart, action = stringResource(R.string.use_template), onAction = { templateDialog = true },
                         secondary = stringResource(R.string.add_envelope), onSecondary = { go("envelope/new/edit") })
                 } else {
-                    item { SectionHeader(stringResource(R.string.envelopes), action = stringResource(R.string.add), onAction = { go("envelope/new/edit") }) }
+                    item { SectionHeader(stringResource(R.string.envelopes), info = stringResource(R.string.info_spending_limits), action = stringResource(R.string.add), onAction = { go("envelope/new/edit") }) }
                     items(statuses, key = { it.id }) { s -> EnvelopeCard(ctx, s, readOnly, onOpen = { go("envelope/${s.id}") }, onAssign = { assignFor = s.id }) }
                 }
                 // Archived envelopes stay reachable, so archiving is never a one-way door.
@@ -454,6 +456,16 @@ fun EnvelopeEditScreen(id: String, onBack: () -> Unit) {
                     cats = if (c in cats) cats - c else cats + c
                     if (name.isBlank()) name = b.categoryName(c)
                 })
+                // A limit for something not in the list yet: add the category here and tick it.
+                var newCat by rememberSaveable { mutableStateOf(false) }
+                TextButton(onClick = { newCat = true }, modifier = Modifier.padding(horizontal = 8.dp)) {
+                    Icon(Icons.Outlined.Add, null, modifier = Modifier.size(18.dp)); Spacer(Modifier.width(6.dp)); Text(stringResource(R.string.new_category))
+                }
+                if (newCat) app.penny.ui.catalog.NameDialog(stringResource(R.string.new_category), "", { newCat = false },
+                    taken = { n -> b.categories.any { it.value.parentId == null && it.value.kind == CategoryKind.EXPENSE && it.value.name.trim().equals(n, ignoreCase = true) } }) { n ->
+                    newCat = false
+                    vm.addCategory(b, n, CategoryKind.EXPENSE) { id -> cats = (cats + id).distinct(); if (name.isBlank()) name = n }
+                }
                 app.penny.ui.tx.TagsEditor(tags, b.allTagNames()) { tags = it }
                 app.penny.ui.kit.SelectField(stringResource(R.string.field_currency), currency, app.penny.ui.kit.currencyChoices(listOf(ctx.base)), { it?.let { c -> if (!currencyLocked) currency = c } })
                 if (currencyLocked) Text(stringResource(R.string.currency_locked_entries), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp))

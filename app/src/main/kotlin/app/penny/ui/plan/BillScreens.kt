@@ -104,7 +104,7 @@ fun BillsScreen(onBack: () -> Unit, onEdit: (String) -> Unit, onOpenTx: (String)
             stringResource(R.string.bills_subscriptions), onBack,
             floating = { app.penny.ui.kit.AddFab(stringResource(R.string.add_recurring), { onEdit("new") }) },
         ) { pad ->
-            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 120.dp)) {
+            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 100.dp)) {
                 item { Segmented(listOf(Choice("upcoming", stringResource(R.string.upcoming)), Choice("calendar", stringResource(R.string.calendar)), Choice("subs", stringResource(R.string.subscriptions)), Choice("all", stringResource(R.string.all))), tab, { tab = it }) }
                 when (tab) {
                     "upcoming" -> {
@@ -212,6 +212,10 @@ private fun OccurrenceRow(ctx: Ctx, u: Upcoming, onClick: () -> Unit) {
             days == 0 -> stringResource(R.string.due_today)
             else -> pluralStringResource(R.plurals.due_in_days, days, days)
         } + if (u.recurring.amountKind != AmountKind.FIXED) " · " + stringResource(R.string.estimated) else "",
+        subtitleColor = when (u.status) {
+            OccurrenceStatus.SKIPPED -> androidx.compose.ui.graphics.Color.Unspecified
+            else -> app.penny.ui.theme.dueColor(days, u.recurring.leadDays, paid = u.status == OccurrenceStatus.PAID)
+        },
         leading = { Avatar(u.recurring.name, u.recurringId, icon = Icons.Outlined.ReceiptLong) },
         trailingText = ctx.money(u.amountMinor, u.recurring.currency), trailingColor = if (u.recurring.type == TxType.INCOME) Penny.status.positive else androidx.compose.ui.graphics.Color.Unspecified,
         onClick = onClick, divider = true,
@@ -355,7 +359,8 @@ fun RecurringEditScreen(id: String, fromTx: String?, onBack: () -> Unit, onHisto
                 if (amountKind == AmountKind.RANGE) AmountInput(amountMax, { amountMax = it; fieldErr = fieldErr - "max" }, currency, ctx.fmt, stringResource(R.string.max), error = fieldErr["max"])
                 SelectField(stringResource(R.string.field_account), account, b.activeAccounts.map { Choice(it.state.id, it.value.name, it.value.currency) }, { it?.let { a -> account = a; currency = b.accountMap[a]?.value?.currency ?: currency; fieldErr = fieldErr - "account" - "to"; if (toAccount == a) toAccount = null } }, error = fieldErr["account"])
                 if (type == TxType.TRANSFER) SelectField(stringResource(R.string.field_to_account), toAccount, b.activeAccounts.filter { it.state.id != account }.map { Choice(it.state.id, it.value.name) }, { toAccount = it; fieldErr = fieldErr - "to" }, error = fieldErr["to"])
-                else SelectField(stringResource(R.string.field_category), category, b.categoriesOf(if (type == TxType.INCOME) CategoryKind.INCOME else CategoryKind.EXPENSE).map { Choice(it.state.id, b.categoryName(it.state.id)) }, { category = it; fieldErr = fieldErr - "cat" }, allowNone = true, error = fieldErr["cat"])
+                else SelectField(stringResource(R.string.field_category), category, b.categoriesOf(if (type == TxType.INCOME) CategoryKind.INCOME else CategoryKind.EXPENSE).map { Choice(it.state.id, b.categoryName(it.state.id)) }, { category = it; fieldErr = fieldErr - "cat" }, allowNone = true, error = fieldErr["cat"],
+                    onAddNew = { name -> vm.addCategory(b, name, if (type == TxType.INCOME) CategoryKind.INCOME else CategoryKind.EXPENSE) { category = it; fieldErr = fieldErr - "cat" } })
                 SectionHeader(stringResource(R.string.schedule))
                 Segmented(Freq.entries.map { Choice(it, stringResource(freqLabel(it))) }, freq, { freq = it })
                 TextInput(interval, { interval = it.filter(Char::isDigit).take(3) }, stringResource(R.string.every_n), keyboard = KeyboardType.Number)

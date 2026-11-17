@@ -203,6 +203,17 @@ suspend fun PennyRepository.saveCategory(book: Book, id: String?, c: Category): 
     return g
 }
 
+/**
+ * Adds a top-level category of [kind] named [name] with the given [id] (so the form that asked can select it at once).
+ * A category with that name already there is reused instead of making a twin. Returns the undo group, or null if reused.
+ */
+suspend fun PennyRepository.addCategoryNamed(book: Book, id: String, name: String, kind: app.penny.core.model.CategoryKind): String? {
+    if (book.categories.any { it.value.parentId == null && it.value.kind == kind && it.value.name.trim().equals(name.trim(), ignoreCase = true) }) return null
+    val g = categories.newGroup()
+    categories.create(id, book.profileId, Category(kind = kind, name = name.trim(), sort = book.categories.size), g)
+    return g
+}
+
 suspend fun PennyRepository.reorderCategories(book: Book, orderedIds: List<String>): String? =
     categories.updateMany(orderedIds.mapIndexedNotNull { i, id -> book.categoryMap[id]?.let { id to it.value.copy(sort = i) } })
 

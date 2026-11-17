@@ -112,7 +112,7 @@ fun TagsScreen(onBack: () -> Unit, onActivity: (String) -> Unit) {
             floating = { app.penny.ui.kit.AddFab(stringResource(R.string.add_tag), { edit = "new" }) },
         ) { pad ->
             val list = b.tags.filter { showArchived || !it.value.archived }
-            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 120.dp)) {
+            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 100.dp)) {
                 if (list.isEmpty()) item { EmptyState(stringResource(R.string.no_tags), stringResource(R.string.no_tags_body), icon = Icons.Outlined.Sell, action = stringResource(R.string.add_tag), onAction = { edit = "new" }) }
                 items(list, key = { it.state.id }) { s ->
                     val n = counts[s.value.name] ?: 0
@@ -276,7 +276,7 @@ fun RulesScreen(onBack: () -> Unit, onEdit: (String) -> Unit) {
             stringResource(R.string.rules), onBack,
             floating = { app.penny.ui.kit.AddFab(stringResource(R.string.add_rule), { onEdit("new") }) },
         ) { pad ->
-            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 120.dp)) {
+            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 100.dp)) {
                 item { Text(stringResource(R.string.rules_body), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) }
                 if (conflicts.isNotEmpty()) item {
                     // RU-05 conflicts surfaced.

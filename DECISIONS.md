@@ -56,3 +56,5 @@ Decisions not covered by `docs/SPEC.md`, chosen by the rule in SPEC §0.7 (free,
 45. **Backups fail instead of falling back to plaintext** when encryption is on but the key cannot be unwrapped.
 46. **The relay never receives a space name**; invites carry an empty summary.
 47. **Shared bank files go to the importer** through a one-shot cache file; PDF sharing was removed because there is no PDF statement parser.
+48. **Due dates may use a muted red** (2026-11-17): "never red" still holds for spending and alerts, but a bill due today or overdue is shown in a muted red, amber inside its reminder window and green once paid, because the owner asked for urgency to read at a glance. Colour is never the only signal; the text says "Due today" or "Overdue".
+49. **"Envelope" is shown as "spending limit"** (2026-11-17) in English copy; code and data keep the envelope name. An info button explains the idea in plain words.

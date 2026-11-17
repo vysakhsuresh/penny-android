@@ -76,7 +76,7 @@
     <string name="info_forecast">An estimate of how much money your everyday accounts will hold over the next 90 days. Penny starts from today’s balances, adds income it expects, and takes away your upcoming bills and your usual spending pace. If the line goes below zero, you may run short before then. Pick a category below and slide it to see how cutting back would change the picture. It is a guide, not a promise.</string>
     <string name="info_top_payees">The places and people you paid the most in this period.</string>
     <string name="info_safe_to_spend">What you can still spend until your next pay date: income for this period, minus what you have already spent, minus bills still to pay and money set aside for goals.</string>
-    <string name="info_available_to_assign">Income this period that is not yet given to an envelope. Give all of it a job: assign it to envelopes until this reaches zero.</string>
+    <string name="info_available_to_assign">Income this period that is not yet given to a spending limit. Give all of it a job: assign it to spending limits until this reaches zero.</string>
     <string name="forecast_end_clear">If things carry on as usual, your everyday accounts will hold about %1$s in 90 days.</string>
     <string name="err_day_of_month">Enter a day from 1 to 31</string>
     <string name="err_percent">Enter a percentage from 0 to 100</string>
@@ -106,4 +106,38 @@
         <item quantity="other">%1$d bills, rules or goals use this account. Without a new account they are paused.</item>
     </plurals>
     <string name="dont_move_pause">Don’t move them (pause them)</string>
+    <string name="info_spending_limits">A spending limit is the most you want to spend on one kind of thing each period: food, rent, travel, fun. Set an amount and Penny shows how much is left as you spend, warns you before you reach it, and lets you move money from one limit to another if one runs out. Some apps call these envelopes, like cash kept in labelled envelopes.</string>
+    <string name="add_x">Add “%1$s”</string>
+    <string name="type_to_add_new">Can’t find it? Type a name above to add it.</string>
+    <string name="category_added">Category added</string>
+    <string name="new_category">New category</string>
+    <string name="remind_whatsapp">Remind on WhatsApp</string>
+    <string name="pick_from_contacts">Pick from contacts</string>
+    <string name="whatsapp_support">Chat on WhatsApp</string>
+    <string name="whatsapp_support_sub">Message the Penny team</string>
+    <string name="share_card_footer">Made with %1$s</string>
+    <string name="share_card_summary_title">My money summary</string>
+    <string name="share_card_owes_you">A friendly reminder of what is pending</string>
+    <string name="share_card_you_owe">What I owe you</string>
+    <string name="share_card_settle">Settling up with %1$s</string>
+    <string name="playground">Money playground</string>
+    <string name="info_playground">A fun way to explore this period: quick facts about your spending, which days of the week cost the most, how each category compares with the period before, and what a small daily saving could add up to. Tap a tile or a bar to look closer.</string>
+    <string name="playground_empty">Add a few spends this period and fun facts about your money will show up here.</string>
+    <string name="fact_avg_day">Average spent per day</string>
+    <string name="fact_biggest_day">Biggest day, %1$s</string>
+    <string name="fact_busiest_day">Day you usually spend most</string>
+    <string name="fact_streak">No-spend days in a row now. Best this period: %1$d</string>
+    <string name="fact_top_place">Where most went (%1$s)</string>
+    <string name="fact_kept">Of your income kept this period</string>
+    <string name="week_rhythm">Your week’s rhythm</string>
+    <string name="week_rhythm_value">%1$s: about %2$s on average</string>
+    <string name="vs_last_period">Compared with the period before</string>
+    <string name="vs_total_down">%1$s less than the period before. Nice.</string>
+    <string name="vs_total_up">%1$s more than the period before</string>
+    <string name="vs_new">New</string>
+    <string name="small_change">Small change, big difference</string>
+    <string name="small_change_q">If you set aside %1$s every day…</string>
+    <string name="in_a_month">in a month</string>
+    <string name="in_six_months">in 6 months</string>
+    <string name="in_a_year">in a year</string>
 </resources>

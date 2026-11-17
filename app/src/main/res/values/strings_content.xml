@@ -48,10 +48,10 @@
         <item>If spending runs ahead of the calendar, Home shows a calm amber note. Penny never uses red for your money.</item>
     </string-array>
     <string-array name="guide_budget">
-        <item>An envelope is an amount for one part of life, like food or transport, for each period.</item>
-        <item>Open Budgets and tap Use a template, or add envelopes one by one.</item>
+        <item>A spending limit is an amount for one part of life, like food or transport, for each period.</item>
+        <item>Open Budgets and tap Use a template, or add spending limits one by one.</item>
         <item>Choose what happens to leftovers: start fresh, carry over, or carry over up to a cap.</item>
-        <item>If an envelope goes over, tap Cover from to move money from one that has some left. It is recorded and can be undone.</item>
+        <item>If a spending limit goes over, tap Cover from to move money from one that has some left. It is recorded and can be undone.</item>
         <item>Prefer every unit to have a job? Turn on zero-based budgeting in Profile settings.</item>
     </string-array>
     <string-array name="guide_cycle">
@@ -97,7 +97,7 @@
     <string-array name="guide_undo">
         <item>Every change in Penny can be undone for a few seconds with the Undo button.</item>
         <item>Deleted items wait in Trash for 30 days.</item>
-        <item>Each transaction, account and envelope has a History of every change, who made it and when.</item>
+        <item>Each transaction, account and spending limit has a History of every change, who made it and when.</item>
         <item>Tap “Revert to this version” to go back. The revert itself can be undone too.</item>
     </string-array>
     <string-array name="guide_privacy">
@@ -130,7 +130,7 @@
     </string-array>
     <string-array name="changelog">
         <item>v1.0.0</item>
-        <item>Budgets with envelopes on any pay cycle, rollovers, targets and a year view.</item>
+        <item>Budgets with spending limits on any pay cycle, rollovers, targets and a year view.</item>
         <item>Goals, bills, subscriptions, EMIs and a debt payoff planner.</item>
         <item>Lending, group splitting, money sent home and savings circles.</item>
         <item>Capture from payment notifications, sharing, receipts and voice, with a review queue and rules that learn.</item>

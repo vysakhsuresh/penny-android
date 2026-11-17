@@ -1,5 +1,9 @@
 package app.penny.ui.people
 
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.outlined.Contacts
+import androidx.compose.material.icons.automirrored.outlined.Chat
 import app.penny.domain.ops.deleteLending
 import app.penny.domain.ops.ensurePerson
 import app.penny.ui.common.safeStart
@@ -101,7 +105,7 @@ fun PeopleScreen(padding: PaddingValues, go: (String) -> Unit) {
         val toReceive = balances.values.flatMap { it.entries }.filter { it.key == ctx.base && it.value > 0 }.sumOf { it.value } + mineInGroups.filter { it > 0 }.sum()
         val toGive = balances.values.flatMap { it.entries }.filter { it.key == ctx.base && it.value < 0 }.sumOf { -it.value } + mineInGroups.filter { it < 0 }.sumOf { -it }
         var showArchived by rememberSaveable { mutableStateOf(false) }
-        LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding() + 96.dp)) {
+        LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding() + 24.dp)) {
             item {
                 Row(Modifier.fillMaxWidth().padding(start = 20.dp, end = 4.dp, top = 8.dp, bottom = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                     Text(stringResource(R.string.tab_people), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.weight(1f))
@@ -195,7 +199,8 @@ fun PersonScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onEnt
                     }
                 }
                 item {
-                    Row(Modifier.padding(horizontal = 16.dp, vertical = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    // Wraps onto a second line at large text or with the WhatsApp button, instead of squeezing.
+                    androidx.compose.foundation.layout.FlowRow(Modifier.padding(horizontal = 16.dp, vertical = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         FilledTonalButton(onClick = { onEntry("new", id) }) { Text(stringResource(R.string.add_entry)) }
                         bal.entries.firstOrNull { it.value != 0L }?.let { (cur, v) ->
                             OutlinedButton(onClick = {
@@ -207,10 +212,18 @@ fun PersonScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onEnt
                                     g
                                 }
                             }) { Text(stringResource(R.string.settle_all)) }
+                            // PE-02: a reminder the user sends themselves; no automatic messages. The real amount goes in
+                            // the message even while amounts are hidden on screen: the person chose to send it.
+                            val reminder = context.getString(if (v > 0) R.string.reminder_receive else R.string.reminder_give, p.value.name, ctx.fmt.format(kotlin.math.abs(v), cur))
+                            val wa = whatsAppLink(p.value.phone, ctx.book.profile.regionPack, reminder)
+                            if (wa != null) FilledTonalButton(onClick = { context.safeStart(Intent(Intent.ACTION_VIEW, Uri.parse(wa))) }) {
+                                Icon(Icons.AutoMirrored.Outlined.Chat, null, modifier = Modifier.size(18.dp)); Spacer(Modifier.width(6.dp)); Text(stringResource(R.string.remind_whatsapp))
+                            }
                             OutlinedButton(onClick = {
-                                // PE-02: a reminder the user sends themselves; no automatic messages.
-                                val text = context.getString(if (v > 0) R.string.reminder_receive else R.string.reminder_give, p.value.name, ctx.money(kotlin.math.abs(v), cur))
-                                context.safeStart(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, text), null))
+                                app.penny.ui.common.ShareCard.share(
+                                    context, p.value.name, context.getString(if (v > 0) R.string.share_card_owes_you else R.string.share_card_you_owe),
+                                    null, ctx.fmt.format(kotlin.math.abs(v), cur), emptyList(), reminder,
+                                )
                             }) { Text(stringResource(R.string.draft_reminder)) }
                         }
                     }
@@ -235,6 +248,18 @@ fun PersonScreen(id: String, onBack: () -> Unit, onEdit: (String) -> Unit, onEnt
     }
 }
 
+/**
+ * A WhatsApp chat link (wa.me) for [phone] with [text] typed in, or null without a usable number. Local numbers are
+ * put in international form using the book's region, the same way the phone's dialler would.
+ */
+fun whatsAppLink(phone: String, region: String, text: String): String? {
+    if (phone.isBlank()) return null
+    val e164 = android.telephony.PhoneNumberUtils.formatNumberToE164(phone, region.uppercase())
+        ?: phone.filter { it.isDigit() || it == '+' }.takeIf { it.startsWith("+") }
+        ?: return null
+    return "https://wa.me/" + e164.removePrefix("+") + "?text=" + Uri.encode(text)
+}
+
 @Composable
 fun PersonEditScreen(id: String, onBack: () -> Unit) {
     WithBook { ctx, vm ->
@@ -252,6 +277,23 @@ fun PersonEditScreen(id: String, onBack: () -> Unit) {
             Column(Modifier.padding(pad).imePadding().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
                 TextInput(name, { name = it; err = null }, stringResource(R.string.field_name), error = err)
                 TextInput(phone, { phone = it }, stringResource(R.string.phone), keyboard = KeyboardType.Phone)
+                val context = androidx.compose.ui.platform.LocalContext.current
+                // Fill name and number from the phone's contacts; the picker grants this one contact only, so Penny
+                // needs no contacts permission and reads nothing else.
+                val pickContact = androidx.activity.compose.rememberLauncherForActivityResult(androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult()) { r ->
+                    val uri = r.data?.data ?: return@rememberLauncherForActivityResult
+                    runCatching {
+                        context.contentResolver.query(uri, arrayOf(android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER), null, null, null)?.use { c ->
+                            if (c.moveToFirst()) {
+                                c.getString(0)?.let { n -> if (name.isBlank()) name = n }
+                                c.getString(1)?.let { num -> phone = num }
+                            }
+                        }
+                    }
+                }
+                TextButton(onClick = { runCatching { pickContact.launch(Intent(Intent.ACTION_PICK, android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_URI)) } }, modifier = Modifier.padding(horizontal = 8.dp)) {
+                    Icon(Icons.Outlined.Contacts, null, modifier = Modifier.size(18.dp)); Spacer(Modifier.width(6.dp)); Text(stringResource(R.string.pick_from_contacts))
+                }
                 TextInput(email, { email = it }, stringResource(R.string.email), keyboard = KeyboardType.Email)
                 TextInput(handle, { handle = it }, stringResource(R.string.pay_handle), supporting = stringResource(R.string.pay_handle_hint, ctx.pack.settlementSchemes.joinToString().ifBlank { "PayPal" }))
                 TextInput(note, { note = it }, stringResource(R.string.field_note), singleLine = false)

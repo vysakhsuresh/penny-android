@@ -1,5 +1,7 @@
 package app.penny.ui.home
 
+import androidx.compose.ui.graphics.Color
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.foundation.clickable
 import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.layout.Arrangement
@@ -117,7 +119,7 @@ private fun HomeContent(ctx: Ctx, vm: BookViewModel, nav: HomeNav, padding: Padd
     val rows = b.transactions.filter { it.value.date in period }
         .sortedWith(compareByDescending<app.penny.core.event.Stored<app.penny.core.model.Transaction>> { it.value.date }.thenByDescending { it.value.time }.thenByDescending { it.state.createdAt })
 
-    LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding() + 96.dp)) {
+    LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding() + 24.dp)) {
         item {
             Row(Modifier.fillMaxWidth().padding(start = 16.dp, end = 8.dp, top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = nav.profiles) { app.penny.ui.kit.ProfileBadge(b.profile.name, size = 36.dp, modifier = Modifier.semantics { contentDescription = context.getString(R.string.settings) }) }
@@ -179,7 +181,7 @@ private fun HomeContent(ctx: Ctx, vm: BookViewModel, nav: HomeNav, padding: Padd
                                 MoneyLabel(ctx.money(u.amountMinor, u.recurring.currency), style = MaterialTheme.typography.titleMedium)
                                 Text(
                                     if (days == 0) stringResource(R.string.due_today) else pluralStringResource(R.plurals.due_in_days, days, days),
-                                    style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    style = MaterialTheme.typography.labelMedium, color = app.penny.ui.theme.dueColor(days, u.recurring.leadDays),
                                 )
                             }
                         }
@@ -330,9 +332,10 @@ private fun SafeHero(ctx: Ctx, safe: app.penny.core.budget.SafeToSpend, offset: 
                 // Honest states: no income yet, spent more than came in, ahead of pace, or on pace. Never red (AL-08).
                 when {
                     noIncome -> Pill(stringResource(R.string.no_income_yet), container = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.12f), content = MaterialTheme.colorScheme.onPrimaryContainer)
-                    over -> Pill(stringResource(R.string.spent_more_than_income), container = st.overContainer, content = MaterialTheme.colorScheme.onSurface)
-                    ahead -> Pill(stringResource(R.string.ahead_of_pace), container = st.nearContainer, content = MaterialTheme.colorScheme.onSurface)
-                    else -> Pill(stringResource(R.string.on_pace), container = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.12f), content = MaterialTheme.colorScheme.onPrimaryContainer)
+                    over -> Pill(stringResource(R.string.spent_more_than_income), container = Color(0xFFFF8A80).copy(alpha = 0.20f), content = Color(0xFFFFC9C4))
+                    ahead -> Pill(stringResource(R.string.ahead_of_pace), container = Color(0xFFFFC46B).copy(alpha = 0.20f), content = Color(0xFFFFDDA6))
+                    // On pace reads as good news: a soft green pill with a tick.
+                    else -> Pill(stringResource(R.string.on_pace), container = Color(0xFF7BE8B6).copy(alpha = 0.18f), content = Color(0xFFB9F5D8), icon = Icons.Filled.Check)
                 }
             }
         }

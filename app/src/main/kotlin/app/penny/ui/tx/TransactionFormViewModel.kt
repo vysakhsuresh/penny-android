@@ -1,5 +1,6 @@
 package app.penny.ui.tx
 
+import app.penny.domain.ops.addCategoryNamed
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -239,6 +240,17 @@ class TransactionFormViewModel @Inject constructor(
         if (prefix.length < 1) return emptyList()
         return (b.payees.map { it.value.name } + b.txList.mapNotNull { it.payee }).distinct()
             .filter { it.contains(prefix, ignoreCase = true) && !it.equals(prefix, ignoreCase = true) }.take(5)
+    }
+
+    /** Adds a category typed in the picker and returns its id to select (an existing one with that name is reused). */
+    fun addCategory(name: String, type: TxType, onId: (String) -> Unit) {
+        val b = ready()?.book ?: return
+        val kind = if (type == TxType.INCOME) CategoryKind.INCOME else CategoryKind.EXPENSE
+        b.categories.firstOrNull { it.value.parentId == null && it.value.kind == kind && it.value.name.trim().equals(name.trim(), ignoreCase = true) }
+            ?.let { onId(it.state.id); return }
+        val id = repo.newId()
+        onId(id)
+        viewModelScope.launch(kotlinx.coroutines.Dispatchers.Default) { runCatching { repo.addCategoryNamed(b, id, name, kind) } }
     }
 
     fun categoryChoices(b: Book, type: TxType): List<Choice<String>> {

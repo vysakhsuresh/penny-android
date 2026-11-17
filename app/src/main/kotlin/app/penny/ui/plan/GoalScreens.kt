@@ -82,7 +82,7 @@ fun GoalsScreen(onBack: () -> Unit, onOpen: (String) -> Unit, onAdd: () -> Unit)
             floating = { app.penny.ui.kit.AddFab(stringResource(R.string.add_goal), onAdd) },
         ) { pad ->
             val list = b.goals.filter { showDone || it.value.status in listOf(GoalStatus.ACTIVE, GoalStatus.PAUSED) }
-            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 120.dp)) {
+            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = pad.calculateTopPadding(), bottom = 100.dp)) {
                 item { FilterChip(showDone, { showDone = !showDone }, label = { Text(stringResource(R.string.show_completed_archived)) }, modifier = Modifier.padding(horizontal = 16.dp)) }
                 if (list.isEmpty()) item { EmptyState(stringResource(R.string.no_goals), stringResource(R.string.no_goals_body), icon = Icons.Outlined.Flag, action = stringResource(R.string.add_goal), onAction = onAdd) }
                 items(list, key = { it.state.id }) { g -> GoalCard(ctx, g.state.id, g.value) { onOpen(g.state.id) } }

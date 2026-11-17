@@ -345,7 +345,7 @@
     <!-- Alert settings -->
     <string name="os_notifications">Phone notifications</string>
     <string name="os_notifications_hint">Off by default. Alerts always show inside Penny.</string>
-    <string name="notif_explain">Penny will tell you when an envelope is close to its limit, a bill is due, or spending runs ahead of the calendar. Quiet hours apply and there is no sound by default. Your phone will ask for permission next.</string>
+    <string name="notif_explain">Penny will tell you when a spending limit is close to its limit, a bill is due, or spending runs ahead of the calendar. Quiet hours apply and there is no sound by default. Your phone will ask for permission next.</string>
     <string name="quiet_hours">Quiet hours</string>
     <string name="which_alerts">Which alerts</string>
     <string name="alert_pace">Spending ahead of the calendar</string>
@@ -354,7 +354,7 @@
     <string name="alert_large">Unusually large spends</string>
     <string name="alert_unusual">New places you haven’t paid before</string>
     <string name="alert_forecast">Early warning for the period</string>
-    <string name="envelope_alerts_hint">Each envelope has its own alert setting in its edit screen.</string>
+    <string name="envelope_alerts_hint">Each spending limit has its own alert setting in its edit screen.</string>
     <string name="watchlists">Watchlists</string>
     <string name="watchlists_hint">Watch a payee, tag or category with its own limit.</string>
     <string name="add_watchlist">Add watchlist</string>
@@ -371,12 +371,12 @@
     <string name="al_forecast">At this pace you may end the period %1$s short</string>
     <string name="al_watch">%1$s reached its limit</string>
     <string name="al_left_body">%1$s left with %2$d days to go. Open to adjust.</string>
-    <string name="al_cover_body">Cover it from an envelope with money left.</string>
+    <string name="al_cover_body">Cover it from a spending limit with money left.</string>
     <string name="al_pace_body">%1$s days left. Slowing down a little keeps you on track.</string>
     <string name="al_safe_low_body">That is less than three days of usual spending.</string>
     <string name="al_bill_covered">Due in %1$s days. Safe to spend covers it.</string>
     <string name="al_bill_short">Due in %1$s days. Safe to spend may not cover it.</string>
-    <string name="al_forecast_body">Open Budgets to see which envelopes drive it.</string>
+    <string name="al_forecast_body">Open Budgets to see which spending limits drive it.</string>
     <string name="al_review_body">Open Penny to take a look.</string>
 
     <!-- Security -->
@@ -544,7 +544,7 @@
     <string name="guides_intro">Short guides to get the most from Penny. They work offline.</string>
     <string name="guide_start_title">Getting started in two minutes</string>
     <string name="guide_safe_title">What “safe to spend” means</string>
-    <string name="guide_budget_title">Budgeting with envelopes</string>
+    <string name="guide_budget_title">Budgeting with spending limits</string>
     <string name="guide_cycle_title">Budget on your real pay cycle</string>
     <string name="guide_capture_title">Let transactions come to you</string>
     <string name="guide_people_title">Lending, groups and shared homes</string>
@@ -588,7 +588,7 @@
     <string name="obj_tag">Tag</string>
     <string name="obj_payee">Payee</string>
     <string name="obj_rule">Rule</string>
-    <string name="obj_envelope">Envelope</string>
+    <string name="obj_envelope">Spending limit</string>
     <string name="obj_budget">Budget</string>
     <string name="obj_goal">Goal</string>
     <string name="obj_recurring">Bill or income</string>
